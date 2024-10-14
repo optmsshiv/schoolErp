@@ -1,0 +1,552 @@
+/*submenu hide */
+
+  
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+/* Hide the default length menu */
+.dataTables_length {
+  display: none;
+}
+.userCard{
+  padding: 20px;
+}
+
+ /* Custom CSS for the custom length dropdown */
+ .custom-length-container {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+.custom-length-container label {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+
+/* Ensures the container fits into the table controls */
+.dataTables_wrapper .dataTables_filter {
+  margin-bottom: 10px;
+}
+
+.dataTableLength select {
+  margin-left: 1px; /* Add space between the label and select box */
+  width: 80px; /* Adjust the width to your preference */
+  height: 35px; /* Adjust the height for larger appearance */
+  font-size: 16px; /* Increase the font size */
+  padding: 5px; /* Add padding for better appearance */
+}
+
+ /* Custom CSS */
+ .custom-length {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.custom-length label {
+  margin-right: 10px;
+}
+
+.custom-length select {
+  width: 80px;
+  height: 35px;
+  font-size: 16px;
+  padding: 5px;
+}
+/*
+* demo.css
+* File include item demo only specific css only
+******************************************************************************/
+/* color code*/
+
+.menu .app-brand {
+  height: 64px;
+  margin-top: 12px;
+}
+
+.app-brand-logo svg {
+  width: 22px;
+  height: 38px;
+}
+
+.app-brand-text {
+  font-size: 1.75rem;
+  letter-spacing: -0.5px;
+  text-transform: lowercase;
+}
+
+.menu-link > :not(.menu-icon) {
+  flex: 0 1 auto;
+  opacity: 1;
+  transition: ease-in-out;
+}
+
+/*  aside id theme
+
+.layout-menu .toggle{
+  position: absolute;
+  top: 6%;
+  right: -13px;
+  transform: translateY(-50%);
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background:var(--primary-color);
+  border: 1px solid #043f82;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sidebar-color);
+  font-size: 22px;
+} */
+
+/*  toggle switch
+
+.mode{
+   background: var(--primary-color-light);
+   cursor: pointer;
+}
+.moon-sun{
+height: 50px;
+width: 50px;
+display: flex;
+align-items: center;
+position: relative;
+}
+
+.mode i{
+  position: absolute;
+}
+.mode i.moon{
+  opacity: 100px;
+}
+ .toggle-switch{
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  background: #FFCC70;
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+  margin-left: 0px;
+}
+.toggle-switch .switch {
+  display: block;
+  width: 22px;
+  height: 22px;
+  background: #ffffff;
+  border-radius: 50%;
+  position: relative;
+  top: 3px;
+  left: 4px;
+  right: 3px;
+  transition: all 0.3s;
+}
+.switch::before{
+  content: '';
+  position: relative;
+  height: 15px;
+  width: 15px;
+  background: white;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  transition: all 0.3s;
+  cursor: pointer;
+}*/
+.toggle-switch.active {
+  background: #4CAF50; /* Change this color to whatever you prefer */
+}
+
+.toggle-switch.active .switch {
+  left: 32px;
+}
+
+.icon {
+  margin-right: 5px;
+}
+
+/*  aside id dark   */
+
+.layout-navbar {
+  background-color: #ffffffe0 !important;
+  backdrop-filter: saturate(200%) blur(6px);
+}
+
+.navbar-detached {
+  box-shadow: 0 0 0.375rem 0.25rem rgba(213, 213, 213, 0.15);
+}
+
+.form-control{
+  background-color: #ffffff !important;
+  color: rgb(5, 5, 5);
+}
+/*  aside id light   */
+/* Hide the moon icon by default */
+.icon.moon {
+  display: none;
+}
+
+/* Show the moon icon in dark mode */
+body.dark-mode .icon.moon {
+  display: inline;
+}
+
+/* Hide the sun icon in dark mode */
+body.dark-mode .icon.sun {
+  display: none;
+}
+/*  aside id menu   */
+
+/* ! For .layout-navbar-fixed added fix padding top to .layout-page */
+/* Detached navbar */
+.layout-navbar-fixed .layout-wrapper:not(.layout-horizontal):not(.layout-without-menu) .layout-page {
+  padding-top: 76px !important;
+}
+
+/* Default navbar */
+.layout-navbar-fixed .layout-wrapper:not(.layout-without-menu) .layout-page {
+  padding-top: 64px !important;
+}
+
+.docs-page .layout-navbar-fixed.layout-wrapper:not(.layout-without-menu) .layout-page,
+.docs-page .layout-menu-fixed.layout-wrapper:not(.layout-without-menu) .layout-page {
+  padding-top: 62px !important;
+}
+
+/* Navbar page z-index issue solution */
+.content-wrapper .navbar {
+  z-index: auto;
+}
+
+/*
+* Content
+******************************************************************************/
+
+.demo-blocks>* {
+  display: block !important;
+}
+
+.demo-inline-spacing>* {
+  margin: 1rem 0.375rem 0 0 !important;
+}
+
+/* ? .demo-vertical-spacing class is used to have vertical margins between elements. To remove margin-top from the first-child, use .demo-only-element class with .demo-vertical-spacing class. For example, we have used this class in forms-input-groups.html file. */
+.demo-vertical-spacing>* {
+  margin-top: 1rem !important;
+  margin-bottom: 0 !important;
+}
+
+.demo-vertical-spacing.demo-only-element> :first-child {
+  margin-top: 0 !important;
+}
+
+.demo-vertical-spacing-lg>* {
+  margin-top: 1.875rem !important;
+  margin-bottom: 0 !important;
+}
+
+.demo-vertical-spacing-lg.demo-only-element> :first-child {
+  margin-top: 0 !important;
+}
+
+.demo-vertical-spacing-xl>* {
+  margin-top: 5rem !important;
+  margin-bottom: 0 !important;
+}
+
+.demo-vertical-spacing-xl.demo-only-element> :first-child {
+  margin-top: 0 !important;
+}
+
+.rtl-only {
+  display: none !important;
+  text-align: left !important;
+  direction: ltr !important;
+}
+
+[dir='rtl'] .rtl-only {
+  display: block !important;
+}
+
+/* Dropdown buttons going out of small screens */
+@media (max-width: 576px) {
+  #dropdown-variation-demo .btn-group .text-truncate {
+    width: 231px;
+    position: relative;
+  }
+
+  #dropdown-variation-demo .btn-group .text-truncate::after {
+    position: absolute;
+    top: 45%;
+    right: 0.65rem;
+  }
+}
+
+/*
+* Layout demo
+******************************************************************************/
+
+.layout-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.layout-placeholder img {
+  width: 900px;
+}
+
+.layout-info {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.label {
+  font-size: 14px;
+  /* Adjust the size as needed */
+}
+
+.custom-h4 {
+  font-size: 22px;
+  /* Adjust the font size as needed */
+  margin-bottom: 16px;
+}
+
+.custom-h5 {
+  font-size: 16px;
+  /* Adjust the font size as needed */
+  margin-bottom: 10px;
+}
+
+.custom-h6 {
+  font-size: 13px;
+  /* Adjust the font size as needed */
+  margin-top: 12px;
+}
+
+
+.card-title {
+  font-size: 14px;
+  /* Adjust the font size as needed */
+
+}
+
+.custom-card {
+  height: 125px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-c {
+  height: 125px;
+  width: 275px;
+  background-color: #4158D0;
+  background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+  transition: background-color 0.3s ease-in, box-shadow 0.3s ease-out;
+
+}
+.custom-c::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(35deg, rgba(34,193,195,1) 0%, rgba(91,45,253,1) 100%);
+  z-index: -1;
+  filter: blur(5px);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.custom-c:hover::before {
+  opacity: 1;
+}
+
+/*
+.custom-card:hover {
+  background: rgb(131,58,180);
+background: -moz-linear-gradient(35deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+background: -webkit-linear-gradient(35deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+background: linear-gradient(35deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#833ab4",endColorstr="#fcb045",GradientType=1);
+  box-shadow: 1px 2px 4px 3px #7b5cf8;
+}
+*/
+.custom-hover::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(35deg, rgba(34,193,195,1) 0%, rgba(91,45,253,1) 100%);
+  z-index: -1;
+  filter: blur(5px);
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
+.custom-hover:hover::before {
+  opacity: 1;
+}
+
+
+.custom-card::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(35deg, rgba(34,193,195,1) 0%, rgba(91,45,253,1) 100%);
+  z-index: -1;
+  filter: blur(5px);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.custom-card:hover::before {
+  opacity: 1;
+}
+
+.icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.col-sm-3 {
+  flex: 0 0 auto;
+  width: 22%;
+}
+
+.card-body {
+  padding: 0.937rem;
+  margin-left: 5px;
+}
+
+.custom-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 30%;
+}
+/*********css for input group off-canvas****/
+.canvas {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+}
+
+
+.input-group.custom {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 120%;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.btn {
+  margin-right: 35px;
+  /* Adjust this value to increase or decrease the space between buttons */
+}
+
+.btn.custom {
+  margin-left: 75px;
+  margin-right: 15px;
+  /* Adjust this value to increase or decrease the space between buttons */
+}
+
+#submitButton {
+  margin-left: auto;
+  /* This pushes the submit button to the right end */
+}
+
+.table-responsive {
+  overflow-x: auto;
+  /* Enables horizontal scrolling */
+}
+
+.table {
+  min-width: 1000px;
+  table-layout: auto;
+  /* Allows the table to adjust column widths based on content */
+
+}
+
+th,
+td {
+  white-space: nowrap;
+  /* Prevents text from wrapping */
+  font-size: 14px;
+  /* Adjust this value to your desired font size */
+}
+
+.table-table {
+  padding: 0.937rem;
+  margin: 10px;
+}
+
+.layout-navbar.navbar-detached {
+  width: calc(100% - 1.625rem* 2);
+  border-radius: 0.375rem;
+  padding: 0 1.5rem;
+}
+
+/* custom column padding */
+.custom-col-padding {
+  
+  padding-right: 2px; /* Adjust as needed */
+}
+
+.card-bg-transport {
+  background-color: #6c757d; /* Gray */
+}
+
+.card-bg-admin {
+  background-color: #007bff; /* Blue */
+}
+
+.card-bg-user {
+  background-color: #28a745; /* Green */
+}
+
+.card-bg-support {
+  background-color: #dc3545; /* Red */
+}
+
+.card-bg-total {
+  background-color: #ffc107; /* Yellow */
+}
+
+

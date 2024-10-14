@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>erp admin login</title>
+  <link rel="stylesheet" href="../assets/css/loginPage.css"> <!-- Ensure correct path -->
+  <!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+  <div class="toggle-container">
+    <input type="checkbox" id="dark-mode-toggle">
+    <label for="dark-mode-toggle" class="toggle-icon" id="dark-mode-icon">🌙</label>
+    <label for="dark-mode-toggle" class="toggle-icon" id="light-mode-icon">🌞</label>
+  </div>
+
+  <div class="brand-logo">
+    <a href="#"><img src="../assets/img/illustrations/logo.png" alt="OPTMS Tech" >
+      <span class="logo-text">OPTMS Tech</span>
+    </a>
+  </div>
+
+  <div class="container">
+    <div class="left-side">
+      <img src="../assets/img/illustrations/boy-with-rocket-light.png" alt="Illustration" class="responsive-image">
+      <!-- Ensure correct path -->
+    </div>
+    <div class="right-side">
+      <h2>Welcome to School-Erp! 👋</h2>
+      <p>Please sign in to your account and start the adventure</p>
+      <form method="POST" action="../php/login.php">
+        <div class="input-group">
+          <input type="text" id="username" name="username" placeholder="" required>
+          <label>Email or Username</label>
+          <small>Please enter email / username</small>
+        </div>
+        <div class="input-group">
+          <input type="password" id="password" name="password" placeholder="" required>
+          <label>Password</label>
+          <span class="toggle-password">👁️</span>
+          <small>Please enter your password</small>
+        </div>
+        <div class="options">
+          <label><input type="checkbox"> Remember Me</label>
+          <a href="#">Forgot Password?</a>
+        </div>
+        <button value="login" type="submit" class="btn-primary">Sign in</button>
+      </form>
+    </div>
+    <button class="btn-support">Support</button>
+  </div>
+  <script src="../model/loginPage.js"></script> <!-- Ensure correct path -->
+</body>
+
+</html>

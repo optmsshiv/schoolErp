@@ -1,0 +1,29 @@
+/* Off-Canvas Custom Styles */
+
+
+/* Custom arrow icon */
+
+
+/* हेडर स्टाइलिंग */
+.offcanvas-header {
+  background-color: #6f51e9;
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.offcanvas-title {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.btn-close {
+  color: #ff1616;
+  transition: color 0.3s ease;
+}
+
+.btn-close:hover {
+  color: #ffffff;
+}
+
+

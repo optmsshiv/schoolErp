@@ -1,0 +1,23 @@
+body.dark-mode {
+  background-color: #2b2c40e0 ;
+  color: rgb(255, 255, 255);
+}
+body.dark-mode .navbar-nav-right {
+  background-color: #1B2430 ;
+  color: rgb(255, 255, 255);
+}
+
+body.dark-mode .layout-navbar {
+  background-color: #1B2430 !important;
+  backdrop-filter: saturate(200%) blur(6px);
+  color: white;
+}
+body.dark-mode .navbar-detached {
+  background-color: #1B2430 !important;
+  backdrop-filter: saturate(200%) blur(6px);
+  color: white;
+}
+body.dark .form-control{
+  background-color: #1B2430 !important;
+  color: white;
+}
