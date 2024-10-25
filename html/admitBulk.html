@@ -3,7 +3,7 @@
 <html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default"
   data-assets-path="../assets/" data-template="vertical-menu-template-free">
 
- <head>
+<head>
   <meta charset="utf-8" />
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
@@ -41,15 +41,15 @@
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script src="../assets/js/config.js"></script>
- </head>
+</head>
 
- <body>
-   <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
-     <div class="layout-container">
-       <!-- Menu -->
+<body>
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
 
-       <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+      <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand ">
           <a href="index.html" class="app-brand-link">
             <span class="app-brand-logo">
@@ -834,16 +834,16 @@
             </a>
           </li>
         </ul>
-       </aside>
+      </aside>
 
-       <!-- / Menu -->
+      <!-- / Menu -->
 
-       <!-- Layout container -->
-       <div class="layout-page">
+      <!-- Layout container -->
+      <div class="layout-page">
 
-         <!-- Navbar -->
+        <!-- Navbar -->
 
-         <nav
+        <nav
           class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
           id="layout-navbar">
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
@@ -935,42 +935,44 @@
               <!--/ User -->
             </ul>
           </div>
-         </nav>
+        </nav>
 
-         <!-- / Navbar -->
+        <!-- / Navbar -->
 
-         <!-- Content wrapper -->
-         <div class="content-wrapper">
-            <!-- Content -->
-           <div class="container p-1">
-             <div class="flex-shrink-1 mt-3 container-p-x">
-               <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                 <ol class="breadcrumb">
-                   <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                   <li class="breadcrumb-item"><a href="#">Manage Admission</a></li>
-                   <li class="fw-bold breadcrumb-item active" aria-current="page">Admit Bulk Student</li>
-                 </ol>
-               </nav>
-               <div class="card">
-                 <div class="card-header">
-                   <h5 class="fw-bold card-title">Admit Bulk Student</h5>
-                   <div class="input-group mb-4">
-                     <input type="file" class="form-control" id="inputGroupFile01" accept=".csv">
-                   </div>
-                   <div class="button-group">
-                     <button type="button" class="btn btn-primary" id="processButton">Process</button>
-                     <button type="reset" class="btn btn-secondary" id="resetButton">Reset</button>
-                     <button type="submit" class="btn btn-success" id="submitButton">Submit</button>
-                    </div>
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <!-- Content -->
+          <div class="container p-1">
+            <div class="flex-shrink-1 mt-3 container-p-x">
+              <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                  <li class="breadcrumb-item"><a href="#">Manage Admission</a></li>
+                  <li class="fw-bold breadcrumb-item active" aria-current="page">Admit Bulk Student</li>
+                </ol>
+              </nav>
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="fw-bold card-title">Admit Bulk Student</h5>
+                  <div class="input-group mb-4">
+                    <input type="file" class="form-control" id="inputGroupFile01" accept=".csv">
                   </div>
+                  <!-- Start of form -->
+                  <form method="POST" id="studentBulkData" action="../php/admit_bulk_submit.php">
+                    <div class="button-group">
+                      <button type="button" class="btn btn-primary" id="processButton">Process</button>
+                      <button type="reset" class="btn btn-secondary" id="resetButton">Reset</button>
+                      <button type="submit" class="btn btn-success" id="submitButton">Submit</button>
+                    </div>
                 </div>
+              </div>
 
 
-               <div class="card mt-4">
-                 <div class="table-responsive d-flex">
-                   <div class="card-body table-table d-flex">
-                     <table class="table table-sm table-striped table-bordered " id="dataTable"
-                       style="table-layout: auto; min-width: 1000px;">
+              <div class="card mt-4">
+                <div class="table-responsive d-flex">
+                  <div class="card-body table-table d-flex">
+                    <table class="table table-sm table-striped table-bordered " id="dataTable"
+                      style="table-layout: auto; min-width: 1000px;">
                       <thead>
                         <tr>
                           <th>S.No</th>
@@ -1002,6 +1004,8 @@
                     </table>
                   </div>
                 </div>
+                <!-- Close the form here so that it includes the button group and table -->
+                </form>
               </div>
             </div>
           </div>
@@ -1049,6 +1053,7 @@
   <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
   <script src="../assets/vendor/js/menu.js"></script>
   <script src="../custome js/admit_bulk_student.js"></script>
+  <script src="../model/admitBulk.js"></script>
 
   <!-- endbuild -->
 
