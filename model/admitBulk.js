@@ -1,72 +1,69 @@
+document.addEventListener("DOMContentLoaded", function () {
+  // Elements
+  const processButton = document.getElementById("processButton");
+  const resetButton = document.getElementById("resetButton");
+  const submitButton = document.getElementById("submitButton");
+  const fileInput = document.getElementById("inputGroupFile01");
+  const loadingIndicator = document.getElementById("loadingIndicator");
+  const form = document.getElementById("studentBulkData");
 
-document.getElementById('submitButton').addEventListener('click', function(event) {
-  event.preventDefault(); // Prevent default form submission
-
-  // Show loading overlay if implemented
-  document.getElementById('loadingOverlay').style.display = 'flex';
-
-  // Get form data
-  const formData = new FormData(document.getElementById('studentBulkData'));
-
-  // Collect data from table rows
-  const tableData = [];
-  const tableRows = document.querySelectorAll('#dataTable tbody tr');
-
-  tableRows.forEach((row, index) => {
-    const rowData = {
-      sNo: row.cells[0].textContent,
-      firstName: row.cells[1].textContent,
-      lastName: row.cells[2].textContent,
-      phone: row.cells[3].textContent,
-      email: row.cells[4].textContent,
-      dob: row.cells[5].textContent,
-      gender: row.cells[6].textContent,
-      className: row.cells[7].textContent,
-      category: row.cells[8].textContent,
-      religion: row.cells[9].textContent,
-      guardian: row.cells[10].textContent,
-      handicapped: row.cells[11].textContent,
-      fatherName: row.cells[12].textContent,
-      motherName: row.cells[13].textContent,
-      rollNo: row.cells[14].textContent,
-      srNo: row.cells[15].textContent,
-      penNo: row.cells[16].textContent,
-      aadharNo: row.cells[17].textContent,
-      admissionNo: row.cells[18].textContent,
-      admissionDate: row.cells[19].textContent,
-      dayHosteler: row.cells[20].textContent
-    };
-    tableData.push(rowData);
+  // Show loading indicator when form is submitted
+  form.addEventListener("submit", function (e) {
+    loadingIndicator.style.display = "flex"; // Show loading indicator
+    submitButton.disabled = true; // Disable submit button
   });
 
-  // Send data to the server
-  fetch('../php/admit_bulk_submit.php', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => response.text())
-  .then(text => {
-    let data;
+  // Process file button - add any custom file processing if needed
+  processButton.addEventListener("click", function () {
+    if (fileInput.files.length === 0) {
+      alert("Please select a file first.");
+      return;
+    }
+
+    // You can add custom file processing here if needed
+    alert("File is ready to be processed.");
+  });
+
+  // Reset form and hide loading indicator
+  resetButton.addEventListener("click", function () {
+    form.reset();
+    loadingIndicator.style.display = "none"; // Hide loading indicator
+    submitButton.disabled = false; // Enable submit button
+  });
+
+  // Submit event for file upload and server data submission
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    // Create FormData object and append the file data
+    const formData = new FormData(form);
+    formData.append("file", fileInput.files[0]);
+
     try {
-      data = JSON.parse(text);
-    } catch (e) {
-      console.error('Invalid JSON response:', text);
-      data = { success: false, message: 'Unexpected server response. Please try again.' };
-    }
+      const response = await fetch("../php/admit_bulk_submit.php", {
+        method: "POST",
+        body: formData,
+      });
 
-    // Hide loading overlay
-    document.getElementById('loadingOverlay').style.display = 'none';
+      // Check if response is okay
+      if (!response.ok) {
+        throw new Error("Server error: " + response.statusText);
+      }
 
-    if (data.success) {
-      alert(data.message);
-    } else {
-      alert('Error: ' + data.message);
+      const result = await response.json();
+
+      if (result.success) {
+        alert("Data uploaded successfully!");
+      } else {
+        alert("Error uploading data: " + result.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to upload data. Please try again.");
+    } finally {
+      // Hide loading indicator and re-enable submit button
+      loadingIndicator.style.display = "none";
+      submitButton.disabled = false;
     }
-  })
-  .catch(error => {
-    document.getElementById('loadingOverlay').style.display = 'none';
-    console.error('Fetch error:', error);
-    alert('An error occurred while submitting the data.');
   });
 });
-

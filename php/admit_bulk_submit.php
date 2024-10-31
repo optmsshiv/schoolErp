@@ -15,53 +15,58 @@ if ($conn->connect_error) {
     die(json_encode(["success" => false, "message" => "Database connection failed: " . $conn->connect_error]));
 }
 
-// Decode the table data sent from the client
-$tableData = json_decode($_POST['tableData'], true);
-
-// Validate table data
-if (!$tableData || !is_array($tableData)) {
-    echo json_encode(["success" => false, "message" => "No valid table data received"]);
-    exit;
+// Check if a file is uploaded
+if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
+  echo json_encode(["success" => false, "message" => "File upload error."]);
+  exit;
 }
 
-// Prepare the SQL insert statement
-$sql = "INSERT INTO students (
-    s_no, first_name, last_name, phone, email, dob, gender, class_name, category,
-    religion, guardian, handicapped, father_name, mother_name, roll_no, sr_no,
-    pen_no, aadhar_no, admission_no, admission_date, day_hosteler
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+// Validate file type (only CSV allowed)
+$fileType = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+if (strtolower($fileType) !== 'csv') {
+  echo json_encode(["success" => false, "message" => "Invalid file type. Only CSV files are allowed."]);
+  exit;
+}
 
-// Prepare statement
-$stmt = $conn->prepare($sql);
+// Open the CSV file
+$file = fopen($_FILES['file']['tmp_name'], 'r');
+if ($file === false) {
+  echo json_encode(["success" => false, "message" => "Failed to open the CSV file."]);
+  exit;
+}
+
+// Skip the header row
+fgetcsv($file);
+
+// Prepare SQL statement
+$stmt = $conn->prepare("INSERT INTO students (first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped, father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 if (!$stmt) {
-    echo json_encode(["success" => false, "message" => "Failed to prepare SQL statement"]);
-    exit;
+  echo json_encode(["success" => false, "message" => "Database error: " . $conn->error]);
+  exit;
 }
 
-// Bind parameters and execute the statement for each row
-foreach ($tableData as $row) {
-    $stmt->bind_param(
-        "issssssssssssssssssss",
-        $row['sNo'], $row['firstName'], $row['lastName'], $row['phone'], $row['email'],
-        $row['dob'], $row['gender'], $row['className'], $row['category'], $row['religion'],
-        $row['guardian'], $row['handicapped'], $row['fatherName'], $row['motherName'],
-        $row['rollNo'], $row['srNo'], $row['penNo'], $row['aadharNo'], $row['admissionNo'],
-        $row['admissionDate'], $row['dayHosteler']
-    );
+// Bind parameters to the SQL statement
+$stmt->bind_param("ssssssssssssssssssss", $first_name, $last_name, $phone, $email, $date_of_birth, $gender, $class_name, $category, $religion, $guardian, $handicapped, $father_name, $mother_name, $roll_no, $sr_no, $pen_no, $aadhar_no, $admission_no, $admission_date, $day_hosteler);
 
-    // Execute statement
-    if (!$stmt->execute()) {
-        echo json_encode(["success" => false, "message" => "Error inserting data for student: " . $row['firstName']]);
-        exit;
-    }
+// Read each row of the CSV file
+while (($row = fgetcsv($file, 1000, ",")) !== false) {
+  // Assign CSV columns to variables
+  list($s_no, $first_name, $last_name, $phone, $email, $date_of_birth, $gender, $class_name, $category, $religion, $guardian, $handicapped, $father_name, $mother_name, $roll_no, $sr_no, $pen_no, $aadhar_no, $admission_no, $admission_date, $day_hosteler) = $row;
+
+  // Execute the prepared statement
+  if (!$stmt->execute()) {
+      echo json_encode(["success" => false, "message" => "Error inserting row: " . $stmt->error]);
+      exit;
+  }
 }
 
-// Close statement and connection
+// Close resources
+fclose($file);
 $stmt->close();
 $conn->close();
 
-// Send success response
-echo json_encode(["success" => true, "message" => "All data uploaded successfully"]);
-
+// Return success response
+echo json_encode(["success" => true, "message" => "Data uploaded successfully!"]);
+exit;
 ?>

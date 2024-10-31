@@ -943,6 +943,14 @@
         <div class="content-wrapper">
           <!-- Content -->
           <div class="container p-1">
+            <!-- Loading indicator -->
+            <div id="loadingIndicator" class="d-flex justify-content-center align-items-center" style="display: none;">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="ms-2">Data is uploading, please wait...</p>
+            </div>
+
             <div class="flex-shrink-1 mt-3 container-p-x">
               <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -954,11 +962,12 @@
               <div class="card">
                 <div class="card-header">
                   <h5 class="fw-bold card-title">Admit Bulk Student</h5>
+                  <form method="POST" id="studentBulkData" action="../php/admit_bulk_submit.php"></form>
                   <div class="input-group mb-4">
-                    <input type="file" class="form-control" id="inputGroupFile01" accept=".csv">
+                    <input type="file" class="form-control" id="inputGroupFile01" name="file" accept=".csv" required>
                   </div>
                   <!-- Start of form -->
-                  <form method="POST" id="studentBulkData" action="../php/admit_bulk_submit.php">
+
                     <div class="button-group">
                       <button type="button" class="btn btn-primary" id="processButton">Process</button>
                       <button type="reset" class="btn btn-secondary" id="resetButton">Reset</button>

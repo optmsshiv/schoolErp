@@ -1,6 +1,6 @@
 /*submenu hide */
 
-  
+
 input[type="checkbox"] {
   width: 18px;
   height: 18px;
@@ -525,7 +525,7 @@ td {
 
 /* custom column padding */
 .custom-col-padding {
-  
+
   padding-right: 2px; /* Adjust as needed */
 }
 
@@ -548,5 +548,17 @@ td {
 .card-bg-total {
   background-color: #ffc107; /* Yellow */
 }
+
+/* css loader */
+#loadingIndicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+}
+
 
 
