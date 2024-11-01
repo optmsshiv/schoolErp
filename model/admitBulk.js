@@ -87,7 +87,7 @@ studentBulkDataForm.addEventListener('submit', (event) => {
     })
     .then(response => response.json())
     .then(data => {
-        loadingIndicator.style.display = 'none'; // Hide loading indicator
+        loadingIndicator.style.display = 'none'; // Hide loading indicator for
         if (data.success) {
             alert('Data uploaded successfully!');
             studentBulkDataForm.reset();
