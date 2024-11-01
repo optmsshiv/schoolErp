@@ -1,69 +1,104 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Elements
-  const processButton = document.getElementById("processButton");
-  const resetButton = document.getElementById("resetButton");
-  const submitButton = document.getElementById("submitButton");
-  const fileInput = document.getElementById("inputGroupFile01");
-  const loadingIndicator = document.getElementById("loadingIndicator");
-  const form = document.getElementById("studentBulkData");
+// Get form and loading indicator elements
+const studentBulkDataForm = document.getElementById('studentBulkData');
+const processButton = document.getElementById('processButton');
+const submitButton = document.getElementById('submitButton');
+const loadingIndicator = document.getElementById('loadingIndicator');
+const fileInput = document.getElementById('inputGroupFile01');
+const dataTableBody = document.querySelector('#dataTable tbody');
 
-  // Show loading indicator when form is submitted
-  form.addEventListener("submit", function (e) {
-    loadingIndicator.style.display = "flex"; // Show loading indicator
-    submitButton.disabled = true; // Disable submit button
-  });
+// Hide loading indicator initially
+loadingIndicator.style.display = 'none';
 
-  // Process file button - add any custom file processing if needed
-  processButton.addEventListener("click", function () {
-    if (fileInput.files.length === 0) {
-      alert("Please select a file first.");
-      return;
+// Process button - read CSV file and populate table
+processButton.addEventListener('click', () => {
+    const file = fileInput.files[0];
+    if (!file) {
+        alert('Please select a CSV file first.');
+        return;
     }
 
-    // You can add custom file processing here if needed
-    alert("File is ready to be processed.");
-  });
+    // Show loading indicator during processing
+    loadingIndicator.style.display = 'block';
 
-  // Reset form and hide loading indicator
-  resetButton.addEventListener("click", function () {
-    form.reset();
-    loadingIndicator.style.display = "none"; // Hide loading indicator
-    submitButton.disabled = false; // Enable submit button
-  });
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        const rows = event.target.result.split('\n').map(row => row.split(','));
 
-  // Submit event for file upload and server data submission
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault(); // Prevent default form submission
+        // Clear any existing table rows
+        dataTableBody.innerHTML = '';
 
-    // Create FormData object and append the file data
-    const formData = new FormData(form);
-    formData.append("file", fileInput.files[0]);
+        // Add rows to the table
+        rows.forEach((cells, index) => {
+            if (cells.length < 21) return; // Skip incomplete rows
 
-    try {
-      const response = await fetch("../php/admit_bulk_submit.php", {
-        method: "POST",
-        body: formData,
-      });
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${cells[0]}</td>
+                <td>${cells[1]}</td>
+                <td>${cells[2]}</td>
+                <td>${cells[3]}</td>
+                <td>${cells[4]}</td>
+                <td>${cells[5]}</td>
+                <td>${cells[6]}</td>
+                <td>${cells[7]}</td>
+                <td>${cells[8]}</td>
+                <td>${cells[9]}</td>
+                <td>${cells[10]}</td>
+                <td>${cells[11]}</td>
+                <td>${cells[12]}</td>
+                <td>${cells[13]}</td>
+                <td>${cells[14]}</td>
+                <td>${cells[15]}</td>
+                <td>${cells[16]}</td>
+                <td>${cells[17]}</td>
+                <td>${cells[18]}</td>
+                <td>${cells[19]}</td>
+            `;
+            dataTableBody.appendChild(row);
+        });
 
-      // Check if response is okay
-      if (!response.ok) {
-        throw new Error("Server error: " + response.statusText);
-      }
+        // Hide loading indicator after processing
+        loadingIndicator.style.display = 'none';
+    };
 
-      const result = await response.json();
+    reader.readAsText(file);
+});
 
-      if (result.success) {
-        alert("Data uploaded successfully!");
-      } else {
-        alert("Error uploading data: " + result.message);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Failed to upload data. Please try again.");
-    } finally {
-      // Hide loading indicator and re-enable submit button
-      loadingIndicator.style.display = "none";
-      submitButton.disabled = false;
-    }
-  });
+// Submit button - send table data to the server
+studentBulkDataForm.addEventListener('submit', (event) => {
+    event.preventDefault(); // Prevent form submission
+
+    // Show loading indicator during data submission
+    loadingIndicator.style.display = 'block';
+
+    // Collect table data
+    const rows = [];
+    dataTableBody.querySelectorAll('tr').forEach(row => {
+        const cells = Array.from(row.querySelectorAll('td')).map(cell => cell.innerText);
+        rows.push(cells);
+    });
+
+    // Send data to server
+    fetch('../php/admit_bulk_submit.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: rows })
+    })
+    .then(response => response.json())
+    .then(data => {
+        loadingIndicator.style.display = 'none'; // Hide loading indicator
+        if (data.success) {
+            alert('Data uploaded successfully!');
+            studentBulkDataForm.reset();
+            dataTableBody.innerHTML = ''; // Clear table
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        loadingIndicator.style.display = 'none'; // Hide loading indicator
+        console.error('Error:', error);
+        alert('An error occurred while uploading the data.');
+    });
 });
