@@ -6,7 +6,7 @@ const loadingIndicator = document.getElementById('loadingIndicator');
 const fileInput = document.getElementById('inputGroupFile01');
 const dataTableBody = document.querySelector('#dataTable tbody');
 
-// Hide loading indicator initially
+// Hide loading indicator initially //shiv
 loadingIndicator.style.display = 'none';
 
 // Process button - read CSV file and populate table
