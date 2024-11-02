@@ -25,19 +25,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const response = await fetch('../php/admit_bulk_submit.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ data: dataToSend }),
+            body: JSON.stringify({ data: dataToSend })
         });
 
-        // Check response status and handle unexpected content types
         if (!response.ok) {
-            throw new Error(`Network response was not ok. Status: ${response.status}`);
+            throw new Error(`Network error: ${response.status}`);
         }
 
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
             const data = await response.json();
-
-            // Hide loading indicator
             loadingIndicator.style.display = 'none';
 
             if (data.success) {
@@ -46,16 +43,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('Server error: ' + (data.message || 'Unknown error'));
             }
         } else {
-            // Handle unexpected HTML response for debugging
+            // Log HTML response content for debugging
             const html = await response.text();
-            console.error("Expected JSON but received HTML:", html);
-            throw new Error("The server returned HTML instead of JSON. Check server logs for PHP errors.");
+            console.error("Received HTML instead of JSON:", html);
+            throw new Error("Server returned HTML instead of JSON. See console for details.");
         }
     } catch (error) {
         loadingIndicator.style.display = 'none';
         console.error('An error occurred:', error.message);
         alert('An error occurred while uploading the data. Please check the console for more details.');
     }
+
 
 
   });
