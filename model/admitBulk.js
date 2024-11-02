@@ -29,28 +29,31 @@ document.addEventListener('DOMContentLoaded', function () {
               body: JSON.stringify({ data: dataToSend }),
           });
 
-          // Check if the response is JSON
-          const contentType = response.headers.get("content-type");
-          let data;
-          if (contentType && contentType.indexOf("application/json") !== -1) {
-              data = await response.json();
-          } else {
-              throw new Error("Response is not valid JSON.");
+          // Check response status and content type
+          if (!response.ok) {
+              throw new Error(`Network response was not ok. Status: ${response.status}`);
           }
 
-          // Hide the loading indicator
-          loadingIndicator.style.display = 'none';
+          const contentType = response.headers.get("content-type");
+          if (contentType && contentType.indexOf("application/json") !== -1) {
+              const data = await response.json();
+              // Hide loading indicator
+              loadingIndicator.style.display = 'none';
 
-          if (data.success) {
-              alert(data.message);
+              if (data.success) {
+                  alert(data.message);
+              } else {
+                  alert('Error from server: ' + (data.message || 'Unknown error'));
+              }
           } else {
-              alert('Error: ' + data.message);
+              // If response is not JSON
+              throw new Error("Expected JSON response but received a different format.");
           }
       } catch (error) {
           // Hide loading indicator if an error occurs
           loadingIndicator.style.display = 'none';
-          console.error('Error:', error);
-          alert('An error occurred while uploading the data.');
+          console.error('An error occurred:', error.message);
+          alert('An error occurred while uploading the data. Please check the console for more details.');
       }
   });
 });
