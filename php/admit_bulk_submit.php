@@ -13,49 +13,76 @@ $dbname = "edrppymy_rrgis";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($mysqli->connect_error) {
+  die("Connection failed: " . $mysqli->connect_error);
 }
 
-// Decode the JSON data from the form
-$tableData = json_decode($_POST['tableData'], true);
+// Prepare the SQL statement
+$stmt = $mysqli->prepare("INSERT INTO students (serial_number, first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped, father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-// Prepare an SQL statement
-$stmt = $conn->prepare("INSERT INTO students (serial_number, first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped, father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+// Sample data for testing
+$sampleStudents = [
+  [
+      'serial_number' => 1,
+      'first_name' => 'John',
+      'last_name' => 'Doe',
+      'phone' => '1234567890',
+      'email' => 'john.doe@example.com',
+      'date_of_birth' => '2000-01-01',
+      'gender' => 'Male',
+      'class_name' => '10th Grade',
+      'category' => 'General',
+      'religion' => 'Christianity',
+      'guardian' => 'Jane Doe',
+      'handicapped' => 0,
+      'father_name' => 'Mike Doe',
+      'mother_name' => 'Anna Doe',
+      'roll_no' => '001',
+      'sr_no' => 'SR001',
+      'pen_no' => 'PEN001',
+      'aadhar_no' => '123456789012',
+      'admission_no' => 'ADM001',
+      'admission_date' => '2023-09-01',
+      'day_hosteler' => 'Day'
+  ],
+  // You can add more sample data as needed
+];
 
-// Bind parameters
-$stmt->bind_param("issssssssissssssssssss", $serial_number, $first_name, $last_name, $phone, $email, $date_of_birth, $gender, $class_name, $category, $religion, $guardian, $handicapped, $father_name, $mother_name, $roll_no, $sr_no, $pen_no, $aadhar_no, $admission_no, $admission_date, $day_hosteler);
+// Loop through sample data and insert
+foreach ($sampleStudents as $student) {
+  $stmt->bind_param("issssssssssssssssssss",
+      $student['serial_number'],
+      $student['first_name'],
+      $student['last_name'],
+      $student['phone'],
+      $student['email'],
+      $student['date_of_birth'],
+      $student['gender'],
+      $student['class_name'],
+      $student['category'],
+      $student['religion'],
+      $student['guardian'],
+      $student['handicapped'],
+      $student['father_name'],
+      $student['mother_name'],
+      $student['roll_no'],
+      $student['sr_no'],
+      $student['pen_no'],
+      $student['aadhar_no'],
+      $student['admission_no'],
+      $student['admission_date'],
+      $student['day_hosteler']
+  );
 
-// Loop through each row of data and execute the insert
-foreach ($tableData as $data) {
-    $serial_number = $data['serial_number'];
-    $first_name = $data['first_name'];
-    $last_name = $data['last_name'];
-    $phone = $data['phone'];
-    $email = $data['email'];
-    $date_of_birth = $data['date_of_birth'];
-    $gender = $data['gender'];
-    $class_name = $data['class_name'];
-    $category = $data['category'];
-    $religion = $data['religion'];
-    $guardian = $data['guardian'];
-    $handicapped = $data['handicapped'] ? 1 : 0; // Convert to boolean
-    $father_name = $data['father_name'];
-    $mother_name = $data['mother_name'];
-    $roll_no = $data['roll_no'];
-    $sr_no = $data['sr_no'];
-    $pen_no = $data['pen_no'];
-    $aadhar_no = $data['aadhar_no'];
-    $admission_no = $data['admission_no'];
-    $admission_date = $data['admission_date'];
-    $day_hosteler = $data['day_hosteler'];
-
-    $stmt->execute(); // Execute the prepared statement
+  // Execute the statement
+  if (!$stmt->execute()) {
+      echo "Error: " . $stmt->error . "<br/>";
+  } else {
+      echo "Inserted: " . $student['first_name'] . " " . $student['last_name'] . "<br/>";
+  }
 }
 
-// Close connections
+// Close the statement and connection
 $stmt->close();
-$conn->close();
-
-echo "Data submitted successfully!";
+$mysqli->close();
 ?>
