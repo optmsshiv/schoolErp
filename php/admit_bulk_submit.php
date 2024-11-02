@@ -20,16 +20,11 @@ if ($conn->connect_error) {
 
 // Get the raw POST data
 $data = json_decode(file_get_contents("php://input"), true);
-// Check connection
-if ($conn->connect_error) {
-  die(json_encode(['success' => false, 'message' => 'Connection failed: ' . $conn->connect_error]));
+
+// Validate the input data structure
+if (!is_array($data)) {
+    die(json_encode(['success' => false, 'message' => 'Invalid input data format.']));
 }
-
-// Get the raw POST data
-$data = json_decode(file_get_contents("php://input"), true);
-
-// Print the data for debugging
-var_dump($data);
 
 // Initialize an array to hold any failed insertions
 $failed_inserts = [];
@@ -38,7 +33,7 @@ $failed_inserts = [];
 $stmt = $conn->prepare("INSERT INTO students (serial_number, first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped, father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 if (!$stmt) {
-  die(json_encode(['success' => false, 'message' => 'Prepare failed: ' . $conn->error]));
+    die(json_encode(['success' => false, 'message' => 'Prepare failed: ' . $conn->error]));
 }
 
 // Bind parameters
@@ -46,33 +41,33 @@ $stmt->bind_param("issssssssssssssssssss", $serial_number, $first_name, $last_na
 
 // Loop through the incoming data
 foreach ($data as $row) {
-  // Ensure all values exist to avoid undefined index errors
-  $serial_number = $row['serial_number'] ?? null;
-  $first_name = $row['first_name'] ?? null;
-  $last_name = $row['last_name'] ?? null;
-  $phone = $row['phone'] ?? null;
-  $email = $row['email'] ?? null;
-  $date_of_birth = $row['date_of_birth'] ?? null;
-  $gender = $row['gender'] ?? null;
-  $class_name = $row['class_name'] ?? null;
-  $category = $row['category'] ?? null;
-  $religion = $row['religion'] ?? null;
-  $guardian = $row['guardian'] ?? null;
-  $handicapped = $row['handicapped'] ?? null;
-  $father_name = $row['father_name'] ?? null;
-  $mother_name = $row['mother_name'] ?? null;
-  $roll_no = $row['roll_no'] ?? null;
-  $sr_no = $row['sr_no'] ?? null;
-  $pen_no = $row['pen_no'] ?? null;
-  $aadhar_no = $row['aadhar_no'] ?? null;
-  $admission_no = $row['admission_no'] ?? null;
-  $admission_date = $row['admission_date'] ?? null;
-  $day_hosteler = $row['day_hosteler'] ?? null;
+    // Ensure all values exist to avoid undefined index errors
+    $serial_number = $row['serial_number'] ?? null;
+    $first_name = $row['first_name'] ?? '';
+    $last_name = $row['last_name'] ?? '';
+    $phone = $row['phone'] ?? '';
+    $email = $row['email'] ?? '';
+    $date_of_birth = $row['date_of_birth'] ?? null;
+    $gender = $row['gender'] ?? '';
+    $class_name = $row['class_name'] ?? '';
+    $category = $row['category'] ?? '';
+    $religion = $row['religion'] ?? '';
+    $guardian = $row['guardian'] ?? '';
+    $handicapped = $row['handicapped'] ?? '';
+    $father_name = $row['father_name'] ?? '';
+    $mother_name = $row['mother_name'] ?? '';
+    $roll_no = $row['roll_no'] ?? null;
+    $sr_no = $row['sr_no'] ?? null;
+    $pen_no = $row['pen_no'] ?? null;
+    $aadhar_no = $row['aadhar_no'] ?? null;
+    $admission_no = $row['admission_no'] ?? null;
+    $admission_date = $row['admission_date'] ?? null;
+    $day_hosteler = $row['day_hosteler'] ?? null;
 
-  // Execute the statement
-  if (!$stmt->execute()) {
-      $failed_inserts[] = $row; // Keep track of failed inserts
-  }
+    // Execute the statement
+    if (!$stmt->execute()) {
+        $failed_inserts[] = array_merge($row, ['error' => $stmt->error]); // Include the error message
+    }
 }
 
 // Close the prepared statement and connection
@@ -81,8 +76,8 @@ $conn->close();
 
 // Respond with success or failure
 if (empty($failed_inserts)) {
-  echo json_encode(['success' => true]);
+    echo json_encode(['success' => true]);
 } else {
-  echo json_encode(['success' => false, 'message' => 'Some rows failed to insert.', 'failed_rows' => $failed_inserts]);
+    echo json_encode(['success' => false, 'message' => 'Some rows failed to insert.', 'failed_rows' => $failed_inserts]);
 }
 ?>
