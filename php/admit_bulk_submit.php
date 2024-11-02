@@ -10,80 +10,52 @@ $username = "edrppymy_admin";
 $password = "13579@demo";
 $dbname = "edrppymy_rrgis";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-    die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Decode the JSON data
-$data = json_decode(file_get_contents('php://input'), true);
+// Decode the JSON data from the form
+$tableData = json_decode($_POST['tableData'], true);
 
-// Check for JSON decoding errors
-if (json_last_error() !== JSON_ERROR_NONE) {
-    die(json_encode(['error' => 'JSON decoding error: ' . json_last_error_msg()]));
+// Prepare an SQL statement
+$stmt = $conn->prepare("INSERT INTO students (serial_number, first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped, father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+// Bind parameters
+$stmt->bind_param("issssssssissssssssssss", $serial_number, $first_name, $last_name, $phone, $email, $date_of_birth, $gender, $class_name, $category, $religion, $guardian, $handicapped, $father_name, $mother_name, $roll_no, $sr_no, $pen_no, $aadhar_no, $admission_no, $admission_date, $day_hosteler);
+
+// Loop through each row of data and execute the insert
+foreach ($tableData as $data) {
+    $serial_number = $data['serial_number'];
+    $first_name = $data['first_name'];
+    $last_name = $data['last_name'];
+    $phone = $data['phone'];
+    $email = $data['email'];
+    $date_of_birth = $data['date_of_birth'];
+    $gender = $data['gender'];
+    $class_name = $data['class_name'];
+    $category = $data['category'];
+    $religion = $data['religion'];
+    $guardian = $data['guardian'];
+    $handicapped = $data['handicapped'] ? 1 : 0; // Convert to boolean
+    $father_name = $data['father_name'];
+    $mother_name = $data['mother_name'];
+    $roll_no = $data['roll_no'];
+    $sr_no = $data['sr_no'];
+    $pen_no = $data['pen_no'];
+    $aadhar_no = $data['aadhar_no'];
+    $admission_no = $data['admission_no'];
+    $admission_date = $data['admission_date'];
+    $day_hosteler = $data['day_hosteler'];
+
+    $stmt->execute(); // Execute the prepared statement
 }
 
-// Prepare the SQL statement
-$stmt = $conn->prepare("INSERT INTO students (
-    serial_number, first_name, last_name, phone, email,
-    date_of_birth, gender, class_name, category, religion,
-    guardian, handicapped, father_name, mother_name,
-    roll_no, sr_no, pen_no, aadhar_no, admission_no,
-    admission_date, day_hosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-// Check if the statement was prepared successfully
-if (!$stmt) {
-    die(json_encode(['error' => 'Prepare failed: ' . $conn->error]));
-}
-
-// Bind parameters and execute for each row of data
-foreach ($data as $row) {
-    // Check if all required keys are set
-    if (!isset($row['serial_number'], $row['first_name'], $row['last_name'], $row['phone'],
-                $row['email'], $row['date_of_birth'], $row['gender'], $row['class_name'],
-                $row['category'], $row['religion'], $row['guardian'], $row['handicapped'],
-                $row['father_name'], $row['mother_name'], $row['roll_no'], $row['sr_no'],
-                $row['pen_no'], $row['aadhar_no'], $row['admission_no'], $row['admission_date'],
-                $row['day_hosteler'])) {
-        die(json_encode(['error' => 'Missing required fields in data']));
-    }
-
-    $stmt->bind_param("isssssssssssssssssssss",
-        $row['serial_number'],
-        $row['first_name'],
-        $row['last_name'],
-        $row['phone'],
-        $row['email'],
-        $row['date_of_birth'],
-        $row['gender'],
-        $row['class_name'],
-        $row['category'],
-        $row['religion'],
-        $row['guardian'],
-        $row['handicapped'],
-        $row['father_name'],
-        $row['mother_name'],
-        $row['roll_no'],
-        $row['sr_no'],
-        $row['pen_no'],
-        $row['aadhar_no'],
-        $row['admission_no'],
-        $row['admission_date'],
-        $row['day_hosteler']
-    );
-
-    if (!$stmt->execute()) {
-        die(json_encode(['error' => 'Execute failed: ' . $stmt->error]));
-    }
-}
-
-// Close the statement and connection
+// Close connections
 $stmt->close();
 $conn->close();
 
-// Send a success response
-echo json_encode(['success' => true]);
+echo "Data submitted successfully!";
 ?>
