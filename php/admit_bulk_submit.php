@@ -26,9 +26,6 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     die(json_encode(['success' => false, 'message' => 'Invalid JSON data.']));
 }
 
-// Print the data for debugging
-var_dump($data);
-
 // Initialize an array to hold any failed insertions
 $failed_inserts = [];
 
@@ -66,15 +63,6 @@ foreach ($data as $row) {
     $admission_no = $row['admission_no'] ?? null;
     $admission_date = $row['admission_date'] ?? null;
     $day_hosteler = $row['day_hosteler'] ?? null;
-
-    // Debug output before executing the statement
-    echo "Inserting values: " . json_encode([
-        $serial_number, $first_name, $last_name, $phone, $email,
-        $date_of_birth, $gender, $class_name, $category, $religion,
-        $guardian, $handicapped, $father_name, $mother_name,
-        $roll_no, $sr_no, $pen_no, $aadhar_no, $admission_no,
-        $admission_date, $day_hosteler
-    ]) . "\n";
 
     // Execute the statement
     if (!$stmt->execute()) {
