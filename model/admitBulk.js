@@ -1,12 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
   const loadingIndicator = document.getElementById('loadingIndicator');
-  loadingIndicator.style.display = 'none'; // Ensure hidden immediately on load
 
+  // Force hiding the loading indicator on initial load
+  if (loadingIndicator.style.display !== 'none') {
+      loadingIndicator.style.display = 'none';
+  }
+
+  // Rest of your existing JavaScript
   const processButton = document.getElementById('processButton');
   const studentBulkDataForm = document.getElementById('studentBulkData');
   const dataTable = document.getElementById('dataTable');
 
-  // Event listener for the process button
   processButton.addEventListener('click', function () {
       const fileInput = document.getElementById('inputGroupFile01');
       const file = fileInput.files[0];
