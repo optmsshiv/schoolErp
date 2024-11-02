@@ -39,7 +39,7 @@ foreach ($data as $row) {
     }
 
     // Ensure there are exactly 21 parameters (matching the SQL statement)
-    $stmt->bind_param("isssssssssssssssssssss",
+    $stmt->bind_param("ssssssssssssssssssssss",
         $row['serial_number'],  // Assuming this is an integer
         $row['first_name'],
         $row['last_name'],
