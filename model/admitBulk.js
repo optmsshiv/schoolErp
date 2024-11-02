@@ -1,56 +1,44 @@
-document.getElementById('submitButton').addEventListener('click', function(e) {
-  e.preventDefault();
+document.getElementById('studentBulkData').addEventListener('submit', function(event) {
+  // Prevent the default form submission
+  event.preventDefault();
 
-  let table = document.getElementById('dataTable');
-  let data = [];
+  // Gather table data
+  let tableData = [];
+  const tableRows = document.querySelectorAll('#dataTable tbody tr');
 
-  // Loop through table rows and collect data
-  for (let i = 1, row; row = table.rows[i]; i++) {
-    let rowData = {
-      serial_number: row.cells[0].innerText, // Change the field names according to your data
-      first_name: row.cells[1].innerText,
-      last_name: row.cells[2].innerText,
-      phone: row.cells[3].innerText,
-      email: row.cells[4].innerText,
-      date_of_birth: row.cells[5].innerText,
-      gender: row.cells[6].innerText,
-      class_name: row.cells[7].innerText,
-      category: row.cells[8].innerText,
-      religion: row.cells[9].innerText,
-      guardian: row.cells[10].innerText,
-      handicapped: row.cells[11].innerText === 'Yes', // Adjust if you have a different way to signify boolean
-      father_name: row.cells[12].innerText,
-      mother_name: row.cells[13].innerText,
-      roll_no: row.cells[14].innerText,
-      sr_no: row.cells[15].innerText,
-      pen_no: row.cells[16].innerText,
-      aadhar_no: row.cells[17].innerText,
-      admission_no: row.cells[18].innerText,
-      admission_date: row.cells[19].innerText,
-      day_hosteler: row.cells[20].innerText,
-    };
-    data.push(rowData);
-  }
+  tableRows.forEach(row => {
+      const rowData = {};
+      const cells = row.querySelectorAll('td');
 
-  // Send data to the server
-  fetch('../php/admit_bulk_submit.php', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-})
-.then(response => {
-    if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
-    }
-    return response.json();
-})
-.then(data => {
-    console.log('Success:', data);
-})
-.catch((error) => {
-    console.error('Error:', error);
-});
+      // Collecting data from each cell, assuming they are in the right order
+      rowData['serial_number'] = cells[1].innerText; // First Name
+      rowData['first_name'] = cells[2].innerText; // Last Name
+      rowData['last_name'] = cells[3].innerText; // Phone
+      rowData['phone'] = cells[4].innerText; // Email
+      rowData['email'] = cells[5].innerText; // Date of Birth
+      rowData['date_of_birth'] = cells[6].innerText; // Gender
+      rowData['gender'] = cells[7].innerText; // Class Name
+      rowData['class_name'] = cells[8].innerText; // Category
+      rowData['category'] = cells[9].innerText; // Religion
+      rowData['religion'] = cells[10].innerText; // Guardian
+      rowData['guardian'] = cells[11].innerText; // Handicapped
+      rowData['handicapped'] = cells[12].innerText === 'Yes'; // Father Name
+      rowData['father_name'] = cells[13].innerText; // Mother Name
+      rowData['mother_name'] = cells[14].innerText; // Roll No
+      rowData['roll_no'] = cells[15].innerText; // SR No
+      rowData['sr_no'] = cells[16].innerText; // PEN No
+      rowData['pen_no'] = cells[17].innerText; // Aadhar No
+      rowData['aadhar_no'] = cells[18].innerText; // Admission No
+      rowData['admission_no'] = cells[19].innerText; // Admission Date
+      rowData['admission_date'] = cells[20].innerText; // Day/Hosteler
+      rowData['day_hosteler'] = cells[21].innerText; // Day/Hosteler
 
+      tableData.push(rowData);
+  });
+
+  // Convert the table data to a JSON string
+  document.getElementById('tableData').value = JSON.stringify(tableData);
+
+  // Now submit the form
+  this.submit();
 });
