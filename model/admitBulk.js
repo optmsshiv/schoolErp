@@ -17,7 +17,7 @@ document.getElementById('submitButton').addEventListener('click', function(event
       category: row.cells[8].innerText.trim(),
       religion: row.cells[9].innerText.trim(),
       guardian: row.cells[10].innerText.trim(),
-      handicapped: row.cells[11].innerText.trim() === "Yes" ? 1 : 0,
+      handicapped: row.cells[11].innerText.trim(),
       father_name: row.cells[12].innerText.trim(),
       mother_name: row.cells[13].innerText.trim(),
       roll_no: row.cells[14].innerText.trim(),
