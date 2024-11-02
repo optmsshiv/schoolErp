@@ -1,4 +1,4 @@
-document.getElementById('studentBulkData').addEventListener('submitButton', function(event) {
+document.getElementById('studentBulkData').addEventListener('submit', function(event) {
   // Prevent the default form submission
   event.preventDefault();
 
