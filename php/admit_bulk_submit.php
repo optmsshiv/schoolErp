@@ -3,15 +3,15 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-
 // Database connection parameters
-$servername = "localhost:3306";
+$servername = "localhost";
+$port = 3306;
 $username = "edrppymy_admin";
 $password = "13579@demo";
 $dbname = "edrppymy_rrgis";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
 
 // Check connection
 if ($conn->connect_error) {
@@ -36,6 +36,7 @@ $stmt->bind_param("issssssssssssssssssss", $serial_number, $first_name, $last_na
 
 // Loop through the incoming data
 foreach ($data as $row) {
+    // Assign variables from the row data
     $serial_number = $row['serial_number'];
     $first_name = $row['first_name'];
     $last_name = $row['last_name'];
@@ -60,6 +61,8 @@ foreach ($data as $row) {
 
     // Execute the statement
     if (!$stmt->execute()) {
+        // Log error and failed row
+        error_log('Insert error: ' . $stmt->error . ' for row: ' . json_encode($row));
         $failed_inserts[] = $row; // Keep track of failed inserts
     }
 }
@@ -75,4 +78,3 @@ if (empty($failed_inserts)) {
     echo json_encode(['success' => false, 'message' => 'Some rows failed to insert.', 'failed_rows' => $failed_inserts]);
 }
 ?>
-
