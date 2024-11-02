@@ -1,10 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+header('Content-Type: application/json');
 
 // Database connection parameters
-$servername = "localhost:3306";
+$servername = "localhost:3306"; // Adjust if necessary
 $username = "edrppymy_admin";
 $password = "13579@demo";
 $dbname = "edrppymy_rrgis";
@@ -14,33 +12,29 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-    echo json_encode(["error" => "Connection failed: " . $conn->connect_error]);
-    exit();
+  die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
 }
 
-// Decode JSON data from the request
+// Decode the JSON data
 $data = json_decode(file_get_contents('php://input'), true);
-$response = ["success" => true, "message" => "Data inserted successfully."];
 
+// Prepare the SQL statement
+$stmt = $conn->prepare("INSERT INTO student_data (
+    serial_number, first_name, last_name, phone, email,
+    date_of_birth, gender, class_name, category, religion,
+    guardian, handicapped, father_name, mother_name,
+    roll_no, sr_no, pen_no, aadhar_no, admission_no,
+    admission_date, day_hosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+// Check if the statement was prepared successfully
+if (!$stmt) {
+    die(json_encode(['error' => 'Prepare failed: ' . $conn->error]));
+}
+
+// Bind parameters and execute for each row of data
 foreach ($data as $row) {
-    // Prepare the SQL statement
-    $stmt = $conn->prepare("INSERT INTO students (
-        serial_number, first_name, last_name, phone, email,
-        date_of_birth, gender, class_name, category, religion,
-        guardian, handicapped, father_name, mother_name,
-        roll_no, sr_no, pen_no, aadhar_no, admission_no,
-        admission_date, day_hosteler
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-    // Check if prepare failed
-    if ($stmt === false) {
-        echo json_encode(["error" => "Prepare failed: " . $conn->error]);
-        exit();
-    }
-
-    // Ensure there are exactly 21 parameters (matching the SQL statement)
-    $stmt->bind_param("ssssssssssssssssssssss",
-        $row['serial_number'],  // Assuming this is an integer
+    $stmt->bind_param("isssssssssssssssssssss",
+        $row['serial_number'],
         $row['first_name'],
         $row['last_name'],
         $row['phone'],
@@ -63,19 +57,15 @@ foreach ($data as $row) {
         $row['day_hosteler']
     );
 
-    // Execute the statement and check for errors
     if (!$stmt->execute()) {
-        $response["success"] = false;
-        $response["message"] = "Error inserting data for serial_number: " . $row['serial_number'];
-        $response["error"] = $stmt->error;
-        break;
+        die(json_encode(['error' => 'Execute failed: ' . $stmt->error]));
     }
 }
 
+// Close the statement and connection
 $stmt->close();
 $conn->close();
 
-// Output JSON response
-header('Content-Type: application/json');
-echo json_encode($response);
+// Send a success response
+echo json_encode(['success' => true]);
 ?>
