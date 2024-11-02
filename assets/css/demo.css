@@ -550,7 +550,7 @@ td {
 }
 
 /* css loader */
-#loadingIndicator {
+.loadingIndicator {
   display: none; /* Hidden by default */
         position: fixed;
         top: 50%;
