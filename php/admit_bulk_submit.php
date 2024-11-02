@@ -1,18 +1,12 @@
 <?php
 header('Content-Type: application/json');
 
-// Enable error reporting for debugging (disable in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 // Database connection parameters
 $servername = "localhost:3306";
 $username = "edrppymy_admin";
 $password = "13579@demo";
 $dbname = "edrppymy_rrgis";
 
-// Connect to the database
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
@@ -22,9 +16,10 @@ if ($conn->connect_error) {
 $data = json_decode(file_get_contents('php://input'), true);
 
 foreach ($data as $row) {
-  $stmt = $conn->prepare("INSERT INTO students (SNo, firstName, lastName, phone, email, dob, gender, className, category, religion, guardian, handicapped, fatherName, motherName, rollNo, srNo, penNo, aadharNo, admissionNo, admissionDate, dayHosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  $stmt = $conn->prepare("INSERT INTO students (serial_number, first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped, father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
   $stmt->bind_param("isssssssssssssssssssss",
-    $row['SNo'], $row['firstName'], $row['lastName'], $row['phone'], $row['email'], $row['dob'], $row['gender'], $row['className'], $row['category'], $row['religion'], $row['guardian'], $row['handicapped'], $row['fatherName'], $row['motherName'], $row['rollNo'], $row['srNo'], $row['penNo'], $row['aadharNo'], $row['admissionNo'], $row['admissionDate'], $row['dayHosteler']);
+    $row['serial_number'], $row['first_name'], $row['last_name'], $row['phone'], $row['email'], $row['date_of_birth'], $row['gender'], $row['class_name'], $row['category'], $row['religion'], $row['guardian'], $row['handicapped'], $row['father_name'], $row['mother_name'], $row['roll_no'], $row['sr_no'], $row['pen_no'], $row['aadhar_no'], $row['admission_no'], $row['admission_date'], $row['day_hosteler']);
   $stmt->execute();
 }
 
