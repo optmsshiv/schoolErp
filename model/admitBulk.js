@@ -22,38 +22,41 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       try {
-          // Send the collected data to the server using fetch
-          const response = await fetch('../php/admit_bulk_submit.php', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ data: dataToSend }),
-          });
+        const response = await fetch('../php/admit_bulk_submit.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ data: dataToSend }),
+        });
 
-          // Check response status and content type
-          if (!response.ok) {
-              throw new Error(`Network response was not ok. Status: ${response.status}`);
-          }
+        // Check response status and handle unexpected content types
+        if (!response.ok) {
+            throw new Error(`Network response was not ok. Status: ${response.status}`);
+        }
 
-          const contentType = response.headers.get("content-type");
-          if (contentType && contentType.indexOf("application/json") !== -1) {
-              const data = await response.json();
-              // Hide loading indicator
-              loadingIndicator.style.display = 'none';
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            const data = await response.json();
 
-              if (data.success) {
-                  alert(data.message);
-              } else {
-                  alert('Error from server: ' + (data.message || 'Unknown error'));
-              }
-          } else {
-              // If response is not JSON
-              throw new Error("Expected JSON response but received a different format.");
-          }
-      } catch (error) {
-          // Hide loading indicator if an error occurs
-          loadingIndicator.style.display = 'none';
-          console.error('An error occurred:', error.message);
-          alert('An error occurred while uploading the data. Please check the console for more details.');
-      }
+            // Hide loading indicator
+            loadingIndicator.style.display = 'none';
+
+            if (data.success) {
+                alert(data.message);
+            } else {
+                alert('Server error: ' + (data.message || 'Unknown error'));
+            }
+        } else {
+            // Handle unexpected HTML response for debugging
+            const html = await response.text();
+            console.error("Expected JSON but received HTML:", html);
+            throw new Error("The server returned HTML instead of JSON. Check server logs for PHP errors.");
+        }
+    } catch (error) {
+        loadingIndicator.style.display = 'none';
+        console.error('An error occurred:', error.message);
+        alert('An error occurred while uploading the data. Please check the console for more details.');
+    }
+
+
   });
 });
