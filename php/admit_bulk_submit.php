@@ -21,10 +21,13 @@ if ($conn->connect_error) {
 // Get the raw POST data
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Validate the input data structure
-if (!is_array($data)) {
-    die(json_encode(['success' => false, 'message' => 'Invalid input data format.']));
+// Check if the data was received correctly
+if (json_last_error() !== JSON_ERROR_NONE) {
+    die(json_encode(['success' => false, 'message' => 'Invalid JSON data.']));
 }
+
+// Print the data for debugging
+var_dump($data);
 
 // Initialize an array to hold any failed insertions
 $failed_inserts = [];
@@ -43,19 +46,19 @@ $stmt->bind_param("issssssssssssssssssss", $serial_number, $first_name, $last_na
 foreach ($data as $row) {
     // Ensure all values exist to avoid undefined index errors
     $serial_number = $row['serial_number'] ?? null;
-    $first_name = $row['first_name'] ?? '';
-    $last_name = $row['last_name'] ?? '';
-    $phone = $row['phone'] ?? '';
-    $email = $row['email'] ?? '';
+    $first_name = $row['first_name'] ?? null;
+    $last_name = $row['last_name'] ?? null;
+    $phone = $row['phone'] ?? null;
+    $email = $row['email'] ?? null;
     $date_of_birth = $row['date_of_birth'] ?? null;
-    $gender = $row['gender'] ?? '';
-    $class_name = $row['class_name'] ?? '';
-    $category = $row['category'] ?? '';
-    $religion = $row['religion'] ?? '';
-    $guardian = $row['guardian'] ?? '';
-    $handicapped = $row['handicapped'] ?? '';
-    $father_name = $row['father_name'] ?? '';
-    $mother_name = $row['mother_name'] ?? '';
+    $gender = $row['gender'] ?? null;
+    $class_name = $row['class_name'] ?? null;
+    $category = $row['category'] ?? null;
+    $religion = $row['religion'] ?? null;
+    $guardian = $row['guardian'] ?? null;
+    $handicapped = $row['handicapped'] ?? null;
+    $father_name = $row['father_name'] ?? null;
+    $mother_name = $row['mother_name'] ?? null;
     $roll_no = $row['roll_no'] ?? null;
     $sr_no = $row['sr_no'] ?? null;
     $pen_no = $row['pen_no'] ?? null;
@@ -64,9 +67,18 @@ foreach ($data as $row) {
     $admission_date = $row['admission_date'] ?? null;
     $day_hosteler = $row['day_hosteler'] ?? null;
 
+    // Debug output before executing the statement
+    echo "Inserting values: " . json_encode([
+        $serial_number, $first_name, $last_name, $phone, $email,
+        $date_of_birth, $gender, $class_name, $category, $religion,
+        $guardian, $handicapped, $father_name, $mother_name,
+        $roll_no, $sr_no, $pen_no, $aadhar_no, $admission_no,
+        $admission_date, $day_hosteler
+    ]) . "\n";
+
     // Execute the statement
     if (!$stmt->execute()) {
-        $failed_inserts[] = array_merge($row, ['error' => $stmt->error]); // Include the error message
+        $failed_inserts[] = array_merge($row, ['error' => $stmt->error]); // Keep track of failed inserts
     }
 }
 
