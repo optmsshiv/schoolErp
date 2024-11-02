@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const processButton = document.getElementById('processButton');
   const submitButton = document.getElementById('submitButton');
   const studentBulkDataForm = document.getElementById('studentBulkData');
-  const dataTable = document.getElementById('dataTable');
+  const dataTable = document.getElementById('dataTable'); // Reference to your data table
 
   // Hide loading indicator initially
   loadingIndicator.style.display = 'none';
@@ -36,21 +36,23 @@ document.addEventListener("DOMContentLoaded", function () {
       tbody.innerHTML = '';
 
       rows.forEach((row, index) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${index + 1}</td>` + row.map(cell => `<td>${cell.trim()}</td>`).join("");
-          tbody.appendChild(tr);
+          if (row.length > 1 && row.some(cell => cell.trim() !== "")) { // Ignore empty rows
+              const tr = document.createElement("tr");
+              tr.innerHTML = `<td>${index + 1}</td>` + row.map(cell => `<td>${cell.trim()}</td>`).join("");
+              tbody.appendChild(tr);
+          }
       });
   }
 
   // Event listener for form submission
   studentBulkDataForm.addEventListener('submit', async function (event) {
       event.preventDefault(); // Prevent the default form submission
-      loadingIndicator.style.display = 'flex'; // Show loading indicator
+      loadingIndicator.style.display = 'block'; // Show loading indicator
 
       try {
           const formData = new FormData();
 
-          // Append table data to FormData
+          // Append table data as JSON
           const tableData = [];
           dataTable.querySelectorAll("tbody tr").forEach(row => {
               const rowData = [];
@@ -60,7 +62,12 @@ document.addEventListener("DOMContentLoaded", function () {
               tableData.push(rowData);
           });
 
-          // Add the table data as JSON to FormData
+          if (tableData.length === 0) {
+              alert("No data to submit. Please process a CSV file first.");
+              loadingIndicator.style.display = 'none'; // Hide loading indicator
+              return;
+          }
+
           formData.append("tableData", JSON.stringify(tableData));
 
           // Send data to the server
@@ -79,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
               if (data.success) {
                   alert(data.message);
-                  studentBulkDataForm.reset(); // Reset form
+                  studentBulkDataForm.reset();
                   dataTable.querySelector("tbody").innerHTML = ''; // Clear table
               } else {
                   alert('Server error: ' + (data.message || 'Unknown error'));
@@ -93,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
           console.error('An error occurred:', error.message);
           alert('An error occurred while uploading the data. Please check the console for more details.');
       } finally {
-          loadingIndicator.style.display = 'none'; // Hide loading indicator
+          loadingIndicator.style.display = 'none'; // Hide loading indicator in all cases
       }
   });
 });
