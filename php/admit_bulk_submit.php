@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 header('Content-Type: application/json');
 
@@ -15,66 +13,61 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-    die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Decode the JSON data
-$data = json_decode(file_get_contents('php://input'), true);
+if (isset($_FILES['file'])) {
+    $file = $_FILES['file']['tmp_name'];
 
-// Check for JSON decoding errors
-if (json_last_error() !== JSON_ERROR_NONE) {
-    die(json_encode(['error' => 'JSON decoding error: ' . json_last_error_msg()]));
-}
+    if (($handle = fopen($file, "r")) !== FALSE) {
+        // Skip the first line if it contains headers
+        fgetcsv($handle);
 
-// Prepare the SQL statement
-$stmt = $conn->prepare("INSERT INTO students (
-    serial_number, first_name, last_name, phone, email,
-    date_of_birth, gender, class_name, category, religion,
-    guardian, handicapped, father_name, mother_name,
-    roll_no, sr_no, pen_no, aadhar_no, admission_no,
-    admission_date, day_hosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        // Prepare the SQL statement
+        $stmt = $conn->prepare("INSERT INTO students (serial_number, first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped, father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-// Check if the statement was prepared successfully
-if (!$stmt) {
-    die(json_encode(['error' => 'Prepare failed: ' . $conn->error]));
-}
+        // Bind parameters
+        $stmt->bind_param("isssssssssssisssssss", $serial_number, $first_name, $last_name, $phone, $email, $date_of_birth, $gender, $class_name, $category, $religion, $guardian, $handicapped, $father_name, $mother_name, $roll_no, $sr_no, $pen_no, $aadhar_no, $admission_no, $admission_date, $day_hosteler);
 
-// Bind parameters and execute for each row of data
-foreach ($data as $row) {
-    // Make sure the keys match the column names and types
-    $stmt->bind_param("isssssssssssssssssssss",
-        $row['serial_number'],
-        $row['first_name'],
-        $row['last_name'],
-        $row['phone'],
-        $row['email'],
-        $row['date_of_birth'],
-        $row['gender'],
-        $row['class_name'],
-        $row['category'],
-        $row['religion'],
-        $row['guardian'],
-        $row['handicapped'],
-        $row['father_name'],
-        $row['mother_name'],
-        $row['roll_no'],
-        $row['sr_no'],
-        $row['pen_no'],
-        $row['aadhar_no'],
-        $row['admission_no'],
-        $row['admission_date'],
-        $row['day_hosteler']
-    );
+        // Read each row from the CSV
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            // Map CSV fields to variables
+            $serial_number = $data[0];
+            $first_name = $data[1];
+            $last_name = $data[2];
+            $phone = $data[3];
+            $email = $data[4];
+            $date_of_birth = $data[5];
+            $gender = $data[6];
+            $class_name = $data[7];
+            $category = $data[8];
+            $religion = $data[9];
+            $guardian = $data[10];
+            $handicapped = !empty($data[11]) ? 1 : 0; // Assuming 1 for "Yes", 0 for "No"
+            $father_name = $data[12];
+            $mother_name = $data[13];
+            $roll_no = $data[14];
+            $sr_no = $data[15];
+            $pen_no = $data[16];
+            $aadhar_no = $data[17];
+            $admission_no = $data[18];
+            $admission_date = $data[19];
+            $day_hosteler = $data[20];
 
-    if (!$stmt->execute()) {
-        die(json_encode(['error' => 'Execute failed: ' . $stmt->error]));
+            // Execute the prepared statement
+            $stmt->execute();
+        }
+
+        // Close file and connections
+        fclose($handle);
+        $stmt->close();
+        echo "Records inserted successfully.";
+    } else {
+        echo "Error opening the file.";
     }
+} else {
+    echo "No file uploaded.";
 }
 
-// Close the statement and connection
-$stmt->close();
 $conn->close();
-
-// Send a success response
-echo json_encode(['success' => true]);
 ?>
