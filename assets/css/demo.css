@@ -549,19 +549,6 @@ td {
   background-color: #ffc107; /* Yellow */
 }
 
-/* css loader */
-#loadingIndicator {
-  display: none !important; /* Hidden by default */
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 1em;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
 
 
 
