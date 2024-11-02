@@ -1,90 +1,48 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const loadingIndicator = document.getElementById('loadingIndicator');
+document.getElementById('submitButton').addEventListener('click', function(e) {
+  e.preventDefault();
 
-  // Force hiding the loading indicator on initial load
-  if (loadingIndicator.style.display !== 'none') {
-      loadingIndicator.style.display = 'none';
+  let table = document.getElementById('dataTable');
+  let data = [];
+
+  for (let i = 1, row; row = table.rows[i]; i++) {
+    let rowData = {
+      SNo: row.cells[0].innerText,
+      firstName: row.cells[1].innerText,
+      lastName: row.cells[2].innerText,
+      phone: row.cells[3].innerText,
+      email: row.cells[4].innerText,
+      dob: row.cells[5].innerText,
+      gender: row.cells[6].innerText,
+      className: row.cells[7].innerText,
+      category: row.cells[8].innerText,
+      religion: row.cells[9].innerText,
+      guardian: row.cells[10].innerText,
+      handicapped: row.cells[11].innerText,
+      fatherName: row.cells[12].innerText,
+      motherName: row.cells[13].innerText,
+      rollNo: row.cells[14].innerText,
+      srNo: row.cells[15].innerText,
+      penNo: row.cells[16].innerText,
+      aadharNo: row.cells[17].innerText,
+      admissionNo: row.cells[18].innerText,
+      admissionDate: row.cells[19].innerText,
+      dayHosteler: row.cells[20].innerText
+    };
+    data.push(rowData);
   }
 
-  // Rest of your existing JavaScript
-  const processButton = document.getElementById('processButton');
-  const studentBulkDataForm = document.getElementById('studentBulkData');
-  const dataTable = document.getElementById('dataTable');
-
-  processButton.addEventListener('click', function () {
-      const fileInput = document.getElementById('inputGroupFile01');
-      const file = fileInput.files[0];
-
-      if (!file) {
-          alert("Please select a CSV file to process.");
-          return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = function (event) {
-          const csvData = event.target.result;
-          parseCSVDataToTable(csvData);
-      };
-      reader.readAsText(file);
-  });
-
-  function parseCSVDataToTable(csvData) {
-      const rows = csvData.split("\n").map(row => row.split(","));
-      const tbody = dataTable.querySelector("tbody");
-      tbody.innerHTML = '';
-
-      rows.forEach((row, index) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${index + 1}</td>` + row.map(cell => `<td>${cell.trim()}</td>`).join("");
-          tbody.appendChild(tr);
-      });
-  }
-
-  studentBulkDataForm.addEventListener('submit', async function (event) {
-      event.preventDefault();
-      loadingIndicator.style.display = 'flex';
-
-      try {
-          const formData = new FormData();
-
-          const tableData = [];
-          dataTable.querySelectorAll("tbody tr").forEach(row => {
-              const rowData = [];
-              row.querySelectorAll("td").forEach(cell => rowData.push(cell.innerText.trim()));
-              tableData.push(rowData);
-          });
-
-          formData.append("tableData", JSON.stringify(tableData));
-
-          const response = await fetch(studentBulkDataForm.action, {
-              method: 'POST',
-              body: formData
-          });
-
-          if (!response.ok) {
-              throw new Error(`Network error: ${response.status}`);
-          }
-
-          const contentType = response.headers.get("content-type");
-          if (contentType && contentType.includes("application/json")) {
-              const data = await response.json();
-              if (data.success) {
-                  alert(data.message);
-                  studentBulkDataForm.reset();
-                  dataTable.querySelector("tbody").innerHTML = '';
-              } else {
-                  alert('Server error: ' + (data.message || 'Unknown error'));
-              }
-          } else {
-              const html = await response.text();
-              console.error("Received HTML instead of JSON:", html);
-              throw new Error("Server returned HTML instead of JSON.");
-          }
-      } catch (error) {
-          console.error('An error occurred:', error.message);
-          alert('An error occurred while uploading the data. Please check the console for details.');
-      } finally {
-          loadingIndicator.style.display = 'none';
-      }
+  fetch('saveData.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Success:', data);
+  })
+  .catch((error) => {
+    console.error('Error:', error);
   });
 });
