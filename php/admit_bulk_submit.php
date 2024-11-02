@@ -1,10 +1,11 @@
 <?php
-header('Content-Type: application/json');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+header('Content-Type: application/json');
+
 // Database connection parameters
-$servername = "localhost:3306"; // Adjust if necessary
+$servername = "localhost:3306";
 $username = "edrppymy_admin";
 $password = "13579@demo";
 $dbname = "edrppymy_rrgis";
@@ -14,14 +15,19 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-  die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
+    die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
 }
 
 // Decode the JSON data
 $data = json_decode(file_get_contents('php://input'), true);
 
+// Check for JSON decoding errors
+if (json_last_error() !== JSON_ERROR_NONE) {
+    die(json_encode(['error' => 'JSON decoding error: ' . json_last_error_msg()]));
+}
+
 // Prepare the SQL statement
-$stmt = $conn->prepare("INSERT INTO student_data (
+$stmt = $conn->prepare("INSERT INTO students (
     serial_number, first_name, last_name, phone, email,
     date_of_birth, gender, class_name, category, religion,
     guardian, handicapped, father_name, mother_name,
@@ -35,6 +41,7 @@ if (!$stmt) {
 
 // Bind parameters and execute for each row of data
 foreach ($data as $row) {
+    // Make sure the keys match the column names and types
     $stmt->bind_param("isssssssssssssssssssss",
         $row['serial_number'],
         $row['first_name'],
