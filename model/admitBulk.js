@@ -38,11 +38,17 @@ document.getElementById('submitButton').addEventListener('click', function(e) {
     },
     body: JSON.stringify(data),
   })
-  .then(response => response.json())
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status}`);
+    }
+    return response.json();
+  })
   .then(data => {
     console.log('Success:', data);
   })
   .catch((error) => {
     console.error('Error:', error);
   });
+
 });
