@@ -67,37 +67,39 @@ processButton.addEventListener('click', () => {
 
 // Submit button - send table data to the server
 submitButton.addEventListener('click', (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    // Show loading indicator while submitting
-    loadingIndicator.style.display = 'block';
+  // Show loading indicator while submitting
+  loadingIndicator.style.display = 'block';
 
-    // Collect data from the table
-    const dataToSend = [];
-    dataTableBody.querySelectorAll('tr').forEach(row => {
-        const rowData = [];
-        row.querySelectorAll('td').forEach(cell => rowData.push(cell.textContent));
-        dataToSend.push(rowData.slice(1)); // Skip S.No column
-    });
+  // Collect data from the table
+  const dataToSend = [];
+  dataTableBody.querySelectorAll('tr').forEach(row => {
+      const rowData = [];
+      row.querySelectorAll('td').forEach(cell => rowData.push(cell.textContent));
+      dataToSend.push(rowData.slice(1)); // Skip S.No column
+  });
 
-    // Send data to the server
-    fetch('../php/admit_bulk_submit.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: dataToSend })
-    })
-    .then(response => response.json())
-    .then(data => {
-        loadingIndicator.style.display = 'none'; // Hide loading indicator
-        if (data.success) {
-            alert('Data uploaded successfully!');
-        } else {
-            alert('Error: ' + data.message);
-        }
-    })
-    .catch(error => {
-        loadingIndicator.style.display = 'none'; // Hide loading indicator
-        console.error('Error:', error);
-        alert('An error occurred while uploading the data.');
-    });
+  // Send data to the server
+  fetch('../php/admit_bulk_submit.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: dataToSend })
+  })
+  .then(response => response.json())
+  .then(data => {
+      loadingIndicator.style.display = 'none'; // Hide loading indicator
+      console.log(data); // Log the response for debugging
+      if (data.success) {
+          alert(data.message);
+      } else {
+          alert('Error: ' + data.message);
+      }
+  })
+  .catch(error => {
+      loadingIndicator.style.display = 'none'; // Hide loading indicator
+      console.error('Error:', error);
+      alert('An error occurred while uploading the data.');
+  });
 });
+
