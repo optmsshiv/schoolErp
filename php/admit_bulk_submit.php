@@ -22,7 +22,7 @@ if ($conn->connect_error) {
 $data = json_decode(file_get_contents('php://input'), true);
 
 foreach ($data as $row) {
-  $stmt = $conn->prepare("INSERT INTO your_table (SNo, firstName, lastName, phone, email, dob, gender, className, category, religion, guardian, handicapped, fatherName, motherName, rollNo, srNo, penNo, aadharNo, admissionNo, admissionDate, dayHosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  $stmt = $conn->prepare("INSERT INTO students (SNo, firstName, lastName, phone, email, dob, gender, className, category, religion, guardian, handicapped, fatherName, motherName, rollNo, srNo, penNo, aadharNo, admissionNo, admissionDate, dayHosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
   $stmt->bind_param("isssssssssssssssssssss",
     $row['SNo'], $row['firstName'], $row['lastName'], $row['phone'], $row['email'], $row['dob'], $row['gender'], $row['className'], $row['category'], $row['religion'], $row['guardian'], $row['handicapped'], $row['fatherName'], $row['motherName'], $row['rollNo'], $row['srNo'], $row['penNo'], $row['aadharNo'], $row['admissionNo'], $row['admissionDate'], $row['dayHosteler']);
   $stmt->execute();
