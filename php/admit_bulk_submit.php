@@ -23,7 +23,7 @@ if ($data && is_array($data)) {
   foreach ($data as $row) {
     $stmt = $conn->prepare("INSERT INTO students (serial_number, first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped, father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-    $stmt->bind_param("isssssssssssssssssssss",
+    $stmt->bind_param("issssssssssssssssssssss",
       $row['serial_number'], $row['first_name'], $row['last_name'], $row['phone'], $row['email'], $row['date_of_birth'], $row['gender'], $row['class_name'], $row['category'], $row['religion'], $row['guardian'], $row['handicapped'], $row['father_name'], $row['mother_name'], $row['roll_no'], $row['sr_no'], $row['pen_no'], $row['aadhar_no'], $row['admission_no'], $row['admission_date'], $row['day_hosteler']);
     $stmt->execute();
   }
