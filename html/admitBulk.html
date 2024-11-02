@@ -962,20 +962,21 @@
               <div class="card">
                 <div class="card-header">
                   <h5 class="fw-bold card-title">Admit Bulk Student</h5>
-                  <form method="POST" id="studentBulkData" action="../php/admit_bulk_submit.php"></form>
-                  <div class="input-group mb-4">
-                    <input type="file" class="form-control" id="inputGroupFile01" name="file" accept=".csv" required>
-                  </div>
-                  <!-- Start of form -->
-                  <input type="hidden" id="tableData" name="tableData"> <!-- Hidden input to hold the table data -->
+                  <form method="POST" id="studentBulkData" action="../php/admit_bulk_submit.php">
+                    <div class="input-group mb-4">
+                      <input type="file" class="form-control" id="inputGroupFile01" name="file" accept=".csv" required>
+                    </div>
+                    <!-- Start of form -->
+                    <input type="hidden" id="tableData" name="tableData"> <!-- Hidden input to hold the table data -->
                     <div class="button-group">
                       <button type="button" class="btn btn-primary" id="processButton">Process</button>
                       <button type="reset" class="btn btn-secondary" id="resetButton">Reset</button>
                       <button type="submit" class="btn btn-success" id="submitButton">Submit</button>
                     </div>
+                  </form>
                 </div>
               </div>
-            </form>
+
 
 
               <div class="card mt-4">
