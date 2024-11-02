@@ -36,21 +36,21 @@ document.getElementById('submitButton').addEventListener('click', function(e) {
   fetch('../php/admit_bulk_submit.php', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
-  })
-  .then(response => {
+})
+.then(response => {
     if (!response.ok) {
-      throw new Error(`Server error: ${response.status}`);
+        throw new Error(`Server error: ${response.status}`);
     }
     return response.json();
-  })
-  .then(data => {
+})
+.then(data => {
     console.log('Success:', data);
-    // Optionally, handle the successful response (e.g., show a message)
-  })
-  .catch((error) => {
+})
+.catch((error) => {
     console.error('Error:', error);
-  });
+});
+
 });
