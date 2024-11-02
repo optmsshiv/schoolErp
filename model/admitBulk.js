@@ -6,7 +6,7 @@ const loadingIndicator = document.getElementById('loadingIndicator');
 const fileInput = document.getElementById('inputGroupFile01');
 const dataTableBody = document.querySelector('#dataTable tbody');
 
-// Hide loading indicator initially //shiv
+// Hide loading indicator initially
 loadingIndicator.style.display = 'none';
 
 // Process button - read CSV file and populate table
@@ -58,7 +58,7 @@ processButton.addEventListener('click', () => {
             dataTableBody.appendChild(row);
         });
 
-        // Hide loading indicator after processing
+        // Hide the loading indicator after table population
         loadingIndicator.style.display = 'none';
     };
 
@@ -66,32 +66,31 @@ processButton.addEventListener('click', () => {
 });
 
 // Submit button - send table data to the server
-studentBulkDataForm.addEventListener('submit', (event) => {
-    event.preventDefault(); // Prevent form submission
+submitButton.addEventListener('click', (event) => {
+    event.preventDefault();
 
-    // Show loading indicator during data submission
+    // Show loading indicator while submitting
     loadingIndicator.style.display = 'block';
 
-    // Collect table data
-    const rows = [];
+    // Collect data from the table
+    const dataToSend = [];
     dataTableBody.querySelectorAll('tr').forEach(row => {
-        const cells = Array.from(row.querySelectorAll('td')).map(cell => cell.innerText);
-        rows.push(cells);
+        const rowData = [];
+        row.querySelectorAll('td').forEach(cell => rowData.push(cell.textContent));
+        dataToSend.push(rowData.slice(1)); // Skip S.No column
     });
 
-    // Send data to server
+    // Send data to the server
     fetch('../php/admit_bulk_submit.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: rows })
+        body: JSON.stringify({ data: dataToSend })
     })
     .then(response => response.json())
     .then(data => {
-        loadingIndicator.style.display = 'none'; // Hide loading indicator for
+        loadingIndicator.style.display = 'none'; // Hide loading indicator
         if (data.success) {
             alert('Data uploaded successfully!');
-            studentBulkDataForm.reset();
-            dataTableBody.innerHTML = ''; // Clear table
         } else {
             alert('Error: ' + data.message);
         }
