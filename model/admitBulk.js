@@ -31,7 +31,7 @@ document.getElementById('submitButton').addEventListener('click', function(e) {
     data.push(rowData);
   }
 
-  fetch('saveData.php', {
+  fetch('admit_bulk_submit.php', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
