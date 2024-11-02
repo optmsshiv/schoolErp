@@ -20,7 +20,7 @@ if ($conn->connect_error) {
 
 try {
   // Create a new PDO instance
-  $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+  $pdo = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   // Get the JSON data from the POST request
