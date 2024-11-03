@@ -949,6 +949,13 @@
               <p class="loading-text">Data is uploading, please wait...</p>
             </div>
 
+            <!-- Loading bar and message container -->
+            <div id="loadingContainer" style="display: none;">
+              <progress id="progressBar" value="0" max="100"></progress>
+              <span id="progressPercentage">0%</span>
+            </div>
+            <div id="messageContainer"></div>
+
 
             <div class="flex-shrink-1 mt-3 container-p-x">
               <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
