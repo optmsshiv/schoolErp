@@ -34,11 +34,11 @@ document.getElementById('submitButton').addEventListener('click', function (even
 
   // Show loading container and initialize progress
   const loadingContainer = document.getElementById('loadingContainer');
-  loadingContainer.style.display = 'block'; // Show loading bar
+  loadingContainer.style.display = 'flex'; // Show loading bar container
   let progress = 0;
   updateProgress(progress);
 
-  // Force a layout update to ensure loading bar appears
+  // Force layout update to ensure loading bar appears
   requestAnimationFrame(() => {
     setTimeout(() => {
       // Simulate progress updates every 200ms up to 80%
@@ -61,17 +61,19 @@ document.getElementById('submitButton').addEventListener('click', function (even
 
         if (xhr.status === 200) {
           const response = JSON.parse(xhr.responseText);
-          document.getElementById('messageContainer').innerText = response.message;
+
+          // Show success message in the loading bar
+          document.getElementById('progressPercentage').innerText = 'Data uploaded successfully!';
 
           // Clear table data if upload was successful
           if (response.success) {
             document.querySelector('#dataTable tbody').innerHTML = '';
           }
         } else {
-          document.getElementById('messageContainer').innerText = "Failed to upload data.";
+          document.getElementById('progressPercentage').innerText = "Failed to upload data.";
         }
 
-        // Hide loading container after completion
+        // Hide loading container after a short delay
         setTimeout(() => {
           loadingContainer.style.display = 'none';
           document.getElementById('progressPercentage').innerText = '0%';
