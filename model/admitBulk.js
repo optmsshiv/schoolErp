@@ -47,7 +47,7 @@ document.getElementById('submitButton').addEventListener('click', function (even
           progress += 5;
           updateProgress(progress);
         }
-      }, 200);
+      }, 500);
 
       // Perform data upload
       const xhr = new XMLHttpRequest();
