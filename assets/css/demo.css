@@ -608,7 +608,6 @@ td {
 
 /* Loading container styles */
 /* Loading container styles */
-/* Loading container styles */
 #loadingContainer {
   display: none; /* Initially hidden */
   position: fixed;
@@ -670,6 +669,14 @@ td {
   color: #fff;
 }
 
+/* Message container */
+#messageContainer {
+  font-size: 18px;
+  margin-top: 20px;
+  color: #4caf50;
+  font-weight: bold;
+  text-align: center;
+}
 
 
 
