@@ -6,15 +6,13 @@ document.getElementById('submitButton').addEventListener('click', function (even
   const progressPercentage = document.getElementById('progressPercentage');
   const messageContainer = document.getElementById('messageContainer');
 
-  // Show the loading container
-  loadingContainer.style.display = 'flex';
-
-  // Reset progress bar and message container
+  // Show the loading container and reset its values
+  loadingContainer.style.display = 'block';
   progressBar.value = 0;
   progressPercentage.innerText = '0%';
   messageContainer.innerText = '';
 
-  // Collect table data (replace with your actual table data collection logic)
+  // Collect table data
   const tableData = [];
   const rows = document.querySelectorAll('#dataTable tbody tr');
   rows.forEach(row => {
@@ -44,7 +42,7 @@ document.getElementById('submitButton').addEventListener('click', function (even
     tableData.push(rowData);
   });
 
-  // Simulated progress animation until upload completes
+  // Simulate progress animation until upload completes
   let progress = 0;
   const interval = setInterval(() => {
     if (progress < 80) {  // Simulate loading up to 80% initially
