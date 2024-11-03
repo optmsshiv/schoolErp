@@ -613,22 +613,20 @@ td {
   justify-content: center;
   flex-direction: column;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 300px;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.8);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8); /* Fullscreen semi-transparent overlay */
   color: white;
-  border-radius: 8px;
-  z-index: 1000;
+  z-index: 1000; /* High z-index to sit above all other elements */
 }
 
 #progressBar {
-  width: 100%;
+  width: 80%;
   height: 20px;
   appearance: none;
-  background: linear-gradient(to right, #4caf50, #f0e662, #2196f3);
+  background: linear-gradient(to right, #4caf50, #f0e662, #64b9fe);
   border-radius: 5px;
   margin-top: 10px;
 }
@@ -648,7 +646,7 @@ td {
 }
 
 #progressBar::-webkit-progress-value {
-  background-image: linear-gradient(to right, #4caf50, #ff9800, #2196f3);
+  background-image: linear-gradient(to right, #4caf50, #d7e386, #d1ddae);
   border-radius: 5px;
 }
 
