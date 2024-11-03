@@ -1,20 +1,10 @@
 document.getElementById('submitButton').addEventListener('click', function (event) {
   event.preventDefault(); // Prevent default form submission
 
-  const loadingContainer = document.getElementById('loadingContainer');
-  const progressBar = document.getElementById('progressBar');
-  const progressPercentage = document.getElementById('progressPercentage');
-  const messageContainer = document.getElementById('messageContainer');
-
-  // Show the loading container and reset its values
-  loadingContainer.style.display = 'block';
-  progressBar.value = 0;
-  progressPercentage.innerText = '0%';
-  messageContainer.innerText = '';
-
-  // Collect table data
   const tableData = [];
   const rows = document.querySelectorAll('#dataTable tbody tr');
+
+  // Collect data from table rows
   rows.forEach(row => {
     const rowData = {
       serial_number: row.cells[0].innerText.trim(),
@@ -42,43 +32,64 @@ document.getElementById('submitButton').addEventListener('click', function (even
     tableData.push(rowData);
   });
 
-  // Simulate progress animation until upload completes
+  // Show loading container and initialize progress
+  const loadingContainer = document.getElementById('loadingContainer');
+  loadingContainer.style.display = 'flex'; // Show loading bar container
   let progress = 0;
-  const interval = setInterval(() => {
-    if (progress < 80) {  // Simulate loading up to 80% initially
-      progress += 5;
-      progressBar.value = progress;
-      progressPercentage.innerText = `${progress}%`;
-    }
-  }, 200);
+  updateProgress(progress);
 
-  // Send data to server via AJAX
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", "../php/admit_bulk_submit.php", true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-  xhr.onload = function () {
-    clearInterval(interval); // Stop the progress simulation
-    progressBar.value = 100;  // Set progress to 100% upon completion
-    progressPercentage.innerText = '100%';
-    messageContainer.innerText = 'Data uploaded successfully!';
-
-    // Hide loading container and reset form data after a short delay
+  // Force layout update to ensure loading bar appears
+  requestAnimationFrame(() => {
     setTimeout(() => {
-      loadingContainer.style.display = 'none';
-      progressPercentage.innerText = '0%';
-      progressBar.value = 0;
-      document.getElementById('dataTable').querySelectorAll('tbody tr').forEach(row => row.remove()); // Clear table rows
-    }, 2000);
-  };
+      // Simulate progress updates every 200ms up to 80%
+      const progressInterval = setInterval(() => {
+        if (progress < 80) {
+          progress += 5;
+          updateProgress(progress);
+        }
+      }, 200);
 
-  xhr.onerror = function () {
-    clearInterval(interval); // Stop progress on error
-    loadingContainer.style.display = 'none';
-    messageContainer.innerText = 'Error uploading data. Please try again.';
-  };
+      // Perform data upload
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "../php/admit_bulk_submit.php", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-  // Convert table data to JSON and send it to the server
-  const serializedData = encodeURIComponent(JSON.stringify(tableData));
-  xhr.send("tableData=" + serializedData);
+      // Update progress to 100% when request completes
+      xhr.onload = function () {
+        clearInterval(progressInterval);
+        updateProgress(100);
+
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+
+          // Show success message in the loading bar
+          document.getElementById('progressPercentage').innerText = 'Data uploaded successfully!';
+
+          // Clear table data if upload was successful
+          if (response.success) {
+            document.querySelector('#dataTable tbody').innerHTML = '';
+          }
+        } else {
+          document.getElementById('progressPercentage').innerText = "Failed to upload data.";
+        }
+
+        // Hide loading container after a short delay
+        setTimeout(() => {
+          loadingContainer.style.display = 'none';
+          document.getElementById('progressPercentage').innerText = '0%';
+          document.getElementById('progressBar').value = 0;
+        }, 2000);
+      };
+
+      // Send JSON data to server
+      const serializedData = encodeURIComponent(JSON.stringify(tableData));
+      xhr.send("tableData=" + serializedData);
+    }, 100); // Small delay to allow layout update
+  });
+
+  // Function to update progress bar
+  function updateProgress(value) {
+    document.getElementById('progressBar').value = value;
+    document.getElementById('progressPercentage').innerText = `${value}%`;
+  }
 });
