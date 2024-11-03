@@ -625,7 +625,7 @@ td {
 /* Progress bar wrapper */
 .progressWrapper {
   width: 80%;
-  max-width: 500px;
+  max-width: 50px;
   background-color: #e0e0e0;
   border-radius: 8px;
   padding: 10px;
