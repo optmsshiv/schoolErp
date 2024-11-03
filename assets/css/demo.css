@@ -607,6 +607,7 @@ td {
 }  */
 
 /* Loading container styles */
+/* Loading container styles */
 #loadingContainer {
   display: none; /* Initially hidden */
   position: fixed;
@@ -625,7 +626,7 @@ td {
 /* Progress bar wrapper */
 .progressWrapper {
   width: 80%;
-  max-width: 50px;
+  max-width: 500px;
   background-color: #e0e0e0;
   border-radius: 8px;
   padding: 10px;
@@ -667,6 +668,16 @@ td {
   font-weight: bold;
   color: #fff;
 }
+
+/* Message container */
+#messageContainer {
+  font-size: 18px;
+  margin-top: 20px;
+  color: #4caf50;
+  font-weight: bold;
+  text-align: center;
+}
+
 
 
 
