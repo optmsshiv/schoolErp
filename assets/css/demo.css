@@ -550,7 +550,7 @@ td {
 }
 
 /* css loader p-1 */
-/* Overlay styling */
+/* Overlay styling
 .overlay {
   position: fixed;
   top: 0;
@@ -566,7 +566,7 @@ td {
   color: #fff;
 }
 
-/* Spinner animation */
+/* Spinner animation *
 .spinner {
   width: 50px;
   height: 50px;
@@ -581,13 +581,13 @@ td {
   100% { transform: rotate(360deg); }
 }
 
-/* Loading text styling */
+/* Loading text styling
 .loading-text {
   margin-top: 10px;
   font-size: 18px;
   color: #fff;
 }
-
+*/
 /* CSS Loader part-2 */
 /* Loading container styles
 #loadingContainer {
