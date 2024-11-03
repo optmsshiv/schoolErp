@@ -617,8 +617,8 @@ td {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.8); /* Fullscreen semi-transparent overlay */
-  color: white;
+  background: rgba(255, 255, 255, 0.903); /* Fullscreen semi-transparent overlay */
+  color: rgba(200, 152, 255, 0.892);
   z-index: 1000; /* High z-index to sit above all other elements */
 }
 
