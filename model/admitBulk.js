@@ -32,52 +32,58 @@ document.getElementById('submitButton').addEventListener('click', function (even
     tableData.push(rowData);
   });
 
-  // Display loading bar and initialize progress
-  document.getElementById('loadingContainer').style.display = 'block';
+  // Show loading container and initialize progress
+  const loadingContainer = document.getElementById('loadingContainer');
+  loadingContainer.style.display = 'block'; // Show loading bar
   let progress = 0;
   updateProgress(progress);
 
-  // Simulate progress updates every 200ms
-  const progressInterval = setInterval(() => {
-    if (progress < 80) { // Simulate progress to 80%
-      progress += 5;
-      updateProgress(progress);
-    }
-  }, 200);
-
-  // Perform data upload
-  const xhr = new XMLHttpRequest();
-  xhr.open("POST", "../php/admit_bulk_submit.php", true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-  // Update progress to 100% when request completes
-  xhr.onload = function () {
-    clearInterval(progressInterval);
-    updateProgress(100);
-
-    if (xhr.status === 200) {
-      const response = JSON.parse(xhr.responseText);
-      document.getElementById('messageContainer').innerText = response.message;
-
-      // Clear table data if upload was successful
-      if (response.success) {
-        document.querySelector('#dataTable tbody').innerHTML = '';
-      }
-    } else {
-      document.getElementById('messageContainer').innerText = "Failed to upload data.";
-    }
-
-    // Hide loading container after completion
+  // Force a layout update to ensure loading bar appears
+  requestAnimationFrame(() => {
     setTimeout(() => {
-      document.getElementById('loadingContainer').style.display = 'none';
-      document.getElementById('progressPercentage').innerText = '0%';
-      document.getElementById('progressBar').value = 0;
-    }, 2000);
-  };
+      // Simulate progress updates every 200ms up to 80%
+      const progressInterval = setInterval(() => {
+        if (progress < 80) {
+          progress += 5;
+          updateProgress(progress);
+        }
+      }, 200);
 
-  // Send JSON data to server
-  const serializedData = encodeURIComponent(JSON.stringify(tableData));
-  xhr.send("tableData=" + serializedData);
+      // Perform data upload
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "upload.php", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+      // Update progress to 100% when request completes
+      xhr.onload = function () {
+        clearInterval(progressInterval);
+        updateProgress(100);
+
+        if (xhr.status === 200) {
+          const response = JSON.parse(xhr.responseText);
+          document.getElementById('messageContainer').innerText = response.message;
+
+          // Clear table data if upload was successful
+          if (response.success) {
+            document.querySelector('#dataTable tbody').innerHTML = '';
+          }
+        } else {
+          document.getElementById('messageContainer').innerText = "Failed to upload data.";
+        }
+
+        // Hide loading container after completion
+        setTimeout(() => {
+          loadingContainer.style.display = 'none';
+          document.getElementById('progressPercentage').innerText = '0%';
+          document.getElementById('progressBar').value = 0;
+        }, 2000);
+      };
+
+      // Send JSON data to server
+      const serializedData = encodeURIComponent(JSON.stringify(tableData));
+      xhr.send("tableData=" + serializedData);
+    }, 100); // Small delay to allow layout update
+  });
 
   // Function to update progress bar
   function updateProgress(value) {
