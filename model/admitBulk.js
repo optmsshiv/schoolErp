@@ -51,7 +51,7 @@ document.getElementById('submitButton').addEventListener('click', function (even
 
       // Perform data upload
       const xhr = new XMLHttpRequest();
-      xhr.open("POST", "upload.php", true);
+      xhr.open("POST", "../php/admit_bulk_submit.php", true);
       xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
       // Update progress to 100% when request completes
