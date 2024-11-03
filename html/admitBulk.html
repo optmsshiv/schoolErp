@@ -108,14 +108,52 @@
 
         <ul class="menu-inner py-1">
           <!-- Dashboards -->
-          <li class="menu-item active open">
+          <li class="menu-item">
             <a href="index.html" class="menu-link">
               <i class="menu-icon tf-icons bx bx-home-circle"></i>
               <div data-i18n="Dashboards">Dashboards</div>
               <!--  <div class="badge bg-danger rounded-pill ms-auto">5</div> -->
             </a>
-
           </li>
+            <!---Manage User--
+          <li class="menu-item" id="manageUserMenu">
+            <a href="javascript:void(0);" class="menu-link menu-toggle" id="manageUserToggle">
+              <i class="menu-icon tf-icons bx bx-user-plus bx-sm"></i>
+              <div data-i18n="Staff Management">Manage User</div>
+              <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
+            </a>
+            <ul class="menu-sub" id="manageUserSubMenu">
+              <li class="menu-item">
+                <a href="manageUser.html" class="menu-link">
+                  <div data-i18n="Manage User">Manage User</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="anotherSubMenu.html" class="menu-link">
+                  <div data-i18n="Another Menu">Extra</div>
+                </a>
+              </li>
+
+            </ul>
+          </li>-->
+
+          <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-user-plus bx-sm"></i>
+              <div data-i18n="User Desk">Manage User</div>
+              <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
+            </a>
+
+            <ul class="menu-sub">
+              <li class="menu-item">
+                <a href="user.html" class="menu-link">
+                  <div data-i18n="User Register">Add Users</div>
+                </a>
+              </li>
+              </ul>
+          </li>
+
+
 
           <!-- Layouts -->
           <li class="menu-item">
@@ -126,7 +164,7 @@
 
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="layouts-without-menu.html" class="menu-link">
+                <a href="visitor.html" class="menu-link">
                   <div data-i18n="Visitor Register">Visitor Register</div>
                 </a>
               </li>
@@ -140,11 +178,7 @@
                   <div data-i18n="Complaint Register">Complaint Register</div>
                 </a>
               </li>
-              <li class="menu-item">
-                <a href="layouts-fluid.html" class="menu-link">
-                  <div data-i18n="Family Information">Family Information</div>
-                </a>
-              </li>
+
               <li class="menu-item">
                 <a href="layouts-blank.html" class="menu-link">
                   <div data-i18n="Student Information">Student Information</div>
@@ -155,52 +189,45 @@
                   <div data-i18n="Instant SMS">Instant SMS</div>
                 </a>
               </li>
-              <li class="menu-item">
-                <a href="layouts-blank.html" class="menu-link">
-                  <div data-i18n="Discussion Board">Discussion Board</div>
-                </a>
-              </li>
+
             </ul>
           </li>
 
           <!-- Front Pages -->
           <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-user"></i>
+            <a href="javascript:void(0);" class="menu-link menu-toggle" id="manage-student-toggle">
+              <i class="menu-icon tf-icons fas fa-users"></i>
               <div data-i18n="Front Pages">Manage Student</div>
               <!--<div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>-->
             </a>
-            <ul class="menu-sub">
+            <ul class="menu-sub" id="manage-student-submenu">
               <li class="menu-item">
-                <a href="" class="menu-link" target="_blank">
+                <a href="activeStudent.html" class="menu-link">
                   <div data-i18n="Active Students">Active Students</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="" class="menu-link" target="_blank">
+                <a href="admissionRegister.html" class="menu-link">
                   <div data-i18n="Admission Register">Admission Register</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="" class="menu-link" target="_blank">
+                <a href="studentInfo.html" class="menu-link">
                   <div data-i18n="Student Info">Student Info</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="" class="menu-link" target="_blank">
-                  <div data-i18n="Student Birthday">Student Birthday</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="" class="menu-link" target="_blank">
-                  <div data-i18n="Student Transfer">Student Transfer</div>
+                <a href="studentInfo.html" class="menu-link">
+                  <div data-i18n="Student Info">Student Transfer</div>
                 </a>
               </li>
             </ul>
           </li>
+
+
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-cube-alt"></i>
+              <i class="menu-icon tf-icons fas fa-file-alt"></i>
               <div data-i18n="Asmission Management">Manage Asmission</div>
             </a>
             <ul class="menu-sub">
@@ -209,7 +236,7 @@
                   <div data-i18n="Admit Student">Admit Student</div>
                 </a>
               </li>
-              <li class="menu-item">
+              <li class="menu-item active">
                 <a href="admitBulk.html" class="menu-link">
                   <div data-i18n="Admit Bulk Student">Admit Bulk Student</div>
                 </a>
@@ -240,7 +267,7 @@
           </li>
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-cube-alt"></i>
+              <i class="menu-icon tf-icons fas fa-id-card"></i>
               <div data-i18n="ID Card Printing">ID Card Printing</div>
             </a>
             <ul class="menu-sub">
@@ -262,24 +289,10 @@
             </ul>
           </li>
 
-          <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Apps &amp; Pages</span>
-          </li>
+
           <!-- Apps -->
-          <li class="menu-item">
-            <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-email.html"
-              target="_blank" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-envelope"></i>
-              <div data-i18n="Staff Mangement">Staff Mangement</div>
-              <!--<div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>-->
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-user"></i>
-              <div data-i18n="Accountants">Accountants</div>
-            </a>
-          </li>
+
+
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-money-withdraw"></i>
@@ -288,34 +301,27 @@
             <ul class="menu-sub">
               <li class="menu-item">
                 <a href="#" class="menu-link">
-                  <div data-i18n="Error">Error</div>
+                  <i class="menu-icon tf-icons bx bx-user"></i>
+                  <div data-i18n="Accountants">Accountants</div>
                 </a>
               </li>
               <li class="menu-item">
                 <a href="#" class="menu-link">
-                  <div data-i18n="Under Maintenance">Under Maintenance</div>
+                  <i class="menu-icon tf-icons bx bx-rupee"></i>
+                  <div data-i18n="Expense Management">Collect Fee</div>
                 </a>
               </li>
+              <li class="menu-item">
+                <a href="#" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-money"></i>
+                  <div data-i18n="Fee Payments">Fee Payments</div>
+                </a>
+              </li>
+
+
             </ul>
           </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-rupee"></i>
-              <div data-i18n="Expense Management">Manage Expense</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Error">Error</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Under Maintenance">Under Maintenance</div>
-                </a>
-              </li>
-            </ul>
-          </li>
+
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-bar-chart"></i>
@@ -324,34 +330,20 @@
             <ul class="menu-sub">
               <li class="menu-item">
                 <a href="#" class="menu-link">
-                  <div data-i18n="Error">Error</div>
+                  <i class="menu-icon tf-icons bx bx-rupee"></i>
+                  <div data-i18n="Expense Management">Manage Expense</div>
                 </a>
               </li>
               <li class="menu-item">
                 <a href="#" class="menu-link">
-                  <div data-i18n="Under Maintenance">Under Maintenance</div>
+                  <i class="menu-icon tf-icons fas fa-boxes"></i>
+                  <div data-i18n="Expense Management">Stock Management</div>
                 </a>
               </li>
+
             </ul>
           </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-bxs-report"></i>
-              <div data-i18n="Test Management">Test Management</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Error">Error</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Under Maintenance">Under Maintenance</div>
-                </a>
-              </li>
-            </ul>
-          </li>
+
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-caret-up-circle"></i>
@@ -371,43 +363,37 @@
             </ul>
           </li>
           <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a href="#" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-book-open"></i>
               <div data-i18n="Expense Management">Daily Homework</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
                 <a href="#" class="menu-link">
-                  <div data-i18n="Error">Error</div>
+                  <i class="menu-icon tf-icons bx bx-book"></i>
+                  <div data-i18n="Manage Subjects">Manage Subjects</div>
                 </a>
               </li>
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Under Maintenance">Under Maintenance</div>
-                </a>
-              </li>
+
             </ul>
           </li>
           <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-bxs-card"></i>
-              <div data-i18n="Reporting Area">Reporting Area</div>
+            <a href="#" class="menu-link menu-toggle">
+              <i class="menu-icon tf-icons bx bx-card"></i>
+              <div data-i18n="Reporting">Reporting</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
                 <a href="#" class="menu-link">
-                  <div data-i18n="Error">Error</div>
+                  <i class="menu-icon tf-icons bx bx-user"></i>
+                  <div data-i18n="Parents Complaint">Parents Complaint</div>
                 </a>
               </li>
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Under Maintenance">Under Maintenance</div>
-                </a>
-              </li>
+
             </ul>
           </li>
           <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a href="#" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-chat"></i>
               <div data-i18n="Expense Management">SMS Management</div>
             </a>
@@ -425,29 +411,14 @@
             </ul>
           </li>
           <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link">
+            <a href="#" target="_blank" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-package"></i>
               <div data-i18n="Leave Management">Leave Management</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-user"></i>
-              <div data-i18n="Parents Complaint">Parents Complaint</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-book"></i>
-              <div data-i18n="Manage Subjects">Manage Subjects</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-money"></i>
-              <div data-i18n="Fee Payments">Fee Payments</div>
-            </a>
-          </li>
+
+
+
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-chart"></i>
@@ -477,14 +448,13 @@
             </ul>
           </li>
           <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link">
+            <a href="#" target="_blank" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-video"></i>
               <div data-i18n="Online Classes">Online Classes</div>
             </a>
           </li>
           <li class="menu-item">
-            <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-chat.html"
-              target="_blank" class="menu-link">
+            <a href="#" target="_blank" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-chat"></i>
               <div data-i18n="Chat">Chat</div>
               <!-- <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div> -->
@@ -497,28 +467,21 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="pages-misc-error.html" class="menu-link">
+                <a href="#" class="menu-link">
                   <div data-i18n="Error">Error</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div data-i18n="Under Maintenance">Under Maintenance</div>
                 </a>
               </li>
             </ul>
           </li>
           <li class="menu-item">
-            <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-calendar.html"
-              target="_blank" class="menu-link">
+            <a href="#" class="menu-link">
               <i class="menu-icon tf-icons bx bx-calendar"></i>
               <div data-i18n="Calendar">Calendar</div>
               <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
             </a>
           </li>
           <li class="menu-item">
-            <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-kanban.html"
-              target="_blank" class="menu-link">
+            <a href="#" class="menu-link">
               <i class="menu-icon tf-icons bx bx-grid"></i>
               <div data-i18n="Kanban">Kanban</div>
               <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
@@ -578,12 +541,12 @@
             </a>
             <ul class="menu-sub">
               <li class="menu-item">
-                <a href="auth-login-basic.html" class="menu-link" target="_blank">
+                <a href="auth-login-basic.html" class="menu-link">
                   <div data-i18n="Basic">Login</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="auth-register-basic.html" class="menu-link" target="_blank">
+                <a href="auth-register-basic.html" class="menu-link">
                   <div data-i18n="Basic">Register</div>
                 </a>
               </li>
@@ -612,225 +575,16 @@
               </li>
             </ul>
           </li>
-          <!-- Components -->
-          <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
-          <!-- Cards -->
-          <li class="menu-item">
-            <a href="cards-basic.html" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-collection"></i>
-              <div data-i18n="Basic">Cards</div>
-            </a>
-          </li>
-          <!-- User interface -->
-          <li class="menu-item">
-            <a href="javascript:void(0)" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-box"></i>
-              <div data-i18n="User interface">User interface</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="ui-accordion.html" class="menu-link">
-                  <div data-i18n="Accordion">Accordion</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-alerts.html" class="menu-link">
-                  <div data-i18n="Alerts">Alerts</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-badges.html" class="menu-link">
-                  <div data-i18n="Badges">Badges</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-buttons.html" class="menu-link">
-                  <div data-i18n="Buttons">Buttons</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-carousel.html" class="menu-link">
-                  <div data-i18n="Carousel">Carousel</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-collapse.html" class="menu-link">
-                  <div data-i18n="Collapse">Collapse</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-dropdowns.html" class="menu-link">
-                  <div data-i18n="Dropdowns">Dropdowns</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-footer.html" class="menu-link">
-                  <div data-i18n="Footer">Footer</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-list-groups.html" class="menu-link">
-                  <div data-i18n="List Groups">List groups</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-modals.html" class="menu-link">
-                  <div data-i18n="Modals">Modals</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-navbar.html" class="menu-link">
-                  <div data-i18n="Navbar">Navbar</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-offcanvas.html" class="menu-link">
-                  <div data-i18n="Offcanvas">Offcanvas</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-pagination-breadcrumbs.html" class="menu-link">
-                  <div data-i18n="Pagination &amp; Breadcrumbs">Pagination &amp; Breadcrumbs</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-progress.html" class="menu-link">
-                  <div data-i18n="Progress">Progress</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-spinners.html" class="menu-link">
-                  <div data-i18n="Spinners">Spinners</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-tabs-pills.html" class="menu-link">
-                  <div data-i18n="Tabs &amp; Pills">Tabs &amp; Pills</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-toasts.html" class="menu-link">
-                  <div data-i18n="Toasts">Toasts</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-tooltips-popovers.html" class="menu-link">
-                  <div data-i18n="Tooltips & Popovers">Tooltips &amp; popovers</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="ui-typography.html" class="menu-link">
-                  <div data-i18n="Typography">Typography</div>
-                </a>
-              </li>
-            </ul>
-          </li>
 
-          <!-- Extended components -->
-          <li class="menu-item">
-            <a href="javascript:void(0)" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-copy"></i>
-              <div data-i18n="Extended UI">Extended UI</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="extended-ui-perfect-scrollbar.html" class="menu-link">
-                  <div data-i18n="Perfect Scrollbar">Perfect scrollbar</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="extended-ui-text-divider.html" class="menu-link">
-                  <div data-i18n="Text Divider">Text Divider</div>
-                </a>
-              </li>
-            </ul>
-          </li>
 
-          <li class="menu-item">
-            <a href="icons-boxicons.html" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-crown"></i>
-              <div data-i18n="Boxicons">Boxicons</div>
-            </a>
-          </li>
 
-          <!-- Forms & Tables -->
-          <li class="menu-header small text-uppercase"><span class="menu-header-text">Forms &amp; Tables</span></li>
-          <!-- Forms -->
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Elements">Form Elements</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="forms-basic-inputs.html" class="menu-link">
-                  <div data-i18n="Basic Inputs">Basic Inputs</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="forms-input-groups.html" class="menu-link">
-                  <div data-i18n="Input groups">Input groups</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-detail"></i>
-              <div data-i18n="Form Layouts">Form Layouts</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="form-layouts-vertical.html" class="menu-link">
-                  <div data-i18n="Vertical Form">Vertical Form</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="form-layouts-horizontal.html" class="menu-link">
-                  <div data-i18n="Horizontal Form">Horizontal Form</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <!-- Form Validation -->
-          <li class="menu-item">
-            <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/form-validation.html"
-              target="_blank" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-list-check"></i>
-              <div data-i18n="Form Validation">Form Validation</div>
-              <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
-            </a>
-          </li>
-          <!-- Tables -->
-          <li class="menu-item">
-            <a href="tables-basic.html" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-table"></i>
-              <div data-i18n="Tables">Tables</div>
-            </a>
-          </li>
-          <!-- Data Tables -->
-          <li class="menu-item">
-            <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/tables-datatables-basic.html"
-              target="_blank" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-grid"></i>
-              <div data-i18n="Datatables">Datatables</div>
-              <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
-            </a>
-          </li>
+
           <!-- Misc -->
           <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
           <li class="menu-item">
-            <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues" target="_blank"
-              class="menu-link">
+            <a href="#" target="_blank" class="menu-link">
               <i class="menu-icon tf-icons bx bx-support"></i>
               <div data-i18n="Support">Support</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/documentation/"
-              target="_blank" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-file"></i>
-              <div data-i18n="Documentation">Documentation</div>
             </a>
           </li>
         </ul>
@@ -949,11 +703,6 @@
               <p class="loading-text">Data is uploading, please wait...</p>
             </div> -->
 
-
-
-
-
-
             <div class="flex-shrink-1 mt-3 container-p-x">
               <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -1021,7 +770,7 @@
                 <!-- Close the form here so that it includes the button group and table -->
                 </form>
               </div>
-               <!-- Loading bar and message container -->
+              <!-- Loading bar and message container -->
               <div id="loadingContainer" style="display: none;">
                 <progress id="progressBar" value="0" max="100"></progress>
                 <span id="progressPercentage">0%</span>
