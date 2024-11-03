@@ -590,30 +590,19 @@ td {
 
 /* CSS Loader part-2 */
 /* Loading container styles */
-#loadingContainer {
-  display: none; /* Hidden initially */
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 20px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 8px;
-  z-index: 1000; /* Ensure it appears above other content */
-}
-
 #progressBar {
   width: 100%;
-  height: 20px;
-  margin-top: 10px;
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+  display: none;
 }
-
-#progressPercentage {
-  margin-top: 5px;
+#progress {
+  width: 0;
+  height: 30px;
+  background-color: #4caf50;
+  text-align: center;
+  line-height: 30px;
+  color: white;
 }
 
 

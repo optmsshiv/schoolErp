@@ -943,11 +943,18 @@
         <div class="content-wrapper">
           <!-- Content -->
           <div class="container p-1">
-            <!-- Loading Overlay -->
+            <!-- Loading Overlay
             <div id="loadingOverlay" class="overlay" style="display: none;">
               <div class="spinner"></div>
               <p class="loading-text">Data is uploading, please wait...</p>
+            </div> -->
+
+            <!-- Loading bar and message container -->
+            <div id="loadingContainer" style="display: none;">
+              <progress id="progressBar" value="0" max="100"></progress>
+              <span id="progressPercentage">0%</span>
             </div>
+            <div id="messageContainer"></div>
 
 
 
@@ -973,13 +980,6 @@
                       <button type="button" class="btn btn-primary" id="processButton">Process</button>
                       <button type="reset" class="btn btn-secondary" id="resetButton">Reset</button>
                       <button type="submit" class="btn btn-success" id="submitButton">Submit</button>
-
-                      <!-- Loading bar and message container -->
-                      <div id="loadingContainer" style="display: none;">
-                        <progress id="progressBar" value="0" max="100"></progress>
-                        <span id="progressPercentage">0%</span>
-                      </div>
-                      <div id="messageContainer"></div>
 
                     </div>
                 </div>
