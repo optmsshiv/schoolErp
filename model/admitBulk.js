@@ -59,7 +59,7 @@ document.getElementById('submitButton').addEventListener('click', function (even
         clearInterval(progressInterval);
         updateProgress(100);
 
-        if (xhr.status === 500) {
+        if (xhr.status === 200) {
           const response = JSON.parse(xhr.responseText);
 
           // Show appropriate message
