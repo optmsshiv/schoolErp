@@ -633,6 +633,15 @@ td {
   margin-top: 10px;
 }
 
+/* Percentage display */
+#progressPercentage {
+  font-size: 16px;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #fff;
+}
+
+
 #progressBar::-webkit-progress-bar {
   background-color: #eee;
   border-radius: 5px;
