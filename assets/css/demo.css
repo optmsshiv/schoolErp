@@ -607,76 +607,42 @@ td {
 }  */
 
 /* Loading container styles */
-/* Loading container styles */
 #loadingContainer {
-  display: none; /* Initially hidden */
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
-  z-index: 1000; /* Ensure it's on top */
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-}
-
-/* Progress bar wrapper */
-.progressWrapper {
-  width: 80%;
-  max-width: 500px;
-  background-color: #e0e0e0;
+  justify-content: center;
+  flex-direction: column;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
   border-radius: 8px;
-  padding: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: center;
+  z-index: 1000;
 }
 
-/* Progress bar styles */
 #progressBar {
   width: 100%;
   height: 20px;
-  background-color: #d3d3d3;
+  appearance: none;
+  background: linear-gradient(to right, #4caf50, #ff9800, #2196f3);
   border-radius: 5px;
-  overflow: hidden;
-  appearance: none; /* Remove default styling */
+  margin-top: 10px;
 }
 
 #progressBar::-webkit-progress-bar {
-  background-color: #d3d3d3;
+  background-color: #eee;
   border-radius: 5px;
 }
 
 #progressBar::-webkit-progress-value {
-  background-color: #4caf50;
+  background-image: linear-gradient(to right, #4caf50, #ff9800, #2196f3);
   border-radius: 5px;
-  transition: width 0.3s ease; /* Smooth width transition */
 }
 
-#progressBar::-moz-progress-bar {
-  background-color: #4caf50;
-  border-radius: 5px;
-  transition: width 0.3s ease;
-}
-
-/* Percentage display */
-#progressPercentage {
-  font-size: 16px;
-  margin-top: 10px;
-  font-weight: bold;
-  color: #fff;
-}
-
-/* Message container */
-#messageContainer {
-  font-size: 18px;
-  margin-top: 20px;
-  color: #4caf50;
-  font-weight: bold;
-  text-align: center;
-}
 
 
 

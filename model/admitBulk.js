@@ -62,12 +62,14 @@ document.getElementById('submitButton').addEventListener('click', function (even
         if (xhr.status === 200) {
           const response = JSON.parse(xhr.responseText);
 
-          // Show success message in the loading bar
-          document.getElementById('progressPercentage').innerText = 'Data uploaded successfully!';
-
-          // Clear table data if upload was successful
+          // Show appropriate message
           if (response.success) {
-            document.querySelector('#dataTable tbody').innerHTML = '';
+            document.getElementById('progressPercentage').innerText = 'Data uploaded successfully!';
+            document.querySelector('#dataTable tbody').innerHTML = ''; // Clear table if successful
+          } else if (response.message === 'Data already uploaded') {
+            document.getElementById('progressPercentage').innerText = 'Data already uploaded!';
+          } else {
+            document.getElementById('progressPercentage').innerText = response.message || "Failed to upload data.";
           }
         } else {
           document.getElementById('progressPercentage').innerText = "Failed to upload data.";
