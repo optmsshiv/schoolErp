@@ -646,7 +646,7 @@ td {
 }
 
 #progressBar::-webkit-progress-value {
-  background-image: linear-gradient(to right, #4caf50, #d7e386, #d1ddae);
+  background-image: linear-gradient(to right, #6de071, #d7e386, #a75fff);
   border-radius: 5px;
 }
 
