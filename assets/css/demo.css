@@ -614,7 +614,7 @@ td {
   flex-direction: column;
   position: fixed;
   top: 0;
-  left: 50%;
+  left: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.8); /* Fullscreen semi-transparent overlay */
@@ -623,7 +623,7 @@ td {
 }
 
 #progressBar {
-  width: 80%;
+  width: 30%;
   height: 20px;
   appearance: none;
   background: linear-gradient(to right, #4caf50, #f0e662, #64b9fe);
