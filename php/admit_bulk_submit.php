@@ -19,11 +19,14 @@ try {
 
         if (is_array($data) && !empty($data)) {
             $stmt = $pdo->prepare("
-                INSERT INTO students (serial_number, first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped, father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler)
-                VALUES (:serial_number, :first_name, :last_name, :phone, :email, :date_of_birth, :gender, :class_name, :category, :religion, :guardian, :handicapped, :father_name, :mother_name, :roll_no, :sr_no, :pen_no, :aadhar_no, :admission_no, :admission_date, :day_hosteler)
+                INSERT INTO students (serial_number, first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped, father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler, user_id)
+                VALUES (:serial_number, :first_name, :last_name, :phone, :email, :date_of_birth, :gender, :class_name, :category, :religion, :guardian, :handicapped, :father_name, :mother_name, :roll_no, :sr_no, :pen_no, :aadhar_no, :admission_no, :admission_date, :day_hosteler, :user_id)
             ");
 
             foreach ($data as $row) {
+                // Generate user ID with first four letters of first_name + random 4-digit number
+                $user_id = strtoupper(substr($row['first_name'], 0, 4)) . str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+
                 $stmt->execute([
                     ':serial_number' => $row['serial_number'],
                     ':first_name' => $row['first_name'],
@@ -45,7 +48,8 @@ try {
                     ':aadhar_no' => $row['aadhar_no'],
                     ':admission_no' => $row['admission_no'],
                     ':admission_date' => $row['admission_date'],
-                    ':day_hosteler' => $row['day_hosteler']
+                    ':day_hosteler' => $row['day_hosteler'],
+                    ':user_id' => $user_id
                 ]);
             }
 
