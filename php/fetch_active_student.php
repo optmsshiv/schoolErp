@@ -1,5 +1,6 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Database configuration
 $servername = "localhost:3306";
@@ -17,35 +18,20 @@ if ($conn->connect_error) {
 
 // Query to fetch student data
 $sql = "SELECT first_name, father_name, class_name, roll_no, phone, user_id FROM students";
-
 $result = $conn->query($sql);
 
-if (!$result) {
-  die("Error with query: " . $conn->error); // Outputs SQL error if the query fails
-}
+$data = array();
 
-$sr_no = 1; // Initialize serial number
-if ($result->num_rows > 0) {
+if ($result && $result->num_rows > 0) {
     // Output data of each row
     while ($row = $result->fetch_assoc()) {
-        echo "<tr>
-                <td><input type='checkbox'></td>
-                <td>" . $sr_no++ . "</td> <!-- Serial Number -->
-                <td>" . htmlspecialchars($row["first_name"]) . "</td>
-                <td>" . htmlspecialchars($row["father_name"]) . "</td>
-                <td>" . htmlspecialchars($row["class_name"]) . "</td>
-                <td>" . htmlspecialchars($row["roll_no"]) . "</td>
-                <td>" . htmlspecialchars($row["phone"]) . "</td>
-                <td>" . htmlspecialchars($row["user_id"]) . "</td>
-                <td>
-                    <button class='btn btn-primary btn-sm'>Edit</button>
-                    <button class='btn btn-danger btn-sm'>Delete</button>
-                </td>
-            </tr>";
+        $data[] = $row; // Add each row to the data array
     }
-} else {
-    echo "<tr><td colspan='9'>No records found</td></tr>";
 }
+
+// Return the data as JSON
+header('Content-Type: application/json');
+echo json_encode($data);
 
 // Close connection
 $conn->close();
