@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(() => {
   // Function to fetch student data
   function fetchStudents() {
       $.ajax({
