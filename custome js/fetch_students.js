@@ -1,4 +1,4 @@
-$(() => {
+$(document).ready(function () {
   // Initialize DataTable with custom DOM positioning and options
   var table = $('#optms').DataTable({
     dom: '<"row"<"col-md-6"l><"col-md-6"B>>' + // Custom positioning for buttons and length menu
