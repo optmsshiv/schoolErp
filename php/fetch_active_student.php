@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 }
 
 // Query to fetch student data
-$sql = "SELECT first_name, father_name, class_name, roll_no, phone, id FROM students"; // Removed user_id from query
+$sql = "SELECT first_name, last_name, father_name, class_name, roll_no, phone, id FROM students"; // Removed user_id from query
 $result = $conn->query($sql);
 
 if (!$result) {

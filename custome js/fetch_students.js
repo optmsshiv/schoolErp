@@ -15,7 +15,7 @@ $(() => {
                       tableBody.append(`<tr>
                                           <td><input type='checkbox'></td>
                                           <td>${sr_no++}</td>
-                                          <td>${student.first_name}</td>
+                                          <td>${student.first_name} ${student.last_name}</td>
                                           <td>${student.father_name}</td>
                                           <td>${student.class_name}</td>
                                           <td>${student.roll_no}</td>
