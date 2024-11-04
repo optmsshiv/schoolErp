@@ -715,7 +715,7 @@
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item "><a href="#">Front Desk</a></li>
+                <li class="breadcrumb-item "><a href="#">Manage Student</a></li>
                 <li class="breadcrumb-item active fw-bold" aria-current="page">Active Student</li>
               </ol>
             </nav>
@@ -725,11 +725,26 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title fw-bold">Visitor Registration</h5>
-                    <div class="table-responsive">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h5 class="card-title fw-bold">Active Students</h5>
+                      <div class="d-flex">
+                        <!-- Dropdown for class selection -->
+                        <select class="form-select me-2" style="width: auto;">
+                          <option selected>Class</option>
+                          <option value="Nursery">Nursery</option>
+                          <option value="LKG">LKG</option>
+                          <option value="UKG">UKG</option>
+                          <!-- Add more classes if needed -->
+                        </select>
+                        <!-- Search bar for student name -->
+                        <input type="text" class="form-control" placeholder="Search Student Name" style="width: 200px;">
+                      </div>
+                    </div>
+                    <div class="table-responsive mt-3">
                       <table class="table table-bordered">
                         <thead class="thead-light">
                           <tr>
+                            <th scope="col"><input type="checkbox"></th>
                             <th scope="col">Sr. No.</th>
                             <th scope="col">Student Name</th>
                             <th scope="col">Father's Name</th>
@@ -742,6 +757,7 @@
                         </thead>
                         <tbody>
                           <tr>
+                            <td><input type="checkbox"></td>
                             <td>1</td>
                             <td>John Doe</td>
                             <td>Richard Doe</td>
