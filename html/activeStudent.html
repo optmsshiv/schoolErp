@@ -716,7 +716,7 @@
             <nav aria-label="breadcrumb" class="mb-4">
               <ol class="breadcrumb">
                 <li class="breadcrumb-item "><a href="#">Front Desk</a></li>
-                <li class="breadcrumb-item active fw-bold" aria-current="page">Visitor</li>
+                <li class="breadcrumb-item active fw-bold" aria-current="page">Active Student</li>
               </ol>
             </nav>
             <!-- / Breadcrumb -->
@@ -726,20 +726,43 @@
                 <div class="card">
                   <div class="card-body">
                     <h5 class="card-title fw-bold">Visitor Registration</h5>
-                    <form>
-                      <div class="col-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" required>
-                      </div>
-                      <div class="col-3">
-                        <label for="phone" class="form-label">Phone</label>
-                        <input type="text" class="form-control" id="phone" required>
-                      </div>
-                    </form>
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
+                        <thead class="thead-light">
+                          <tr>
+                            <th scope="col">Sr. No.</th>
+                            <th scope="col">Student Name</th>
+                            <th scope="col">Father's Name</th>
+                            <th scope="col">Class</th>
+                            <th scope="col">Roll No</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">User ID</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>Richard Doe</td>
+                            <td>10</td>
+                            <td>23</td>
+                            <td>1234567890</td>
+                            <td>USR001</td>
+                            <td>
+                              <button class="btn btn-primary btn-sm">Edit</button>
+                              <button class="btn btn-danger btn-sm">Delete</button>
+                            </td>
+                          </tr>
+                          <!-- Additional rows can be added here -->
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
 
 
 
