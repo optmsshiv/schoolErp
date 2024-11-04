@@ -13,25 +13,32 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
 }
 
 // Query to fetch student data
-$sql = "SELECT first_name, father_name, class_name, roll_no, phone FROM students";
+$sql = "SELECT first_name, father_name, class_name, roll_no, phone FROM students"; // Removed user_id from query
 $result = $conn->query($sql);
 
-$data = array();
+if (!$result) {
+    die(json_encode(['error' => 'Error with query: ' . $conn->error]));
+}
 
-if ($result && $result->num_rows > 0) {
-    // Output data of each row
+$students = [];
+if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $data[] = $row; // Add each row to the data array
+        // Generate a unique user ID (this is just an example, adjust logic as needed)
+        $user_id = uniqid('user_', true); // Generates a unique user ID
+        $row['user_id'] = $user_id; // Add the generated user ID to the row
+        $students[] = $row; // Add each row to the array
     }
 }
 
-// Return the data as JSON
+// Set the content type to application/json
 header('Content-Type: application/json');
-echo json_encode($data);
+
+// Return the JSON response
+echo json_encode($students);
 
 // Close connection
 $conn->close();
