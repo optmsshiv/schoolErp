@@ -16,7 +16,7 @@ if ($conn->connect_error) {
 }
 
 // Query to fetch student data
-$sql = "SELECT * FROM students";
+$sql = "SELECT first_name, father_name, class_name, roll_no, phone, user_id FROM students";
 
 $result = $conn->query($sql);
 
