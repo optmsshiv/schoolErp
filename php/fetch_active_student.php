@@ -1,4 +1,4 @@
-<?php
+
 // Database configuration
 $servername = "localhost:3306";
 $username = "edrppymy_admin";
@@ -17,4 +17,4 @@ echo "Connected successfully!";
 
 // Close connection
 $conn->close();
-?>
+
