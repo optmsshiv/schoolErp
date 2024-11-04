@@ -762,6 +762,23 @@
                       </table>
                     </div>
                   </div>
+
+                  <div class="pagination-controls">
+                    <label for="records-per-page">Show:</label>
+                    <select id="records-per-page">
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+
+                    <div class="pagination">
+                        <button id="prev-page" disabled>Prev</button>
+                        <span id="page-info">Page <span id="current-page">1</span> of <span id="total-pages">1</span></span>
+                        <button id="next-page">Next</button>
+                    </div>
+                </div>
+
                 </div>
               </div>
             </div>
