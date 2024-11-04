@@ -758,36 +758,6 @@
 
                         <tbody>
                         <?php include '../php/fetch_active_student.php'; ?>
-
-                        <?php
-                        $sr_no = 1; // Initialize serial number
-                        if ($result->num_rows > 0) {
-                            // Output data of each row
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>
-                                        <td><input type='checkbox'></td>
-                                        <td>" . $sr_no++ . "</td> <!-- Serial Number -->
-                                        <td>" . htmlspecialchars($row["first_name"]) . "</td>
-                                        <td>" . htmlspecialchars($row["father_name"]) . "</td>
-                                        <td>" . htmlspecialchars($row["class_name"]) . "</td>
-                                        <td>" . htmlspecialchars($row["roll_no"]) . "</td>
-                                        <td>" . htmlspecialchars($row["phone"]) . "</td>
-                                        <td>" . htmlspecialchars($row["user_id"]) . "</td>
-                                        <td>
-                                            <button class='btn btn-primary btn-sm'>Edit</button>
-                                            <button class='btn btn-danger btn-sm'>Delete</button>
-                                        </td>
-                                    </tr>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='9'>No records found</td></tr>";
-                        }
-
-                        // Close connection
-                        $conn->close();
-                        ?>
-
-
                         </tbody>
                       </table>
                     </div>
