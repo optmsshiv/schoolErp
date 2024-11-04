@@ -1,4 +1,8 @@
 <?php
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Database configuration
 $servername = "localhost:3306";
 $username = "edrppymy_admin";
@@ -16,6 +20,10 @@ if ($conn->connect_error) {
 // Query to fetch student data
 $sql = "SELECT first_name, father_name, class_name, roll_no, phone, user_id FROM students";
 $result = $conn->query($sql);
+
+if (!$result) {
+  die("Error with query: " . $conn->error); // Outputs SQL error if the query fails
+}
 
 if ($result->num_rows > 0) {
     // Output data of each row
