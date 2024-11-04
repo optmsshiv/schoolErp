@@ -19,19 +19,20 @@ if ($conn->connect_error) {
 }
 
 // Query to fetch student data
-$sql = "SELECT first_name, father_name, class_name, roll_no, phone, user_id FROM students";
+$sql = "SELECT first_name, father_name, class_name, roll_no, phone, user_id * FROM students";
 $result = $conn->query($sql);
 
 if (!$result) {
   die("Error with query: " . $conn->error); // Outputs SQL error if the query fails
 }
 
+$sr_no = 1; // Initialize serial number
 if ($result->num_rows > 0) {
     // Output data of each row
     while ($row = $result->fetch_assoc()) {
         echo "<tr>
                 <td><input type='checkbox'></td>
-
+                <td>" . $sr_no++ . "</td> <!-- Serial Number -->
                 <td>" . $row["first_name"] . "</td>
                 <td>" . $row["father_name"] . "</td>
                 <td>" . $row["class_name"] . "</td>
