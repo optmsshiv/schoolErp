@@ -2,6 +2,7 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+echo "<p>File loaded successfully!</p>";
 
 // Database configuration
 $servername = "localhost:3306";
