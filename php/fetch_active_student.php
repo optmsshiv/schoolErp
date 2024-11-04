@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 }
 
 // Query to fetch student data
-$sql = "SELECT id, student_name, father_name, class, roll_no, phone, user_id FROM students";
+$sql = "SELECT id, first_name, father_name, class_name, roll_no, phone, user_id FROM students";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -23,9 +23,9 @@ if ($result->num_rows > 0) {
         echo "<tr>
                 <td><input type='checkbox'></td>
                 <td>" . $row["id"] . "</td>
-                <td>" . $row["student_name"] . "</td>
+                <td>" . $row["first_name"] . "</td>
                 <td>" . $row["father_name"] . "</td>
-                <td>" . $row["class"] . "</td>
+                <td>" . $row["class_name"] . "</td>
                 <td>" . $row["roll_no"] . "</td>
                 <td>" . $row["phone"] . "</td>
                 <td>" . $row["user_id"] . "</td>
