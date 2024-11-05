@@ -20,22 +20,15 @@ if ($conn->connect_error) {
 
 // Pagination and search parameters
 $search = isset($_GET['search']) ? $_GET['search'] : '';
-$class = isset($_GET['class']) ? $_GET['class'] : ''; // New class parameter
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
 $offset = ($page - 1) * $limit;
 
-// Prepare query with search term and class filter
+// Prepare query with search term
 $sql = "SELECT id, first_name, last_name, father_name, class_name, roll_no, phone, user_id
         FROM students
-        WHERE CONCAT(first_name, ' ', last_name) LIKE ?";
-
-if (!empty($class)) {
-    $sql .= " AND class_name = ?";
-}
-
-$sql .= " LIMIT ?, ?";
-
+        WHERE CONCAT(first_name, ' ', last_name) LIKE ?
+        LIMIT ?, ?";
 $stmt = $conn->prepare($sql);
 
 // Check if statement preparation succeeded
@@ -44,24 +37,9 @@ if (!$stmt) {
 }
 
 $searchTerm = "%$search%";
-$params = [$searchTerm];
-
-if (!empty($class)) {
-    $params[] = $class; // Add class to parameters
+if (!$stmt->bind_param("sii", $searchTerm, $offset, $limit)) {
+    die(json_encode(['error' => 'Binding parameters failed: ' . $stmt->error]));
 }
-
-$params[] = $offset;
-$params[] = $limit;
-
-// Prepare dynamic binding types
-$types = "s"; // String type for search term
-if (!empty($class)) {
-    $types .= "s"; // Add string type for class
-}
-$types .= "ii"; // Two integer types for offset and limit
-
-// Bind parameters dynamically
-$stmt->bind_param($types, ...$params);
 
 $stmt->execute();
 $result = $stmt->get_result();
@@ -71,32 +49,17 @@ while ($row = $result->fetch_assoc()) {
     $students[] = $row;
 }
 
-// Get total record count for pagination with class filtering
+// Get total record count for pagination
 $totalRecordsQuery = "SELECT COUNT(*) as total FROM students WHERE CONCAT(first_name, ' ', last_name) LIKE ?";
-
-if (!empty($class)) {
-    $totalRecordsQuery .= " AND class_name = ?";
-}
-
 $totalStmt = $conn->prepare($totalRecordsQuery);
 
 if (!$totalStmt) {
     die(json_encode(['error' => 'Total records query preparation failed: ' . $conn->error]));
 }
 
-$totalParams = [$searchTerm];
-if (!empty($class)) {
-    $totalParams[] = $class; // Add class to total query parameters
+if (!$totalStmt->bind_param("s", $searchTerm)) {
+    die(json_encode(['error' => 'Binding parameters for total records query failed: ' . $totalStmt->error]));
 }
-
-// Prepare dynamic binding types for total records
-$totalTypes = "s";
-if (!empty($class)) {
-    $totalTypes .= "s"; // Add string type for class
-}
-
-// Bind parameters dynamically for total records
-$totalStmt->bind_param($totalTypes, ...$totalParams);
 
 $totalStmt->execute();
 $totalResult = $totalStmt->get_result();
