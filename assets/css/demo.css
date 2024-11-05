@@ -699,15 +699,15 @@ td {
   position: relative;
 }
 
-/* Add a checkmark or custom styles for the mixed state */
+/* Add a checkmark or custom styles for the mixed state
 #select-all.mixed::after {
-  content: "–"; /* Dash to represent mixed state */
+  content: "–"; /* Dash to represent mixed state
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: 18px; /* Adjust size as needed */
-}
+  font-size: 18px; /* Adjust size as needed 
+}*/
 /* Additional styles for checked state */
 #select-all:checked:not(.mixed) {
   content: "✓"; /* Optionally add a checkmark or modify appearance */
