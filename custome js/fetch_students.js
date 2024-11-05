@@ -146,7 +146,7 @@ $(function () {
     } else if (checkedCheckboxes.length === allCheckboxes.length) {
       $('#select-all').prop('checked', true).removeClass('mixed');
     } else {
-      $('#select-all').prop('checked', true).addClass('mixed'); // Mixed state
+      $('#select-all').prop('checked', false).addClass('mixed'); // Mixed state
     }
   });
 
