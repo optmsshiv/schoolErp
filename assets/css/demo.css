@@ -702,6 +702,8 @@ td {
 /* Add a checkmark or custom styles for the mixed state */
 #select-all.mixed::after {
   content: "–"; /* Dash to represent mixed state */
+  background-color: #f0ad4e; /* Light orange to indicate mixed state */
+  color: white;
   position: absolute;
   left: 50%;
   top: 50%;
