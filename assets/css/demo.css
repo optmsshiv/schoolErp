@@ -708,6 +708,10 @@ td {
   transform: translate(-50%, -50%);
   font-size: 18px; /* Adjust size as needed */
 }
+/* Additional styles for checked state */
+#select-all:checked:not(.mixed) {
+  content: "✓"; /* Optionally add a checkmark or modify appearance */
+}
 
 
 
