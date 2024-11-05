@@ -686,6 +686,12 @@ td {
   color: #697a8d;
 }
 
+/*check mark*/
+#select-all.mixed {
+  background-color: #f0ad4e; /* Light orange or any color to indicate mixed state */
+  color: white;
+}
+
 
 
 

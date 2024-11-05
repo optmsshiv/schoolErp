@@ -1,4 +1,4 @@
-$(() => {
+$(document).ready(function () {
   let currentPage = 1;
   let recordsPerPage = 10;
   let totalRecords = 0;
@@ -11,11 +11,11 @@ $(() => {
       type: 'GET',
       dataType: 'json',
       data: {
-        search: searchTerm, // Send the search term to PHP
+        search: searchTerm,
         page: currentPage,
         limit: recordsPerPage
       },
-      success: function(data) {
+      success: function (data) {
         totalRecords = data.totalRecords;
         totalPages = Math.ceil(totalRecords / recordsPerPage);
         $('#total-pages').text(totalPages);
@@ -25,7 +25,7 @@ $(() => {
 
         if (data.students.length > 0) {
           let sr_no = (currentPage - 1) * recordsPerPage + 1;
-          $.each(data.students, function(index, student) {
+          $.each(data.students, function (index, student) {
             tableBody.append(`<tr>
                                 <td><input type='checkbox' class='row-checkbox'></td>
                                 <td>${sr_no++}</td>
@@ -53,7 +53,7 @@ $(() => {
         // Display current page buttons with highlighting
         updatePageNumbers();
       },
-      error: function(xhr, status, error) {
+      error: function (xhr, status, error) {
         console.error("Error fetching data: ", status, error);
       }
     });
@@ -89,39 +89,39 @@ $(() => {
   }
 
   // Event listener for search bar
-  $('#search-bar').on('input', function() {
-    currentPage = 1; // Reset to first page when searching
-    fetchStudents($(this).val()); // Pass search term
+  $('#search-bar').on('input', function () {
+    currentPage = 1;
+    fetchStudents($(this).val());
   });
 
-  $('#records-per-page').on('change', function() {
+  $('#records-per-page').on('change', function () {
     recordsPerPage = parseInt($(this).val());
     currentPage = 1;
-    fetchStudents($('#search-bar').val()); // Use current search term
+    fetchStudents($('#search-bar').val());
   });
 
-  $('#prev-page').on('click', function() {
+  $('#prev-page').on('click', function () {
     if (currentPage > 1) {
       currentPage--;
       fetchStudents($('#search-bar').val());
     }
   });
 
-  $('#next-page').on('click', function() {
+  $('#next-page').on('click', function () {
     if (currentPage < totalPages) {
       currentPage++;
       fetchStudents($('#search-bar').val());
     }
   });
 
-  $('#first-page').on('click', function() {
+  $('#first-page').on('click', function () {
     if (currentPage > 1) {
       currentPage = 1;
       fetchStudents($('#search-bar').val());
     }
   });
 
-  $('#last-page').on('click', function() {
+  $('#last-page').on('click', function () {
     if (currentPage < totalPages) {
       currentPage = totalPages;
       fetchStudents($('#search-bar').val());
@@ -130,15 +130,27 @@ $(() => {
 
   // "Select All" checkbox functionality
   $('#select-all').on('change', function () {
-    const isChecked = $(this).is(':checked');
-    $('#student-table-body .row-checkbox').prop('checked', isChecked);
+    // Set all checkboxes in the table to match the "Select All" checkbox state
+    $('#student-table-body input[type="checkbox"]').prop('checked', this.checked);
+    // Remove mixed state class if select all is checked or unchecked
+    $(this).removeClass('mixed');
   });
 
   // Individual row checkbox functionality
-  $('#student-table-body').on('change', '.row-checkbox', function () {
-    const allChecked = $('#student-table-body .row-checkbox').length ===
-                       $('#student-table-body .row-checkbox:checked').length;
-    $('#select-all').prop('checked', allChecked);
+  $('#student-table-body').on('change', 'input[type="checkbox"]', function () {
+    const allCheckboxes = $('#student-table-body input[type="checkbox"]');
+    const checkedCheckboxes = allCheckboxes.filter(':checked');
+
+    // If any checkbox is unchecked, mark "Select All" as mixed
+    if (checkedCheckboxes.length === 0) {
+      $('#select-all').prop('checked', false).removeClass('mixed');
+    } else if (checkedCheckboxes.length === allCheckboxes.length) {
+      // If all checkboxes are checked, check the "Select All" checkbox
+      $('#select-all').prop('checked', true).removeClass('mixed');
+    } else {
+      // Mixed state
+      $('#select-all').prop('checked', true).addClass('mixed');
+    }
   });
 
   fetchStudents(); // Initial fetch
