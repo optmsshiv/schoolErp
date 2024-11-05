@@ -45,12 +45,45 @@ $(() => {
           tableBody.append("<tr><td colspan='9'>No records found</td></tr>");
         }
 
+        // Update pagination UI
         $('#current-page').text(currentPage);
         $('#prev-page').prop('disabled', currentPage === 1);
         $('#next-page').prop('disabled', currentPage === totalPages);
+
+        // Display current page buttons with highlighting
+        updatePageNumbers();
       },
       error: function(xhr, status, error) {
         console.error("Error fetching data: ", status, error);
+      }
+    });
+  }
+
+  // Function to update page numbers
+  function updatePageNumbers() {
+    let pageNumbers = $('#page-numbers');
+    pageNumbers.empty();
+
+    let startPage = Math.max(1, currentPage - 1);
+    let endPage = Math.min(totalPages, currentPage + 1);
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.append(
+        `<button class="btn ${i === currentPage ? 'btn-primary' : 'btn-light'}">${i}</button>`
+      );
+    }
+
+    if (endPage < totalPages) {
+      pageNumbers.append('<span class="btn btn-light disabled">...</span>');
+      pageNumbers.append(`<button class="btn btn-light">${totalPages}</button>`);
+    }
+
+    // Event listener for page number buttons
+    pageNumbers.find('button').on('click', function () {
+      let selectedPage = parseInt($(this).text());
+      if (selectedPage !== currentPage) {
+        currentPage = selectedPage;
+        fetchStudents($('#search-bar').val());
       }
     });
   }
@@ -77,6 +110,20 @@ $(() => {
   $('#next-page').on('click', function() {
     if (currentPage < totalPages) {
       currentPage++;
+      fetchStudents($('#search-bar').val());
+    }
+  });
+
+  $('#first-page').on('click', function() {
+    if (currentPage > 1) {
+      currentPage = 1;
+      fetchStudents($('#search-bar').val());
+    }
+  });
+
+  $('#last-page').on('click', function() {
+    if (currentPage < totalPages) {
+      currentPage = totalPages;
       fetchStudents($('#search-bar').val());
     }
   });
