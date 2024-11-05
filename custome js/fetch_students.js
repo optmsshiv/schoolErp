@@ -18,6 +18,12 @@ $(function () {
       success: function (data) {
         totalRecords = data.totalRecords;
         totalPages = Math.ceil(totalRecords / recordsPerPage);
+
+        // Update the total records displayed
+        $('#total-records').text(totalRecords); // Update total records
+        let currentRecordsCount = Math.min(recordsPerPage, totalRecords - (currentPage - 1) * recordsPerPage);
+        $('#current-records').text(currentRecordsCount); // Update current records displayed
+
         $('#total-pages').text(totalPages);
 
         let tableBody = $('#student-table-body');
