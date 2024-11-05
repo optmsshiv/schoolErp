@@ -30,8 +30,16 @@ $sql = "SELECT id, first_name, last_name, father_name, class_name, roll_no, phon
         WHERE CONCAT(first_name, ' ', last_name) LIKE ?
         LIMIT ?, ?";
 $stmt = $conn->prepare($sql);
+
+// Check if statement preparation succeeded
+if (!$stmt) {
+    die(json_encode(['error' => 'Query preparation failed: ' . $conn->error]));
+}
+
 $searchTerm = "%$search%";
-$stmt->bind_param("sii", $searchTerm, $offset, $limit);
+if (!$stmt->bind_param("sii", $searchTerm, $offset, $limit)) {
+    die(json_encode(['error' => 'Binding parameters failed: ' . $stmt->error]));
+}
 
 $stmt->execute();
 $result = $stmt->get_result();
@@ -44,7 +52,15 @@ while ($row = $result->fetch_assoc()) {
 // Get total record count for pagination
 $totalRecordsQuery = "SELECT COUNT(*) as total FROM students WHERE CONCAT(first_name, ' ', last_name) LIKE ?";
 $totalStmt = $conn->prepare($totalRecordsQuery);
-$totalStmt->bind_param("s", $searchTerm);
+
+if (!$totalStmt) {
+    die(json_encode(['error' => 'Total records query preparation failed: ' . $conn->error]));
+}
+
+if (!$totalStmt->bind_param("s", $searchTerm)) {
+    die(json_encode(['error' => 'Binding parameters for total records query failed: ' . $totalStmt->error]));
+}
+
 $totalStmt->execute();
 $totalResult = $totalStmt->get_result();
 $totalRecords = $totalResult->fetch_assoc()['total'];
@@ -58,6 +74,8 @@ echo json_encode([
     'totalRecords' => $totalRecords
 ]);
 
-// Close connection
+// Close statements and connection
+$stmt->close();
+$totalStmt->close();
 $conn->close();
 ?>
