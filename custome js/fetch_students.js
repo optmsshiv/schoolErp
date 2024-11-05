@@ -135,37 +135,15 @@ $(function () {
   $('#select-all').on('change', function () {
     // Set all checkboxes in the table to match the "Select All" checkbox state
     $('#student-table-body input[type="checkbox"]').prop('checked', this.checked);
-    // Update the appearance based on the state
-    updateSelectAllAppearance(this.checked);
+
+    // Update appearance based on the state
+    updateSelectAllAppearance();
   });
 
   // Individual row checkbox functionality
   $('#student-table-body').on('change', 'input[type="checkbox"]', function () {
-    const allCheckboxes = $('#student-table-body input[type="checkbox"]');
-    const checkedCheckboxes = allCheckboxes.filter(':checked');
-
-    if (checkedCheckboxes.length === 0) {
-      $('#select-all').prop('checked', false).removeClass('mixed');
-    } else if (checkedCheckboxes.length === allCheckboxes.length) {
-      $('#select-all').prop('checked', true).removeClass('mixed');
-    } else {
-      $('#select-all').prop('checked', true).addClass('mixed'); // Mixed state
-    }
-
-    // Update the appearance based on the mixed state
-    updateSelectAllAppearance($('#select-all').hasClass('mixed'));
+    updateSelectAllCheckbox();
   });
-
-  // Function to update the appearance of the "Select All" checkbox
-  function updateSelectAllAppearance(isMixed) {
-    if (isMixed) {
-      $('#select-all').addClass('mixed');
-      $('#select-all').prop('indeterminate', true); // Set to mixed state
-    } else {
-      $('#select-all').removeClass('mixed');
-      $('#select-all').prop('indeterminate', false); // Clear mixed state
-    }
-  }
 
   // Function to update the "Select All" checkbox state based on individual checkboxes
   function updateSelectAllCheckbox() {
@@ -173,15 +151,26 @@ $(function () {
     const checkedCheckboxes = allCheckboxes.filter(':checked');
 
     if (checkedCheckboxes.length === 0) {
-      $('#select-all').prop('checked', false).removeClass('mixed');
+      $('#select-all').prop('checked', false).prop('indeterminate', false);
     } else if (checkedCheckboxes.length === allCheckboxes.length) {
-      $('#select-all').prop('checked', true).removeClass('mixed');
+      $('#select-all').prop('checked', true).prop('indeterminate', false);
     } else {
-      $('#select-all').prop('checked', true).addClass('mixed'); // Mixed state
+      $('#select-all').prop('checked', true).prop('indeterminate', true); // Mixed state
     }
+  }
 
-    // Update the appearance based on the mixed state
-    updateSelectAllAppearance($('#select-all').hasClass('mixed'));
+  // Function to update the appearance of the "Select All" checkbox
+  function updateSelectAllAppearance() {
+    const allCheckboxes = $('#student-table-body input[type="checkbox"]');
+    const checkedCheckboxes = allCheckboxes.filter(':checked');
+
+    if (checkedCheckboxes.length === 0) {
+      $('#select-all').prop('checked', false).prop('indeterminate', false);
+    } else if (checkedCheckboxes.length === allCheckboxes.length) {
+      $('#select-all').prop('checked', true).prop('indeterminate', false);
+    } else {
+      $('#select-all').prop('indeterminate', true); // Mixed state
+    }
   }
 
   fetchStudents(); // Initial fetch
