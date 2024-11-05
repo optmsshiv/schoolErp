@@ -692,6 +692,7 @@ td {
   background-color: #f0ad4e; /* Light orange to indicate mixed state */
   color: white;
   position: relative;
+  background-image: linear-gradient(to right, red, orange);
 }
 
 
