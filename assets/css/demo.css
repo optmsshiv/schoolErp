@@ -691,10 +691,23 @@ td {
 #select-all.mixed {
   background-color: #f0ad4e; /* Light orange to indicate mixed state */
   color: white;
-  
-  background-image: linear-gradient(to right, red, orange);
+  position: relative;
 }
 
+/* Optional: Style for the checkbox itself to make it clear */
+#select-all {
+  position: relative;
+}
+
+/* Add a checkmark or custom styles for the mixed state */
+#select-all.mixed::after {
+  content: "–"; /* Dash to represent mixed state */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px; /* Adjust size as needed */
+}
 
 
 
