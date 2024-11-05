@@ -130,8 +130,9 @@ $(function () {
 
   // "Select All" checkbox functionality
   $('#select-all').on('change', function () {
+    const isChecked = this.checked;
     // Set all checkboxes in the table to match the "Select All" checkbox state
-    $('#student-table-body input[type="checkbox"]').prop('checked', this.checked);
+    $('#student-table-body input[type="checkbox"]').prop('checked', isChecked);
     // Remove mixed state class
     $(this).removeClass('mixed');
   });
