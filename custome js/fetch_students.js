@@ -130,14 +130,14 @@ $(() => {
 
   // "Select All" checkbox functionality
   $('#select-all').on('change', function () {
-    const isChecked = this.checked;
-    $('#student-table-body input[type="checkbox"]').prop('checked', isChecked);
+    const isChecked = $(this).is(':checked');
+    $('#student-table-body .row-checkbox').prop('checked', isChecked);
   });
 
   // Individual row checkbox functionality
-  $('#student-table-body').on('change', 'input[type="checkbox"]', function () {
-    const allChecked = $('#student-table-body input[type="checkbox"]').length ===
-                       $('#student-table-body input[type="checkbox"]:checked').length;
+  $('#student-table-body').on('change', '.row-checkbox', function () {
+    const allChecked = $('#student-table-body .row-checkbox').length ===
+                       $('#student-table-body .row-checkbox:checked').length;
     $('#select-all').prop('checked', allChecked);
   });
 
