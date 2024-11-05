@@ -16,7 +16,7 @@ $(() => {
         limit: recordsPerPage
       },
       success: function(data) {
-        totalRecords = data.totalRecords; // Assume total records come from PHP
+        totalRecords = data.totalRecords;
         totalPages = Math.ceil(totalRecords / recordsPerPage);
         $('#total-pages').text(totalPages);
 
@@ -27,7 +27,7 @@ $(() => {
           let sr_no = (currentPage - 1) * recordsPerPage + 1;
           $.each(data.students, function(index, student) {
             tableBody.append(`<tr>
-                                <td><input type='checkbox'></td>
+                                <td><input type='checkbox' class='row-checkbox'></td>
                                 <td>${sr_no++}</td>
                                 <td>${student.first_name} ${student.last_name}</td>
                                 <td>${student.father_name}</td>
@@ -126,6 +126,19 @@ $(() => {
       currentPage = totalPages;
       fetchStudents($('#search-bar').val());
     }
+  });
+
+  // "Select All" checkbox functionality
+  $('#select-all').on('change', function () {
+    const isChecked = this.checked;
+    $('#student-table-body input[type="checkbox"]').prop('checked', isChecked);
+  });
+
+  // Individual row checkbox functionality
+  $('#student-table-body').on('change', 'input[type="checkbox"]', function () {
+    const allChecked = $('#student-table-body input[type="checkbox"]').length ===
+                       $('#student-table-body input[type="checkbox"]:checked').length;
+    $('#select-all').prop('checked', allChecked);
   });
 
   fetchStudents(); // Initial fetch
