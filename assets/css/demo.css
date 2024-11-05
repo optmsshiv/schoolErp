@@ -703,7 +703,7 @@ td {
   color: #721c24; /* Darker color for text */
 }
 /* Table head bold */
-.thead-light th {
+.thead-lights th {
   font-weight: bold;
   white-space: nowrap;
   width: 1%;
