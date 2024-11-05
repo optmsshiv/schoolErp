@@ -4,8 +4,8 @@ $(function () {
   let totalRecords = 0;
   let totalPages = 1;
 
-  // Function to fetch student data with optional search term
-  function fetchStudents(searchTerm = '') {
+  // Function to fetch student data with optional search term and class
+  function fetchStudents(searchTerm = '', className = '') {
     $.ajax({
       url: '../php/fetch_active_student.php',
       type: 'GET',
@@ -13,7 +13,8 @@ $(function () {
       data: {
         search: searchTerm,
         page: currentPage,
-        limit: recordsPerPage
+        limit: recordsPerPage,
+        class: className // Include class parameter
       },
       success: function (data) {
         totalRecords = data.totalRecords;
@@ -92,7 +93,7 @@ $(function () {
       let selectedPage = parseInt($(this).text());
       if (selectedPage !== currentPage) {
         currentPage = selectedPage;
-        fetchStudents($('#search-bar').val());
+        fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
       }
     });
   }
@@ -100,40 +101,46 @@ $(function () {
   // Event listener for search bar
   $('#search-bar').on('input', function () {
     currentPage = 1;
-    fetchStudents($(this).val());
+    fetchStudents($(this).val(), $('#class-select').val()); // Pass selected class
+  });
+
+  // Event listener for class selection
+  $('#class-select').on('change', function () {
+    currentPage = 1;
+    fetchStudents($('#search-bar').val(), $(this).val()); // Pass selected class
   });
 
   $('#records-per-page').on('change', function () {
     recordsPerPage = parseInt($(this).val());
     currentPage = 1;
-    fetchStudents($('#search-bar').val());
+    fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
   });
 
   $('#prev-page').on('click', function () {
     if (currentPage > 1) {
       currentPage--;
-      fetchStudents($('#search-bar').val());
+      fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
     }
   });
 
   $('#next-page').on('click', function () {
     if (currentPage < totalPages) {
       currentPage++;
-      fetchStudents($('#search-bar').val());
+      fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
     }
   });
 
   $('#first-page').on('click', function () {
     if (currentPage > 1) {
       currentPage = 1;
-      fetchStudents($('#search-bar').val());
+      fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
     }
   });
 
   $('#last-page').on('click', function () {
     if (currentPage < totalPages) {
       currentPage = totalPages;
-      fetchStudents($('#search-bar').val());
+      fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
     }
   });
 
