@@ -706,12 +706,12 @@ td {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: 18px; /* Adjust size as needed 
+  font-size: 18px; /* Adjust size as needed
 }*/
-/* Additional styles for checked state */
+/* Additional styles for checked state
 #select-all:checked:not(.mixed) {
-  content: "✓"; /* Optionally add a checkmark or modify appearance */
-}
+  content: "✓"; /* Optionally add a checkmark or modify appearance
+}*/
 
 
 
