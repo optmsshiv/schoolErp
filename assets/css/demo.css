@@ -729,11 +729,11 @@ td {
   background-color: #f1f1f1;
   font-weight: bold;
   text-transform: uppercase;
-  
+
 }
 
 .custom-table tbody tr:nth-child(even) {
-  background-color: #fbfbfb; /* Alternate row color */
+  background-color: #ffffff; /* Alternate row color */
 }
 
 .custom-table tbody tr:hover {
