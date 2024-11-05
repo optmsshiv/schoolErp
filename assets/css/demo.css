@@ -702,7 +702,12 @@ td {
   background-color: #f8d7da; /* Light red to indicate not all are selected */
   color: #721c24; /* Darker color for text */
 }
-
+/* Table head bold */
+.thead-light th {
+  font-weight: bold;
+  white-space: nowrap;
+  width: 1%;
+}
 
 
 
