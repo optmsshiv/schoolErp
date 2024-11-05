@@ -159,10 +159,10 @@ $(function () {
   function updateSelectAllAppearance(isMixed) {
     if (isMixed) {
       $('#select-all').addClass('mixed');
-      $('#select-all').prop('indeterminate', false); // Set to mixed state
+      $('#select-all').prop('indeterminate', true); // Set to mixed state
     } else {
       $('#select-all').removeClass('mixed');
-      $('#select-all').prop('indeterminate', true); // Clear mixed state
+      $('#select-all').prop('indeterminate', false); // Clear mixed state
     }
   }
 
