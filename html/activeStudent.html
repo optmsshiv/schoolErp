@@ -757,27 +757,50 @@
                         </thead>
 
                         <tbody id="student-table-body">
-                        <!-- Data will be populated here by JavaScript -->
+                          <!-- Data will be populated here by JavaScript -->
                         </tbody>
                       </table>
                     </div>
                   </div>
 
-                  <div class="pagination-controls">
-                    <label for="records-per-page">Show:</label>
-                    <select id="records-per-page">
+                  <div class="pagination-controls d-flex justify-content-between align-items-center">
+                    <!-- Left side - Showing entries -->
+                    <div class="showing-entries">
+                      Showing
+                      <select id="records-per-page" class="form-select d-inline-block w-auto mx-1">
                         <option value="10">10</option>
                         <option value="15">15</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
-                    </select>
-
-                    <div class="pagination pagination-rounded">
-                        <button id="prev-page" disabled>Prev</button>
-                        <span id="page-info">Page <span id="current-page">1</span> of <span id="total-pages">1</span></span>
-                        <button id="next-page">Next</button>
+                      </select>
+                      entries
                     </div>
-                </div>
+
+                    <!-- Right side - Pagination -->
+                    <div class="pagination pagination-rounded">
+                      <button id="first-page" class="btn btn-light" title="First">
+                        <i class="fas fa-angle-double-left"></i>
+                      </button>
+                      <button id="prev-page" class="btn btn-light ms-1" title="Previous">
+                        <i class="fas fa-angle-left"></i>
+                      </button>
+
+                      <div class="page-numbers mx-2" id="page-numbers">
+                        <button class="btn btn-primary">1</button>
+                        <button class="btn btn-light">2</button>
+                        <button class="btn btn-light">3</button>
+                        <span class="btn btn-light disabled">...</span>
+                        <button class="btn btn-light">10</button>
+                      </div>
+
+                      <button id="next-page" class="btn btn-light" title="Next">
+                        <i class="fas fa-angle-right"></i>
+                      </button>
+                      <button id="last-page" class="btn btn-light ms-1" title="Last">
+                        <i class="fas fa-angle-double-right"></i>
+                      </button>
+                    </div>
+                  </div>
 
                 </div>
               </div>
@@ -831,7 +854,7 @@
     <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
     <script src="../assets/vendor/js/menu.js"></script>
     <script src="../custome js/fetch_students.js"></script>
-<!--
+    <!--
     <script src="../model/toggle.js"></script> -->
 
     <!-- endbuild -->

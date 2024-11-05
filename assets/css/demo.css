@@ -650,6 +650,41 @@ td {
   border-radius: 5px;
 }
 
+/* pagination css*/
+.pagination-controls {
+  padding: 1rem;
+  border-top: 1px solid #dee2e6;
+}
+
+.pagination .btn {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  min-width: 36px;
+  margin: 0 2px;
+}
+
+.page-numbers {
+  display: inline-flex;
+  align-items: center;
+}
+
+.page-numbers .btn {
+  margin: 0 2px;
+}
+
+.page-numbers .disabled {
+  pointer-events: none;
+  background-color: transparent;
+  border-color: #dee2e6;
+}
+
+#records-per-page {
+  width: 70px !important;
+}
+
+.showing-entries {
+  color: #697a8d;
+}
 
 
 
