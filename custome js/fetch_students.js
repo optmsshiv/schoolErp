@@ -52,6 +52,9 @@ $(function () {
 
         // Display current page buttons with highlighting
         updatePageNumbers();
+
+        // Update the "Select All" checkbox state
+        updateSelectAllCheckbox();
       },
       error: function (xhr, status, error) {
         console.error("Error fetching data: ", status, error);
@@ -132,8 +135,6 @@ $(function () {
   $('#select-all').on('change', function () {
     // Set all checkboxes in the table to match the "Select All" checkbox state
     $('#student-table-body input[type="checkbox"]').prop('checked', this.checked);
-    // Remove mixed state class
-    $(this).removeClass('mixed');
     // Update the appearance based on the state
     updateSelectAllAppearance(this.checked);
   });
@@ -164,6 +165,23 @@ $(function () {
       $('#select-all').removeClass('mixed');
       $('#select-all').prop('indeterminate', false); // Clear mixed state
     }
+  }
+
+  // Function to update the "Select All" checkbox state based on individual checkboxes
+  function updateSelectAllCheckbox() {
+    const allCheckboxes = $('#student-table-body input[type="checkbox"]');
+    const checkedCheckboxes = allCheckboxes.filter(':checked');
+
+    if (checkedCheckboxes.length === 0) {
+      $('#select-all').prop('checked', false).removeClass('mixed');
+    } else if (checkedCheckboxes.length === allCheckboxes.length) {
+      $('#select-all').prop('checked', true).removeClass('mixed');
+    } else {
+      $('#select-all').prop('checked', true).addClass('mixed'); // Mixed state
+    }
+
+    // Update the appearance based on the mixed state
+    updateSelectAllAppearance($('#select-all').hasClass('mixed'));
   }
 
   fetchStudents(); // Initial fetch
