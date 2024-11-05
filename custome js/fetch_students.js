@@ -141,12 +141,13 @@ $(function () {
     const allCheckboxes = $('#student-table-body input[type="checkbox"]');
     const checkedCheckboxes = allCheckboxes.filter(':checked');
 
+    // Update "Select All" checkbox based on individual checkbox states
     if (checkedCheckboxes.length === 0) {
-      $('#select-all').prop('checked', false).removeClass('mixed');
+      $('#select-all').prop('checked', false).removeClass('mixed'); // No checkboxes checked
     } else if (checkedCheckboxes.length === allCheckboxes.length) {
-      $('#select-all').prop('checked', true).removeClass('mixed');
+      $('#select-all').prop('checked', true).removeClass('mixed'); // All checkboxes checked
     } else {
-      $('#select-all').prop('checked', true).addClass('mixed'); // Mixed state
+      $('#select-all').prop('checked', false).addClass('mixed'); // Mixed state
     }
   });
 
