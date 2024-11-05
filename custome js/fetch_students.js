@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
   let currentPage = 1;
   let recordsPerPage = 10;
   let totalRecords = 0;
@@ -132,7 +132,7 @@ $(document).ready(function () {
   $('#select-all').on('change', function () {
     // Set all checkboxes in the table to match the "Select All" checkbox state
     $('#student-table-body input[type="checkbox"]').prop('checked', this.checked);
-    // Remove mixed state class if select all is checked or unchecked
+    // Remove mixed state class
     $(this).removeClass('mixed');
   });
 
@@ -141,15 +141,12 @@ $(document).ready(function () {
     const allCheckboxes = $('#student-table-body input[type="checkbox"]');
     const checkedCheckboxes = allCheckboxes.filter(':checked');
 
-    // If any checkbox is unchecked, mark "Select All" as mixed
     if (checkedCheckboxes.length === 0) {
       $('#select-all').prop('checked', false).removeClass('mixed');
     } else if (checkedCheckboxes.length === allCheckboxes.length) {
-      // If all checkboxes are checked, check the "Select All" checkbox
       $('#select-all').prop('checked', true).removeClass('mixed');
     } else {
-      // Mixed state
-      $('#select-all').prop('checked', true).addClass('mixed');
+      $('#select-all').prop('checked', true).addClass('mixed'); // Mixed state
     }
   });
 
