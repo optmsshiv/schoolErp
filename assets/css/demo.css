@@ -714,6 +714,7 @@ td {
   border-collapse: collapse;
   margin-top: 20px;
   background-color: #fafafa;
+  table-layout: auto; /* Allows columns to auto-fit content */
 }
 
 .custom-table th,
@@ -728,7 +729,7 @@ td {
   background-color: #f1f1f1;
   font-weight: bold;
   text-transform: uppercase;
-  width: 1%; /* Shrink columns around content */
+  
 }
 
 .custom-table tbody tr:nth-child(even) {
