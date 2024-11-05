@@ -151,11 +151,11 @@ $(function () {
     const checkedCheckboxes = allCheckboxes.filter(':checked');
 
     if (checkedCheckboxes.length === 0) {
-      $('#select-all').prop('checked', false).prop('indeterminate', false);
+      $('#select-all').prop('checked', false).prop('indeterminate', false).removeClass('unchecked');
     } else if (checkedCheckboxes.length === allCheckboxes.length) {
-      $('#select-all').prop('checked', true).prop('indeterminate', false);
+      $('#select-all').prop('checked', true).prop('indeterminate', false).removeClass('unchecked');
     } else {
-      $('#select-all').prop('checked', true).prop('indeterminate', true); // Mixed state
+      $('#select-all').prop('indeterminate', true).addClass('unchecked'); // Mixed state
     }
   }
 
@@ -165,11 +165,11 @@ $(function () {
     const checkedCheckboxes = allCheckboxes.filter(':checked');
 
     if (checkedCheckboxes.length === 0) {
-      $('#select-all').prop('checked', false).prop('indeterminate', false);
+      $('#select-all').prop('checked', false).prop('indeterminate', false).removeClass('unchecked');
     } else if (checkedCheckboxes.length === allCheckboxes.length) {
-      $('#select-all').prop('checked', true).prop('indeterminate', false);
+      $('#select-all').prop('checked', true).prop('indeterminate', false).removeClass('unchecked');
     } else {
-      $('#select-all').prop('indeterminate', true); // Mixed state
+      $('#select-all').prop('indeterminate', true).addClass('unchecked'); // Mixed state
     }
   }
 
