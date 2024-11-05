@@ -134,6 +134,8 @@ $(function () {
     $('#student-table-body input[type="checkbox"]').prop('checked', this.checked);
     // Remove mixed state class
     $(this).removeClass('mixed');
+    // Update the appearance based on the state
+    updateSelectAllAppearance(this.checked);
   });
 
   // Individual row checkbox functionality
@@ -148,7 +150,21 @@ $(function () {
     } else {
       $('#select-all').prop('checked', true).addClass('mixed'); // Mixed state
     }
+
+    // Update the appearance based on the mixed state
+    updateSelectAllAppearance($('#select-all').hasClass('mixed'));
   });
+
+  // Function to update the appearance of the "Select All" checkbox
+  function updateSelectAllAppearance(isMixed) {
+    if (isMixed) {
+      $('#select-all').addClass('mixed');
+      $('#select-all').prop('indeterminate', true); // Set to mixed state
+    } else {
+      $('#select-all').removeClass('mixed');
+      $('#select-all').prop('indeterminate', false); // Clear mixed state
+    }
+  }
 
   fetchStudents(); // Initial fetch
 });
