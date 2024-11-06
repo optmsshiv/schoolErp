@@ -43,6 +43,11 @@
   <script src="../assets/js/config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+  <!--DataTable-->
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
+
 </head>
 
 <body>
@@ -117,36 +122,15 @@
 
         <ul class="menu-inner py-1">
           <!-- Dashboards -->
-          <li class="menu-item active ">
+          <li class="menu-item">
             <a href="index.html" class="menu-link">
               <i class="menu-icon tf-icons bx bx-home-circle"></i>
               <div data-i18n="Dashboards">Dashboards</div>
               <!--  <div class="badge bg-danger rounded-pill ms-auto">5</div> -->
             </a>
           </li>
-          <!---Manage User--
-          <li class="menu-item" id="manageUserMenu">
-            <a href="javascript:void(0);" class="menu-link menu-toggle" id="manageUserToggle">
-              <i class="menu-icon tf-icons bx bx-user-plus bx-sm"></i>
-              <div data-i18n="Staff Management">Manage User</div>
-              <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
-            </a>
-            <ul class="menu-sub" id="manageUserSubMenu">
-              <li class="menu-item">
-                <a href="manageUser.html" class="menu-link">
-                  <div data-i18n="Manage User">Manage User</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="anotherSubMenu.html" class="menu-link">
-                  <div data-i18n="Another Menu">Extra</div>
-                </a>
-              </li>
 
-            </ul>
-          </li>-->
-
-          <li class="menu-item">
+          <li class="menu-item ">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-user-plus bx-sm"></i>
               <div data-i18n="User Desk">Manage User</div>
@@ -162,47 +146,42 @@
             </ul>
           </li>
 
-
-
           <!-- Layouts -->
           <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a href="javascript:void(0);" class="menu-link menu-toggle" id="front-desk-toggle">
               <i class="menu-icon tf-icons bx bx-store"></i>
               <div data-i18n="Front Desk">Front Desk</div>
             </a>
 
-            <ul class="menu-sub">
+            <ul class="menu-sub" id="front-desk-submenu">
               <li class="menu-item">
-                <a href="visitor.html" class="menu-link">
+                <a href="visitor.html" class="menu-link" id="visitor-link">
                   <div data-i18n="Visitor Register">Visitor Register</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="admissionEnquiry.html" class="menu-link">
+                <a href="admissionEnquiry.html" class="menu-link" id="admission-link">
                   <div data-i18n="Admission Enquiry">Admission Enquiry</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="layouts-container.html" class="menu-link">
+                <a href="complaintRegister.html" class="menu-link" id="complaint-link">
                   <div data-i18n="Complaint Register">Complaint Register</div>
                 </a>
               </li>
-
               <li class="menu-item">
-                <a href="layouts-blank.html" class="menu-link">
+                <a href="studentInfo.html" class="menu-link" id="student-info-link">
                   <div data-i18n="Student Information">Student Information</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="layouts-blank.html" class="menu-link">
+                <a href="instantSMS.html" class="menu-link" id="sms-link">
                   <div data-i18n="Instant SMS">Instant SMS</div>
                 </a>
               </li>
-
             </ul>
           </li>
 
-          <!-- Front Pages -->
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle" id="manage-student-toggle">
               <i class="menu-icon tf-icons fas fa-users"></i>
@@ -234,6 +213,7 @@
           </li>
 
 
+          <!-- Front Pages -->
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons fas fa-file-alt"></i>
@@ -274,6 +254,9 @@
               </li>
             </ul>
           </li>
+
+
+
           <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons fas fa-id-card"></i>
@@ -302,7 +285,7 @@
           <!-- Apps -->
 
 
-          <li class="menu-item">
+          <li class="menu-item active open">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-money-withdraw"></i>
               <div data-i18n="Accounting">Accounting</div>
@@ -314,14 +297,14 @@
                   <div data-i18n="Accountants">Accountants</div>
                 </a>
               </li>
-              <li class="menu-item">
-                <a href="collect_fee.html" class="menu-link">
+              <li class="menu-item active">
+                <a href="#" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-rupee"></i>
                   <div data-i18n="Expense Management">Collect Fee</div>
                 </a>
               </li>
               <li class="menu-item">
-                <a href="#" class="menu-link">
+                <a href="collect_fee.html" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-money"></i>
                   <div data-i18n="Fee Payments">Fee Payments</div>
                 </a>
@@ -480,6 +463,7 @@
                   <div data-i18n="Error">Error</div>
                 </a>
               </li>
+
             </ul>
           </li>
           <li class="menu-item">
@@ -726,403 +710,210 @@
 
         <!-- Content wrapper -->
         <div class="content-wrapper">
-          <div class="container-xxl flex-grow-1 container-p-y">
-            <div class="row">
+          <div class="container-xxl mt-3">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item "><a href="#">Manage Student</a></li>
+                <li class="breadcrumb-item active fw-bold" aria-current="page">Student Details</li>
+              </ol>
+            </nav>
+            <!-- / Breadcrumb -->
 
-              <div class="col-sm-4 mb-4 mb-sm-0">
+            <div class="row gy-1">
+              <div class="xxl">
                 <div class="card">
                   <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-4 mb-4">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-4 mb-4">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                  </div>
-                </div>
-              </div>
+                    <h4 class="card-title fw-bold d-flex">Student Details :- </h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <table id="student_data" class="customs-table">
+                        <tbody>
+                          <thead>
+                            <tr>
+                                <th style="width: 12%;"></th>
+                                <th></th>
+                                <th style="width: 12%;"></th>
+                                <th style="width: 25%;"></th>
+                                <th style="width: 12%;"></th>
+                                <th></th>
 
+                            </tr>
+                        </thead>
+                          <tr>
+                            <td class="fw-bold">Student's Name:</td>
+                            <td>John</td>
+                            <td class="fw-bold">Father's Name:</td>
+                            <td>John Downey</td>
+                            <td class="fw-bold">Monthly Fee:</td>
+                            <td>6500</td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">Class:</td>
+                            <td>8</td>
+                            <td class="fw-bold">Mother's Name:</td>
+                            <td>Angelina</td>
+                            <td class="fw-bold">Type:</td>
+                            <td>Hostler</td>
+                          </tr>
+                          <tr>
+                            <td class="fw-bold">Roll number:</td>
+                            <td>15</td>
+                            <td class="fw-bold">Mobile:</td>
+                            <td>7282071620</td>
+                            <td class="fw-bold">Blank</td>
+                            <td>Blank</td>
+                          </tr>
 
-              <!-- First Card -->
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <div class="card custom-card" id="total_student" style="background-color: #6c757d;">
-                  <!-- Changed color -->
-                  <div class="d-flex align-items-center row mt-2">
-                    <div class="col-sm-6 col-md-8 col-lg-9">
-                      <div class="card-body p-2">
-                        <h4 class="custom-h4 text-success mb-1">1150</h4>
-                        <h5 class="custom-h5 text-white mt-3">Total Student</h5>
-                        <p class="text-white custom-h6 mb-0">Active Student: 1030</p>
-                      </div>
-                    </div>
-                    <div class="col-4 col-md-3 col-lg-2 text-end">
-                      <i class="bx bx-car bx-md" style="color: #edcf0d"></i>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="card custom-card mt-3" style="background-color: #6c757d;"> <!-- Changed color -->
-                  <div class="d-flex align-items-center row">
-                    <div class="col-8">
-                      <div class="card-body">
-                        <h4 class="custom-h4 text-success">150</h4>
-                        <h5 class="custom-h5 text-white">Transport Student</h5>
-                        <p class="mb-3 text-white custom-h6">Total Member: 130</p>
-                      </div>
-                    </div>
-                    <div class="col-4 text-center">
-                      <div class="card-body">
-                        <i class="bx bx-car bx-md" style="color: #fff"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-              </div>
-
-
-              <!-- Second Card -->
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <div class="card custom-card" style="background-color: #007bff;"> <!-- Changed color -->
-                  <div class="d-flex align-items-center row">
-                    <div class="col-8">
-                      <div class="card-body p-2">
-                        <h4 class="custom-h4 text-success">80</h4>
-                        <h5 class="custom-h5 text-white">Total Faculty</h5>
-                        <p class="mb-3 text-white custom-h6">Total Member : 80</p>
-                      </div>
-                    </div>
-                    <div class="col-4 text-center">
-                      <div class="card-body">
-                        <i class="bx bx-user bx-md" style="color: #fff"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Second 2 Card -->
-
-                <div class="card custom-card mt-3" style="background-color: #8e3e63">
-                  <div class="d-flex align-items-center row">
-                    <div class="col-8">
-                      <div class="card-body">
-                        <h4 class="custom-h4 text-success">30</h4>
-                        <h5 class="custom-h5 text-white">Total Non-Teaching Staff</h5>
-
-                      </div>
-                    </div>
-                    <div class="col-4 text-center">
-                      <div class="card-body">
-                        <i class="bx bx-list-check bx-md" style="color: #fff"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-              <!-- Third Card -->
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <div class="card custom-card" style="background-color: #8e3e63">
-                  <div class="d-flex align-items-center row">
-                    <div class="col-8">
-                      <div class="card-body p-2">
-                        <h4 class="custom-h4 text-success">20</h4>
-                        <h5 class="custom-h5 text-white">Total User</h5>
-                        <p class="mb-3 text-white custom-h6">Active User: 18</p>
-                      </div>
-                    </div>
-                    <div class="col-4 text-center">
-                      <div class="card-body">
-                        <i class="bx bx-group bx-md" style="color: #fff"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Fourth Card -->
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <div class="card custom-card" style="background-color: #8e3e63">
-                  <div class="d-flex align-items-center row">
-                    <div class="col-8">
-                      <div class="card-body">
-                        <h4 class="custom-h4 text-success">5</h4>
-                        <h5 class="custom-h5 text-white">Support Member</h5>
-                        <p class="mb-3 text-white custom-h6">Total Member: 4</p>
-                      </div>
-                    </div>
-                    <div class="col-4 text-center">
-                      <div class="card-body">
-                        <i class="bx bx-help-circle bx-md" style="color: #fff"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Second Row end here -->
-
-            <div class="row mb-3">
-              <div class="col-sm-3">
-                <div class="card mt-2 custom-hover" style="background-color: #216374">
-                  <div class="align-items-center row">
-                    <div class="col-sm-8">
-                      <div class="card-body">
-                        <h4 class="custom-h4 text-success">135</h4>
-                        <h5 class="custom-h5 text-white">Active Staff</h5>
-                        <p class="mb-3 text-white custom-h6">Total Students : 130</p>
-                      </div>
-                    </div>
-                    <div class="col-sm-3 text-center">
-                      <div>
-                        <img src="../assets/img/icons/unicons/paypal.png" alt="Student Image" class="img-fluid"
-                          style="max-width: 50px" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="card custom-hover mt-3" style="background-color: #B06161">
-                  <div class="d-flex align-items-center row">
-                    <div class="col-sm-8">
-                      <div class="card-body">
-                        <h4 class="custom-h4 text-success">145</h4>
-                        <h5 class="custom-h5 text-white">Active Staff</h5>
-                        <p class="mb-3 text-white custom-h6">Total Students : 130</p>
-                      </div>
-                    </div>
-                    <div class="col-sm-3 text-center">
-                      <div>
-                        <img src="../assets/img/icons/unicons/wallet-info.png" alt="Student Image" class="img-fluid"
-                          style="max-width: 50px" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-sm-3">
-                <div class="card custom-hover mt-2" style="background-color: rgb(38, 50, 121)">
-                  <div class="d-flex align-items-center row">
-                    <div class="col-sm-8">
-                      <div class="card-body">
-                        <h4 class="custom-h4 text-success">120</h4>
-                        <h5 class="custom-h5 text-white">Active Staff</h5>
-                        <p class="mb-2 text-white custom-h6">Total Students : 130</p>
-                      </div>
-                    </div>
-                    <div class="col-sm-3 text-center">
-                      <div>
-                        <img src="../assets/img/icons/unicons/wallet-info.png" alt="Student Image" class="img-fluid"
-                          style="max-width: 50px" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-xxl mt-3">
-                  <div class="card custom-hover" style="background-color: rgb(121, 42, 118)">
-                    <div class="d-flex align-items-center row">
-                      <div class="col-sm-8">
-                        <div class="card-body">
-                          <h4 class="custom-h4 text-success">155</h4>
-                          <h5 class="custom-h5 text-white">Active Staff</h5>
-                          <p class="text-white custom-h6">Total Students : 130</p>
-                        </div>
-                      </div>
-                      <div class="col-sm-3 text-center">
-                        <div>
-                          <img src="../assets/img/icons/unicons/wallet-info.png" alt="Student Image" class="img-fluid"
-                            style="max-width: 50px" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-xxl mt-2">
-                <div class="card custom-hover" style="height: 280px;">
-                  <div class="card-body">
-                    <h4 class="custom-h4 text-success">165</h4>
-                    <h5 class="custom-h5 text-dark">Total Collection</h5>
-                    <p class="mb-3 text-dark custom-h6">Total Students : 130</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
-            <div class="row">
-              <div class="col-4">
-                <div class="card custom-hover" style="height: 350px;">
-                  <div class="card-body">
-                    <h4 class="custom-h4 fw-bold mt-2 text-primary">Transactions</h4>
-                    <div class="dropdown" style="position: absolute; top: 15px; right: 5px;">
-                      <button class="btn text-muted p-0 mt-2" type="button" id="dropdownMenuButton"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bx bx-dots-vertical-rounded bx-sm"></i>
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#">Last 28 days</a></li>
-                        <li><a class="dropdown-item" href="#">Last 7 days</a></li>
-                        <li><a class="dropdown-item" href="#">Today</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-4">
-                <div class="card custom-hover" style="height: 350px;">
-                  <div class="card-body ">
-                    <div style="width: 180px; ">
-                      <select id="classSelect" class="form-select">
-                        <option value="0">Select class:</option>
-                        <option value="1">Class 1</option>
-                        <option value="2">Class 2</option>
-                        <option value="3">Class 3</option>
-                      </select>
-                    </div>
-                    <div id="chart"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-4">
-                <div class="card custom-hover mb-3" style="height: 350px;">
-                  <h6 class="fw-bold  mb-0 ps-sm-4 mt-3">Recent Fee Submission : </h6>
-                  <div class="table-responsive d-flex">
-                    <div class="card-body table-table" style="height: 350px">
-                      <table class="table table-sm table-striped table-bordered mb-5"
-                        style="table-layout: auto; min-width: 100px;">
-                        <tr>
-                          <th class="fw-bold">S.No</th>
-                          <th class="fw-bold">Name</th>
-                          <th class="fw-bold">Class</th>
-                          <th class="fw-bold">Amount</th>
-                          <th class="fw-bold">Status</th>
-                          <th class="fw-bold">Date</th>
-                        </tr>
-                        <tr>
-                          <td>1</td>
-                          <td>John Doe</td>
-                          <td>10</td>
-                          <td>$200</td>
-                          <td>Paid</td>
-                          <td>2024-08-20</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jane Smith</td>
-                          <td>9</td>
-                          <td>$150</td>
-                          <td>Pending</td>
-                          <td>2024-08-21</td>
-                        </tr>
+                        </tbody>
                       </table>
                     </div>
                   </div>
                 </div>
               </div>
 
+              <!------------Table layout----------------->
 
-              <div class="col-6">
-                <div class="card custom-hover mt-3 mb-3">
-                  <div class="card-body">
-                    <canvas id="myChart"></canvas>
+              <div class="col-xxl container-p-y">
+                <div class="card userCard p-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold ms-3 mb-0">Student Fee Details</h4>
+                    <button class="btn btn-primary">Collect Fee</button>
+                </div>
+
+                  <div class="table-responsive mt-3">
+                    <table id="optms" class="table table-md table-hover table-bordered  border-bottom"
+                      style=" width:100%">
+                      <thead class="thead-light">
+                        <tr>
+                          <th scope="col" class="fw-bold" style="width: 2%;">RecieptId</th>
+                          <th scope="col" class="fw-bold" style="width: 20%;">Month</th>
+                          <th scope="col" class="fw-bold" style="width: 5%;">Due Amount</th>
+                          <th scope="col" class="fw-bold" style="width: 5%;">Pending Amount</th>
+                          <th scope="col" class="fw-bold" style="width: 5%;">Recieved Amount</th>
+                          <th scope="col" class="fw-bold" style="width: 5%;">Total Amount</th>
+                          <th scope="col" class="fw-bold" style="width: 5%;">Status</th>
+                          <th scope="col" class="fw-bold" style="width: 5%;">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>104</td>
+                          <td>August</td>
+                          <td align="center">5000</td>
+                          <td align="center">4000</td>
+                          <td align="center">15000</td>
+                          <td align="center">24000</td>
+                          <td><span class="badge bg-label-success me-1">Paid</span></td>
+                          <td align="center">
+                            <div class="dropdown">
+                              <button class="btn text-muted p-0 " type="button" id="dropdownMenuButton"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bx bx-dots-vertical-rounded bx-sm"></i>
+                              </button>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item border-bottom href="#">View Fee Reciept</a></li>
+                                <li><a class="dropdown-item border-bottom"  href="#">Send Fee Reciept</a></li>
+                                <li><a class="dropdown-item border-bottom" href="#">Send Fee Message</a></li>
+                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                              </ul>
+                            </div>
+                        </td>
+                        </tr>
+                        <tr>
+                          <td>119</td>
+                          <td>September</td>
+                          <td></td>
+                          <td align="center">24000</td>
+                          <td></td>
+                          <td></td>
+                          <td><span class="badge bg-label-danger me-1">Pending</span></td>
+                          <td>Action</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
-
-              <div class="col-6">
-                <div class="card custom-hover mt-3 mb-3">
-                  <div class="card-body">
-                    <div id="collectionChart"></div>
-                  </div>
-                </div>
-              </div>
-
-
-
-              <!-- / Content -->
-
-              <!-- Footer -->
-              <footer class="content-footer footer bg-footer-theme">
-                <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                  <div class="mb-2 mb-md-0">
-                    ©
-                    <script>
-                      document.write(new Date().getFullYear());
-                    </script>
-                    , made with ❤️ by
-                    <a href="https://optms.co.in" target="_blank" class="footer-link fw-medium">OPTMS Tech</a>
-                  </div>
-                  <div class="d-none d-lg-inline-block">
-                    <a href="https://www.optms.co.in/" target="_blank" class="footer-link me-4">Connect</a>
-                    <a href="https://www.optms.co.in/issues" target="_blank" class="footer-link">Support</a>
-                  </div>
-                </div>
-              </footer>
-              <!-- / Footer -->
-
-              <div class="content-backdrop fade"></div>
             </div>
-            <!-- Content wrapper -->
+
+            <!---Container-->
           </div>
-          <!-- / Layout page -->
         </div>
 
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
+        <div class="mb-3">
+
+        </div>
+        <!-- content wrapper -->
+        <!-- Footer -->
+        <footer class="content-footer footer bg-footer-theme">
+          <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+            <div class="mb-2 mb-md-0">
+              ©
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              , made with ❤️ by
+              <a href="https://optms.co.in" target="_blank" class="footer-link fw-medium">OPTMS Tech</a>
+            </div>
+            <div class="d-none d-lg-inline-block">
+              <a href="https://www.optms.co.in/" target="_blank" class="footer-link me-4">Connect</a>
+              <a href="https://www.optms.co.in/issues" target="_blank" class="footer-link">Support</a>
+            </div>
+          </div>
+        </footer>
+        <!-- / Footer -->
+
+        <div class="content-backdrop fade"></div>
+        <!-- / Layout page -->
       </div>
-      <!-- / Layout wrapper -->
 
-      <!-- Core JS -->
-      <!-- build:js assets/vendor/js/core.js -->
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
 
-      <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-      <script src="../assets/vendor/libs/popper/popper.js"></script>
-      <script src="../assets/vendor/js/bootstrap.js"></script>
-      <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-      <script src="../assets/vendor/js/menu.js"></script>
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
 
-      <!-------------------------------Chart js---------------------------------->
-      <script src="../model/collectionChart.js"></script>
-      <script src="../model/chart.js"></script>
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../assets/vendor/js/menu.js"></script>
+
+    <!--Chart js-->
 
 
-      <!-- endbuild -->
 
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-      <!-- endbuild-->
 
-      <!-- Vendors JS -->
-      <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+    <!-- endbuild -->
 
-      <!-- Main JS -->
-      <script src="../assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+    <!-- endbuild-->
 
-      <!-- Page JS -->
-      <script src="../assets/js/dashboards-analytics.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8"
+      src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+      src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Vendors JS -->
+    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+    <!-- Main JS -->
+    <script src="../assets/js/main.js"></script>
+
+    <!-- Page JS -->
+    <script src="../assets/js/dashboards-analytics.js"></script>
 
 
 
