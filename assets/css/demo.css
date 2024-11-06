@@ -744,7 +744,17 @@ td {
   cursor: pointer;
 }
 
+/* table border to hode border*/
+.customs-table {
+  width: 100%;
 
+}
+
+.customs-table th,
+.customs-table td {
+    padding: 5px;
+    border: none; /* Removes border */
+}
 
 
 
