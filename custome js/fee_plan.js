@@ -16,6 +16,51 @@ document.addEventListener('DOMContentLoaded', function() {
           return;
       }
 
+      // Send AJAX request to insert the Fee Head
+      $.ajax({
+        url: '../php/insert_fee_plan.php', // PHP file that handles the insertion
+        type: 'POST',
+        data: { feeHeadName: feeHeadName },
+        success: function(response) {
+          if (response.status === 'success') {
+            // Clear the input field
+            $('#feeHeadName').val('');
+            // Reload the list of Fee Heads
+            loadFeeHeads();
+          } else {
+            alert('Error: ' + response.message);
+          }
+        },
+        error: function() {
+          alert('An error occurred while processing the request');
+        }
+      });
+    });
+
+        // Function to load and display the list of fee heads
+        function loadFeeHeads() {
+          $.ajax({
+            url: '../php/fetch_fee_plan.php', // PHP file to fetch fee heads
+            type: 'GET',
+            success: function(response) {
+              var feeHeadList = $('#feeHeadList');
+              feeHeadList.empty(); // Clear existing list
+
+              // Append the fee heads to the list
+              response.data.forEach(function(feeHead) {
+                feeHeadList.append('<li class="list-group-item">' + feeHead.name + '</li>');
+              });
+            },
+            error: function() {
+              alert('An error occurred while loading the fee heads');
+            }
+          });
+        }
+
+        // Initially load the Fee Heads
+        loadFeeHeads();
+      });
+
       // Create a new list item for the fee head with Edit and Delete buttons
       const listItem = document.createElement('li');
       listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
