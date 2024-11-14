@@ -758,17 +758,8 @@ td {
 
 /* fee tab active */
  /* Custom color for active tab */
- /* Custom hover effect for all tabs */
- .nav-tabs .nav-link:hover {
-  background-color: var(--bs-primary); /* Primary color for hover */
-  color: #ffffff;                      /* White text on hover */
-}
+ 
 
-/* Active tab styles */
-.nav-tabs .nav-link.active {
-  background-color: var(--bs-primary); /* Primary color for active tab */
-  color: #ffffff;                      /* White text for active tab */
-}
 
 
 

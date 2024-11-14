@@ -45,7 +45,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-  <!--DataTable-->
   <!-- DataTables CSS -->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
 
@@ -729,117 +728,140 @@
                   <div class="card-body">
                     <h4 class="card-title fw-bold d-flex mb-0 badge bg-label-info">Student Details :</h4>
                     <div class="container mt-5">
-                        <!-- Button-style Tabs -->
-                        <ul class="nav nav-tabs" id="feeTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-primary active" id="fee-head-tab" data-bs-toggle="tab" href="#fee-head" role="tab">Fee Head</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-primary" id="fee-plan-tab" data-bs-toggle="tab" href="#fee-plan" role="tab">Fee Plan</a>
-                            </li>
-                        </ul>
+                      <div class="row">
+                        <div class="col-md-2">
+                          <!-- Button-style Tabs -->
+                          <ul class="nav nav-tabs flex-column" id="feeTab" role="tablist">
+                            <button class="nav-link btn btn-outline-info active" id="fee-head-tab" data-bs-toggle="tab"
+                              href="#fee-head" role="tab">Fee Head</button>
+                            <button class="nav-link btn btn-outline-info mt-3" id="fee-plan-tab" data-bs-toggle="tab"
+                              href="#fee-plan" role="tab">Fee Plan</button>
+                          </ul>
+                        </div>
 
                         <!-- Tab Content -->
-                        <div class="tab-content" id="feeTabContent">
+                        <div class="col-md-10">
+                          <div class="tab-content" id="feeTabContent">
                             <!-- Fee Head Tab -->
                             <div class="tab-pane fade show active" id="fee-head" role="tabpanel">
-                                <div class="mt-3">
-                                    <h4>Create Fee Head</h4>
-                                    <form id="feeHeadForm">
-                                        <div class="mb-3">
-                                            <label for="feeHeadName" class="form-label">Fee Head Name</label>
-                                            <input type="text" class="form-control" id="feeHeadName" placeholder="Enter fee head name" required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary mt-3">Add Fee Head</button>
-                                    </form>
-                                    <hr>
-                                    <h5>Existing Fee Heads</h5>
-                                    <ul id="feeHeadList" class="list-group mt-2"></ul>
-                                </div>
+                              <div class="mt-3">
+                                <h4>Create Fee Head</h4>
+                                <form id="feeHeadForm">
+                                  <div class="mb-3">
+                                    <label for="feeHeadName" class="form-label">Fee Head Name</label>
+                                    <input type="text" class="form-control col-sm-3" id="feeHeadName"
+                                      placeholder="Enter fee head name" required>
+                                  </div>
+                                  <button type="submit" class="btn btn-primary mt-3">Add Fee Head</button>
+                                </form>
+                                <hr>
+                                <h5>Existing Fee Heads</h5>
+                                <ul id="feeHeadList" class="list-group mt-2 col-sm-6"></ul>
+                              </div>
                             </div>
 
                             <!-- Fee Plan Tab -->
                             <div class="tab-pane fade" id="fee-plan" role="tabpanel">
-                                <div class="mt-3">
-                                    <h4>Create Fee Plan for Each Month</h4>
-                                    <form id="createFeePlanForm">
-                                        <div class="row">
-                                            <!-- Fee Head Dropdown -->
-                                            <div class="col-md-3 mb-3">
-                                                <label for="feeHeadSelect" class="form-label">Fee Head</label>
-                                                <select class="form-control" id="feeHeadSelect" required>
-                                                    <option value="">Select a Fee Head</option>
-                                                </select>
-                                            </div>
-                                            <!-- Class Dropdown -->
-                                            <div class="col-md-3 mb-3">
-                                                <label for="classDropdownButton" class="form-label">Class</label>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="classDropdownButton" data-bs-toggle="dropdown">
-                                                        Select Class
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><label class="dropdown-item"><input type="checkbox" id="selectAllClasses" onclick="selectAllClasses(this)"> All</label></li>
-                                                        <li><hr class="dropdown-divider"></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="class" value="Nursery"> Nursery</label></li>
-
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <!-- Month Dropdown -->
-                                            <div class="col-md-3 mb-3">
-                                                <label for="monthDropdownButton" class="form-label">Month(s)</label>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="monthDropdownButton" data-bs-toggle="dropdown">
-                                                        Select Month(s)
-                                                    </button>
-                                                    <ul class="dropdown-menu w-100">
-                                                        <li><label class="dropdown-item"><input type="checkbox" id="selectAllMonths" onclick="selectAllMonths(this)"> All Months</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="January"> January</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="February"> February</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="March"> March</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="April"> April</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="May"> May</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="June"> June</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="July"> July</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="August"> August</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="September"> September</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="October"> October</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="November"> November</label></li>
-                                                        <li><label class="dropdown-item"><input type="checkbox" name="month" value="December"> December</label></li>
-                                                        <!-- Other months... -->
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <!-- Fee Amount -->
-                                            <div class="col-md-3 mb-3">
-                                                <label for="feeAmount" class="form-label">Fee Amount</label>
-                                                <input type="number" class="form-control" id="feeAmount" placeholder="Enter fee amount" required>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary mt-3">Create Fee Plan</button>
-                                    </form>
-                                    <hr>
-                                    <h5>Fee Plan List</h5>
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered" id="feePlanTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Class</th>
-                                                    <th>Fee Head</th>
-                                                    <th>Month</th>
-                                                    <th>Fee Amount</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="feePlanBody"></tbody>
-                                        </table>
+                              <div class="mt-3">
+                                <h4>Create Fee Plan for Each Month</h4>
+                                <form id="createFeePlanForm">
+                                  <div class="row">
+                                    <!-- Fee Head Dropdown -->
+                                    <div class="col-md-3 mb-3">
+                                      <label for="feeHeadSelect" class="form-label">Fee Head</label>
+                                      <select class="form-control" id="feeHeadSelect" required>
+                                        <option value="">Select a Fee Head</option>
+                                      </select>
                                     </div>
+                                    <!-- Class Dropdown -->
+                                    <div class="col-md-3 mb-3">
+                                      <label for="classDropdownButton" class="form-label">Class</label>
+                                      <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                          id="classDropdownButton" data-bs-toggle="dropdown">
+                                          Select Class
+                                        </button>
+                                        <ul class="dropdown-menu">
+
+                                          <li><label class="dropdown-item"><input type="checkbox" name="class"
+                                                value="Nursery"> Nursery</label></li>
+
+                                        </ul>
+                                      </div>
+                                    </div>
+                                    <!-- Month Dropdown -->
+                                    <div class="col-md-3 mb-3">
+                                      <label for="monthDropdownButton" class="form-label">Month(s)</label>
+                                      <div class="dropdown" id="monthDropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                          id="monthDropdownButton" data-bs-toggle="dropdown">
+                                          Select Month(s)
+                                        </button>
+                                        <ul class="dropdown-menu w-100"
+                                          style="max-height: 200px; max-width: fit-content; overflow-y: auto;">
+                                          <li><label class="dropdown-item"><input type="checkbox" id="selectAllMonths"
+                                                onclick="selectAllMonths(this)"> All Months</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="January"> January</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="February"> February</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="March"> March</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="April"> April</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="May"> May</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="June"> June</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="July"> July</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="August"> August</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="September"> September</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="October"> October</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="November"> November</label></li>
+                                          <li><label class="dropdown-item"><input type="checkbox" name="month"
+                                                value="December"> December</label></li>
+                                          <!-- Other months... -->
+                                        </ul>
+                                      </div>
+                                    </div>
+
+                                    <!-- Fee Amount -->
+                                    <div class="col-md-3 mb-3">
+                                      <label for="feeAmount" class="form-label">Fee Amount</label>
+                                      <input type="number" class="form-control" id="feeAmount"
+                                        placeholder="Enter fee amount" required>
+                                    </div>
+                                  </div>
+                                  <button type="submit" class="btn btn-primary mt-3">Create Fee Plan</button>
+                                </form>
+                                <hr>
+                                <h5>Fee Plan List</h5>
+                                <div class="table-responsive">
+                                  <table class="table table-bordered" id="feePlanTable">
+                                    <thead>
+                                      <tr>
+                                        <th style="width:1%;">Class</th>
+                                        <th style="width:8%;">Fee Head</th>
+                                        <th style="width:1%;">Month</th>
+                                        <th style="width:10%;">Fee Amount</th>
+                                        <th style="width:8%;">Actions</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody id="feePlanBody"></tbody>
+                                  </table>
                                 </div>
+                              </div>
                             </div>
+                          </div>
                         </div>
+                      </div>
                     </div>
-                </div>
+                  </div>
 
 
 
@@ -969,10 +991,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
   <!-- endbuild-->
-
-
-  <!-- DataTables CSS -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
 
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
