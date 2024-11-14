@@ -13,7 +13,7 @@ try {
     $pdo = new PDO($dsn, $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo 'Connection failed: ' . $e->getMessage();
+    echo json_encode(['status' => 'error', 'message' => 'Connection failed: ' . $e->getMessage()]);
     exit;
 }
 
@@ -26,15 +26,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Insert fee head into the database
-    $sql = "INSERT INTO FeeHeads (name) VALUES (:name)";
+    // Insert fee head into the database with the correct column name
+    $sql = "INSERT INTO FeeHeads (fee_head_name) VALUES (:fee_head_name)";
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':name', $feeHeadName);
+    $stmt->bindParam(':fee_head_name', $feeHeadName);
 
-    if ($stmt->execute()) {
-        echo json_encode(['status' => 'success']);
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Failed to insert fee head']);
+    try {
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to insert fee head']);
+        }
+    } catch (PDOException $e) {
+        // Handle duplicate entry error for unique fee_head_name
+        if ($e->getCode() === '23000') {
+            echo json_encode(['status' => 'error', 'message' => 'Fee head name already exists']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+        }
     }
 }
 ?>
