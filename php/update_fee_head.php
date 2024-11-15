@@ -1,6 +1,12 @@
 <?php
 // update_fee_head.php
 
+// Database connection
+$host = 'localhost:3306';
+$db = 'edrppymy_rrgis';
+$user = 'edrppymy_admin';
+$pass = '13579@demo';
+
 include '../php/db_connection.php';
 
 header('Content-Type: application/json');
