@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   }
-
+/*
   // Function to delete fee heads
   function deleteFeeHead(feeHeadName) {
     // Validate if the fee head name is provided
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
       alert('Fee head name is required');
       return;
     }
-  /*
+
     // Confirm the deletion action with the user
     if (confirm(`Are you sure you want to delete the fee head "${feeHeadName}"?`)) {
       $.ajax({
