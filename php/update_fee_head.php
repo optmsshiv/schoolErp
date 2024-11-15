@@ -29,7 +29,7 @@ if (isset($_POST['oldName'], $_POST['newName'])) {
     }
 
     // Update the fee head name
-    $updateQuery = "UPDATE fee_heads SET fee_head_name = ? WHERE fee_head_name = ?";
+    $updateQuery = "UPDATE feeHeads SET fee_head_name = ? WHERE fee_head_name = ?";
     $stmt = $conn->prepare($updateQuery);
     $stmt->bind_param("ss", $newName, $oldName);
 
