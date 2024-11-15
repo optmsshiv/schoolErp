@@ -2,14 +2,13 @@
 // update_fee_head.php
 
 include '../php/db_connection.php';
-
 header('Content-Type: application/json');
 
-if (isset($_POST['oldName']) && isset($_POST['newName'])) {
+// Validate input
+if (isset($_POST['oldName'], $_POST['newName'])) {
     $oldName = trim($_POST['oldName']);
     $newName = trim($_POST['newName']);
 
-    // Prevent empty new name or same as old name
     if (empty($newName) || $newName === $oldName) {
         echo json_encode(['status' => 'error', 'message' => 'Invalid fee head name']);
         exit;
@@ -29,9 +28,9 @@ if (isset($_POST['oldName']) && isset($_POST['newName'])) {
         exit;
     }
 
-    // Update query
-    $query = "UPDATE fee_heads SET fee_head_name = ? WHERE fee_head_name = ?";
-    $stmt = $conn->prepare($query);
+    // Update the fee head name
+    $updateQuery = "UPDATE fee_heads SET fee_head_name = ? WHERE fee_head_name = ?";
+    $stmt = $conn->prepare($updateQuery);
     $stmt->bind_param("ss", $newName, $oldName);
 
     if ($stmt->execute()) {

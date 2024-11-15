@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const feePlanTable = document.getElementById('feePlanBody');
   const feeHeadSelect = document.getElementById('feeHeadSelect');
 
-  // Handle Fee Head Form Submission
   feeHeadForm.addEventListener('submit', function(e) {
     e.preventDefault();
     const feeHeadName = document.getElementById('feeHeadName').value.trim();
@@ -34,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Function to load and display the list of fee heads
   function loadFeeHeads() {
     $.ajax({
       url: '../php/fetch_fee_plan.php',
@@ -42,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
       dataType: 'json',
       success: function(response) {
         feeHeadList.innerHTML = '';
-        feeHeadSelect.innerHTML = ''; // Clear existing options
+        feeHeadSelect.innerHTML = '';
 
         response.data.forEach(feeHead => {
           const listItem = document.createElement('li');
@@ -71,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Utility function to create a button with a callback
   function createButton(text, className, onClick) {
     const button = document.createElement('button');
     button.className = `btn btn-sm ${className}`;
@@ -90,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: { oldName: currentName, newName: newName },
         success: function(response) {
           if (response.status === 'success') {
-            loadFeeHeads(); // Reload the list after successful update
+            loadFeeHeads();
           } else {
             alert('Error updating fee head: ' + response.message);
           }
@@ -101,8 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     }
-}
-
+  }
 
   function deleteFeeHead(feeHeadName) {
     $.ajax({
@@ -121,79 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('An error occurred while deleting the fee head');
       }
     });
-  }
-
-  feePlanForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const feeHead = feeHeadSelect.value;
-    const selectedClasses = getCheckedValues('class');
-    const selectedMonths = getCheckedValues('month');
-    const feeAmount = document.getElementById('feeAmount').value.trim();
-
-    if (!feeHead || selectedClasses.length === 0 || selectedMonths.length === 0 || !feeAmount) {
-      alert('Please fill all required fields');
-      return;
-    }
-
-    selectedClasses.forEach(className => {
-      selectedMonths.forEach(month => {
-        const row = feePlanTable.insertRow();
-        row.innerHTML = `
-          <td>${className}</td>
-          <td>${feeHead}</td>
-          <td>${month}</td>
-          <td>${feeAmount}</td>
-          <td>
-            <button class="btn btn-sm btn-warning" onclick="editFeePlan(this)">Edit</button>
-            <button class="btn btn-sm btn-danger" onclick="deleteFeePlan(this)">Delete</button>
-          </td>
-        `;
-      });
-    });
-
-    feePlanForm.reset();
-    updateAllMonthsCheckbox();
-  });
-
-  function getCheckedValues(name) {
-    return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(input => input.value);
-  }
-
-  window.editFeePlan = function(button) {
-    const row = button.closest('tr');
-    document.getElementById('feeHeadSelect').value = row.cells[1].textContent;
-    document.getElementById('feeAmount').value = row.cells[3].textContent;
-
-    updateCheckboxes('class', row.cells[0].textContent);
-    updateCheckboxes('month', row.cells[2].textContent);
-
-    row.remove();
-  };
-
-  window.deleteFeePlan = function(button) {
-    button.closest('tr').remove();
-  };
-
-  function updateCheckboxes(name, value) {
-    document.querySelectorAll(`input[name="${name}"]`).forEach(checkbox => {
-      checkbox.checked = checkbox.value === value;
-    });
-  }
-
-  document.getElementById('selectAllMonths').addEventListener('change', function() {
-    const isChecked = this.checked;
-    document.querySelectorAll('input[name="month"]').forEach(cb => cb.checked = isChecked);
-  });
-
-  document.querySelectorAll('input[name="month"]').forEach(checkbox => {
-    checkbox.addEventListener('change', updateAllMonthsCheckbox);
-  });
-
-  function updateAllMonthsCheckbox() {
-    const allMonthsCheckbox = document.getElementById('selectAllMonths');
-    const monthCheckboxes = document.querySelectorAll('input[name="month"]');
-    allMonthsCheckbox.checked = Array.from(monthCheckboxes).every(cb => cb.checked);
   }
 
   loadFeeHeads();
