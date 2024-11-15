@@ -87,20 +87,22 @@ document.addEventListener('DOMContentLoaded', function() {
         url: '../php/update_fee_head.php',
         type: 'POST',
         dataType: 'json',
-        data: { oldName: currentName, newName },
+        data: { oldName: currentName, newName: newName },
         success: function(response) {
           if (response.status === 'success') {
-            loadFeeHeads();
+            loadFeeHeads(); // Reload the list after successful update
           } else {
             alert('Error updating fee head: ' + response.message);
           }
         },
-        error: function() {
+        error: function(xhr, status, error) {
+          console.error("Error:", status, error);
           alert('An error occurred while updating the fee head');
         }
       });
     }
-  }
+}
+
 
   function deleteFeeHead(feeHeadName) {
     $.ajax({
