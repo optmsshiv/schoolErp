@@ -1,7 +1,7 @@
 <?php
 // update_fee_head.php
 
-include '../php/db_connection.php';
+include '../php/_connection.php';
 
 header('Content-Type: application/json');
 
