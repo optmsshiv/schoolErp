@@ -1,14 +1,15 @@
 <?php
-$servername = "localhost:3306";
-$username = "edrppymy_admin";
-$password = "13579@demo";
-$dbname = "edrppymy_rrgis"; // Replace with your actual database name
+// db_connection.php
 
-// Create a connection
-$conn = mysqli_connect($servername, $username, $password, $dbname);
+$host = 'localhost:3306';
+$db = 'edrppymy_rrgis';
+$user = 'edrppymy_admin';
+$pass = '13579@demo';
 
-// Check the connection
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Database connection failed: ' . $e->getMessage()]);
+    exit;
 }
-?>
