@@ -126,6 +126,12 @@ document.addEventListener('DOMContentLoaded', function() {
       checkbox.checked = selectAllCheckbox.checked;
     });
   }
+   // Attach the selectAllMonths function to the checkbox
+   if (selectAllCheckbox) {
+    selectAllCheckbox.addEventListener('change', function () {
+      selectAllMonths(selectAllCheckbox);
+    });
+  }
 
 
   loadFeeHeads();
