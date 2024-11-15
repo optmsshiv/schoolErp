@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const feePlanForm = document.getElementById('createFeePlanForm');
   const feePlanTable = document.getElementById('feePlanBody');
   const feeHeadSelect = document.getElementById('feeHeadSelect');
+  const selectAllCheckbox = document.getElementById('selectAllMonths');
 
   feeHeadForm.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -118,6 +119,14 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
+
+  function selectAllMonths(selectAllCheckbox) {
+    const checkboxes = document.querySelectorAll('input[name="month"]');
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = selectAllCheckbox.checked;
+    });
+  }
+
 
   loadFeeHeads();
 });
