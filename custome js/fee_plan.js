@@ -104,92 +104,92 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   }
-/*
-  // Function to delete fee heads
-  function deleteFeeHead(feeHeadName) {
-    // Validate if the fee head name is provided
-    if (!feeHeadName) {
-      alert('Fee head name is required');
-      return;
-    }
-
-    // Confirm the deletion action with the user
-    if (confirm(`Are you sure you want to delete the fee head "${feeHeadName}"?`)) {
-      $.ajax({
-        url: '../php/delete_fee_head.php', // Path to your PHP delete script
-        type: 'POST',  // Method type
-        dataType: 'json',  // Expecting a JSON response
-        data: { feeHeadName: feeHeadName }, // Data to be sent to the server
-        success: function (response) {
-          if (response.status === 'success') {
-            alert('Fee head deleted successfully');
-            loadFeeHeads(); // Reload fee heads after successful deletion
-          } else {
-            alert('Error deleting fee head: ' + response.message);  // Show the error message from the server
-          }
-        },
-        error: function (xhr, status, error) {
-          // Log the error to the console for debugging
-          console.error('AJAX Error:', error, xhr.responseText);
-          alert('An unexpected error occurred while deleting the fee head');  // Generic error message for the user
-        }
-      });
-    }
-  }*/
-
+  /*
+    // Function to delete fee heads
     function deleteFeeHead(feeHeadName) {
       // Validate if the fee head name is provided
       if (!feeHeadName) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Fee head name is required',
-        });
+        alert('Fee head name is required');
         return;
       }
 
       // Confirm the deletion action with the user
+      if (confirm(`Are you sure you want to delete the fee head "${feeHeadName}"?`)) {
+        $.ajax({
+          url: '../php/delete_fee_head.php', // Path to your PHP delete script
+          type: 'POST',  // Method type
+          dataType: 'json',  // Expecting a JSON response
+          data: { feeHeadName: feeHeadName }, // Data to be sent to the server
+          success: function (response) {
+            if (response.status === 'success') {
+              alert('Fee head deleted successfully');
+              loadFeeHeads(); // Reload fee heads after successful deletion
+            } else {
+              alert('Error deleting fee head: ' + response.message);  // Show the error message from the server
+            }
+          },
+          error: function (xhr, status, error) {
+            // Log the error to the console for debugging
+            console.error('AJAX Error:', error, xhr.responseText);
+            alert('An unexpected error occurred while deleting the fee head');  // Generic error message for the user
+          }
+        });
+      }
+    }*/
+
+  function deleteFeeHead(feeHeadName) {
+    // Validate if the fee head name is provided
+    if (!feeHeadName) {
       Swal.fire({
-        title: `Are you sure you want to delete the fee head "${feeHeadName}"?`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'Cancel',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          $.ajax({
-            url: '../php/delete_fee_head.php', // Path to your PHP delete script
-            type: 'POST',  // Method type
-            dataType: 'json',  // Expecting a JSON response
-            data: { feeHeadName: feeHeadName }, // Data to be sent to the server
-            success: function (response) {
-              if (response.status === 'success') {
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Deleted!',
-                  text: 'Fee head deleted successfully.',
-                });
-                loadFeeHeads(); // Reload fee heads after successful deletion
-              } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: 'Error deleting fee head: ' + response.message,
-                });
-              }
-            },
-            error: function (xhr, status, error) {
-              console.error('AJAX Error:', error, xhr.responseText);
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Fee head name is required',
+      });
+      return;
+    }
+
+    // Confirm the deletion action with the user
+    Swal.fire({
+      title: `Are you sure you want to delete the fee head "${feeHeadName}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '../php/delete_fee_head.php', // Path to your PHP delete script
+          type: 'POST',  // Method type
+          dataType: 'json',  // Expecting a JSON response
+          data: { feeHeadName: feeHeadName }, // Data to be sent to the server
+          success: function (response) {
+            if (response.status === 'success') {
+              Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: 'Fee head deleted successfully.',
+              });
+              loadFeeHeads(); // Reload fee heads after successful deletion
+            } else {
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'An unexpected error occurred while deleting the fee head.',
+                text: 'Error deleting fee head: ' + response.message,
               });
             }
-          });
-        }
-      });
-    }
+          },
+          error: function (xhr, status, error) {
+            console.error('AJAX Error:', error, xhr.responseText);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'An unexpected error occurred while deleting the fee head.',
+            });
+          }
+        });
+      }
+    });
+  }
 
 
 
