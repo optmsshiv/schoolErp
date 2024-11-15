@@ -106,33 +106,37 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Function to delete fee heads
-function deleteFeeHead(feeHeadName) {
-  if (!feeHeadName) {
-    alert('Fee head name is required');
-    return;
+  function deleteFeeHead(feeHeadName) {
+    // Validate if the fee head name is provided
+    if (!feeHeadName) {
+      alert('Fee head name is required');
+      return;
+    }
+
+    // Confirm the deletion action with the user
+    if (confirm(`Are you sure you want to delete the fee head "${feeHeadName}"?`)) {
+      $.ajax({
+        url: '../php/delete_fee_head.php', // Path to your PHP delete script
+        type: 'POST',  // Method type
+        dataType: 'json',  // Expecting a JSON response
+        data: { feeHeadName: feeHeadName }, // Data to be sent to the server
+        success: function (response) {
+          if (response.status === 'success') {
+            alert('Fee head deleted successfully');
+            loadFeeHeads(); // Reload fee heads after successful deletion
+          } else {
+            alert('Error deleting fee head: ' + response.message);  // Show the error message from the server
+          }
+        },
+        error: function (xhr, status, error) {
+          // Log the error to the console for debugging
+          console.error('AJAX Error:', error, xhr.responseText);
+          alert('An unexpected error occurred while deleting the fee head');  // Generic error message for the user
+        }
+      });
+    }
   }
 
-  if (confirm(`Are you sure you want to delete the fee head "${feeHeadName}"?`)) {
-    $.ajax({
-      url: '../php/delete_fee_head.php', // Path to your PHP delete script
-      type: 'POST',
-      dataType: 'json', // Expect JSON response
-      data: { feeHeadName: feeHeadName }, // Send fee head name to the server
-      success: function (response) {
-        if (response.status === 'success') {
-          alert('Fee head deleted successfully');
-          loadFeeHeads(); // Reload fee heads after successful deletion
-        } else {
-          alert('Error deleting fee head: ' + response.message);
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error('AJAX Error:', error);
-        alert('An unexpected error occurred while deleting the fee head');
-      }
-    });
-  }
-}
 
 
   // Function to handle "Select All Months"
