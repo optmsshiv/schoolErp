@@ -740,7 +740,7 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title fw-bold d-flex mb-0 badge bg-label-info">Student Details :</h4>
-                    <div class="container mt-5">
+                    <div class="container mt-2">
                       <div class="row">
                         <div class="col-md-2  border p-3 ">
                           <!-- Button-style Tabs -->
@@ -757,20 +757,19 @@
                           <div class="tab-content" id="feeTabContent">
                             <!-- Fee Head Tab -->
                             <div class="tab-pane fade show active" id="fee-head" role="tabpanel">
-                              <div class="mt-3">
-                                <h4>Create Fee Head</h4>
-                                <form id="feeHeadForm">
-                                  <div class="mb-3">
-                                    <label for="feeHeadName" class="form-label">Fee Head Name</label>
-                                    <input type="text" class="form-control col-sm-3" id="feeHeadName"
-                                      placeholder="Enter fee head name" required>
-                                  </div>
-                                  <button type="submit" class="btn btn-primary mt-3">Add Fee Head</button>
-                                </form>
-                                <hr>
-                                <h5>Existing Fee Heads</h5>
-                                <ul id="feeHeadList" class="list-group mt-2 col-sm-6"></ul>
-                              </div>
+                              <h4>Create Fee Head</h4>
+                              <form id="feeHeadForm">
+                                <div class="mb-3">
+                                  <label for="feeHeadName" class="form-label">Fee Head Name</label>
+                                  <input type="text" class="form-control col-sm-3" id="feeHeadName"
+                                    placeholder="Enter fee head name" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Add Fee Head</button>
+                              </form>
+                              <hr>
+                              <h5>Existing Fee Heads</h5>
+                              <ul id="feeHeadList" class="list-group mt-2 col-sm-6"></ul>
+
                             </div>
 
                             <!-- Fee Plan Tab -->
@@ -780,37 +779,38 @@
                                 <form id="createFeePlanForm">
                                   <div class="row justify-content-center">
                                     <!-- Fee Head Dropdown -->
-                                    <div class="col-md-4 mb-3">
+                                    <div class="col-md-4">
                                       <label for="feeHeadSelect" class="form-label">Fee Head</label>
                                       <select class="form-control" id="feeHeadSelect" required>
                                         <option value="">Select a Fee Head</option>
                                       </select>
                                     </div>
+
                                     <!-- Class Dropdown -->
-                                    <div class="col-md-2 mb-3">
-                                      <label for="classDropdownButton" class="form-label">Class</label>
-                                      <div class="dropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button"
-                                          id="classDropdownButton" data-bs-toggle="dropdown">
-                                          Select Class
-                                        </button>
+                                    <div class="col-md-2">
+                                      <label for="className">Class</label>
+                                      <select id="class_name" class="form-select" name="class" required>
+                                        <!-- Option values will be populated dynamically with AJAX -->
+                                      </select>
+
+                                      <!--
                                         <ul class="dropdown-menu w-50"
                                           style="max-height: 200px; max-width: fit-content; overflow-y: auto;">
                                           <li><label class="dropdown-item"
                                               style="display: flex; align-items: center;"><input type="checkbox"
                                                 name="class" value="Nursery" style="margin-right: 22px;">
                                               Nursery</label></li>
-                                        </ul>
-                                      </div>
+                                        </ul> -->
+
                                     </div>
                                     <!-- Month Dropdown -->
-                                    <div class="col-md-3 mb-3">
-                                      <label for="monthDropdownButton" class="form-label">Month(s)</label>
-                                      <div class="dropdown" id="monthDropdown">
-                                        <button class="btn btn-secondary dropdown-toggle" type="button"
-                                          id="monthDropdownButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                          Select Month(s)
-                                        </button>
+                                    <div class="col-md-3">
+                                      <label for="month">Month(s)</label>
+                                      <select id="month" class="form-select" name="month" required>
+                                        <!-- Option values will be populated dynamically with AJAX -->
+                                      </select>
+
+                                      <!--
                                         <ul class="dropdown-menu w-100" style="max-height: 200px; overflow-y: auto;">
                                           <li>
                                             <label class="dropdown-item d-flex align-items-center">
@@ -890,13 +890,12 @@
                                                 style="margin-right: 10px;"> December
                                             </label>
                                           </li>
-                                        </ul>
-                                      </div>
+                                        </ul> -->
                                     </div>
 
 
                                     <!-- Fee Amount -->
-                                    <div class="col-md-3 mb-3">
+                                    <div class="col-md-3">
                                       <label for="feeAmount" class="form-label">Fee Amount</label>
                                       <input type="number" class="form-control" id="feeAmount"
                                         placeholder="Enter fee amount" required>
