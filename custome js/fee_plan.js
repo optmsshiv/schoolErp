@@ -106,24 +106,34 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Function to delete fee heads
-  function deleteFeeHead(feeHeadName) {
+function deleteFeeHead(feeHeadName) {
+  if (!feeHeadName) {
+    alert('Fee head name is required');
+    return;
+  }
+
+  if (confirm(`Are you sure you want to delete the fee head "${feeHeadName}"?`)) {
     $.ajax({
-      url: '../php/delete_fee_head.php',
+      url: '../php/delete_fee_head.php', // Path to your PHP delete script
       type: 'POST',
-      dataType: 'json',
-      data: { feeHeadName },
+      dataType: 'json', // Expect JSON response
+      data: { feeHeadName: feeHeadName }, // Send fee head name to the server
       success: function (response) {
         if (response.status === 'success') {
-          loadFeeHeads();
+          alert('Fee head deleted successfully');
+          loadFeeHeads(); // Reload fee heads after successful deletion
         } else {
           alert('Error deleting fee head: ' + response.message);
         }
       },
-      error: function () {
-        alert('An error occurred while deleting the fee head');
+      error: function (xhr, status, error) {
+        console.error('AJAX Error:', error);
+        alert('An unexpected error occurred while deleting the fee head');
       }
     });
   }
+}
+
 
   // Function to handle "Select All Months"
   function selectAllMonths(selectAllCheckbox) {
