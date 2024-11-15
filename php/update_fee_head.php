@@ -2,20 +2,21 @@
 // update_fee_head.php
 
 include '../php/db_connection.php';
+
 header('Content-Type: application/json');
 
-// Validate input
-if (isset($_POST['oldName'], $_POST['newName'])) {
+if (isset($_POST['oldName']) && isset($_POST['newName'])) {
     $oldName = trim($_POST['oldName']);
     $newName = trim($_POST['newName']);
 
+    // Prevent empty new name or same as old name
     if (empty($newName) || $newName === $oldName) {
         echo json_encode(['status' => 'error', 'message' => 'Invalid fee head name']);
         exit;
     }
 
     // Check for duplicate new name
-    $checkQuery = "SELECT COUNT(*) FROM feeheads WHERE fee_head_name = ?";
+    $checkQuery = "SELECT COUNT(*) FROM feeHeads WHERE fee_head_name = ?";
     $checkStmt = $conn->prepare($checkQuery);
     $checkStmt->bind_param("s", $newName);
     $checkStmt->execute();
@@ -28,9 +29,9 @@ if (isset($_POST['oldName'], $_POST['newName'])) {
         exit;
     }
 
-    // Update the fee head name
-    $updateQuery = "UPDATE feeHeads SET fee_head_name = ? WHERE fee_head_name = ?";
-    $stmt = $conn->prepare($updateQuery);
+    // Update query
+    $query = "UPDATE feeHeads SET fee_head_name = ? WHERE fee_head_name = ?";
+    $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $newName, $oldName);
 
     if ($stmt->execute()) {
