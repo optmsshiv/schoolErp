@@ -1,48 +1,60 @@
 <?php
 // update_fee_head.php
 
-include '../php/db_connection.php';
+include '../php/db_connection.php'; // Make sure db_connection.php sets up a PDO connection as $pdo
 
 header('Content-Type: application/json');
 
-if (isset($_POST['oldName']) && isset($_POST['newName'])) {
-    $oldName = trim($_POST['oldName']);
-    $newName = trim($_POST['newName']);
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-    // Prevent empty new name or same as old name
-    if (empty($newName) || $newName === $oldName) {
-        echo json_encode(['status' => 'error', 'message' => 'Invalid fee head name']);
-        exit;
+try {
+    // Ensure $pdo is defined for PDO use
+    if (!isset($pdo)) {
+        throw new Exception("Database connection not established");
     }
 
-    // Check for duplicate new name
-    $checkQuery = "SELECT COUNT(*) FROM feeHeads WHERE fee_head_name = ?";
-    $checkStmt = $conn->prepare($checkQuery);
-    $checkStmt->bind_param("s", $newName);
-    $checkStmt->execute();
-    $checkStmt->bind_result($count);
-    $checkStmt->fetch();
-    $checkStmt->close();
+    // Check if required POST data is set
+    if (isset($_POST['oldName']) && isset($_POST['newName'])) {
+        $oldName = trim($_POST['oldName']);
+        $newName = trim($_POST['newName']);
 
-    if ($count > 0) {
-        echo json_encode(['status' => 'error', 'message' => 'Fee head name already exists']);
-        exit;
-    }
+        // Prevent empty or unchanged names
+        if (empty($newName) || $newName === $oldName) {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid fee head name']);
+            exit;
+        }
 
-    // Update query
-    $query = "UPDATE feeHeads SET fee_head_name = ? WHERE fee_head_name = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("ss", $newName, $oldName);
+        // Check if new name already exists in the database
+        $checkQuery = "SELECT COUNT(*) FROM feeHeads WHERE fee_head_name = :newName";
+        $checkStmt = $pdo->prepare($checkQuery);
+        $checkStmt->bindParam(':newName', $newName);
+        $checkStmt->execute();
+        $count = $checkStmt->fetchColumn();
 
-    if ($stmt->execute()) {
-        echo json_encode(['status' => 'success']);
+        if ($count > 0) {
+            echo json_encode(['status' => 'error', 'message' => 'Fee head name already exists']);
+            exit;
+        }
+
+        // Perform the update
+        $updateQuery = "UPDATE feeHeads SET fee_head_name = :newName WHERE fee_head_name = :oldName";
+        $updateStmt = $pdo->prepare($updateQuery);
+        $updateStmt->bindParam(':newName', $newName);
+        $updateStmt->bindParam(':oldName', $oldName);
+
+        if ($updateStmt->execute()) {
+            echo json_encode(['status' => 'success']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to update fee head']);
+        }
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Failed to update fee head']);
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
     }
-
-    $stmt->close();
-    $conn->close();
-} else {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
+} catch (PDOException $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+} catch (Exception $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Error: ' . $e->getMessage()]);
 }
 ?>
