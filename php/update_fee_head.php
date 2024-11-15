@@ -1,7 +1,14 @@
 <?php
 // update_fee_head.php
 
-include '../php/db_connection.php'; // Make sure db_connection.php sets up a PDO connection as $pdo
+// Database connection
+$host = 'localhost:3306';
+$db = 'edrppymy_rrgis';
+$user = 'edrppymy_admin';
+$pass = '13579@demo';
+
+$dsn = "mysql:host=$host;dbname=$db";
+// include '../php/db_connection.php'; // Make sure db_connection.php sets up a PDO connection as $pdo
 
 header('Content-Type: application/json');
 
