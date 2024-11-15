@@ -7,7 +7,7 @@ if (isset($_POST['feeHeadName'])) {
     $feeHeadName = mysqli_real_escape_string($conn, $_POST['feeHeadName']);
 
     // Delete the fee head from the database
-    $query = "DELETE FROM fee_heads WHERE fee_head_name = '$feeHeadName'";
+    $query = "DELETE FROM FeeHeads WHERE fee_head_name = '$feeHeadName'";
     $result = mysqli_query($conn, $query);
 
     if ($result) {
