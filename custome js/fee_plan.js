@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     $.ajax({
-      url: '../php/insert_fee_plan.php',
+      url: '../php/insert_fee_head.php',
       type: 'POST',
       dataType: 'json',
       data: { feeHeadName },
