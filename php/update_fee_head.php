@@ -15,7 +15,7 @@ if (isset($_POST['oldName'], $_POST['newName'])) {
     }
 
     // Check for duplicate new name
-    $checkQuery = "SELECT COUNT(*) FROM fee_heads WHERE fee_head_name = ?";
+    $checkQuery = "SELECT COUNT(*) FROM feeheads WHERE fee_head_name = ?";
     $checkStmt = $conn->prepare($checkQuery);
     $checkStmt->bind_param("s", $newName);
     $checkStmt->execute();
