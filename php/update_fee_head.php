@@ -27,7 +27,7 @@ try {
         }
 
         // Check if new name already exists in the database
-        $checkQuery = "SELECT COUNT(*) FROM feeHeads WHERE fee_head_name = :newName";
+        $checkQuery = "SELECT COUNT(*) FROM FeeHeads WHERE fee_head_name = :newName";
         $checkStmt = $pdo->prepare($checkQuery);
         $checkStmt->bindParam(':newName', $newName);
         $checkStmt->execute();
@@ -39,7 +39,7 @@ try {
         }
 
         // Perform the update
-        $updateQuery = "UPDATE feeHeads SET fee_head_name = :newName WHERE fee_head_name = :oldName";
+        $updateQuery = "UPDATE FeeHeads SET fee_head_name = :newName WHERE fee_head_name = :oldName";
         $updateStmt = $pdo->prepare($updateQuery);
         $updateStmt->bindParam(':newName', $newName);
         $updateStmt->bindParam(':oldName', $oldName);
