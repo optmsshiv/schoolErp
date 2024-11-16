@@ -181,21 +181,14 @@ document.addEventListener('DOMContentLoaded', function () {
       type: 'GET',
       dataType: 'json',
       success: function (response) {
-        // Clear any existing options in the dropdown
-        const classNameSelect = document.getElementById('class_name');
-        classNameSelect.innerHTML = '<option value="">Select Class</option>';  // Reset to default option
+        classNameList.innerHTML = '';
 
-        // Loop through class data and populate both the list and the dropdown
         response.data.forEach(classItem => {
-          // Create the option for the dropdown
-          const option = document.createElement('option');
-          option.value = classItem.class_id;  // Set the class_id as the value
-          option.textContent = classItem.class_name;  // Display the class name
+          const listItem = document.createElement('li');
+          listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
 
-          // Append the option to the dropdown
-          classNameSelect.appendChild(option);
-
-          
+          const nameSpan = document.createElement('span');
+          nameSpan.textContent = classItem.class_name;
 
           // Button Group (Edit and Delete)
           const buttonGroup = document.createElement('div');
@@ -206,14 +199,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
           listItem.append(nameSpan, buttonGroup);
           classNameList.appendChild(listItem);
+
+          // Add class names to dropdown
+
         });
       },
-      error: function (xhr) {
-        handleError('Error loading class names.', xhr);
-      }
+      error: xhr => handleError('Error loading class names.', xhr)
     });
   };
-
 
   // Edit Class Name
   const editClassName = (currentName, classId) => {
