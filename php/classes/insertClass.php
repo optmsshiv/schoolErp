@@ -5,41 +5,51 @@ include '../php/db_connection.php';
 header('Content-Type: application/json');
 
 try {
-  $pdo = new PDO($dsn, $user, $pass);
-  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Create a new PDO instance
+    $pdo = new PDO($dsn, $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-  echo json_encode(['status' => 'error', 'message' => 'Connection failed: ' . $e->getMessage()]);
-  exit;
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'Connection failed: ' . $e->getMessage()]);
+    exit;
 }
 
-// Check if className is set
-if (isset($_POST['className'])) {
-    $className = trim($_POST['className']);
+// Check if the request method is POST
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check if className is set and not empty
+    if (!empty($_POST['className'])) {
+        $className = trim($_POST['className']);
 
-    if (empty($className)) {
-        echo json_encode(['status' => 'error', 'message' => 'Class name cannot be empty']);
-        exit;
-    }
+        try {
+            // Prepare the SQL statement
+            $sql = "INSERT INTO Classes (class_name) VALUES (:class_name)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':class_name', $className, PDO::PARAM_STR);
 
-    try {
-        // Prepare the SQL statement
-        $sql = "INSERT INTO Classes (class_name) VALUES (:class_name)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':class_name', $className, PDO::PARAM_STR);
+            // Execute the statement
+            $stmt->execute();
 
-        // Execute the statement
-        $stmt->execute();
-
-        echo json_encode(['status' => 'success']);
-    } catch (PDOException $e) {
-        // Handle duplicate entry error
-        if ($e->getCode() == 23000) {
-            echo json_encode(['status' => 'error', 'message' => 'Class name already exists']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+            // Respond with success
+            http_response_code(201); // 201 Created
+            echo json_encode(['status' => 'success', 'message' => 'Class added successfully']);
+        } catch (PDOException $e) {
+            // Handle duplicate entry error
+            if ($e->getCode() == 23000) {
+                http_response_code(409); // 409 Conflict
+                echo json_encode(['status' => 'error', 'message' => 'Class name already exists']);
+            } else {
+                http_response_code(500); // 500 Internal Server Error
+                echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+            }
         }
+    } else {
+        // Respond with validation error
+        http_response_code(400); // 400 Bad Request
+        echo json_encode(['status' => 'error', 'message' => 'Class name cannot be empty']);
     }
 } else {
-    echo json_encode(['status' => 'error', 'message' => 'Class name is required']);
+    // Respond with method not allowed
+    http_response_code(405); // 405 Method Not Allowed
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
 }
 ?>
