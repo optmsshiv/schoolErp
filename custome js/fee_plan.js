@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
           url: '../php/classes/delete_class.php',
           type: 'POST',
           dataType: 'json',
-          data: { class_name: className }, // Use class_name to match backend parameter
+          data: { class_id: className }, // Use class_name to match backend parameter
           success: function (response) {
             if (response.status === 'success') {
               Swal.fire('Deleted!', 'Class deleted successfully.', 'success');
