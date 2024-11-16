@@ -252,6 +252,8 @@ document.addEventListener('DOMContentLoaded', function () {
           icon: 'error',
           title: 'Error',
           text: 'An error occurred while processing the request.',
+          title: 'Server Error',
+          text: `Error ${xhr.status}: ${xhr.statusText}`,
         });
       }
     });
