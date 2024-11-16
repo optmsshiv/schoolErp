@@ -1,15 +1,27 @@
 <?php
-// db_connection.php
-
-$host = 'localhost:3306';
+// Database connection configuration
+$host = 'localhost';
+$port = '3306'; // Specify port separately for better clarity
 $db = 'edrppymy_rrgis';
 $user = 'edrppymy_admin';
 $pass = '13579@demo';
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
+    // Create a PDO instance with the DSN
+    $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
+    $pdo = new PDO($dsn, $user, $pass);
+
+    // Set PDO attributes
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); // Fetch as associative arrays by default
 } catch (PDOException $e) {
-    echo json_encode(['status' => 'error', 'message' => 'Database connection failed: ' . $e->getMessage()]);
+    // Log error to a file instead of exposing it publicly
+    error_log('Database connection failed: ' . $e->getMessage(), 0);
+
+    // Respond with a generic message
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Unable to connect to the database. Please try again later.'
+    ]);
     exit;
 }
