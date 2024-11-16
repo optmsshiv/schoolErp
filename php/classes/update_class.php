@@ -1,6 +1,6 @@
 <?php
 // update_class.php
-include 'db.php'; // Include your database connection
+include '../db_connection.php'; // Include your database connection
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $className = $_POST['className']; // Get the class ID
