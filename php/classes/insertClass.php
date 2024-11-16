@@ -4,6 +4,14 @@ include '../php/db_connection.php';
 
 header('Content-Type: application/json');
 
+try {
+  $pdo = new PDO($dsn, $user, $pass);
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+  echo json_encode(['status' => 'error', 'message' => 'Connection failed: ' . $e->getMessage()]);
+  exit;
+}
+
 // Check if className is set
 if (isset($_POST['className'])) {
     $className = trim($_POST['className']);
