@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const feePlanForm = document.getElementById('createFeePlanForm');
   const feePlanTable = document.getElementById('feePlanBody');
   const feeHeadSelect = document.getElementById('feeHeadSelect');
+  const classNameSelect = document.getElementById('classNameSelect')
   const selectAllCheckbox = document.getElementById('selectAllMonths');
   const classNameForm = document.getElementById('classNameForm');
   const classNameList = document.getElementById('classNameList');
@@ -181,6 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
       dataType: 'json',
       success: function (response) {
         classNameList.innerHTML = '';
+
         response.data.forEach(classItem => {
           const listItem = document.createElement('li');
           listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
@@ -197,6 +199,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         listItem.append(nameSpan, buttonGroup);
         classNameList.appendChild(listItem);
+
+        // Add class names to dropdown
+        response.data.forEach(classItem => {
+          const option = document.createElement('option');
+          option.value = classItem.class_id;  // Set the class_id as value
+          option.textContent = classItem.class_name;  // Display the class name
+          classNameSelect.appendChild(option);
+        });
       });
     },
     error: xhr => handleError('Error loading class names.', xhr)
@@ -268,8 +278,6 @@ const editClassName = (currentName, classId) => {
       }
     });
   };
-
-
 
 
   // Handle "Select All Months" checkbox
