@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   // Delete Class
-  const deleteClass = (class_name) => {
+  const deleteClass = (className) => {
     Swal.fire({
       title: 'Delete Class?',
       text: 'Do you want to delete this class?',
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
           url: '../php/classes/delete_class.php',
           type: 'POST',
           dataType: 'json',
-          data: { class_name },
+          data: { class_name: className }, // Use class_name to match backend parameter
           success: function (response) {
             if (response.status === 'success') {
               Swal.fire('Deleted!', 'Class deleted successfully.', 'success');
@@ -231,6 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   };
+
 
 
 
