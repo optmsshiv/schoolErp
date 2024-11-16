@@ -201,9 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
         classNameList.appendChild(listItem);
 
         // Add class names to dropdown
-        // Add to Fee Head Dropdown
-        const option = new Option(className.class_name, className.class_name);
-        classNameSelect.add(option);
+        
       });
     },
     error: xhr => handleError('Error loading class names.', xhr)
