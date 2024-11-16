@@ -9,26 +9,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $className = trim($_POST['class_name']);
 
         try {
-            // Check if the class exists by its name (or class_id if more appropriate)
-            $checkSql = "SELECT class_id FROM Classes WHERE class_name = :class_name";
+            // Check if the class exists
+            $checkSql = "SELECT class_name FROM Classes WHERE class_name = :class_name";
             $checkStmt = $pdo->prepare($checkSql);
             $checkStmt->bindParam(':class_name', $className, PDO::PARAM_STR);
             $checkStmt->execute();
 
             if ($checkStmt->rowCount() === 0) {
                 // If no class found, return error message
-                echo json_encode(['status' => 'error', 'message' => 'Class not found']);
+                echo json_encode(['status' => 'error', 'message' => 'Class not found or already deleted']);
                 exit;
             }
 
-            // Fetch the class_id to use for deletion
-            $class = $checkStmt->fetch(PDO::FETCH_ASSOC);
-            $classId = $class['class_id'];
-
-            // Proceed with the deletion using class_id for better identification
-            $deleteSql = "DELETE FROM Classes WHERE class_id = :class_id";
+            // Proceed with the deletion
+            $deleteSql = "DELETE FROM Classes WHERE class_name = :class_name";
             $deleteStmt = $pdo->prepare($deleteSql);
-            $deleteStmt->bindParam(':class_id', $classId, PDO::PARAM_INT);
+            $deleteStmt->bindParam(':class_name', $className, PDO::PARAM_STR);
             $deleteStmt->execute();
 
             // If deletion was successful
