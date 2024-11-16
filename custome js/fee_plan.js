@@ -9,16 +9,22 @@ document.addEventListener('DOMContentLoaded', function () {
   const classNameList = document.getElementById('classNameList');
 
   // Utility function to create buttons
-  function createButton(text, className, onClick) {
+  const createButton = (text, className, onClick) => {
     const button = document.createElement('button');
     button.className = `btn btn-sm ${className}`;
     button.textContent = text;
     button.addEventListener('click', onClick);
     return button;
-  }
+  };
+
+  // Generic error handler
+  const handleError = (message, xhr) => {
+    console.error(message, xhr?.responseText || '');
+    Swal.fire('Error', message, 'error');
+  };
 
   // Load Fee Heads
-  function loadFeeHeads() {
+  const loadFeeHeads = () => {
     $.ajax({
       url: '../php/fetch_fee_plan.php',
       type: 'GET',
@@ -36,10 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
           nameSpan.textContent = feeHead.fee_head_name;
 
           const buttonGroup = document.createElement('div');
-          buttonGroup.appendChild(
-            createButton('Edit', 'btn-warning me-2', () => editFeeHead(feeHead.fee_head_name))
-          );
-          buttonGroup.appendChild(
+          buttonGroup.append(
+            createButton('Edit', 'btn-warning me-2', () => editFeeHead(feeHead.fee_head_name)),
             createButton('Delete', 'btn-danger', () => deleteFeeHead(feeHead.fee_head_name))
           );
 
@@ -47,27 +51,21 @@ document.addEventListener('DOMContentLoaded', function () {
           feeHeadList.appendChild(listItem);
 
           // Add to Fee Head Dropdown
-          const option = document.createElement('option');
-          option.value = feeHead.fee_head_name;
-          option.textContent = feeHead.fee_head_name;
-          feeHeadSelect.appendChild(option);
+          const option = new Option(feeHead.fee_head_name, feeHead.fee_head_name);
+          feeHeadSelect.add(option);
         });
       },
-      error: function (xhr) {
-        console.error('Error loading fee heads:', xhr.responseText);
-        alert('An error occurred while loading fee heads.');
-      }
+      error: xhr => handleError('Error loading fee heads.', xhr)
     });
-  }
+  };
 
   // Add Fee Head
-  feeHeadForm.addEventListener('submit', function (e) {
+  feeHeadForm?.addEventListener('submit', function (e) {
     e.preventDefault();
     const feeHeadName = document.getElementById('feeHeadName').value.trim();
 
     if (!feeHeadName) {
-      Swal.fire('Error', 'Please enter a fee head name!', 'error');
-      return;
+      return Swal.fire('Error', 'Please enter a fee head name!', 'error');
     }
 
     $.ajax({
@@ -78,21 +76,18 @@ document.addEventListener('DOMContentLoaded', function () {
       success: function (response) {
         if (response.status === 'success') {
           Swal.fire('Success', 'Fee head added successfully.', 'success');
-          document.getElementById('feeHeadName').value = '';
+          feeHeadForm.reset();
           loadFeeHeads();
         } else {
           Swal.fire('Error', response.message, 'error');
         }
       },
-      error: function (xhr) {
-        console.error('Error adding fee head:', xhr.responseText);
-        Swal.fire('Error', 'An unexpected error occurred.', 'error');
-      }
+      error: xhr => handleError('Error adding fee head.', xhr)
     });
   });
 
   // Edit Fee Head
-  function editFeeHead(currentName) {
+  const editFeeHead = (currentName) => {
     Swal.fire({
       title: 'Edit Fee Head Name',
       input: 'text',
@@ -101,34 +96,29 @@ document.addEventListener('DOMContentLoaded', function () {
       confirmButtonText: 'Save',
       cancelButtonText: 'Cancel',
     }).then(result => {
-      if (result.isConfirmed) {
-        const newName = result.value.trim();
-        if (newName && newName !== currentName) {
-          $.ajax({
-            url: '../php/update_fee_head.php',
-            type: 'POST',
-            dataType: 'json',
-            data: { oldName: currentName, newName },
-            success: function (response) {
-              if (response.status === 'success') {
-                Swal.fire('Success', 'Fee head updated successfully.', 'success');
-                loadFeeHeads();
-              } else {
-                Swal.fire('Error', response.message, 'error');
-              }
-            },
-            error: function (xhr) {
-              console.error('Error updating fee head:', xhr.responseText);
-              Swal.fire('Error', 'An unexpected error occurred.', 'error');
+      const newName = result.value?.trim();
+      if (result.isConfirmed && newName && newName !== currentName) {
+        $.ajax({
+          url: '../php/update_fee_head.php',
+          type: 'POST',
+          dataType: 'json',
+          data: { oldName: currentName, newName },
+          success: function (response) {
+            if (response.status === 'success') {
+              Swal.fire('Success', 'Fee head updated successfully.', 'success');
+              loadFeeHeads();
+            } else {
+              Swal.fire('Error', response.message, 'error');
             }
-          });
-        }
+          },
+          error: xhr => handleError('Error updating fee head.', xhr)
+        });
       }
     });
-  }
+  };
 
   // Delete Fee Head
-  function deleteFeeHead(feeHeadName) {
+  const deleteFeeHead = (feeHeadName) => {
     Swal.fire({
       title: `Delete Fee Head: "${feeHeadName}"?`,
       icon: 'warning',
@@ -150,23 +140,19 @@ document.addEventListener('DOMContentLoaded', function () {
               Swal.fire('Error', response.message, 'error');
             }
           },
-          error: function (xhr) {
-            console.error('Error deleting fee head:', xhr.responseText);
-            Swal.fire('Error', 'An unexpected error occurred.', 'error');
-          }
+          error: xhr => handleError('Error deleting fee head.', xhr)
         });
       }
     });
-  }
+  };
 
   // Add Class Name
-  classNameForm.addEventListener('submit', function (e) {
+  classNameForm?.addEventListener('submit', function (e) {
     e.preventDefault();
     const className = document.getElementById('className').value.trim();
 
     if (!className) {
-      Swal.fire('Error', 'Please enter a class name!', 'error');
-      return;
+      return Swal.fire('Error', 'Please enter a class name!', 'error');
     }
 
     $.ajax({
@@ -177,21 +163,18 @@ document.addEventListener('DOMContentLoaded', function () {
       success: function (response) {
         if (response.status === 'success') {
           Swal.fire('Success', 'Class name added successfully.', 'success');
-          document.getElementById('className').value = '';
+          classNameForm.reset();
           loadClassNames();
         } else {
           Swal.fire('Error', response.message, 'error');
         }
       },
-      error: function (xhr) {
-        console.error('Error adding class:', xhr.responseText);
-        Swal.fire('Error', 'An unexpected error occurred.', 'error');
-      }
+      error: xhr => handleError('Error adding class.', xhr)
     });
   });
 
   // Load Class Names
-  function loadClassNames() {
+  const loadClassNames = () => {
     $.ajax({
       url: '../php/classes/fetch_classes.php',
       type: 'GET',
@@ -205,24 +188,17 @@ document.addEventListener('DOMContentLoaded', function () {
           const nameSpan = document.createElement('span');
           nameSpan.textContent = classItem.class_name;
 
-          const buttonGroup = document.createElement('div');
-          buttonGroup.appendChild(
-            createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_id))
-          );
-
+          const buttonGroup = createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_id));
           listItem.append(nameSpan, buttonGroup);
           classNameList.appendChild(listItem);
         });
       },
-      error: function (xhr) {
-        console.error('Error loading class names:', xhr.responseText);
-        Swal.fire('Error', 'An unexpected error occurred.', 'error');
-      }
+      error: xhr => handleError('Error loading class names.', xhr)
     });
-  }
+  };
 
   // Delete Class
-  function deleteClass(classId) {
+  const deleteClass = (classId) => {
     Swal.fire({
       title: 'Delete Class?',
       text: 'Do you want to delete this class?',
@@ -245,24 +221,19 @@ document.addEventListener('DOMContentLoaded', function () {
               Swal.fire('Error', response.message, 'error');
             }
           },
-          error: function (xhr) {
-            console.error('Error deleting class:', xhr.responseText);
-            Swal.fire('Error', 'An unexpected error occurred.', 'error');
-          }
+          error: xhr => handleError('Error deleting class.', xhr)
         });
       }
     });
-  }
+  };
 
   // Handle "Select All Months" checkbox
-  if (selectAllCheckbox) {
-    selectAllCheckbox.addEventListener('change', function () {
-      const monthCheckboxes = document.querySelectorAll('input[name="month"]');
-      monthCheckboxes.forEach(checkbox => {
-        checkbox.checked = selectAllCheckbox.checked;
-      });
+  selectAllCheckbox?.addEventListener('change', function () {
+    const monthCheckboxes = document.querySelectorAll('input[name="month"]');
+    monthCheckboxes.forEach(checkbox => {
+      checkbox.checked = selectAllCheckbox.checked;
     });
-  }
+  });
 
   // Initialize
   loadFeeHeads();
