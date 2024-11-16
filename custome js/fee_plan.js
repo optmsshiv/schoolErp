@@ -181,42 +181,37 @@ document.addEventListener('DOMContentLoaded', function () {
       type: 'GET',
       dataType: 'json',
       success: function (response) {
-        // Clear existing content in the list and dropdown
         classNameList.innerHTML = '';
-        classNameSelect.innerHTML = '<option value="">Select Class</option>';  // Reset dropdown
 
-        // Loop through class data and populate both the list and the dropdown
         response.data.forEach(classItem => {
-          // Create list item for the class name list
           const listItem = document.createElement('li');
           listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
 
           const nameSpan = document.createElement('span');
           nameSpan.textContent = classItem.class_name;
 
-          // Button Group (Edit and Delete)
-          const buttonGroup = document.createElement('div');
-          buttonGroup.append(
-            createButton('Edit', 'btn-warning me-2', () => editClassName(classItem.class_name, classItem.class_id)),
-            createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_name))
-          );
+        // Button Group (Edit and Delete)
+        const buttonGroup = document.createElement('div');
+        buttonGroup.append(
+          createButton('Edit', 'btn-warning me-2', () => editClassName(classItem.class_name, classItem.class_id)),
+          createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_name))
+        );
 
-          listItem.append(nameSpan, buttonGroup);
-          classNameList.appendChild(listItem);
+        listItem.append(nameSpan, buttonGroup);
+        classNameList.appendChild(listItem);
 
-          // Add class names to dropdown
+        // Add class names to dropdown
+        response.data.forEach(classItem => {
           const option = document.createElement('option');
           option.value = classItem.class_id;  // Set the class_id as value
           option.textContent = classItem.class_name;  // Display the class name
           classNameSelect.appendChild(option);
         });
-      },
-      error: function (xhr) {
-        handleError('Error loading class names.', xhr);
-      }
-    });
-  };
-
+      });
+    },
+    error: xhr => handleError('Error loading class names.', xhr)
+  });
+};
 
 // Edit Class Name
 const editClassName = (currentName, classId) => {
