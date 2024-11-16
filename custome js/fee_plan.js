@@ -250,8 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
       error: function () {
         Swal.fire({
           icon: 'error',
-          title: 'Error',
-          text: 'An error occurred while processing the request.',
+          
           title: 'Server Error',
           text: `Error ${xhr.status}: ${xhr.statusText}`,
         });
