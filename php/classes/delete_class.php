@@ -2,7 +2,7 @@
 // delete_class.php
 
 // Include database connection
-include_once('../config/database.php');
+include_once('../db_connection.php');
 
 // Get the class name from the POST data
 $className = isset($_POST['class_name']) ? $_POST['class_name'] : '';
@@ -14,7 +14,7 @@ if (empty($className)) {
 }
 
 // Prepare the SQL query to delete the class
-$query = "DELETE FROM Classes WHERE class_name = :class_name";
+$query = "DELETE FROM Classes WHERE class_name = ?";
 
 // Prepare statement
 $stmt = $conn->prepare($query);
