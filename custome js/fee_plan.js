@@ -201,12 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
         classNameList.appendChild(listItem);
 
         // Add class names to dropdown
-        response.data.forEach(classItem => {
-          const option = document.createElement('option');
-          option.value = classItem.class_id;  // Set the class_id as value
-          option.textContent = classItem.class_name;  // Display the class name
-          classNameSelect.appendChild(option);
-        });
+        
       });
     },
     error: xhr => handleError('Error loading class names.', xhr)
