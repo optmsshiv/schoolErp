@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const feePlanTable = document.getElementById('feePlanBody');
   const feeHeadSelect = document.getElementById('feeHeadSelect');
   const selectAllCheckbox = document.getElementById('selectAllMonths');
+  const classNameForm = document.getElementById('classNameForm');
+  const classNameList = document.getElementById('classNameList');
 
   // Event listener for adding fee heads
   feeHeadForm.addEventListener('submit', function (e) {
@@ -191,8 +193,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-
-
   // Function to handle "Select All Months"
   function selectAllMonths(selectAllCheckbox) {
     const monthCheckboxes = document.querySelectorAll('input[name="month"]');
@@ -210,4 +210,139 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Load fee heads on page load
   loadFeeHeads();
+
+  // Event listener for adding class names
+  classNameForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const className = document.getElementById('className').value.trim();
+
+    if (!className) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please enter a class name!',
+      });
+      return;
+    }
+
+    $.ajax({
+      url: '../php/classes/insertClass.php', // Replace with the actual path to your PHP script
+      type: 'POST',
+      dataType: 'json',
+      data: { className },
+      success: function (response) {
+        if (response.status === 'success') {
+          Swal.fire({
+            icon: 'success',
+            title: 'Added!',
+            text: 'Class name added successfully.',
+          });
+          document.getElementById('className').value = '';
+          loadClassNames();
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.message,
+          });
+        }
+      },
+      error: function () {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while processing the request.',
+        });
+      }
+    });
+  });
+
+  // Function to load existing class names
+  function loadClassNames() {
+    $.ajax({
+      url: '../php/classes/fetch_classes.php', // Replace with the actual path to your PHP script
+      type: 'GET',
+      dataType: 'json',
+      success: function (response) {
+        classNameList.innerHTML = '';
+        response.data.forEach(classItem => {
+          const listItem = document.createElement('li');
+          listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+          const nameSpan = document.createElement('span');
+          nameSpan.textContent = classItem.class_name;
+
+          const buttonGroup = document.createElement('div');
+          const deleteButton = createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_id));
+
+          buttonGroup.append(deleteButton);
+          listItem.append(nameSpan, buttonGroup);
+          classNameList.appendChild(listItem);
+        });
+      },
+      error: function () {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while loading class names.',
+        });
+      }
+    });
+  }
+
+  // Function to delete a class name
+  function deleteClass(classId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this class?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '../php/delete_class.php', // Replace with the actual path to your PHP script
+          type: 'POST',
+          dataType: 'json',
+          data: { classId },
+          success: function (response) {
+            if (response.status === 'success') {
+              Swal.fire({
+                icon: 'success',
+                title: 'Deleted!',
+                text: 'Class deleted successfully.',
+              });
+              loadClassNames();
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response.message,
+              });
+            }
+          },
+          error: function () {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'An unexpected error occurred while deleting the class.',
+            });
+          }
+        });
+      }
+    });
+  }
+
+  // Function to create buttons
+  function createButton(text, className, onClick) {
+    const button = document.createElement('button');
+    button.className = `btn btn-sm ${className}`;
+    button.textContent = text;
+    button.onclick = onClick;
+    return button;
+  }
+
+  // Load class names on page load
+  loadClassNames();
 });
