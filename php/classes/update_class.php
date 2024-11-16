@@ -4,17 +4,17 @@ include '../db_connection.php';
 
 header('Content-Type: application/json');
 
-// Ensure both class_id and class_name are set and valid
-if (isset($_POST['class_id']) && is_numeric($_POST['class_id']) && isset($_POST['class_name']) && !empty($_POST['class_name'])) {
-    $classId = $_POST['class_id'];
+// Ensure both class_name and class_name are set and valid
+if (isset($_POST['class_name']) && is_numeric($_POST['class_name']) && isset($_POST['class_name']) && !empty($_POST['class_name'])) {
+    $classId = $_POST['class_name'];
     $className = trim($_POST['class_name']);
 
     try {
         // Prepare the UPDATE statement
-        $sql = "UPDATE Classes SET class_name = :class_name WHERE class_id = :class_id";
+        $sql = "UPDATE Classes SET class_name = :class_name WHERE class_name = :class_name";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':class_name', $className, PDO::PARAM_STR);
-        $stmt->bindParam(':class_id', $classId, PDO::PARAM_INT);
+        $stmt->bindParam(':class_name', $classId, PDO::PARAM_INT);
 
         // Execute the statement
         $stmt->execute();
@@ -30,7 +30,7 @@ if (isset($_POST['class_id']) && is_numeric($_POST['class_id']) && isset($_POST[
         echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
     }
 } else {
-    // If class_id or class_name is not provided or invalid
-    echo json_encode(['status' => 'error', 'message' => 'Invalid or missing class_id or class_name']);
+    // If class_name or class_name is not provided or invalid
+    echo json_encode(['status' => 'error', 'message' => 'Invalid or missing class_name or class_name']);
 }
 ?>
