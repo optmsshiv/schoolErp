@@ -236,6 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
   // Handle "Select All Months" checkbox
   selectAllCheckbox?.addEventListener('change', function () {
     const monthCheckboxes = document.querySelectorAll('input[name="month"]');
