@@ -195,12 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
           // Append the option to the dropdown
           classNameSelect.appendChild(option);
 
-          // Create list item for the class name list (optional)
-          const listItem = document.createElement('li');
-          listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-
-          const nameSpan = document.createElement('span');
-          nameSpan.textContent = classItem.class_name;
+          
 
           // Button Group (Edit and Delete)
           const buttonGroup = document.createElement('div');
