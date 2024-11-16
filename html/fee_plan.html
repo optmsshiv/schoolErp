@@ -745,8 +745,16 @@
                         <div class="col-md-2  border p-3 ">
                           <!-- Button-style Tabs -->
                           <ul class="nav nav-tabs flex-column" id="feeTab" role="tablist">
-                            <button class="btn btn-outline-info active " id="fee-head-tab" data-bs-toggle="tab"
+
+                            <button class="btn btn-outline-info active " id="class-name-tab" data-bs-toggle="tab"
+                              href="#class-name" role="tab">Class</button>
+
+                            <button class="btn btn-outline-info mt-3 " id="month-tab" data-bs-toggle="tab"
+                              href="#month-name" role="tab">Month</button>
+
+                            <button class="btn btn-outline-info mt-3 " id="fee-head-tab" data-bs-toggle="tab"
                               href="#fee-head" role="tab">Fee Head</button>
+
                             <button class=" btn btn-outline-info mt-3" id="fee-plan-tab" data-bs-toggle="tab"
                               href="#fee-plan" role="tab">Fee Plan</button>
                           </ul>
@@ -755,8 +763,55 @@
                         <!-- Tab Content -->
                         <div class="col-md-10">
                           <div class="tab-content" id="feeTabContent">
+
+                            <!-- Class Name Tab -->
+                            <div class="tab-pane fade show active" id="class-name" role="tabpanel">
+                              <h4>Create Class Name</h4>
+                              <form id="classNameForm">
+                                <div class="mb-3">
+                                  <label for="className" class="form-label">Class Name</label>
+                                  <input type="text" class="form-control col-sm-3" id="className"
+                                    placeholder="Enter class name" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Add class name</button>
+                              </form>
+                              <hr>
+                              <h5>Existing Class Name</h5>
+                              <ul id="classNameList" class="list-group mt-2 col-sm-6"></ul>
+                            </div>
+
+                            <!-- Month Tab -->
+                            <div class="tab-pane fade" id="month-name" role="tabpanel">
+                              <h4>Set Month</h4>
+                              <form id="monthForm">
+                                <div class="mb-3">
+                                  <label for="monthName" class="form-label">Month</label>
+                                  <select class="form-select col-sm-3" id="monthName" required>
+                                    <option value="">Select a Month</option>
+                                    <option value="January">January</option>
+                                    <option value="February">February</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                    <option value="October">October</option>
+                                    <option value="November">November</option>
+                                    <option value="December">December</option>
+                                  </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Add Month</button>
+                              </form>
+                              <hr>
+                              <h5>Existing Months</h5>
+                              <ul id="monthList" class="list-group mt-2 col-sm-6"></ul>
+                            </div>
+
+
                             <!-- Fee Head Tab -->
-                            <div class="tab-pane fade show active" id="fee-head" role="tabpanel">
+                            <div class="tab-pane fade" id="fee-head" role="tabpanel">
                               <h4>Create Fee Head</h4>
                               <form id="feeHeadForm">
                                 <div class="mb-3">
@@ -769,7 +824,6 @@
                               <hr>
                               <h5>Existing Fee Heads</h5>
                               <ul id="feeHeadList" class="list-group mt-2 col-sm-6"></ul>
-
                             </div>
 
                             <!-- Fee Plan Tab -->
@@ -791,6 +845,7 @@
                                     <div class="col-md-2 mb-3">
                                       <label for="className" class="form-label">Class</label>
                                       <select id="class_name" class="form-select" name="class" required>
+                                        <option value="">Select Class</option>
                                         <!-- Option values will be populated dynamically with AJAX -->
                                       </select>
                                     </div>
@@ -800,6 +855,7 @@
                                     <div class="col-md-3 mb-3">
                                       <label for="month" class="form-label">Month(s)</label>
                                       <select id="month" class="form-select" name="month" required>
+                                        <option value="">Select a Month</option>
                                         <!-- Option values will be populated dynamically with AJAX -->
                                       </select>
                                     </div>
