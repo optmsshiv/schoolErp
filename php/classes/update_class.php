@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Update query
     $stmt = $pdo->prepare("UPDATE Classes SET class_name = ? WHERE class_name = ?");
-    $stmt->execute([$newName, $classId]);
+    $stmt->execute([$newName, $className]);
 
     if ($stmt->rowCount() > 0) {
         echo json_encode(['status' => 'success']);
