@@ -4,36 +4,42 @@ include '../db_connection.php';
 
 header('Content-Type: application/json');
 
-try {
-    // Check if class_name is provided in the request
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check if class_name is set and not empty
     if (isset($_POST['class_name']) && !empty($_POST['class_name'])) {
         $className = trim($_POST['class_name']);
 
-        // Prepare the SQL statement to delete the class by class_name
-        $sql = "DELETE FROM Classes WHERE class_name = :class_name";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':class_name', $className, PDO::PARAM_STR);
+        try {
+            // First, check if the class exists
+            $checkSql = "SELECT class_id FROM Classes WHERE class_name = :class_name";
+            $checkStmt = $pdo->prepare($checkSql);
+            $checkStmt->bindParam(':class_name', $className, PDO::PARAM_STR);
+            $checkStmt->execute();
 
-        // Execute the statement
-        $stmt->execute();
+            // If the class doesn't exist, return an error message
+            if ($checkStmt->rowCount() === 0) {
+                echo json_encode(['status' => 'error', 'message' => 'Class not found or already deleted']);
+                exit;
+            }
 
-        // Check if a row was deleted
-        if ($stmt->rowCount() > 0) {
-            // Class deleted successfully
+            // Proceed with deleting the class
+            $sql = "DELETE FROM Classes WHERE class_name = :class_name";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':class_name', $className, PDO::PARAM_STR);
+            $stmt->execute();
+
+            // Return success response
             echo json_encode(['status' => 'success', 'message' => 'Class deleted successfully']);
-        } else {
-            // No matching class found to delete
-            echo json_encode(['status' => 'error', 'message' => 'Class not found or already deleted']);
+        } catch (PDOException $e) {
+            // Handle any database errors
+            echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
         }
     } else {
-        // Class name not provided in the request
+        // Class name not provided
         echo json_encode(['status' => 'error', 'message' => 'Class name is required']);
     }
-} catch (PDOException $e) {
-    // Log the error (instead of displaying it) for security reasons
-    error_log('Database error: ' . $e->getMessage());
-
-    // Return error response
-    echo json_encode(['status' => 'error', 'message' => 'Database error. Please try again later.']);
+} else {
+    // Invalid request method
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
 }
 ?>

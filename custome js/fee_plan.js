@@ -208,22 +208,22 @@ document.addEventListener('DOMContentLoaded', function () {
       cancelButtonText: 'Cancel',
     }).then(result => {
       if (result.isConfirmed) {
-        // Use the correct parameter name for sending class_name
+        // Use correct parameter name for class_name
         $.ajax({
           url: '../php/classes/delete_class.php',
           type: 'POST',
           dataType: 'json',
-          data: { class_name: className }, // Make sure the parameter is 'class_name'
+          data: { class_name: className },
           success: function (response) {
             if (response.status === 'success') {
               Swal.fire('Deleted!', 'Class deleted successfully.', 'success');
               loadClassNames(); // Refresh the class list after deletion
             } else {
-              Swal.fire('Error', response.message, 'error'); // Display error if class deletion fails
+              Swal.fire('Error', response.message, 'error'); // Handle the error
             }
           },
           error: function (xhr, status, error) {
-            // Handle AJAX errors, displaying the specific error message if available
+            // Handle AJAX errors
             let errorMessage = xhr.responseText ? xhr.responseText : error;
             Swal.fire('Error', `Error deleting class: ${errorMessage}`, 'error');
           }
@@ -231,6 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   };
+
 
 
 
