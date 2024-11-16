@@ -1,14 +1,11 @@
 <?php
 // Include the database connection file
-// Database connection
-$host = 'localhost:3306';
-$db = 'edrppymy_rrgis';
-$user = 'edrppymy_admin';
-$pass = '13579@demo';
-
-$dsn = "mysql:host=$host;dbname=$db";
+include '../php/db_connection.php';
 
 header('Content-Type: application/json');
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
 try {
     // Create a new PDO instance
