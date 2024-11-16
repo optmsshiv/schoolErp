@@ -181,63 +181,75 @@ document.addEventListener('DOMContentLoaded', function () {
       type: 'GET',
       dataType: 'json',
       success: function (response) {
-        classNameList.innerHTML = '';
+        // Clear any existing options in the dropdown
+        const classNameSelect = document.getElementById('class_name');
+        classNameSelect.innerHTML = '<option value="">Select Class</option>';  // Reset to default option
 
+        // Loop through class data and populate both the list and the dropdown
         response.data.forEach(classItem => {
+          // Create the option for the dropdown
+          const option = document.createElement('option');
+          option.value = classItem.class_id;  // Set the class_id as the value
+          option.textContent = classItem.class_name;  // Display the class name
+
+          // Append the option to the dropdown
+          classNameSelect.appendChild(option);
+
+          // Create list item for the class name list (optional)
           const listItem = document.createElement('li');
           listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
 
           const nameSpan = document.createElement('span');
           nameSpan.textContent = classItem.class_name;
 
-        // Button Group (Edit and Delete)
-        const buttonGroup = document.createElement('div');
-        buttonGroup.append(
-          createButton('Edit', 'btn-warning me-2', () => editClassName(classItem.class_name, classItem.class_id)),
-          createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_name))
-        );
+          // Button Group (Edit and Delete)
+          const buttonGroup = document.createElement('div');
+          buttonGroup.append(
+            createButton('Edit', 'btn-warning me-2', () => editClassName(classItem.class_name, classItem.class_id)),
+            createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_name))
+          );
 
-        listItem.append(nameSpan, buttonGroup);
-        classNameList.appendChild(listItem);
+          listItem.append(nameSpan, buttonGroup);
+          classNameList.appendChild(listItem);
+        });
+      },
+      error: function (xhr) {
+        handleError('Error loading class names.', xhr);
+      }
+    });
+  };
 
-        // Add class names to dropdown
-        
-      });
-    },
-    error: xhr => handleError('Error loading class names.', xhr)
-  });
-};
 
-// Edit Class Name
-const editClassName = (currentName, classId) => {
-  Swal.fire({
-    title: 'Edit Class Name',
-    input: 'text',
-    inputValue: currentName,
-    showCancelButton: true,
-    confirmButtonText: 'Save',
-    cancelButtonText: 'Cancel',
-  }).then(result => {
-    const newName = result.value?.trim();
-    if (result.isConfirmed && newName && newName !== currentName) {
-      $.ajax({
-        url: '../php/classes/update_class.php',
-        type: 'POST',
-        dataType: 'json',
-        data: { classId, newName },
-        success: function (response) {
-          if (response.status === 'success') {
-            Swal.fire('Success', 'Class name updated successfully.', 'success');
-            loadClassNames(); // Reload class names
-          } else {
-            Swal.fire('Error', response.message, 'error');
-          }
-        },
-        error: xhr => handleError('Error updating class name.', xhr)
-      });
-    }
-  });
-};
+  // Edit Class Name
+  const editClassName = (currentName, classId) => {
+    Swal.fire({
+      title: 'Edit Class Name',
+      input: 'text',
+      inputValue: currentName,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+    }).then(result => {
+      const newName = result.value?.trim();
+      if (result.isConfirmed && newName && newName !== currentName) {
+        $.ajax({
+          url: '../php/classes/update_class.php',
+          type: 'POST',
+          dataType: 'json',
+          data: { classId, newName },
+          success: function (response) {
+            if (response.status === 'success') {
+              Swal.fire('Success', 'Class name updated successfully.', 'success');
+              loadClassNames(); // Reload class names
+            } else {
+              Swal.fire('Error', response.message, 'error');
+            }
+          },
+          error: xhr => handleError('Error updating class name.', xhr)
+        });
+      }
+    });
+  };
 
   // Delete Class
   const deleteClass = (className) => {
