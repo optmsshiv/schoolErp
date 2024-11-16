@@ -14,7 +14,7 @@ if (empty($className)) {
 }
 
 // Prepare the SQL query to delete the class
-$query = "DELETE FROM Classes WHERE class_name = ?";
+$query = "DELETE FROM Classes WHERE class_name = :class_name";
 
 // Prepare statement
 $stmt = $conn->prepare($query);
