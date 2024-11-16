@@ -8,36 +8,16 @@ document.addEventListener('DOMContentLoaded', function () {
   const classNameForm = document.getElementById('classNameForm');
   const classNameList = document.getElementById('classNameList');
 
-  // Event listener for adding fee heads
-  feeHeadForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const feeHeadName = document.getElementById('feeHeadName').value.trim();
+  // Utility function to create buttons
+  function createButton(text, className, onClick) {
+    const button = document.createElement('button');
+    button.className = `btn btn-sm ${className}`;
+    button.textContent = text;
+    button.addEventListener('click', onClick);
+    return button;
+  }
 
-    if (!feeHeadName) {
-      alert('Please enter a fee head name');
-      return;
-    }
-
-    $.ajax({
-      url: '../php/insert_fee_head.php',
-      type: 'POST',
-      dataType: 'json',
-      data: { feeHeadName },
-      success: function (response) {
-        if (response.status === 'success') {
-          $('#feeHeadName').val('');
-          loadFeeHeads();
-        } else {
-          alert('Error: ' + response.message);
-        }
-      },
-      error: function () {
-        alert('An error occurred while processing the request');
-      }
-    });
-  });
-
-  // Function to load fee heads
+  // Load Fee Heads
   function loadFeeHeads() {
     $.ajax({
       url: '../php/fetch_fee_plan.php',
@@ -48,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         feeHeadSelect.innerHTML = '';
 
         response.data.forEach(feeHead => {
+          // Create Fee Head List Item
           const listItem = document.createElement('li');
           listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
 
@@ -55,212 +36,164 @@ document.addEventListener('DOMContentLoaded', function () {
           nameSpan.textContent = feeHead.fee_head_name;
 
           const buttonGroup = document.createElement('div');
-          const editButton = createButton('Edit', 'btn-warning me-2', () => editFeeHead(feeHead.fee_head_name));
-          const deleteButton = createButton('Delete', 'btn-danger', () => deleteFeeHead(feeHead.fee_head_name));
+          buttonGroup.appendChild(
+            createButton('Edit', 'btn-warning me-2', () => editFeeHead(feeHead.fee_head_name))
+          );
+          buttonGroup.appendChild(
+            createButton('Delete', 'btn-danger', () => deleteFeeHead(feeHead.fee_head_name))
+          );
 
-          buttonGroup.append(editButton, deleteButton);
           listItem.append(nameSpan, buttonGroup);
           feeHeadList.appendChild(listItem);
 
+          // Add to Fee Head Dropdown
           const option = document.createElement('option');
           option.value = feeHead.fee_head_name;
           option.textContent = feeHead.fee_head_name;
           feeHeadSelect.appendChild(option);
         });
       },
-      error: function () {
-        alert('An error occurred while loading the fee heads');
+      error: function (xhr) {
+        console.error('Error loading fee heads:', xhr.responseText);
+        alert('An error occurred while loading fee heads.');
       }
     });
   }
 
-  // Function to create buttons
-  function createButton(text, className, onClick) {
-    const button = document.createElement('button');
-    button.className = `btn btn-sm ${className}`;
-    button.textContent = text;
-    button.onclick = onClick;
-    return button;
-  }
+  // Add Fee Head
+  feeHeadForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const feeHeadName = document.getElementById('feeHeadName').value.trim();
 
-  // Function to edit fee heads
-  function editFeeHead(currentName) {
-    const newName = prompt("Edit Fee Head Name:", currentName);
-    if (newName && newName !== currentName) {
-      $.ajax({
-        url: '../php/update_fee_head.php',
-        type: 'POST',
-        dataType: 'json',
-        data: { oldName: currentName, newName: newName },
-        success: function (response) {
-          if (response.status === 'success') {
-            loadFeeHeads();
-          } else {
-            alert('Error updating fee head: ' + response.message);
-          }
-        },
-        error: function (xhr, status, error) {
-          console.error("Error:", status, error);
-          alert('An error occurred while updating the fee head');
-        }
-      });
-    }
-  }
-  /*
-    // Function to delete fee heads
-    function deleteFeeHead(feeHeadName) {
-      // Validate if the fee head name is provided
-      if (!feeHeadName) {
-        alert('Fee head name is required');
-        return;
-      }
-
-      // Confirm the deletion action with the user
-      if (confirm(`Are you sure you want to delete the fee head "${feeHeadName}"?`)) {
-        $.ajax({
-          url: '../php/delete_fee_head.php', // Path to your PHP delete script
-          type: 'POST',  // Method type
-          dataType: 'json',  // Expecting a JSON response
-          data: { feeHeadName: feeHeadName }, // Data to be sent to the server
-          success: function (response) {
-            if (response.status === 'success') {
-              alert('Fee head deleted successfully');
-              loadFeeHeads(); // Reload fee heads after successful deletion
-            } else {
-              alert('Error deleting fee head: ' + response.message);  // Show the error message from the server
-            }
-          },
-          error: function (xhr, status, error) {
-            // Log the error to the console for debugging
-            console.error('AJAX Error:', error, xhr.responseText);
-            alert('An unexpected error occurred while deleting the fee head');  // Generic error message for the user
-          }
-        });
-      }
-    }*/
-
-  function deleteFeeHead(feeHeadName) {
-    // Validate if the fee head name is provided
     if (!feeHeadName) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Fee head name is required',
-      });
+      Swal.fire('Error', 'Please enter a fee head name!', 'error');
       return;
     }
 
-    // Confirm the deletion action with the user
+    $.ajax({
+      url: '../php/insert_fee_head.php',
+      type: 'POST',
+      dataType: 'json',
+      data: { feeHeadName },
+      success: function (response) {
+        if (response.status === 'success') {
+          Swal.fire('Success', 'Fee head added successfully.', 'success');
+          document.getElementById('feeHeadName').value = '';
+          loadFeeHeads();
+        } else {
+          Swal.fire('Error', response.message, 'error');
+        }
+      },
+      error: function (xhr) {
+        console.error('Error adding fee head:', xhr.responseText);
+        Swal.fire('Error', 'An unexpected error occurred.', 'error');
+      }
+    });
+  });
+
+  // Edit Fee Head
+  function editFeeHead(currentName) {
     Swal.fire({
-      title: `Are you sure you want to delete the fee head "${feeHeadName}"?`,
+      title: 'Edit Fee Head Name',
+      input: 'text',
+      inputValue: currentName,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+    }).then(result => {
+      if (result.isConfirmed) {
+        const newName = result.value.trim();
+        if (newName && newName !== currentName) {
+          $.ajax({
+            url: '../php/update_fee_head.php',
+            type: 'POST',
+            dataType: 'json',
+            data: { oldName: currentName, newName },
+            success: function (response) {
+              if (response.status === 'success') {
+                Swal.fire('Success', 'Fee head updated successfully.', 'success');
+                loadFeeHeads();
+              } else {
+                Swal.fire('Error', response.message, 'error');
+              }
+            },
+            error: function (xhr) {
+              console.error('Error updating fee head:', xhr.responseText);
+              Swal.fire('Error', 'An unexpected error occurred.', 'error');
+            }
+          });
+        }
+      }
+    });
+  }
+
+  // Delete Fee Head
+  function deleteFeeHead(feeHeadName) {
+    Swal.fire({
+      title: `Delete Fee Head: "${feeHeadName}"?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'Cancel',
-    }).then((result) => {
+    }).then(result => {
       if (result.isConfirmed) {
         $.ajax({
-          url: '../php/delete_fee_head.php', // Path to your PHP delete script
-          type: 'POST',  // Method type
-          dataType: 'json',  // Expecting a JSON response
-          data: { feeHeadName: feeHeadName }, // Data to be sent to the server
+          url: '../php/delete_fee_head.php',
+          type: 'POST',
+          dataType: 'json',
+          data: { feeHeadName },
           success: function (response) {
             if (response.status === 'success') {
-              Swal.fire({
-                icon: 'success',
-                title: 'Deleted!',
-                text: 'Fee head deleted successfully.',
-              });
-              loadFeeHeads(); // Reload fee heads after successful deletion
+              Swal.fire('Deleted!', 'Fee head deleted successfully.', 'success');
+              loadFeeHeads();
             } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Error deleting fee head: ' + response.message,
-              });
+              Swal.fire('Error', response.message, 'error');
             }
           },
-          error: function (xhr, status, error) {
-            console.error('AJAX Error:', error, xhr.responseText);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'An unexpected error occurred while deleting the fee head.',
-            });
+          error: function (xhr) {
+            console.error('Error deleting fee head:', xhr.responseText);
+            Swal.fire('Error', 'An unexpected error occurred.', 'error');
           }
         });
       }
     });
   }
 
-  // Function to handle "Select All Months"
-  function selectAllMonths(selectAllCheckbox) {
-    const monthCheckboxes = document.querySelectorAll('input[name="month"]');
-    monthCheckboxes.forEach(checkbox => {
-      checkbox.checked = selectAllCheckbox.checked;
-    });
-  }
-
-  // Attach the selectAllMonths function to the checkbox
-  if (selectAllCheckbox) {
-    selectAllCheckbox.addEventListener('change', function () {
-      selectAllMonths(selectAllCheckbox);
-    });
-  }
-
-  // Load fee heads on page load
-  loadFeeHeads();
-
-  // Event listener for adding class names
+  // Add Class Name
   classNameForm.addEventListener('submit', function (e) {
     e.preventDefault();
     const className = document.getElementById('className').value.trim();
 
     if (!className) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please enter a class name!',
-      });
+      Swal.fire('Error', 'Please enter a class name!', 'error');
       return;
     }
 
     $.ajax({
-      url: '../php/classes/insertClass.php', // Replace with the actual path to your PHP script
+      url: '../php/classes/insertClass.php',
       type: 'POST',
       dataType: 'json',
       data: { className },
       success: function (response) {
         if (response.status === 'success') {
-          Swal.fire({
-            icon: 'success',
-            title: 'Added!',
-            text: 'Class name added successfully.',
-          });
+          Swal.fire('Success', 'Class name added successfully.', 'success');
           document.getElementById('className').value = '';
           loadClassNames();
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: response.message,
-          });
+          Swal.fire('Error', response.message, 'error');
         }
       },
-      error: function () {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'An error occurred while processing the request.',
-        });
+      error: function (xhr) {
+        console.error('Error adding class:', xhr.responseText);
+        Swal.fire('Error', 'An unexpected error occurred.', 'error');
       }
     });
   });
 
-  // Function to load existing class names
+  // Load Class Names
   function loadClassNames() {
     $.ajax({
-      url: '../php/classes/fetch_classes.php', // Replace with the actual path to your PHP script
+      url: '../php/classes/fetch_classes.php',
       type: 'GET',
       dataType: 'json',
       success: function (response) {
@@ -273,76 +206,65 @@ document.addEventListener('DOMContentLoaded', function () {
           nameSpan.textContent = classItem.class_name;
 
           const buttonGroup = document.createElement('div');
-          const deleteButton = createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_id));
+          buttonGroup.appendChild(
+            createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_id))
+          );
 
-          buttonGroup.append(deleteButton);
           listItem.append(nameSpan, buttonGroup);
           classNameList.appendChild(listItem);
         });
       },
-      error: function () {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'An error occurred while loading class names.',
-        });
+      error: function (xhr) {
+        console.error('Error loading class names:', xhr.responseText);
+        Swal.fire('Error', 'An unexpected error occurred.', 'error');
       }
     });
   }
 
-  // Function to delete a class name
+  // Delete Class
   function deleteClass(classId) {
     Swal.fire({
-      title: 'Are you sure?',
+      title: 'Delete Class?',
       text: 'Do you want to delete this class?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'Cancel',
-    }).then((result) => {
+    }).then(result => {
       if (result.isConfirmed) {
         $.ajax({
-          url: '../php/delete_class.php', // Replace with the actual path to your PHP script
+          url: '../php/delete_class.php',
           type: 'POST',
           dataType: 'json',
           data: { classId },
           success: function (response) {
             if (response.status === 'success') {
-              Swal.fire({
-                icon: 'success',
-                title: 'Deleted!',
-                text: 'Class deleted successfully.',
-              });
+              Swal.fire('Deleted!', 'Class deleted successfully.', 'success');
               loadClassNames();
             } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: response.message,
-              });
+              Swal.fire('Error', response.message, 'error');
             }
           },
-          error: function () {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'An unexpected error occurred while deleting the class.',
-            });
+          error: function (xhr) {
+            console.error('Error deleting class:', xhr.responseText);
+            Swal.fire('Error', 'An unexpected error occurred.', 'error');
           }
         });
       }
     });
   }
 
-  // Function to create buttons
-  function createButton(text, className, onClick) {
-    const button = document.createElement('button');
-    button.className = `btn btn-sm ${className}`;
-    button.textContent = text;
-    button.onclick = onClick;
-    return button;
+  // Handle "Select All Months" checkbox
+  if (selectAllCheckbox) {
+    selectAllCheckbox.addEventListener('change', function () {
+      const monthCheckboxes = document.querySelectorAll('input[name="month"]');
+      monthCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+      });
+    });
   }
 
-  // Load class names on page load
+  // Initialize
+  loadFeeHeads();
   loadClassNames();
 });
