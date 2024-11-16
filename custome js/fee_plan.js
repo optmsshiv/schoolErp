@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   // Delete Class
-  const deleteClass = (classId) => {
+  const deleteClass = (className) => {
     Swal.fire({
       title: 'Delete Class?',
       text: 'Do you want to delete this class?',
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
           url: '../php/classes/delete_class.php',
           type: 'POST',
           dataType: 'json',
-          data: { classId },
+          data: { className },
           success: function (response) {
             if (response.status === 'success') {
               Swal.fire('Deleted!', 'Class deleted successfully.', 'success');
