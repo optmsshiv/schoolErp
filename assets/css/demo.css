@@ -756,7 +756,11 @@ td {
     border: none; /* Removes border */
 }
 
-/* fee tab active */
+/* fee plan drop down height */
+#classNameSelect {
+  height: 40px; /* Adjust the height as needed */
+  line-height: 15px; /* Adjust the line height for vertical centering */
+}
 
 
 
