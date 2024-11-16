@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   // Delete Class
-  const deleteClass = (class_name) => {
+  const deleteClass = (className) => {
     Swal.fire({
       title: 'Delete Class?',
       text: 'Do you want to delete this class?',
@@ -208,22 +208,22 @@ document.addEventListener('DOMContentLoaded', function () {
       cancelButtonText: 'Cancel',
     }).then(result => {
       if (result.isConfirmed) {
-        // Use proper AJAX data format (class_name instead of className)
+        // Use the correct parameter name for sending class_name
         $.ajax({
           url: '../php/classes/delete_class.php',
           type: 'POST',
           dataType: 'json',
-          data: { class_name }, // Correct parameter name
+          data: { class_name: className }, // Make sure the parameter is 'class_name'
           success: function (response) {
             if (response.status === 'success') {
               Swal.fire('Deleted!', 'Class deleted successfully.', 'success');
-              loadClassNames(); // Refresh the class list
+              loadClassNames(); // Refresh the class list after deletion
             } else {
-              Swal.fire('Error', response.message, 'error');
+              Swal.fire('Error', response.message, 'error'); // Display error if class deletion fails
             }
           },
           error: function (xhr, status, error) {
-            // Handle AJAX errors more specifically
+            // Handle AJAX errors, displaying the specific error message if available
             let errorMessage = xhr.responseText ? xhr.responseText : error;
             Swal.fire('Error', `Error deleting class: ${errorMessage}`, 'error');
           }
@@ -231,6 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   };
+
 
 
   // Handle "Select All Months" checkbox
