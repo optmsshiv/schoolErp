@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }).then(result => {
       if (result.isConfirmed) {
         $.ajax({
-          url: '../php/delete_class.php',
+          url: '../php/classes/delete_class.php',
           type: 'POST',
           dataType: 'json',
           data: { classId },
