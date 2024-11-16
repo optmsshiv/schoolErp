@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
           // Add class names to dropdown
           // Add to Fee Head Dropdown
-          const option = new Option(className.class_name, className.class_name);
+          const option = new Option(classItem.class_name, classItem.class_name);
           classNameSelect.add(option);
 
         });
