@@ -1,37 +1,36 @@
 <?php
-// Include the database connection file
-include '../php/db_connection.php';
+// Enable error reporting for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 header('Content-Type: application/json');
 
-// Check if className is set
-if (isset($_POST['className'])) {
-    $className = trim($_POST['className']);
+// Database connection
+include '../db_connection.php'; // Ensure the correct path to your connection file
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $className = trim($_POST['className'] ?? '');
 
     if (empty($className)) {
-        echo json_encode(['status' => 'error', 'message' => 'Class name cannot be empty']);
+        echo json_encode(['status' => 'error', 'message' => 'Class name is required']);
         exit;
     }
 
     try {
-        // Prepare the SQL statement
-        $sql = "INSERT INTO Classes (class_name) VALUES (:class_name)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':class_name', $className, PDO::PARAM_STR);
+        $stmt = $conn->prepare("INSERT INTO Classes (class_name) VALUES (?)");
+        $stmt->bind_param("s", $className);
 
-        // Execute the statement
-        $stmt->execute();
-
-        echo json_encode(['status' => 'success']);
-    } catch (PDOException $e) {
-        // Handle duplicate entry error
-        if ($e->getCode() == 23000) {
-            echo json_encode(['status' => 'error', 'message' => 'Class name already exists']);
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success', 'message' => 'Class added successfully']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+            echo json_encode(['status' => 'error', 'message' => 'Failed to add class']);
         }
+        $stmt->close();
+    } catch (Exception $e) {
+        echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
     }
 } else {
-    echo json_encode(['status' => 'error', 'message' => 'Class name is required']);
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
 }
 ?>
