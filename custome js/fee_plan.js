@@ -208,24 +208,30 @@ document.addEventListener('DOMContentLoaded', function () {
       cancelButtonText: 'Cancel',
     }).then(result => {
       if (result.isConfirmed) {
+        // Use proper AJAX data format (class_name instead of className)
         $.ajax({
           url: '../php/classes/delete_class.php',
           type: 'POST',
           dataType: 'json',
-          data: { className },
+          data: { class_name: className }, // Correct parameter name
           success: function (response) {
             if (response.status === 'success') {
               Swal.fire('Deleted!', 'Class deleted successfully.', 'success');
-              loadClassNames();
+              loadClassNames(); // Refresh the class list
             } else {
               Swal.fire('Error', response.message, 'error');
             }
           },
-          error: xhr => handleError('Error deleting class.', xhr)
+          error: function (xhr, status, error) {
+            // Handle AJAX errors more specifically
+            let errorMessage = xhr.responseText ? xhr.responseText : error;
+            Swal.fire('Error', `Error deleting class: ${errorMessage}`, 'error');
+          }
         });
       }
     });
   };
+
 
   // Handle "Select All Months" checkbox
   selectAllCheckbox?.addEventListener('change', function () {
