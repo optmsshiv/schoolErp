@@ -3,7 +3,7 @@
 include 'db.php'; // Include your database connection
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $classId = $_POST['className']; // Get the class ID
+    $className = $_POST['className']; // Get the class ID
     $newName = $_POST['newName']; // Get the new class name
 
     // Validate inputs

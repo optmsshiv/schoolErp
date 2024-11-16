@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
 };
 
 // Edit Class Name
-const editClassName = (currentName, classId) => {
+const editClassName = (currentName, className) => {
   Swal.fire({
     title: 'Edit Class Name',
     input: 'text',
@@ -219,7 +219,7 @@ const editClassName = (currentName, classId) => {
         url: '../php/classes/update_class.php',
         type: 'POST',
         dataType: 'json',
-        data: { classId, newName },
+        data: { className, newName },
         success: function (response) {
           if (response.status === 'success') {
             Swal.fire('Success', 'Class name updated successfully.', 'success');
