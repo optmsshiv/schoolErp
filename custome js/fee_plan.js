@@ -188,14 +188,51 @@ document.addEventListener('DOMContentLoaded', function () {
           const nameSpan = document.createElement('span');
           nameSpan.textContent = classItem.class_name;
 
-          const buttonGroup = createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_id));
-          listItem.append(nameSpan, buttonGroup);
-          classNameList.appendChild(listItem);
-        });
-      },
-      error: xhr => handleError('Error loading class names.', xhr)
-    });
-  };
+        // Button Group (Edit and Delete)
+        const buttonGroup = document.createElement('div');
+        buttonGroup.append(
+          createButton('Edit', 'btn-warning me-2', () => editClassName(classItem.class_name, classItem.class_id)),
+          createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_name))
+        );
+
+        listItem.append(nameSpan, buttonGroup);
+        classNameList.appendChild(listItem);
+      });
+    },
+    error: xhr => handleError('Error loading class names.', xhr)
+  });
+};
+
+// Edit Class Name
+const editClassName = (currentName, classId) => {
+  Swal.fire({
+    title: 'Edit Class Name',
+    input: 'text',
+    inputValue: currentName,
+    showCancelButton: true,
+    confirmButtonText: 'Save',
+    cancelButtonText: 'Cancel',
+  }).then(result => {
+    const newName = result.value?.trim();
+    if (result.isConfirmed && newName && newName !== currentName) {
+      $.ajax({
+        url: '../php/classes/update_class.php',
+        type: 'POST',
+        dataType: 'json',
+        data: { classId, newName },
+        success: function (response) {
+          if (response.status === 'success') {
+            Swal.fire('Success', 'Class name updated successfully.', 'success');
+            loadClassNames(); // Reload class names
+          } else {
+            Swal.fire('Error', response.message, 'error');
+          }
+        },
+        error: xhr => handleError('Error updating class name.', xhr)
+      });
+    }
+  });
+};
 
   // Delete Class
   const deleteClass = (className) => {
