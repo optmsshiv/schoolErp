@@ -202,7 +202,6 @@ document.addEventListener('DOMContentLoaded', function () {
           classNameList.appendChild(listItem);
 
           // Add class names to dropdown
-          // Add to Fee Head Dropdown
           const option = new Option(classItem.class_name, classItem.class_name);
           classNameSelect.add(option);
 
