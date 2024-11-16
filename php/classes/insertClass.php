@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 header('Content-Type: application/json');
 
 // Database connection
-include '../db_connection.php'; // Ensure the correct path to your connection file
+include '../php/db_connection.php'; // Ensure the correct path to your connection file
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $className = trim($_POST['className'] ?? '');
