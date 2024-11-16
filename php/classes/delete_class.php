@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         try {
             // First, check if the class exists
-            $checkSql = "SELECT class_id FROM Classes WHERE class_name = :class_name";
+            $checkSql = "SELECT class_name FROM Classes WHERE class_name = :class_name";
             $checkStmt = $pdo->prepare($checkSql);
             $checkStmt->bindParam(':class_name', $className, PDO::PARAM_STR);
             $checkStmt->execute();
