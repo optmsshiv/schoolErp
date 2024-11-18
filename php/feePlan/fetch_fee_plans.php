@@ -12,8 +12,8 @@ try {
     // SQL Query to fetch fee plans
     $sql = "
         SELECT
-            fee_head_name,
             class_name,
+            fee_head_name,
             month_name,
             amount,
             created_at
