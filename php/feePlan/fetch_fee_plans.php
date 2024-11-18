@@ -9,8 +9,6 @@ $response = [
     'data' => []
 ];
 
-echo "Script is running"; // Debugging line to confirm script execution
-
 // Query to fetch fee plans
 $query = "SELECT fee_head_name, class_name, month_name, amount FROM FeePlans ORDER BY class_name ASC";
 
