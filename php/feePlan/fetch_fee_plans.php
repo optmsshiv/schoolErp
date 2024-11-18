@@ -1,5 +1,5 @@
 <?php
-// Enable error reporting
+// Enable error reporting for debugging
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -15,17 +15,14 @@ if (!$conn) {
     exit;
 }
 
-// Initialize response array
 $response = [
     'status' => 'error',
     'message' => 'No data found',
     'data' => []
 ];
 
-// Query to fetch fee plans
 $query = "SELECT fee_head_name, class_name, month_name, amount FROM FeePlans ORDER BY class_name ASC";
 
-// Execute the query
 try {
     $stmt = $conn->prepare($query);
     $stmt->execute();
@@ -45,9 +42,9 @@ try {
     $response['message'] = 'Database error: ' . $e->getMessage();
 }
 
-// Close the database connection
+// Close the connection
 $conn = null;
 
-// Return JSON response
+// Return the response
 echo json_encode($response);
 ?>
