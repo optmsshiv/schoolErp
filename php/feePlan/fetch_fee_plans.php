@@ -6,24 +6,20 @@ error_reporting(E_ALL);
 // Include database connection
 require_once '../db_connection.php';
 
-// Test the database connection
-if (!$conn) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Database connection failed'
-    ]);
-    exit;
-}
-
+// Initialize response array
 $response = [
     'status' => 'error',
     'message' => 'No data found',
     'data' => []
 ];
 
-$query = "SELECT fee_head_name, class_name, month_name, amount FROM FeePlans ORDER BY class_name ASC";
-
 try {
+    // Test if the database connection is successful
+    if (!$conn) {
+        throw new Exception("Database connection failed");
+    }
+
+    $query = "SELECT fee_head_name, class_name, month_name, amount FROM FeePlans ORDER BY class_name ASC";
     $stmt = $conn->prepare($query);
     $stmt->execute();
 
@@ -40,10 +36,15 @@ try {
     }
 } catch (PDOException $e) {
     $response['message'] = 'Database error: ' . $e->getMessage();
+} catch (Exception $e) {
+    $response['message'] = $e->getMessage();
 }
 
 // Close the connection
 $conn = null;
+
+// Set the content type to JSON
+header('Content-Type: application/json');
 
 // Return the response
 echo json_encode($response);
