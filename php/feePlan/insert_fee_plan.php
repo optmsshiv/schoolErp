@@ -1,27 +1,34 @@
 <?php
-require '../db_connection.php';
+require '../db_connection.php'; // Include your database connection file
+
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $feeHeadName = $_POST['fee_head_name'];
-    $className = $_POST['class_name'];
-    $monthName = $_POST['month_name'];
-    $amount = $_POST['amount'];
+    $feeHeadName = $_POST['fee_head_name'] ?? '';
+    $className = $_POST['class_name'] ?? '';
+    $monthName = $_POST['month_name'] ?? '';
+    $amount = $_POST['amount'] ?? '';
+
+    // Validate input
+    if (empty($feeHeadName) || empty($className) || empty($monthName) || empty($amount)) {
+        echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
+        exit;
+    }
 
     try {
-        $stmt = $conn->prepare("
-            INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount)
-            VALUES (:fee_head_name, :class_name, :month_name, :amount)
-        ");
-        $stmt->execute([
-            ':fee_head_name' => $feeHeadName,
-            ':class_name' => $className,
-            ':month_name' => $monthName,
-            ':amount' => $amount,
-        ]);
+        // Insert data into the database
+        $stmt = $conn->prepare("INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param('sssi', $feeHeadName, $className, $monthName, $amount);
 
-        echo json_encode(['success' => true]);
-    } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        if ($stmt->execute()) {
+            echo json_encode(['status' => 'success', 'message' => 'Fee plan created successfully.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to create fee plan.']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['status' => 'error', 'message' => 'Error: ' . $e->getMessage()]);
     }
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
 ?>
