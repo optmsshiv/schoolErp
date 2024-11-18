@@ -311,23 +311,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // AJAX call
     $.ajax({
-        url: '../php/feePlan/insert_fee_plan.php',
-        type: 'POST',
-        dataType: 'json',
-        data: data,
-        success: function (response) {
-            if (response.status === 'success') {
-                Swal.fire('Success', 'Fee plan added successfully.', 'success');
-                feePlanForm.reset();
-                loadFeePlans(); // Call a function to reload the fee plans (if applicable)
-            } else {
-                Swal.fire('Error', response.message, 'error');
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error(`Error: ${error}, Status: ${status}`, xhr.responseText);
-            Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
+      url: '../php/feePlan/insert_fee_plan.php',
+      type: 'POST',
+      dataType: 'json',
+      data: data,
+      success: function (response) {
+        if (response.status === 'success') {
+          Swal.fire('Success', 'Fee plan added successfully.', 'success');
+          feePlanForm.reset();
+          loadFeePlans(); // Call a function to reload the fee plans (if applicable)
+        } else {
+          Swal.fire('Error', response.message, 'error');
         }
+      },
+      error: function (xhr, status, error) {
+        console.error(`AJAX Error: ${status}, ${error}`);
+        console.error("Response Text: ", xhr.responseText);
+        Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
+      }
     });
 });
 
