@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get form field values
     const feeHead = document.getElementById('feeHeadSelect').value.trim();
     const className = document.getElementById('classNameSelect').value.trim();
-    const month = Array.from(document.getElementById('monthSelect').selectedOptions).map(option => option.value);
+    const month = Array.from(document.getElementById('month').selectedOptions).map(option => option.value);
     const amount = document.getElementById('feeAmount').value.trim();
 
     if (!feeHead || !className || !month.length || !amount) {
