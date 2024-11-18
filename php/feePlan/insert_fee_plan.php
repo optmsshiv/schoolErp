@@ -21,7 +21,10 @@ try {
     $conn->begin_transaction();
 
     foreach ($months as $month) {
-        $stmt = $conn->prepare("INSERT INTO FeePlans (class_name, fee_head_name, month, amount) VALUES (?, ?, ?, ?)");
+        // Prepare and bind parameters for the insert query
+        $stmt = $conn->prepare("INSERT INTO FeePlans (class_name, fee_head_name, month_name, amount)
+                                VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE amount = VALUES(amount)");
+
         $stmt->bind_param('ssss', $className, $feeHead, $month, $amount);
 
         if (!$stmt->execute()) {
