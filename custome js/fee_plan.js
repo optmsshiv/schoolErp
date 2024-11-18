@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   const feeHeadForm = document.getElementById('feeHeadForm');
   const feeHeadList = document.getElementById('feeHeadList');
-  const feePlanForm = document.getElementById('createFeePlanForm');
+  const feePlanForm = document.getElementById('feePlanForm');
   const feePlanTable = document.getElementById('feePlanBody');
   const feeHeadSelect = document.getElementById('feeHeadSelect');
   const classNameSelect = document.getElementById('classNameSelect')
@@ -283,9 +283,10 @@ document.addEventListener('DOMContentLoaded', function () {
   feePlanForm?.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const feeHead = feeHeadSelect.value;
-    const className = classNameSelect.value;
-    const month = Array.from(document.querySelectorAll('input[name="month"]:checked')).map(cb => cb.value);
+    // Get form field values
+    const feeHead = document.getElementById('feeHeadSelect').value.trim();
+    const className = document.getElementById('classNameSelect').value.trim();
+    const month = Array.from(document.getElementById('monthSelect').selectedOptions).map(option => option.value);
     const amount = document.getElementById('feeAmount').value.trim();
 
     if (!feeHead || !className || !month.length || !amount) {
@@ -297,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
         feeHead: feeHead,
         className: className,
         month: month.join(','), // Convert array to comma-separated string
-        amount: amount
+        feeAmount: amount
       };
 
     $.ajax({
@@ -309,12 +310,15 @@ document.addEventListener('DOMContentLoaded', function () {
         if (response.status === 'success') {
           Swal.fire('Success', 'Fee plan added successfully.', 'success');
           feePlanForm.reset();
-          loadFeePlans();
+          loadFeePlans(); // Call a function to reload the fee plans (if applicable)
         } else {
           Swal.fire('Error', response.message, 'error');
         }
       },
-      error: xhr => handleError('Error adding fee plan.', xhr)
+      error: function (xhr, status, error) {
+        console.error(`Error: ${error}, Status: ${status}`, xhr.responseText);
+        Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
+      }
     });
   });
 
