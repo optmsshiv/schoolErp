@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Load Fee Heads
   const loadFeeHeads = () => {
     $.ajax({
-      url: '../php/fetch_fee_plan.php',
+      url: '../php/fetch_fee_head.php',
       type: 'GET',
       dataType: 'json',
       success: function (response) {
