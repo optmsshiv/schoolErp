@@ -11,58 +11,52 @@ $month = $_GET['month'] ?? null;
 // Build the SQL query dynamically based on provided filters
 $sql = "SELECT * FROM FeePlans WHERE 1=1";
 $params = [];
-$types = '';
+$queryParams = [];
 
 // Add conditions based on provided parameters
 if ($className) {
-    $sql .= " AND class_name = ?";
-    $params[] = $className;
-    $types .= 's'; // 's' means string
+    $sql .= " AND class_name = :class_name";
+    $params[':class_name'] = $className;
 }
 
 if ($feeHead) {
-    $sql .= " AND fee_head_name = ?";
-    $params[] = $feeHead;
-    $types .= 's'; // 's' means string
+    $sql .= " AND fee_head_name = :fee_head_name";
+    $params[':fee_head_name'] = $feeHead;
 }
 
 if ($month) {
-    $sql .= " AND month = ?";
-    $params[] = $month;
-    $types .= 's'; // 's' means string
+    $sql .= " AND month_name = :month_name";
+    $params[':month_name'] = $month;
 }
 
-// Prepare and execute the query
 try {
+    // Prepare the SQL statement
     $stmt = $conn->prepare($sql);
 
-    if (!empty($params)) {
-        $stmt->bind_param($types, ...$params);
+    // Bind parameters
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value, PDO::PARAM_STR);
     }
 
+    // Execute the statement
     $stmt->execute();
-    $result = $stmt->get_result();
 
-    // Fetch all fee plans from the result
-    $feePlans = [];
-    while ($row = $result->fetch_assoc()) {
-        $feePlans[] = $row;
-    }
+    // Fetch the fee plans as an associative array
+    $feePlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Return the fetched fee plans as a JSON response
     echo json_encode([
         'status' => 'success',
         'data' => $feePlans
     ]);
-} catch (Exception $e) {
+} catch (PDOException $e) {
     // If there's an error, return the error message
     echo json_encode([
         'status' => 'error',
         'message' => $e->getMessage()
     ]);
 } finally {
-    // Close the statement and the database connection
-    $stmt->close();
-    $conn->close();
+    // Close the database connection (PDO handles connection management automatically)
+    $conn = null;
 }
 ?>
