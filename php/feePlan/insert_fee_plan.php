@@ -1,5 +1,5 @@
 <?php
-include 'db_connection.php'; // Include database connection file
+include '../db_connection.php'; // Include database connection file
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
