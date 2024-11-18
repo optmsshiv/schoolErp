@@ -1,37 +1,31 @@
 <?php
-require '../db_connection.php'; // Ensure this includes the PDO connection setup
+// Database connection
+include '../db_connect.php';
 
-header('Content-Type: application/json');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $feeHead = $_POST['feeHead'];
+    $className = $_POST['className'];
+    $month = $_POST['month'];
+    $feeAmount = $_POST['feeAmount'];
 
-try {
-    // Retrieve POST data
-    $feeHead = $_POST['feeHead'] ?? null;
-    $className = $_POST['className'] ?? null;
-    $month = $_POST['month'] ?? null;
-    $feeAmount = $_POST['feeAmount'] ?? null;
-
-    // Validate input
-    if (!$feeHead || !$className || !$month || !$feeAmount) {
-        echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
+    if (empty($feeHead) || empty($className) || empty($month) || empty($feeAmount)) {
+        echo json_encode(["success" => false, "message" => "All fields are required."]);
         exit;
     }
-    // Insert into database
-    $sql = "INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount)
-            VALUES (:fee_head_name, :class_name, :month_name, :amount)";
+
+    // Insert query
+    $sql = "INSERT INTO FeePlans (fee_head_id, class, month, fee_amount)
+            VALUES ((SELECT fee_head_id FROM feeHeads WHERE fee_head_name = ?), ?, ?, ?)";
     $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssss", $feeHead, $className, $month, $feeAmount);
 
-    $stmt->execute([
-        ':fee_head_name' => $feeHead,
-        ':class_name' => $className,
-        ':month_name' => $month,
-        ':amount' => $feeAmount,
-    ]);
+    if ($stmt->execute()) {
+        echo json_encode(["success" => true]);
+    } else {
+        echo json_encode(["success" => false, "message" => $conn->error]);
+    }
 
-    // Success response
-    echo json_encode(['status' => 'success', 'message' => 'Fee plan added successfully.']);
-} catch (PDOException $e) {
-    // Error response
-    echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
-    error_log('Error: ' . $e->getMessage()); // Log error for debugging
-    exit;
+    $stmt->close();
+    $conn->close();
 }
+?>

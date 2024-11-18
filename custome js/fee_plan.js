@@ -278,8 +278,48 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
-   // Fetch and display fee plans
-   const loadFeePlans = () => {
+
+  // Add Fee Plan
+  feePlanForm?.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const feeHead = feeHeadSelect.value;
+    const className = classNameSelect.value;
+    const month = Array.from(document.querySelectorAll('input[name="month"]:checked')).map(cb => cb.value);
+    const amount = document.getElementById('feeAmount').value.trim();
+
+    if (!feeHead || !className || !month.length || !amount) {
+      return Swal.fire('Error', 'Please fill all fields!', 'error');
+    }
+
+      // Prepare data for the AJAX request
+      const data = {
+        feeHead: feeHead,
+        className: className,
+        month: month.join(','), // Convert array to comma-separated string
+        amount: amount
+      };
+
+    $.ajax({
+      url: '../feePlan/insert_fee_plan.php',
+      type: 'POST',
+      dataType: 'json',
+      data: data,
+      success: function (response) {
+        if (response.status === 'success') {
+          Swal.fire('Success', 'Fee plan added successfully.', 'success');
+          feePlanForm.reset();
+          loadFeePlans();
+        } else {
+          Swal.fire('Error', response.message, 'error');
+        }
+      },
+      error: xhr => handleError('Error adding fee plan.', xhr)
+    });
+  });
+
+  // Fetch and display fee plans
+  const loadFeePlans = () => {
     $.ajax({
       url: '../php/feePlans/fetch_fee_plans.php',
       type: 'GET',
@@ -304,44 +344,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
-  // Add Fee Plan
-  feePlanForm?.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const feeHead = feeHeadSelect.value;
-    const className = classNameSelect.value;
-    const month = Array.from(document.querySelectorAll('input[name="month"]:checked')).map(cb => cb.value);
-    const amount = document.getElementById('feeAmount').value.trim();
-
-    if (!feeHead || !className || !month.length || !amount) {
-      return Swal.fire('Error', 'Please fill all fields!', 'error');
-    }
-
-      // Prepare data for the AJAX request
-      const data = {
-        feeHead: feeHead,
-        className: className,
-        month: month.join(','), // Convert array to comma-separated string
-        amount: amount
-      };
-
-    $.ajax({
-      url: '../php/feePlan/insert_fee_plan.php',
-      type: 'POST',
-      dataType: 'json',
-      data: data,
-      success: function (response) {
-        if (response.status === 'success') {
-          Swal.fire('Success', 'Fee plan added successfully.', 'success');
-          feePlanForm.reset();
-          loadFeePlans();
-        } else {
-          Swal.fire('Error', response.message, 'error');
-        }
-      },
-      error: xhr => handleError('Error adding fee plan.', xhr)
-    });
-  });
 
   // Edit Fee Plan
   const editFeePlan = (plan) => {
