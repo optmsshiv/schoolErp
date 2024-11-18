@@ -285,10 +285,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const feeHead = feeHeadSelect.value;
     const className = classNameSelect.value;
-    const months = Array.from(document.querySelectorAll('input[name="month"]:checked')).map(cb => cb.value);
+    const month = document.querySelector('input[name="month"]:checked')?.value;  // Single month
     const amount = document.getElementById('feeAmount').value.trim();
 
-    if (!feeHead || !className || !months.length || !amount) {
+    if (!feeHead || !className || !month || !amount) {
       return Swal.fire('Error', 'Please fill all fields!', 'error');
     }
 
@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
       url: '../php/feePlan/insert_fee_plan.php',
       type: 'POST',
       dataType: 'json',
-      data: { feeHead, className, months, amount },
+      data: { feeHead, className, month, amount },  // Send single month
       success: function (response) {
         if (response.status === 'success') {
           Swal.fire('Success', 'Fee plan added successfully.', 'success');
@@ -309,6 +309,7 @@ document.addEventListener('DOMContentLoaded', function () {
       error: xhr => handleError('Error adding fee plan.', xhr)
     });
   });
+
 
   // Fetch and display fee plans
   const loadFeePlans = () => {

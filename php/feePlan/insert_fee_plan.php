@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 // Get POST data from the request
 $feeHead = $_POST['feeHead'] ?? null;
 $className = $_POST['className'] ?? null;
-$month = $_POST['month'] ?? null;
+$month = $_POST['month'] ?? null;  // Expecting a single month
 $amount = $_POST['amount'] ?? null;
 
 if (!$feeHead || !$className || !$month || !$amount) {
@@ -46,4 +46,3 @@ try {
     $conn = null;
 }
 ?>
-

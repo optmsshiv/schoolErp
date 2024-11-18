@@ -10,7 +10,7 @@ $response = [
 ];
 
 // Query to fetch fee plans
-$query = "SELECT fee_head, class_name, month_name, amount FROM FeePlans ORDER BY class_name ASC";
+$query = "SELECT fee_head_name, class_name, month_name, amount FROM FeePlans ORDER BY class_name ASC";
 
 // Execute the query
 $result = mysqli_query($conn, $query);
@@ -21,7 +21,12 @@ if ($result && mysqli_num_rows($result) > 0) {
 
     // Fetch each fee plan from the result
     while ($row = mysqli_fetch_assoc($result)) {
-        $feePlans[] = $row;
+        $feePlans[] = [
+            'fee_head' => $row['fee_head_name'],
+            'class' => $row['class_name'],
+            'month' => $row['month_name'],
+            'fee_amount' => $row['amount']
+        ];
     }
 
     // Set the success response with the fee plans data
