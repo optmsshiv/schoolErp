@@ -12,13 +12,11 @@ try {
     // SQL Query to fetch fee plans
     $sql = "
         SELECT
-            fee_plan_id,
             fee_head_name,
             class_name,
             month_name,
             amount,
-            created_at,
-            updated_at
+            created_at
         FROM
             FeePlans
         ORDER BY
