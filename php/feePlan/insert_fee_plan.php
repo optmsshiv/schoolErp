@@ -1,12 +1,12 @@
 <?php
-include '../db_connection.php'; // Include your PDO database connection script
+include '../db_connection.php'; // Include PDO database connection script
 
 header('Content-Type: application/json');
 
-// Get POST data from the request
-$feeHead = $_POST['feeHeadSelect'] ?? null;
-$className = $_POST['classNameSelect'] ?? null;
-$months = $_POST['months'] ?? null; // Expecting an array of months
+// Get POST data
+$feeHead = $_POST['feeHead'] ?? null;
+$className = $_POST['className'] ?? null;
+$months = $_POST['months'] ?? null; // Expecting an array
 $amount = $_POST['feeAmount'] ?? null;
 
 // Validate input
@@ -27,7 +27,7 @@ try {
             VALUES (:fee_head_name, :class_name, :month_name, :amount)";
     $stmt = $conn->prepare($sql);
 
-    // Loop through months and insert for each month
+    // Insert each month
     foreach ($months as $month_name) {
         $stmt->execute([
             ':fee_head_name' => $feeHead,
@@ -45,7 +45,7 @@ try {
         'message' => 'Fee plan added successfully.'
     ]);
 } catch (PDOException $e) {
-    // Rollback the transaction if any error occurs
+    // Rollback on error
     $conn->rollBack();
     echo json_encode([
         'status' => 'error',
