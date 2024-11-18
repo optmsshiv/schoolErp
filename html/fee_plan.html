@@ -796,21 +796,26 @@
                               <div class="tab-pane fade show active" id="class-name" role="tabpanel">
                                 <h4>Create Class Name</h4>
                                 <form id="classNameForm">
-                                  <div class="mb-3">
-                                    <label for="className" class="form-label">Class Name</label>
-                                    <input
-                                      type="text"
-                                      class="form-control col-sm-3"
-                                      id="className"
-                                      placeholder="Enter class name"
-                                      required />
+                                  <div class="mb-3 row">
+                                    <div class="col-sm-4">
+                                      <label for="className" class="form-label">Class Name</label>
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        id="className"
+                                        placeholder="Enter class name"
+                                        required />
+                                    </div>
+                                    <div class="col-sm-4 d-flex align-items-end">
+                                      <button type="submit" class="btn btn-primary w-100">Add class name</button>
+                                    </div>
                                   </div>
-                                  <button type="submit" class="btn btn-primary mt-3">Add class name</button>
                                 </form>
                                 <hr />
                                 <h5>Existing Class Name</h5>
                                 <ul id="classNameList" class="list-group mt-2 col-sm-6"></ul>
                               </div>
+
 
                               <!-- Month Tab -->
                               <div class="tab-pane fade" id="month-name" role="tabpanel">
@@ -845,21 +850,26 @@
                               <div class="tab-pane fade" id="fee-head" role="tabpanel">
                                 <h4>Create Fee Head</h4>
                                 <form id="feeHeadForm">
-                                  <div class="mb-3">
-                                    <label for="feeHeadName" class="form-label">Fee Head Name</label>
-                                    <input
-                                      type="text"
-                                      class="form-control col-sm-3"
-                                      id="feeHeadName"
-                                      placeholder="Enter fee head name"
-                                      required />
+                                  <div class="mb-3 row">
+                                    <div class="col-sm-5">
+                                      <label for="feeHeadName" class="form-label">Fee Head Name</label>
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        id="feeHeadName"
+                                        placeholder="Enter fee head name"
+                                        required />
+                                    </div>
+                                    <div class="col-sm-4 d-flex align-items-end">
+                                      <button type="submit" class="btn btn-primary w-100">Add Fee Head</button>
+                                    </div>
                                   </div>
-                                  <button type="submit" class="btn btn-primary mt-3">Add Fee Head</button>
                                 </form>
                                 <hr />
                                 <h5>Existing Fee Heads</h5>
                                 <ul id="feeHeadList" class="list-group mt-2 col-sm-6"></ul>
                               </div>
+
 
                               <!-- Fee Plan Tab -->
                               <div class="tab-pane fade" id="fee-plan" role="tabpanel">
