@@ -3,47 +3,59 @@ require_once '../db_connection.php';
 
 header('Content-Type: application/json');
 
-// Get POST data from AJAX request
-$feeHead = $_POST['feeHead'] ?? null;
-$className = $_POST['className'] ?? null;
-$months = $_POST['months'] ?? [];
-$amount = $_POST['amount'] ?? null;
+// Get GET data from the request (you can filter by class, fee head, and/or month)
+$className = $_GET['className'] ?? null;
+$feeHead = $_GET['feeHead'] ?? null;
+$month = $_GET['month'] ?? null;
 
-// Validate input
-if (!$feeHead || !$className || empty($months) || !$amount) {
-    echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
-    exit;
+$sql = "SELECT * FROM FeePlans WHERE 1=1";
+$params = [];
+$queryParams = [];
+
+// Add conditions based on provided parameters
+if ($className) {
+    $sql .= " AND class_name = :class_name";
+    $params[':class_name'] = $className;
 }
 
-// Insert the fee plan for each selected month
+if ($feeHead) {
+    $sql .= " AND fee_head_name = :fee_head_name";
+    $params[':fee_head_name'] = $feeHead;
+}
+
+if ($month) {
+    $sql .= " AND month_name = :month_name";
+    $params[':month_name'] = $month;
+}
+
 try {
-    // Start a transaction to ensure data integrity
-    $conn->begin_transaction();
+    // Prepare the SQL statement
+    $stmt = $conn->prepare($sql);
 
-    foreach ($months as $month) {
-        // Prepare and bind parameters for the insert query
-        $stmt = $conn->prepare("INSERT INTO FeePlans (class_name, fee_head_name, month_name, amount)
-                                VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE amount = VALUES(amount)");
-
-        $stmt->bind_param('ssss', $className, $feeHead, $month, $amount);
-
-        if (!$stmt->execute()) {
-            throw new Exception('Error inserting fee plan.');
-        }
+    // Bind parameters
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value, PDO::PARAM_STR);
     }
 
-    // Commit the transaction if all inserts are successful
-    $conn->commit();
+    // Execute the statement
+    $stmt->execute();
 
-    echo json_encode(['status' => 'success', 'message' => 'Fee plan(s) added successfully.']);
-} catch (Exception $e) {
-    // Rollback the transaction if any insert fails
-    $conn->rollback();
+    // Fetch the fee plans as an associative array
+    $feePlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+    // Return the fetched fee plans as a JSON response
+    echo json_encode([
+        'status' => 'success',
+        'data' => $feePlans
+    ]);
+} catch (PDOException $e) {
+    // If there's an error, return the error message
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Database error: ' . $e->getMessage()
+    ]);
 } finally {
-    // Close the prepared statement and the database connection
-    $stmt->close();
-    $conn->close();
+    // Close the database connection (PDO handles connection management automatically)
+    $conn = null;
 }
 ?>
