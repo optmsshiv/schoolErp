@@ -286,48 +286,50 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get form field values
     const feeHead = document.getElementById('feeHeadSelect').value.trim();
     const className = document.getElementById('classNameSelect').value.trim();
-    const month = Array.from(document.getElementById('month').selectedOptions).map(option => option.value);
+    const month = Array.from(document.getElementById('monthSelect').selectedOptions).map(option => option.value);
     const amount = document.getElementById('feeAmount').value.trim();
 
     if (!feeHead || !className || !month.length || !amount) {
-      return Swal.fire('Error', 'Please fill all fields!', 'error');
+        return Swal.fire('Error', 'Please fill all fields!', 'error');
     }
 
-      // Prepare data for the AJAX request
-      const data = {
+    // Prepare data for the AJAX request
+    const data = {
         feeHead: feeHead,
         className: className,
         month: month.join(','), // Convert array to comma-separated string
         feeAmount: amount
-      };
-        // Log the data to the console for debugging
-    console.log({
-      feeHead: feeHead,
-      className: className,
-      month: month,
-      feeAmount: amount
-  });
+    };
 
-    $.ajax({
-      url: '../php/feePlan/insert_fee_plan.php',
-      type: 'POST',
-      dataType: 'json',
-      data: data,
-      success: function (response) {
-        if (response.status === 'success') {
-          Swal.fire('Success', 'Fee plan added successfully.', 'success');
-          feePlanForm.reset();
-          loadFeePlans(); // Call a function to reload the fee plans (if applicable)
-        } else {
-          Swal.fire('Error', response.message, 'error');
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error(`Error: ${error}, Status: ${status}`, xhr.responseText);
-        Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
-      }
+    // Log the data to the console for debugging
+    console.log({
+        feeHead: feeHead,
+        className: className,
+        month: month,
+        feeAmount: amount
     });
-  });
+
+    // AJAX call
+    $.ajax({
+        url: '../php/feePlan/insert_fee_plan.php',
+        type: 'POST',
+        dataType: 'json',
+        data: data,
+        success: function (response) {
+            if (response.status === 'success') {
+                Swal.fire('Success', 'Fee plan added successfully.', 'success');
+                feePlanForm.reset();
+                loadFeePlans(); // Call a function to reload the fee plans (if applicable)
+            } else {
+                Swal.fire('Error', response.message, 'error');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(`Error: ${error}, Status: ${status}`, xhr.responseText);
+            Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
+        }
+    });
+});
 
 
   // Fetch and display fee plans
