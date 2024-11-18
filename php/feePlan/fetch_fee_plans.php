@@ -1,13 +1,62 @@
 <?php
-include '../db_connection.php'; // Include database connection file
+require_once '../db_connection.php';
 
-// Fetch Fee Plans
-$sql = "SELECT fp.class_name, fh.fee_head_name, fp.month, fp.fee_amount
-        FROM FeePlans fp
-        JOIN feeHeads fh ON fp.fee_head_id = fh.fee_head_id";
+header('Content-Type: application/json');
 
-$stmt = $pdo->query($sql);
-$fee_plans = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Get GET data from the request (you can filter by class, fee head, and/or month)
+$className = $_GET['className'] ?? null;
+$feeHead = $_GET['feeHead'] ?? null;
+$month = $_GET['month'] ?? null;
 
-echo json_encode($fee_plans); // Return as JSON
+// Build the SQL query dynamically based on provided filters
+$sql = "SELECT * FROM FeePlans WHERE 1=1";
+$params = [];
+$queryParams = [];
+
+// Add conditions based on provided parameters
+if ($className) {
+    $sql .= " AND class_name = :class_name";
+    $params[':class_name'] = $className;
+}
+
+if ($feeHead) {
+    $sql .= " AND fee_head_name = :fee_head_name";
+    $params[':fee_head_name'] = $feeHead;
+}
+
+if ($month) {
+    $sql .= " AND month_name = :month_name";
+    $params[':month_name'] = $month;
+}
+
+try {
+    // Prepare the SQL statement
+    $stmt = $conn->prepare($sql);
+
+    // Bind parameters
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value, PDO::PARAM_STR);
+    }
+
+    // Execute the statement
+    $stmt->execute();
+
+    // Fetch the fee plans as an associative array
+    $feePlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Return the fetched fee plans as a JSON response
+    echo json_encode([
+        'status' => 'success',
+        'data' => $feePlans
+    ]);
+} catch (PDOException $e) {
+    // If there's an error, return the error message
+    echo json_encode([
+        'status' => 'error',
+        'message' => $e->getMessage()
+    ]);
+} finally {
+    // Close the database connection (PDO handles connection management automatically)
+    $conn = null;
+}
 ?>
