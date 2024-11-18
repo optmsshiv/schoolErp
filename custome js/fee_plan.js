@@ -312,20 +312,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Fetch and display fee plans
-  const loadFeePlans = () => {
-    $.ajax({
-      url: '../php/feePlan/fetch_fee_plans.php',  // Ensure this path is correct
-      type: 'GET',
-      dataType: 'json',
-      success: function (response) {
-          console.log("Response from server:", response);
-          // Process response
-      },
-      error: function (xhr, status, error) {
-          console.error("AJAX error: ", error);
-      }
-  });
-  };
+
 
   // Edit Fee Plan
   const editFeePlan = (plan) => {
