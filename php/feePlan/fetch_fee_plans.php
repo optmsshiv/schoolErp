@@ -1,41 +1,32 @@
 <?php
-// Include database connection
-include('../db_connection.php');
+// Include the database connection
+include '../db_connection.php'; // Make sure the path to db_connection.php is correct
 
-// Initialize response array
-$response = [
-    'status' => 'error',
-    'message' => 'No data found',
-    'data' => []
-];
-
-// Query to fetch fee plans
-$query = "SELECT fee_head, class, month, fee_amount FROM FeePlans ORDER BY class ASC";
+// SQL query to fetch fee plans
+$sql = "SELECT feeHead.fee_head_id, feeHead.fee_head_name AS fee_head, feePlan.class, feePlan.month, feePlan.fee_amount
+        FROM feePlan
+        JOIN feeHead ON feePlan.fee_head_id = feeHead.fee_head_id
+        ORDER BY feePlan.class, feePlan.month";
 
 // Execute the query
-$result = mysqli_query($conn, $query);
+$result = $conn->query($sql);
 
-if ($result && mysqli_num_rows($result) > 0) {
-    // Prepare an array to hold the fee plan data
+// Check if there are any results
+if ($result->num_rows > 0) {
     $feePlans = [];
 
-    // Fetch each fee plan from the result
-    while ($row = mysqli_fetch_assoc($result)) {
+    // Fetch data into an array
+    while ($row = $result->fetch_assoc()) {
         $feePlans[] = $row;
     }
 
-    // Set the success response with the fee plans data
-    $response['status'] = 'success';
-    $response['message'] = 'Data fetched successfully';
-    $response['data'] = $feePlans;
+    // Send the data as JSON
+    echo json_encode(['status' => 'success', 'message' => 'Data fetched successfully', 'data' => $feePlans]);
 } else {
-    // If no data found, set message
-    $response['message'] = 'No fee plans found';
+    // No data found
+    echo json_encode(['status' => 'success', 'message' => 'No data found', 'data' => []]);
 }
 
-// Close the database connection
-mysqli_close($conn);
-
-// Output the response in JSON format
-echo json_encode($response);
+// Close the connection
+$conn->close();
 ?>
