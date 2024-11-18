@@ -15,18 +15,20 @@ $query = "SELECT fee_head_name, class_name, month_name, amount FROM FeePlans ORD
 // Execute the query
 $result = mysqli_query($conn, $query);
 
-if ($result && mysqli_num_rows($result) > 0) {
+// Check for query execution errors
+if (!$result) {
+    $response['message'] = 'Database error: ' . mysqli_error($conn);
+    echo json_encode($response);
+    exit;
+}
+
+if (mysqli_num_rows($result) > 0) {
     // Prepare an array to hold the fee plan data
     $feePlans = [];
 
     // Fetch each fee plan from the result
     while ($row = mysqli_fetch_assoc($result)) {
-        $feePlans[] = [
-            'fee_head' => $row['fee_head_name'],
-            'class' => $row['class_name'],
-            'month' => $row['month_name'],
-            'fee_amount' => $row['amount']
-        ];
+        $feePlans[] = $row;
     }
 
     // Set the success response with the fee plans data

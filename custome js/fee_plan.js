@@ -318,30 +318,38 @@ document.addEventListener('DOMContentLoaded', function () {
       type: 'GET',
       dataType: 'json',
       success: function (response) {
-        feePlanTable.innerHTML = ''; // Clear existing table content
-        response.data.forEach(plan => {
-          const row = document.createElement('tr');
+        if (response.status === 'success') {
+          feePlanTable.innerHTML = ''; // Clear existing table content
+          response.data.forEach(plan => {
+            const row = document.createElement('tr');
 
-          row.innerHTML = `
-            <td>${plan.class}</td>
-            <td>${plan.fee_head}</td>
-            <td>${plan.month}</td>
-            <td>${plan.fee_amount}</td>
-          `;
+            row.innerHTML = `
+              <td>${plan.class_name}</td>
+              <td>${plan.fee_head_name}</td>
+              <td>${plan.month_name}</td>
+              <td>${plan.amount}</td>
+            `;
 
-          // Create Edit and Delete buttons
-          const actionCell = document.createElement('td');
-          actionCell.append(
-            createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.id)),
-            createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.id))
-          );
+            // Create Edit and Delete buttons
+            const actionCell = document.createElement('td');
+            actionCell.append(
+              createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.id)),
+              createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.id))
+            );
 
-          // Append action buttons to the row
-          row.appendChild(actionCell);
-          feePlanTable.appendChild(row);
-        });
+            // Append action buttons to the row
+            row.appendChild(actionCell);
+            feePlanTable.appendChild(row);
+          });
+        } else {
+          console.log('Error:', response.message);
+          Swal.fire('Error', response.message, 'error');
+        }
       },
-      error: xhr => handleError('Error loading fee plans.', xhr)
+      error: function (xhr, status, error) {
+        console.log('AJAX Error:', error);
+        Swal.fire('Error', 'Failed to load fee plans.', 'error');
+      }
     });
   };
 
