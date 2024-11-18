@@ -20,7 +20,7 @@ try {
         FROM
             FeePlans
         ORDER BY
-            class_name ASC, month_name ASC
+            month_name ASC
     ";
 
     // Execute query
