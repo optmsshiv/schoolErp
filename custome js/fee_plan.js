@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const feeHeadForm = document.getElementById('feeHeadForm');
   const feeHeadList = document.getElementById('feeHeadList');
   const feePlanForm = document.getElementById('createFeePlanForm');
-  const feePlanTable = document.getElementById('feePlanTable');
+  const feePlanTable = document.getElementById('feePlanBody');
   const feeHeadSelect = document.getElementById('feeHeadSelect');
   const classNameSelect = document.getElementById('classNameSelect')
   const selectAllCheckbox = document.getElementById('selectAllMonths');
@@ -289,12 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
         response.data.forEach(plan => {
           const row = document.createElement('tr');
 
-          row.innerHTML = `
-            <td>${plan.class_name}</td>
-            <td>${plan.fee_head_name}</td>
-            <td>${plan.month.join(', ')}</td>
-            <td>${plan.amount}</td>
-          `;
+          row.innerHTML = ` `;
 
           const actionCell = document.createElement('td');
           actionCell.append(
