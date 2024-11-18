@@ -285,18 +285,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const feeHead = feeHeadSelect.value;
     const className = classNameSelect.value;
-    const month = document.querySelector('input[name="month"]:checked')?.value;  // Single month
+    const month = Array.from(document.querySelectorAll('input[name="month"]:checked')).map(cb => cb.value);
     const amount = document.getElementById('feeAmount').value.trim();
 
-    if (!feeHead || !className || !month || !amount) {
+    if (!feeHead || !className || !month.length || !amount) {
       return Swal.fire('Error', 'Please fill all fields!', 'error');
     }
+
+      // Prepare data for the AJAX request
+      const data = {
+        feeHead: feeHead,
+        className: className,
+        month: month.join(','), // Convert array to comma-separated string
+        amount: amount
+      };
 
     $.ajax({
       url: '../php/feePlan/insert_fee_plan.php',
       type: 'POST',
       dataType: 'json',
-      data: { feeHead, className, month, amount },  // Send single month
+      data: data,
       success: function (response) {
         if (response.status === 'success') {
           Swal.fire('Success', 'Fee plan added successfully.', 'success');
@@ -312,7 +320,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Fetch and display fee plans
+  const loadFeePlans = () => {
+    $.ajax({
+      url: '../php/feePlan/fetch_fee_plans.php',
+      type: 'GET',
+      dataType: 'json',
+      success: function (response) {
+        feePlanTable.innerHTML = ''; // Clear existing table content
+        response.data.forEach(plan => {
+          const row = document.createElement('tr');
 
+          row.innerHTML = `
+            <td>${plan.class}</td>
+            <td>${plan.fee_head}</td>
+            <td>${plan.month}</td>
+            <td>${plan.fee_amount}</td>
+          `;
+
+          // Create Edit and Delete buttons
+          const actionCell = document.createElement('td');
+          actionCell.append(
+            createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.id)),
+            createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.id))
+          );
+
+          // Append action buttons to the row
+          row.appendChild(actionCell);
+          feePlanTable.appendChild(row);
+        });
+      },
+      error: xhr => handleError('Error loading fee plans.', xhr)
+    });
+  };
 
   // Edit Fee Plan
   const editFeePlan = (plan) => {
