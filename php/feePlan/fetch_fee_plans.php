@@ -9,6 +9,9 @@ $feeHead = $_GET['feeHead'] ?? null;
 $month = $_GET['month'] ?? null;
 $amount = $_GET['amount'] ?? null; // Amount filter
 
+// Log the received parameters for debugging
+error_log("Received Params: " . print_r($_GET, true));
+
 $sql = "SELECT * FROM FeePlans WHERE 1=1";  // Start with a base query
 $params = [];
 
@@ -33,6 +36,9 @@ if ($amount) {
     $sql .= " AND amount = :amount";
     $params[':amount'] = $amount;
 }
+
+// Log the final SQL query for debugging
+error_log("SQL Query: " . $sql);
 
 try {
     // Prepare and execute the SQL statement
