@@ -1,7 +1,7 @@
 <?php
 require '../db_connection.php';
 
-$query = "SELECT fee_head_name, class_name, month_name, amount, created_at FROM FeePlans";
+$query = "SELECT fee_plan_id, class_name, fee_head_name, month_name, amount, created_at FROM FeePlans";
 $result = $conn->query($query);
 
 if ($result->num_rows > 0) {
