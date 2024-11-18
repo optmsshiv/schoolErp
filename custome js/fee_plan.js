@@ -331,10 +331,11 @@ document.addEventListener('DOMContentLoaded', function () {
           const row = document.createElement('tr');
 
           row.innerHTML = `
-            <td>${plan.class}</td>
-            <td>${plan.fee_head}</td>
-            <td>${plan.month}</td>
-            <td>${plan.fee_amount}</td>
+            <td>${plan.fee_head_name}</td>
+            <td>${plan.class_name}</td>
+            <td>${plan.month_name}</td>
+            <td>${plan.amount}</td>
+            <td>${plan.created_at}</td>
           `;
 
           // Create Edit and Delete buttons
