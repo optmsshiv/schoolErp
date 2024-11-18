@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const feeHeadForm = document.getElementById('feeHeadForm');
   const feeHeadList = document.getElementById('feeHeadList');
   const feePlanForm = document.getElementById('createFeePlanForm');
-  const feePlanTable = document.getElementById('feePlanBody');
+  const feePlanTable = document.getElementById('feePlanTable');
   const feeHeadSelect = document.getElementById('feeHeadSelect');
   const classNameSelect = document.getElementById('classNameSelect')
   const selectAllCheckbox = document.getElementById('selectAllMonths');
