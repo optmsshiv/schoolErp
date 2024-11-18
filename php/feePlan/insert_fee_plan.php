@@ -15,7 +15,6 @@ try {
         echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
         exit;
     }
-
     // Insert into database
     $sql = "INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount)
             VALUES (:fee_head_name, :class_name, :month_name, :amount)";
