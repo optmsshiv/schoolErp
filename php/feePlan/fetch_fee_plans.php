@@ -1,11 +1,13 @@
 <?php
-// Include database connection
-require_once '../php/db_connection.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once '../db_connection.php';
 
 header('Content-Type: application/json');
 
 try {
-    // Query to fetch fee plans
     $query = "
         SELECT
             fee_plan_id,
@@ -23,36 +25,25 @@ try {
 
     $result = $conn->query($query);
 
-    $feePlans = [];
-
-    // Check if results exist
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $feePlans[] = [
-                'fee_plan_id' => $row['fee_plan_id'],
-                'fee_head_name' => $row['fee_head_name'],
-                'class_name' => $row['class_name'],
-                'month_name' => $row['month_name'],
-                'amount' => $row['amount'],
-                'created_at' => $row['created_at'],
-                'updated_at' => $row['updated_at']
-            ];
-        }
+    if (!$result) {
+        throw new Exception("Query failed: " . $conn->error);
     }
 
-    // Send success response
+    $feePlans = [];
+    while ($row = $result->fetch_assoc()) {
+        $feePlans[] = $row;
+    }
+
     echo json_encode([
         'status' => 'success',
         'data' => $feePlans
     ]);
 } catch (Exception $e) {
-    // Handle errors
     echo json_encode([
         'status' => 'error',
-        'message' => 'Error fetching fee plans: ' . $e->getMessage()
+        'message' => $e->getMessage()
     ]);
 }
 
-// Close the database connection
 $conn->close();
 ?>
