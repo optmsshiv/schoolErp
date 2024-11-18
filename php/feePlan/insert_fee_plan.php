@@ -1,48 +1,18 @@
 <?php
-require_once '../db_connection.php';
+include 'db_connection.php';
 
-header('Content-Type: application/json');
-
-// Get POST data from the request
-$feeHead = $_POST['feeHead'] ?? null;
-$className = $_POST['className'] ?? null;
-$month = $_POST['month'] ?? null;
-$amount = $_POST['amount'] ?? null;
-
-if (!$feeHead || !$className || !$month || !$amount) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'All fields are required.'
-    ]);
-    exit;
-}
+$feeHead = $_POST['feeHead'];
+$className = $_POST['className'];
+$months = $_POST['months']; // Comma-separated string of months
+$amount = $_POST['amount'];
 
 // Insert the fee plan into the database
-$sql = "INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount)
-        VALUES (:fee_head_name, :class_name, :month_name, :amount)";
-$params = [
-    ':fee_head_name' => $feeHead,
-    ':class_name' => $className,
-    ':month_name' => $month,
-    ':amount' => $amount
-];
+$query = "INSERT INTO feePlans (fee_head_id, class_id, months, fee_amount)
+          VALUES ('$feeHead', '$className', '$months', '$amount')";
 
-try {
-    // Prepare and execute the SQL statement
-    $stmt = $conn->prepare($sql);
-    $stmt->execute($params);
-
-    echo json_encode([
-        'status' => 'success',
-        'message' => 'Fee plan added successfully.'
-    ]);
-} catch (PDOException $e) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Database error: ' . $e->getMessage()
-    ]);
-} finally {
-    // Close the database connection
-    $conn = null;
+if (mysqli_query($conn, $query)) {
+    echo json_encode(['status' => 'success']);
+} else {
+    echo json_encode(['status' => 'error', 'message' => mysqli_error($conn)]);
 }
 ?>

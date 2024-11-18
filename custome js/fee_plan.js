@@ -322,11 +322,19 @@ document.addEventListener('DOMContentLoaded', function () {
       return Swal.fire('Error', 'Please fill all fields!', 'error');
     }
 
+      // Prepare data for the AJAX request
+      const data = {
+        feeHead: feeHead,
+        className: className,
+        months: months.join(','), // Convert array to comma-separated string
+        amount: amount
+      };
+
     $.ajax({
       url: '../php/feePlan/insert_fee_plan.php',
       type: 'POST',
       dataType: 'json',
-      data: { feeHead, className, months, amount },
+      data: data,
       success: function (response) {
         if (response.status === 'success') {
           Swal.fire('Success', 'Fee plan added successfully.', 'success');
