@@ -1,5 +1,5 @@
 <?php
-include 'db_connection.php';
+include '../db_connection.php';
 
 $feeHead = $_POST['feeHead'];
 $className = $_POST['className'];
