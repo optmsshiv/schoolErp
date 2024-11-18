@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-require_once '../db_connection.php';
+require_once '../php/db_connection.php';
 
 header('Content-Type: application/json');
 
