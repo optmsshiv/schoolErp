@@ -281,7 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
    // Fetch and display fee plans
    const loadFeePlans = () => {
     $.ajax({
-      url: '../php/feePlan/fetch_fee_plans.php',
+      url: '../php/feePlans/fetch_fee_plans.php',
       type: 'GET',
       dataType: 'json',
       success: function (response) {
