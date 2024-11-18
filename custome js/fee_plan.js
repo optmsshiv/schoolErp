@@ -318,39 +318,38 @@ document.addEventListener('DOMContentLoaded', function () {
       type: 'GET',
       dataType: 'json',
       success: function (response) {
-        if (response.status === 'success') {
+          console.log("Response from server:", response); // Log the entire response
           feePlanTable.innerHTML = ''; // Clear existing table content
-          response.data.forEach(plan => {
-            const row = document.createElement('tr');
+          if (response.status === 'success' && response.data.length > 0) {
+              response.data.forEach(plan => {
+                  const row = document.createElement('tr');
+                  row.innerHTML = `
+                      <td>${plan.class_name}</td>
+                      <td>${plan.fee_head_name}</td>
+                      <td>${plan.month_name}</td>
+                      <td>${plan.amount}</td>
+                  `;
 
-            row.innerHTML = `
-              <td>${plan.class_name}</td>
-              <td>${plan.fee_head_name}</td>
-              <td>${plan.month_name}</td>
-              <td>${plan.amount}</td>
-            `;
+                  // Create Edit and Delete buttons
+                  const actionCell = document.createElement('td');
+                  actionCell.append(
+                      createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.fee_plan_id)),
+                      createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.fee_plan_id))
+                  );
 
-            // Create Edit and Delete buttons
-            const actionCell = document.createElement('td');
-            actionCell.append(
-              createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.id)),
-              createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.id))
-            );
-
-            // Append action buttons to the row
-            row.appendChild(actionCell);
-            feePlanTable.appendChild(row);
-          });
-        } else {
-          console.log('Error:', response.message);
-          Swal.fire('Error', response.message, 'error');
-        }
+                  // Append action buttons to the row
+                  row.appendChild(actionCell);
+                  feePlanTable.appendChild(row);
+              });
+          } else {
+              feePlanTable.innerHTML = '<tr><td colspan="5">No fee plans found.</td></tr>';
+          }
       },
       error: function (xhr, status, error) {
-        console.log('AJAX Error:', error);
-        Swal.fire('Error', 'Failed to load fee plans.', 'error');
+          console.error("AJAX error: ", error); // Log any AJAX errors
+          handleError('Error loading fee plans.', xhr);
       }
-    });
+  });
   };
 
   // Edit Fee Plan
