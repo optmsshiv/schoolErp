@@ -314,40 +314,15 @@ document.addEventListener('DOMContentLoaded', function () {
   // Fetch and display fee plans
   const loadFeePlans = () => {
     $.ajax({
-      url: '../php/feePlan/fetch_fee_plans.php',
+      url: '../php/feePlan/fetch_fee_plans.php',  // Ensure this path is correct
       type: 'GET',
       dataType: 'json',
       success: function (response) {
-          console.log("Response from server:", response); // Log the entire response
-          feePlanTable.innerHTML = ''; // Clear existing table content
-          if (response.status === 'success' && response.data.length > 0) {
-              response.data.forEach(plan => {
-                  const row = document.createElement('tr');
-                  row.innerHTML = `
-                      <td>${plan.class_name}</td>
-                      <td>${plan.fee_head_name}</td>
-                      <td>${plan.month_name}</td>
-                      <td>${plan.amount}</td>
-                  `;
-
-                  // Create Edit and Delete buttons
-                  const actionCell = document.createElement('td');
-                  actionCell.append(
-                      createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.fee_plan_id)),
-                      createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.fee_plan_id))
-                  );
-
-                  // Append action buttons to the row
-                  row.appendChild(actionCell);
-                  feePlanTable.appendChild(row);
-              });
-          } else {
-              feePlanTable.innerHTML = '<tr><td colspan="5">No fee plans found.</td></tr>';
-          }
+          console.log("Response from server:", response);
+          // Process response
       },
       error: function (xhr, status, error) {
-          console.error("AJAX error: ", error); // Log any AJAX errors
-          handleError('Error loading fee plans.', xhr);
+          console.error("AJAX error: ", error);
       }
   });
   };

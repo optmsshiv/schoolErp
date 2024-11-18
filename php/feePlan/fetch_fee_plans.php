@@ -1,6 +1,19 @@
 <?php
+// Enable error reporting
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 // Include database connection
 require_once '../db_connection.php';
+
+// Test the database connection
+if (!$conn) {
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Database connection failed'
+    ]);
+    exit;
+}
 
 // Initialize response array
 $response = [
@@ -12,37 +25,29 @@ $response = [
 // Query to fetch fee plans
 $query = "SELECT fee_head_name, class_name, month_name, amount FROM FeePlans ORDER BY class_name ASC";
 
+// Execute the query
 try {
-    // Prepare and execute the SQL statement using PDO
     $stmt = $conn->prepare($query);
     $stmt->execute();
 
-    // Check if any data was returned
     if ($stmt->rowCount() > 0) {
-        // Prepare an array to hold the fee plan data
         $feePlans = [];
-
-        // Fetch each fee plan from the result
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $feePlans[] = $row;
         }
-
-        // Set the success response with the fee plans data
         $response['status'] = 'success';
         $response['message'] = 'Data fetched successfully';
         $response['data'] = $feePlans;
     } else {
-        // If no data found, set message
         $response['message'] = 'No fee plans found';
     }
 } catch (PDOException $e) {
-    // If there was an error with the query, set the error message
     $response['message'] = 'Database error: ' . $e->getMessage();
 }
 
 // Close the database connection
 $conn = null;
 
-// Output the response in JSON format
+// Return JSON response
 echo json_encode($response);
 ?>
