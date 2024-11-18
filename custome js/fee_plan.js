@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
           row.innerHTML = `
             <td>${plan.class_name}</td>
             <td>${plan.fee_head_name}</td>
-            <td>${plan.months.join(', ')}</td>
+            <td>${plan.month.join(', ')}</td>
             <td>${plan.amount}</td>
           `;
 
