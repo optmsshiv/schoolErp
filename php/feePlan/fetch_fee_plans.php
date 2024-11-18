@@ -4,7 +4,7 @@ require_once '../db_connection.php';
 header('Content-Type: application/json');
 
 // Prepare SQL query to fetch fee plans
-$sql = "SELECT * FROM feePlans";
+$sql = "SELECT * FROM FeePlans";
 
 // Execute the query and fetch results
 try {
