@@ -1,34 +1,38 @@
 <?php
-require '../db_connection.php'; // Include your database connection file
+require '../db_connection.php'; // Ensure this includes the PDO connection setup
 
 header('Content-Type: application/json');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $feeHeadName = $_POST['fee_head_name'] ?? '';
-    $className = $_POST['class_name'] ?? '';
-    $monthName = $_POST['month_name'] ?? '';
-    $amount = $_POST['amount'] ?? '';
+try {
+    // Retrieve POST data
+    $feeHead = $_POST['feeHead'] ?? null;
+    $className = $_POST['className'] ?? null;
+    $month = $_POST['month'] ?? null;
+    $feeAmount = $_POST['feeAmount'] ?? null;
 
     // Validate input
-    if (empty($feeHeadName) || empty($className) || empty($monthName) || empty($amount)) {
+    if (!$feeHead || !$className || !$month || !$feeAmount) {
         echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
         exit;
     }
 
-    try {
-        // Insert data into the database
-        $stmt = $conn->prepare("INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param('sssi', $feeHeadName, $className, $monthName, $amount);
+    // Insert into database
+    $sql = "INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount)
+            VALUES (:fee_head_name, :class_name, :month_name, :amount)";
+    $stmt = $conn->prepare($sql);
 
-        if ($stmt->execute()) {
-            echo json_encode(['status' => 'success', 'message' => 'Fee plan created successfully.']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to create fee plan.']);
-        }
-    } catch (Exception $e) {
-        echo json_encode(['status' => 'error', 'message' => 'Error: ' . $e->getMessage()]);
-    }
-} else {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
+    $stmt->execute([
+        ':fee_head_name' => $feeHead,
+        ':class_name' => $className,
+        ':month_name' => $month,
+        ':amount' => $feeAmount,
+    ]);
+
+    // Success response
+    echo json_encode(['status' => 'success', 'message' => 'Fee plan added successfully.']);
+} catch (PDOException $e) {
+    // Error response
+    echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+    error_log('Error: ' . $e->getMessage()); // Log error for debugging
+    exit;
 }
-?>
