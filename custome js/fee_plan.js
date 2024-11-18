@@ -280,10 +280,69 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Add Fee Plan
+  feePlanForm?.addEventListener('submit', function (e) {
+    e.preventDefault();
 
+    const feeHead = feeHeadSelect.value;
+    const className = classNameSelect.value;
+    const months = Array.from(document.querySelectorAll('input[name="month"]:checked')).map(cb => cb.value);
+    const amount = document.getElementById('feeAmount').value.trim();
+
+    if (!feeHead || !className || !months.length || !amount) {
+      return Swal.fire('Error', 'Please fill all fields!', 'error');
+    }
+
+    $.ajax({
+      url: '../php/feePlan/insert_fee_plan.php',
+      type: 'POST',
+      dataType: 'json',
+      data: { feeHead, className, months, amount },
+      success: function (response) {
+        if (response.status === 'success') {
+          Swal.fire('Success', 'Fee plan added successfully.', 'success');
+          feePlanForm.reset();
+          loadFeePlans();
+        } else {
+          Swal.fire('Error', response.message, 'error');
+        }
+      },
+      error: xhr => handleError('Error adding fee plan.', xhr)
+    });
+  });
 
   // Fetch and display fee plans
-  
+  const loadFeePlans = () => {
+    $.ajax({
+      url: '../php/feePlan/fetch_fee_plans.php',
+      type: 'GET',
+      dataType: 'json',
+      success: function (response) {
+        feePlanTable.innerHTML = ''; // Clear existing table content
+        response.data.forEach(plan => {
+          const row = document.createElement('tr');
+
+          row.innerHTML = `
+            <td>${plan.class}</td>
+            <td>${plan.fee_head}</td>
+            <td>${plan.month}</td>
+            <td>${plan.fee_amount}</td>
+          `;
+
+          // Create Edit and Delete buttons
+          const actionCell = document.createElement('td');
+          actionCell.append(
+            createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.id)),
+            createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.id))
+          );
+
+          // Append action buttons to the row
+          row.appendChild(actionCell);
+          feePlanTable.appendChild(row);
+        });
+      },
+      error: xhr => handleError('Error loading fee plans.', xhr)
+    });
+  };
 
   // Edit Fee Plan
   const editFeePlan = (plan) => {
