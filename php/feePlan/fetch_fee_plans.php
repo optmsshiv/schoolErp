@@ -4,7 +4,7 @@ include '../db_connection.php'; // Make sure the path to db_connection.php is co
 
 // SQL query to fetch fee plans
 $sql = "SELECT feeHead.fee_head_id, feeHead.fee_head_name AS fee_head, feePlan.class, feePlan.month, feePlan.fee_amount
-        FROM feePlan
+        FROM FeePlans
         JOIN feeHead ON feePlan.fee_head_id = feeHead.fee_head_id
         ORDER BY feePlan.class, feePlan.month";
 
