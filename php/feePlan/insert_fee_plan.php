@@ -1,61 +1,29 @@
 <?php
-require_once '../db_connection.php';
+include 'db_connection.php'; // Include database connection file
 
-header('Content-Type: application/json');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        // Get the form data
+        $fee_head_id = $_POST['feeHeadSelect'];
+        $class_name = $_POST['class'];
+        $month = $_POST['month'];
+        $fee_amount = $_POST['feeAmount'];
 
-// Get GET data from the request (you can filter by class, fee head, and/or month)
-$className = $_GET['className'] ?? null;
-$feeHead = $_GET['feeHead'] ?? null;
-$month = $_GET['month'] ?? null;
+        // Insert into the fee plan table
+        $sql = "INSERT INTO feePlans (fee_head_id, class_name, month, fee_amount)
+                VALUES (:fee_head_id, :class_name, :month, :fee_amount)";
 
-$sql = "SELECT * FROM FeePlans WHERE 1=1";
-$params = [];
-$queryParams = [];
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':fee_head_id', $fee_head_id);
+        $stmt->bindParam(':class_name', $class_name);
+        $stmt->bindParam(':month', $month);
+        $stmt->bindParam(':fee_amount', $fee_amount);
 
-// Add conditions based on provided parameters
-if ($className) {
-    $sql .= " AND class_name = :class_name";
-    $params[':class_name'] = $className;
-}
+        $stmt->execute();
 
-if ($feeHead) {
-    $sql .= " AND fee_head_name = :fee_head_name";
-    $params[':fee_head_name'] = $feeHead;
-}
-
-if ($month) {
-    $sql .= " AND month_name = :month_name";
-    $params[':month_name'] = $month;
-}
-
-try {
-    // Prepare the SQL statement
-    $stmt = $conn->prepare($sql);
-
-    // Bind parameters
-    foreach ($params as $key => $value) {
-        $stmt->bindValue($key, $value, PDO::PARAM_STR);
+        echo "Fee plan created successfully!";
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
     }
-
-    // Execute the statement
-    $stmt->execute();
-
-    // Fetch the fee plans as an associative array
-    $feePlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Return the fetched fee plans as a JSON response
-    echo json_encode([
-        'status' => 'success',
-        'data' => $feePlans
-    ]);
-} catch (PDOException $e) {
-    // If there's an error, return the error message
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Database error: ' . $e->getMessage()
-    ]);
-} finally {
-    // Close the database connection (PDO handles connection management automatically)
-    $conn = null;
 }
 ?>
