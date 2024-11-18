@@ -315,10 +315,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const feeHead = feeHeadSelect.value;
     const className = classNameSelect.value;
-    const months = Array.from(document.querySelectorAll('input[name="month"]:checked')).map(cb => cb.value);
+    const month = Array.from(document.querySelectorAll('input[name="month"]:checked')).map(cb => cb.value);
     const amount = document.getElementById('feeAmount').value.trim();
 
-    if (!feeHead || !className || !months.length || !amount) {
+    if (!feeHead || !className || !month.length || !amount) {
       return Swal.fire('Error', 'Please fill all fields!', 'error');
     }
 
