@@ -3,37 +3,44 @@ require_once '../db_connection.php';
 
 header('Content-Type: application/json');
 
-// Get POST data
+// Get POST data from AJAX request
+$feeHead = $_POST['feeHead'] ?? null;
 $className = $_POST['className'] ?? null;
-$feeHeadName = $_POST['feeHeadName'] ?? null;
-$month = $_POST['month'] ?? null;
+$months = $_POST['months'] ?? [];
 $amount = $_POST['amount'] ?? null;
 
 // Validate input
-if (!$className || !$feeHeadName || !$month || !$amount) {
+if (!$feeHead || !$className || empty($months) || !$amount) {
     echo json_encode(['status' => 'error', 'message' => 'All fields are required.']);
     exit;
 }
 
+// Insert the fee plan for each selected month
 try {
-    // Prepare SQL statement for inserting the fee plan
-    $stmt = $conn->prepare("INSERT INTO feePlans (class_name, fee_head_name, month, amount) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param('sssd', $className, $feeHeadName, $month, $amount);
+    // Start a transaction to ensure data integrity
+    $conn->begin_transaction();
 
-    // Execute the statement
-    if ($stmt->execute()) {
-        echo json_encode(['status' => 'success', 'message' => 'Fee plan added successfully.']);
-    } else {
-        throw new Exception('Error inserting fee plan.');
+    foreach ($months as $month) {
+        $stmt = $conn->prepare("INSERT INTO FeePlans (class_name, fee_head_name, month, amount) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param('ssss', $className, $feeHead, $month, $amount);
+
+        if (!$stmt->execute()) {
+            throw new Exception('Error inserting fee plan.');
+        }
     }
 
-    // Close the statement
-    $stmt->close();
-} catch (Exception $e) {
-    // Return error message if exception occurs
-    echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
-}
+    // Commit the transaction if all inserts are successful
+    $conn->commit();
 
-// Close the database connection
-$conn->close();
+    echo json_encode(['status' => 'success', 'message' => 'Fee plan(s) added successfully.']);
+} catch (Exception $e) {
+    // Rollback the transaction if any insert fails
+    $conn->rollback();
+
+    echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+} finally {
+    // Close the prepared statement and the database connection
+    $stmt->close();
+    $conn->close();
+}
 ?>
