@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const data = {
         feeHead: feeHead,
         className: className,
-        months: months.join(','), // Convert array to comma-separated string
+        month: month.join(','), // Convert array to comma-separated string
         amount: amount
       };
 

@@ -3,12 +3,12 @@ include '../db_connection.php';
 
 $feeHead = $_POST['feeHead'];
 $className = $_POST['className'];
-$months = $_POST['months']; // Comma-separated months (e.g., "January,February,March")
+$month = $_POST['month']; // Comma-separated months (e.g., "January,February,March")
 $amount = $_POST['amount'];
 
 // Insert the fee plan for multiple months in one record
 $query = "INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount)
-          VALUES ('$feeHead', '$className', '$months', '$amount')";
+          VALUES ('$feeHead', '$className', '$month', '$amount')";
 
 if (mysqli_query($conn, $query)) {
     echo json_encode(['status' => 'success']);
