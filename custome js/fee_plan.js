@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const classNameForm = document.getElementById('classNameForm');
   const classNameList = document.getElementById('classNameList');
 
+
   // Utility function to create buttons
   const createButton = (text, className, onClick) => {
     const button = document.createElement('button');
@@ -277,6 +278,139 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
+   // Fetch and display fee plans
+   const loadFeePlans = () => {
+    $.ajax({
+      url: '../php/feePlan/fetch_fee_plans.php',
+      type: 'GET',
+      dataType: 'json',
+      success: function (response) {
+        feePlanTable.innerHTML = '';
+        response.data.forEach(plan => {
+          const row = document.createElement('tr');
+
+          row.innerHTML = `
+            <td>${plan.class_name}</td>
+            <td>${plan.fee_head_name}</td>
+            <td>${plan.months.join(', ')}</td>
+            <td>${plan.amount}</td>
+          `;
+
+          const actionCell = document.createElement('td');
+          actionCell.append(
+            createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan)),
+            createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.id))
+          );
+          row.appendChild(actionCell);
+          feePlanTable.appendChild(row);
+        });
+      },
+      error: xhr => handleError('Error loading fee plans.', xhr)
+    });
+  };
+
+  // Add Fee Plan
+  feePlanForm?.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const feeHead = feeHeadSelect.value;
+    const className = classNameSelect.value;
+    const months = Array.from(document.querySelectorAll('input[name="month"]:checked')).map(cb => cb.value);
+    const amount = document.getElementById('feeAmount').value.trim();
+
+    if (!feeHead || !className || !months.length || !amount) {
+      return Swal.fire('Error', 'Please fill all fields!', 'error');
+    }
+
+    $.ajax({
+      url: '../php/feePlan/insert_fee_plan.php',
+      type: 'POST',
+      dataType: 'json',
+      data: { feeHead, className, months, amount },
+      success: function (response) {
+        if (response.status === 'success') {
+          Swal.fire('Success', 'Fee plan added successfully.', 'success');
+          feePlanForm.reset();
+          loadFeePlans();
+        } else {
+          Swal.fire('Error', response.message, 'error');
+        }
+      },
+      error: xhr => handleError('Error adding fee plan.', xhr)
+    });
+  });
+
+  // Edit Fee Plan
+  const editFeePlan = (plan) => {
+    Swal.fire({
+      title: 'Edit Fee Plan',
+      html: `
+        <input id="editFeeHead" class="swal2-input" value="${plan.fee_head_name}">
+        <input id="editClassName" class="swal2-input" value="${plan.class_name}">
+        <input id="editMonths" class="swal2-input" value="${plan.months.join(', ')}">
+        <input id="editAmount" class="swal2-input" value="${plan.amount}">
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+    }).then(result => {
+      if (result.isConfirmed) {
+        const newPlan = {
+          feeHead: document.getElementById('editFeeHead').value.trim(),
+          className: document.getElementById('editClassName').value.trim(),
+          months: document.getElementById('editMonths').value.split(',').map(m => m.trim()),
+          amount: document.getElementById('editAmount').value.trim(),
+        };
+
+        $.ajax({
+          url: '../php/update_fee_plan.php',
+          type: 'POST',
+          dataType: 'json',
+          data: { id: plan.id, ...newPlan },
+          success: function (response) {
+            if (response.status === 'success') {
+              Swal.fire('Success', 'Fee plan updated successfully.', 'success');
+              loadFeePlans();
+            } else {
+              Swal.fire('Error', response.message, 'error');
+            }
+          },
+          error: xhr => handleError('Error updating fee plan.', xhr)
+        });
+      }
+    });
+  };
+
+  // Delete Fee Plan
+  const deleteFeePlan = (id) => {
+    Swal.fire({
+      title: 'Delete Fee Plan?',
+      text: 'Are you sure you want to delete this fee plan?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then(result => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '../php/delete_fee_plan.php',
+          type: 'POST',
+          dataType: 'json',
+          data: { id },
+          success: function (response) {
+            if (response.status === 'success') {
+              Swal.fire('Deleted!', 'Fee plan deleted successfully.', 'success');
+              loadFeePlans();
+            } else {
+              Swal.fire('Error', response.message, 'error');
+            }
+          },
+          error: xhr => handleError('Error deleting fee plan.', xhr)
+        });
+      }
+    });
+  };
+
 
   // Handle "Select All Months" checkbox
   selectAllCheckbox?.addEventListener('change', function () {
@@ -289,4 +423,5 @@ document.addEventListener('DOMContentLoaded', function () {
   // Initialize
   loadFeeHeads();
   loadClassNames();
+  loadFeePlans();
 });
