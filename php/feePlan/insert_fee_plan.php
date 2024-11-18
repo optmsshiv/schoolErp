@@ -6,11 +6,11 @@ header('Content-Type: application/json');
 // Get POST data
 $feeHead = $_POST['feeHead'] ?? null;
 $className = $_POST['className'] ?? null;
-$months = $_POST['months'] ?? null; // Expecting an array
+$month = $_POST['month'] ?? null; // Expecting an array
 $amount = $_POST['feeAmount'] ?? null;
 
 // Validate input
-if (!$feeHead || !$className || !$months || !$amount) {
+if (!$feeHead || !$className || !$month || !$amount) {
     echo json_encode([
         'status' => 'error',
         'message' => 'All fields are required.'
@@ -28,7 +28,7 @@ try {
     $stmt = $conn->prepare($sql);
 
     // Insert each month
-    foreach ($months as $month_name) {
+    foreach ($month as $month_name) {
         $stmt->execute([
             ':fee_head_name' => $feeHead,
             ':class_name' => $className,

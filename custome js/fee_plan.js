@@ -300,6 +300,13 @@ document.addEventListener('DOMContentLoaded', function () {
         month: month.join(','), // Convert array to comma-separated string
         feeAmount: amount
       };
+        // Log the data to the console for debugging
+    console.log({
+      feeHead: feeHead,
+      className: className,
+      month: month,
+      feeAmount: amount
+  });
 
     $.ajax({
       url: '../php/feePlan/insert_fee_plan.php',
