@@ -1,43 +1,29 @@
 <?php
-// Include database connection
+// Include the database connection file
 include '../db_connection.php';
 
 header('Content-Type: application/json');
 
-// Initialize response array
-$response = [
-    'status' => 'error',
-    'message' => 'No data found',
-    'data' => []
-];
+try {
+    // Fetch all classes from the database
+    $sql = "SELECT fee_head_name, class_name, month_name, amount, created_at FROM FeePlans ORDER BY class_name";
+    $stmt = $pdo->query($sql);
 
-// Query to fetch fee plans
-$query = "SELECT fee_head_name, class_name, month_name, amount FROM FeePlans ORDER BY class ASC";
+    // Check if any classes were found
+    $feePlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Execute the query
-$result = mysqli_query($conn, $query);
-
-if ($result && mysqli_num_rows($result) > 0) {
-    // Prepare an array to hold the fee plan data
-    $feePlans = [];
-
-    // Fetch each fee plan from the result
-    while ($row = mysqli_fetch_assoc($result)) {
-        $feePlans[] = $row;
+    if ($feePlans) {
+        // Return success response with classes data
+        echo json_encode(['status' => 'success', 'data' => $feePlans]);
+    } else {
+        // Return success response but no data found
+        echo json_encode(['status' => 'success', 'data' => [], 'message' => 'No classes found']);
     }
+} catch (PDOException $e) {
+    // Log the error (instead of displaying it) for security reasons
+    error_log('Database error: ' . $e->getMessage());
 
-    // Set the success response with the fee plans data
-    $response['status'] = 'success';
-    $response['message'] = 'Data fetched successfully';
-    $response['data'] = $feePlans;
-} else {
-    // If no data found, set message
-    $response['message'] = 'No fee plans found';
+    // Return error response
+    echo json_encode(['status' => 'error', 'message' => 'Database error. Please try again later.']);
 }
-
-// Close the database connection
-mysqli_close($conn);
-
-// Output the response in JSON format
-echo json_encode($response);
 ?>
