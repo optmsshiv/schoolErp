@@ -28,6 +28,7 @@ try {
     $stmt = $conn->prepare($sql);
 
     // Insert each month
+    $monthsArray = explode(',', $months); // If months are sent as a comma-separated string
     foreach ($month as $month_name) {
         $stmt->execute([
             ':fee_head_name' => $feeHead,
