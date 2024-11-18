@@ -1,5 +1,5 @@
 <?php
-include '../db_connection.php';
+require_once '../db_connection.php';
 
 header('Content-Type: application/json');
 
@@ -7,6 +7,7 @@ header('Content-Type: application/json');
 $className = $_GET['className'] ?? null;
 $feeHead = $_GET['feeHead'] ?? null;
 $month = $_GET['month'] ?? null;
+$amount = $_GET['amount'] ?? null; // Amount filter
 
 $sql = "SELECT * FROM FeePlans WHERE 1=1";  // Start with a base query
 $params = [];
@@ -25,6 +26,12 @@ if ($feeHead) {
 if ($month) {
     $sql .= " AND month_name = :month_name";
     $params[':month_name'] = $month;
+}
+
+if ($amount) {
+    // Amount can be an exact match or a range, depending on your requirements
+    $sql .= " AND amount = :amount";
+    $params[':amount'] = $amount;
 }
 
 try {
