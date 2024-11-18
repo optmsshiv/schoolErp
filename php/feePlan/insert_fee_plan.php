@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fee_amount = $_POST['feeAmount'];
 
         // Insert into the fee plan table
-        $sql = "INSERT INTO feePlans (fee_head_id, class_name, month, fee_amount)
+        $sql = "INSERT INTO FeePlans (fee_head_id, class_name, month, fee_amount)
                 VALUES (:fee_head_id, :class_name, :month, :fee_amount)";
 
         $stmt = $pdo->prepare($sql);
