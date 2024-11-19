@@ -492,12 +492,15 @@ dropdown.addEventListener("click", function (event) {
   // Prevent the click from closing the dropdown
   event.stopPropagation();
 
-  // Toggle dropdown visibility
-  dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+  // Toggle dropdown visibility only if the dropdown is not already visible
+  if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
+    dropdownMenu.style.display = "block";
+  }
 });
 
 // Close dropdown if clicked outside
 document.addEventListener("click", function (event) {
+  // Close the dropdown only if the click is outside the dropdown or the select element
   if (!dropdown.contains(event.target)) {
     dropdownMenu.style.display = "none";
   }
