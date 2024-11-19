@@ -283,6 +283,8 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
 
+
+  
   // Add Fee Plan
   feePlanForm?.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -290,48 +292,50 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get form field values
     const feeHead = document.getElementById('feeHeadSelect').value.trim();
     const className = document.getElementById('classNameSelect').value.trim();
+    const month = Array.from(document.getElementById('monthDropdown').getElementsByClassName('month-checkbox'))
+                        .filter(checkbox => checkbox.checked)
+                        .map(checkbox => checkbox.value);
     const amount = document.getElementById('feeAmount').value.trim();
 
-    // Collect selected months (checkboxes)
-    const selectedMonths = Array.from(document.querySelectorAll('.month-checkbox:checked')).map(checkbox => checkbox.value);
-
-    if (!feeHead || !className || !selectedMonths.length || !amount) {
-      return Swal.fire('Error', 'Please fill all fields!', 'error');
+    // Validate form fields
+    if (!feeHead || !className || !month.length || !amount) {
+        return Swal.fire('Error', 'Please fill all fields!', 'error');
     }
 
-    console.log({ feeHead, className, selectedMonths, amount }); // Debugging
+    console.log({ feeHead, className, month, amount }); // Debugging
 
     // Prepare data for the AJAX request
     const data = {
-      feeHead: feeHead,
-      className: className,
-      month: selectedMonths.join(','),  // Convert array to comma-separated string
-      amount: amount
+        feeHead: feeHead,
+        className: className,
+        month: month.join(','),  // Convert array to comma-separated string
+        amount: amount
     };
 
     // AJAX call
     $.ajax({
-      url: '../php/feePlan/insert_fee_plan.php',
-      type: 'POST',
-      dataType: 'json',
-      data: data,
-      success: function (response) {
-        console.log(response); // Log the response for debugging
-        if (response.status === 'success') {
-          Swal.fire('Success', 'Fee plan added successfully.', 'success');
-          feePlanForm.reset();
-          loadFeePlans(); // Reload fee plans if applicable
-        } else {
-          Swal.fire('Error', response.message, 'error');
+        url: '../php/feePlan/insert_fee_plan.php',
+        type: 'POST',
+        dataType: 'json',
+        data: data,
+        success: function (response) {
+            console.log(response); // Log the response for debugging
+            if (response.status === 'success') {
+                Swal.fire('Success', 'Fee plan added successfully.', 'success');
+                feePlanForm.reset();
+                loadFeePlans(); // Reload fee plans (if applicable)
+            } else {
+                Swal.fire('Error', response.message, 'error');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(`AJAX Error: ${status}, ${error}`);
+            console.error("Response Text: ", xhr.responseText);
+            Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
         }
-      },
-      error: function (xhr, status, error) {
-        console.error(`AJAX Error: ${status}, ${error}`);
-        console.error("Response Text: ", xhr.responseText);
-        Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
-      }
     });
 });
+
 
 
 

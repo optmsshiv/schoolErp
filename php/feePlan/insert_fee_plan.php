@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 // Ensure all necessary fields are available
 $feeHeadName = $_POST['feeHead'] ?? null;
 $className = $_POST['className'] ?? null;
-$month = $_POST['month'] ?? null; // This should be a string after joining in JS
+$month = $_POST['month'] ?? null; // Month is expected to be a comma-separated string
 $amount = $_POST['amount'] ?? null;
 
 if (!$feeHeadName || !$className || !$month || !$amount) {
@@ -22,7 +22,7 @@ try {
     // Bind parameters to the query
     $stmt->bindParam(':fee_head_name', $feeHeadName, PDO::PARAM_STR);
     $stmt->bindParam(':class_name', $className, PDO::PARAM_STR);
-    $stmt->bindParam(':month_name', $month, PDO::PARAM_STR); // As month is a string (comma-separated)
+    $stmt->bindParam(':month_name', $month, PDO::PARAM_STR); // Month should be a comma-separated string
     $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
 
     // Execute the query
