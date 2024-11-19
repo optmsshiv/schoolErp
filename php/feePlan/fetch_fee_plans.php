@@ -5,14 +5,14 @@ include '../db_connection.php';
 header('Content-Type: application/json');
 
 try {
-    // Check if the ID parameter is provided
-    $id = isset($_GET['id']) && !empty($_GET['id']) ? $_GET['id'] : null;
+    // Check if the plan ID parameter is provided
+    $planId = isset($_GET['planId']) && !empty($_GET['planId']) ? $_GET['planId'] : null;
 
-    if ($id) {
+    if ($planId) {
         // Fetch fee plan by ID
-        $sql = "SELECT fee_head_name, class_name, month_name, amount, created_at FROM FeePlans WHERE fee_plan_id = :id";
+        $sql = "SELECT fee_head_name, class_name, month_name, amount, created_at FROM FeePlans WHERE fee_plan_id = :planId";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':planId', $planId, PDO::PARAM_INT);
         $stmt->execute();
 
         $feePlan = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -21,12 +21,12 @@ try {
             // Return success response with the specific fee plan
             echo json_encode(['status' => 'success', 'data' => $feePlan]);
         } else {
-            // ID provided but no record found
-            echo json_encode(['status' => 'success', 'data' => [], 'message' => 'No fee plan found for the given ID']);
+            // Plan ID provided but no record found
+            echo json_encode(['status' => 'success', 'data' => [], 'message' => 'No fee plan found for the given Plan ID']);
         }
     } else {
-        // Fetch all fee plans if no ID is provided
-        $sql = "SELECT fee_head_name, class_name, month_name, amount, created_at FROM FeePlans ORDER BY class_name";
+        // Fetch all fee plans if no Plan ID is provided
+        $sql = "SELECT fee_plan_id, fee_head_name, class_name, month_name, amount, created_at FROM FeePlans ORDER BY class_name";
         $stmt = $pdo->query($sql);
 
         $feePlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
