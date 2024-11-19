@@ -365,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const editFeePlan = (planId) => {
     // Load existing plan data using the planId
     $.ajax({
-      url: `../php/feePlan/fetch_fee_plan_by_id.php`, // Endpoint to fetch specific fee plan details
+      url: `../php/feePlan/fetch_fee_plans.php`, // Endpoint to fetch specific fee plan details
       type: 'GET',
       data: { id: planId },
       dataType: 'json',
