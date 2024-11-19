@@ -487,9 +487,9 @@ const monthCheckboxes = document.querySelectorAll(".month-checkbox");
 
 
   // Handle "Select All Months" checkbox
-  // Toggle dropdown visibility on click (only inside the dropdown)
+  // Toggle dropdown visibility on clicking inside the dropdown
 dropdown.addEventListener("click", function (event) {
-  // Prevent the event from bubbling up to the document (this prevents closing when clicking inside)
+  // Prevent the click event from propagating to the document and closing the dropdown
   event.stopPropagation();
 
   // Toggle the dropdown visibility
@@ -497,7 +497,7 @@ dropdown.addEventListener("click", function (event) {
     dropdownMenu.style.display === "block" ? "none" : "block";
 });
 
-// Close the dropdown if clicked outside of the dropdown
+// Close the dropdown if clicked outside of the dropdown (click on document)
 document.addEventListener("click", function (event) {
   if (!dropdown.contains(event.target)) {
     dropdownMenu.style.display = "none";
