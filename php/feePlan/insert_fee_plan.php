@@ -15,11 +15,17 @@ if (!$feeHeadName || !$className || !$month || !$amount) {
 }
 
 try {
-    // Insert fee plan into the database
-    $sql = "INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount) VALUES (?, ?, ?, ?)";
+    // Prepare the SQL query using PDO
+    $sql = "INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount) VALUES (:fee_head_name, :class_name, :month_name, :amount)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('sssi', $feeHeadName, $className, $month, $amount); // s for string, i for integer
 
+    // Bind parameters to the query
+    $stmt->bindParam(':fee_head_name', $feeHeadName, PDO::PARAM_STR);
+    $stmt->bindParam(':class_name', $className, PDO::PARAM_STR);
+    $stmt->bindParam(':month_name', $month, PDO::PARAM_STR); // As month is a string (comma-separated)
+    $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
+
+    // Execute the query
     if ($stmt->execute()) {
         echo json_encode(['status' => 'success', 'message' => 'Fee plan added successfully.']);
     } else {
