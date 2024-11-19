@@ -389,104 +389,98 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Update Fee Plan
-    // Assuming you have a function to get the selected fee plan from the table
-const editFeePlan = (planId) => {
-  // Locate the row in the table by planId
-  const row = document.querySelector(`#feePlanRow${planId}`); // Assuming each row has an ID like feePlanRow{planId}
+  const editFeePlan = (planId) => {
+    // Fetch the fee plan details using the provided planId
+    $.ajax({
+        url: '../php/feePlan/fetch_fee_plans.php',
+        type: 'GET',
+        data: { planId: planId }, // Pass planId to fetch specific record
+        dataType: 'json',
+        success: function (response) {
+            if (response.status === 'success' && response.data) {
+                const feePlan = response.data; // The fee plan data
+                if (!feePlan || feePlan.length === 0) {
+                  Swal.fire('Error', 'No fee plan data found.', 'error');
+                  return;
+              }
+                Swal.fire({
+                    title: 'Edit Fee Plan',
+                    html: `
+                        <label>Class Name</label>
+                        <select id="editClassName" class="swal2-select">
+                            ${Array.from(classNameSelect.options).map(option => `
+                                <option value="${option.value}" ${option.value === feePlan.class_name ? 'selected' : ''}>
+                                    ${option.text}
+                                </option>
+                            `).join('')}
+                        </select>
+                        <label>Fee Head Name</label>
+                        <select id="editFeeHead" class="swal2-select">
+                            ${Array.from(feeHeadSelect.options).map(option => `
+                                <option value="${option.value}" ${option.value === feePlan.fee_head_name ? 'selected' : ''}>
+                                    ${option.text}
+                                </option>
+                            `).join('')}
+                        </select>
+                        <label>Month Name</label>
+                        <input id="editMonth" class="swal2-input" type="text" value="${feePlan.month_name}">
+                        <label>Amount</label>
+                        <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount}">
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Save',
+                    cancelButtonText: 'Cancel',
+                    preConfirm: () => {
+                        const feeHead = document.getElementById('editFeeHead').value.trim();
+                        const className = document.getElementById('editClassName').value.trim();
+                        const month = document.getElementById('editMonth').value.trim();
+                        const amount = document.getElementById('editAmount').value.trim();
 
-  if (!row) {
-      Swal.fire('Error', 'Fee plan not found in table.', 'error');
-      return;
-  }
+                        if (!feeHead || !className || !month || !amount) {
+                            Swal.showValidationMessage('All fields are required!');
+                            return false;
+                        }
 
-  // Extract existing data from the table row
-  const feeHead = row.querySelector('.feeHead').textContent.trim(); // Assuming you have a column with class 'feeHead'
-  const className = row.querySelector('.className').textContent.trim(); // Assuming you have a column with class 'className'
-  const month = row.querySelector('.monthName').textContent.trim(); // Assuming you have a column with class 'monthName'
-  const amount = row.querySelector('.amount').textContent.trim(); // Assuming you have a column with class 'amount'
+                        return { feeHead, className, month, amount };
+                    }
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        const { feeHead, className, month, amount } = result.value;
 
-  // Open Swal with the current data prefilled
-  Swal.fire({
-      title: 'Edit Fee Plan',
-      html: `
-          <select id="editClassName" class="swal2-select">
-              ${Array.from(classNameSelect.options).map(option => `
-                  <option value="${option.value}" ${option.value === className ? 'selected' : ''}>
-                      ${option.text}
-                  </option>
-              `).join('')}
-          </select>
-          <select id="editFeeHead" class="swal2-select">
-              ${Array.from(feeHeadSelect.options).map(option => `
-                  <option value="${option.value}" ${option.value === feeHead ? 'selected' : ''}>
-                      ${option.text}
-                  </option>
-              `).join('')}
-          </select>
-          <input id="editMonth" class="swal2-input" type="text" value="${month}">
-          <input id="editAmount" type="number" class="swal2-input" value="${amount}">
-      `,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      cancelButtonText: 'Cancel',
-      preConfirm: () => {
-          const feeHead = document.getElementById('editFeeHead').value.trim();
-          const className = document.getElementById('editClassName').value.trim();
-          const month = document.getElementById('editMonth').value.trim();
-          const amount = document.getElementById('editAmount').value.trim();
+                        // Send the updated data to the server
+                        $.ajax({
+                          url: '../php/feePlan/update_fee_plan.php',
+                          type: 'POST',
+                          data: {
+                              id: planId,
+                              fee_head_name: feeHead,
+                              class_name: className,
+                              month_name: month,
+                              amount: amount
+                          },
+                          dataType: 'json',
+                          success: function (response) {
+                              if (response.status === 'success') {
+                                  Swal.fire('Success', response.message, 'success');
+                                  loadFeePlans(); // Reload the table
+                              } else {
+                                  Swal.fire('Error', response.message, 'error');
+                              }
+                          },
+                          error: function (xhr) {
+                              Swal.fire('Error', 'An error occurred while updating the fee plan.', 'error');
+                          }
+                      });
 
-          // Check if all fields are filled
-          if (!feeHead || !className || !month || !amount) {
-              Swal.showValidationMessage('All fields are required!');
-              return false;
-          }
-
-          return { feeHead, className, month, amount };
-      }
-  }).then(result => {
-      if (result.isConfirmed) {
-          const { feeHead, className, month, amount } = result.value;
-
-          // Send updated data to the server via AJAX
-          $.ajax({
-              url: '../php/feePlan/update_fee_plan.php',
-              type: 'POST',
-              dataType: 'json',
-              data: {
-                  id: planId, // Plan ID to identify the row to update
-                  fee_head_name: feeHead,
-                  class_name: className,
-                  month_name: month,
-                  amount: amount
-              },
-              success: function (response) {
-                  if (response.status === 'success') {
-                      Swal.fire('Success', 'Fee plan updated successfully.', 'success');
-                      // Optionally, update the row in the table after success
-                      updateTableRow(planId, feeHead, className, month, amount);
-                  } else {
-                      Swal.fire('Error', response.message, 'error');
-                  }
-              },
-              error: xhr => handleError('Error updating fee plan.', xhr)
-          });
-      }
-  });
+                    }
+                });
+            } else {
+                Swal.fire('Error', response.message || 'Fee plan not found.', 'error');
+            }
+        },
+        error: xhr => handleError('Error fetching fee plan details.', xhr)
+    });
 };
-
-// Optionally, you can update the row in the table after the update is successful
-const updateTableRow = (planId, feeHead, className, month, amount) => {
-  const row = document.querySelector(`#feePlanRow${planId}`);
-  if (row) {
-      row.querySelector('.feeHead').textContent = feeHead;
-      row.querySelector('.className').textContent = className;
-      row.querySelector('.monthName').textContent = month;
-      row.querySelector('.amount').textContent = amount;
-  }
-};
-
-
-
 
 
 
