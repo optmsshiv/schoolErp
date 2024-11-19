@@ -757,7 +757,19 @@ td {
 }
 
 /* fee plan drop down height */
-
+.form-check-label {
+  margin-left: 10px; /* Adjust this value to set the space between the checkbox and the label */
+}
+.scrollable-checkboxes {
+  max-height: 300px; /* Set the maximum height of the scrollable area */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds the max height */
+  padding-right: 10px; /* Add padding to the right to ensure scroll bar is visible */
+}
+#dropdownMenu {
+  max-height: 250px; /* Set the maximum height for the dropdown */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding-right: 10px; /* Optional: ensures scrollbar doesn't overlap content */
+}
 
 
 
