@@ -1,62 +1,23 @@
 <?php
-require_once '../db_connection.php';
+// Include the database connection file
+include '../db_connection.php';
 
 header('Content-Type: application/json');
 
-// Validate and fetch POST data
-
-$className = $_POST['class_name'] ?? null;
-$feeHeadName = $_POST['fee_head_name'] ?? null;
-$monthName = $_POST['monthName'] ?? null;
-$amount = $_POST['amount'] ?? null;
-
-// Check if all required fields are provided
-if (!$feeHeadName || !$className || !$monthName || !$amount) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'All fields are required.'
-    ]);
-    exit;
-}
-
 try {
-    // Prepare the SQL query to update the fee plan
-    $sql = "UPDATE FeePlans
-            SET fee_head_name = :feeHeadName,
-                class_name = :className,
-                monthName = :monthName,
-                amount = :amount,
-                updated_at = NOW()
-            WHERE fee_plan_id = :feePlanId";
+    // Define an array of months (you can replace this with a database query if you have a months table)
+    $months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
 
-    $stmt = $pdo->prepare($sql);
+    // Return success response with the list of months
+    echo json_encode(['status' => 'success', 'data' => $months]);
+} catch (PDOException $e) {
+    // Log the error (for debugging purposes)
+    error_log('Database error: ' . $e->getMessage());
 
-    // Bind parameters to prevent SQL injection
-
-    $stmt->bindParam(':feeHeadName', $feeHeadName, PDO::PARAM_STR);
-    $stmt->bindParam(':className', $className, PDO::PARAM_STR);
-    $stmt->bindParam(':monthName', $monthName, PDO::PARAM_STR);
-    $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
-
-    // Execute the query
-    if ($stmt->execute()) {
-        echo json_encode([
-            'status' => 'success',
-            'message' => 'Fee plan updated successfully.'
-        ]);
-    } else {
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Failed to update the fee plan.'
-        ]);
-    }
-} catch (Exception $e) {
-    // Log the error for debugging
-    error_log('Error: ' . $e->getMessage());
-
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'An error occurred while updating the fee plan.'
-    ]);
+    // Return error response
+    echo json_encode(['status' => 'error', 'message' => 'Database error. Please try again later.']);
 }
 ?>
