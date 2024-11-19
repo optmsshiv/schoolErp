@@ -289,17 +289,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const month = Array.from(document.getElementById('month').selectedOptions).map(option => option.value);
     const amount = document.getElementById('feeAmount').value.trim();
 
+    console.log({ feeHead, className, month, amount }); // Debugging values
+
     if (!feeHead || !className || !month.length || !amount) {
         return Swal.fire('Error', 'Please fill all fields!', 'error');
     }
-
     // Prepare data for the AJAX request
     const data = {
-        feeHead: feeHead,
-        className: className,
-        month: month.join(','), // Convert array to comma-separated string
-        amount: amount
-    };
+      fee_head_name: feeHead,
+      class_name: className,
+      month: month.join(','),  // convert array to comma-seperated string
+      amount: amount
+  };
 
     // AJAX call
     $.ajax({

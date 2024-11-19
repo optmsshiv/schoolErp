@@ -60,9 +60,15 @@ try {
 
   // Send error message with details
   echo json_encode([
-      'status' => 'error',
-      'message' => 'Database error: ' . $e->getMessage()
-  ]);
+    'status' => 'error',
+    'message' => 'Please fill all fields.',
+    'debug' => [
+        'fee_head_name' => isset($_POST['fee_head_name']) ? $_POST['fee_head_name'] : 'Not set',
+        'class_name' => isset($_POST['class_name']) ? $_POST['class_name'] : 'Not set',
+        'month' => isset($_POST['month']) ? $_POST['month'] : 'Not set',
+        'amount' => isset($_POST['amount']) ? $_POST['amount'] : 'Not set'
+    ]
+]);
 }
 
 // Close the connection
