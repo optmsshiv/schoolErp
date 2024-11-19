@@ -26,7 +26,7 @@ try {
         }
     } else {
         // Fetch all fee plans if no Plan ID is provided
-        $sql = "SELECT fee_plan_id, fee_head_name, class_name, month_name, amount, created_at FROM FeePlans ORDER BY class_name";
+        $sql = "SELECT fee_plan_id, fee_head_name, class_name, month_name, amount, created_at, updated_at FROM FeePlans ORDER BY class_name";
         $stmt = $pdo->query($sql);
 
         $feePlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
