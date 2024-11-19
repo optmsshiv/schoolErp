@@ -485,10 +485,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Delete Fee Plan
-  const deleteFeePlan = (className) => {
+  const deleteFeePlan = (class_name) => {
     Swal.fire({
         title: 'Delete Fee Plan?',
-        text: `Are you sure you want to delete all fee plans for class "${className}"?`,
+        text: `Are you sure you want to delete all fee plans for class "${class_name}"?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 url: '../php/feePlan/delete_fee_plan.php',
                 type: 'POST',
                 dataType: 'json',
-                data: { className: className }, // Send class_name instead of feePlanId
+                data: { className: class_name }, // Send class_name instead of feePlanId
                 success: function (response) {
                     if (response.status === 'success') {
                         Swal.fire('Deleted!', response.message, 'success');
