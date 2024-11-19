@@ -490,9 +490,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 };
 
-function handleError(message, xhr) {
-    console.error(message, xhr);
-    Swal.fire('Error', message, 'error');
 }
 
 
