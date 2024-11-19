@@ -362,45 +362,78 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   // Edit Fee Plan
-  const editFeePlan = (plan) => {
-    Swal.fire({
-      title: 'Edit Fee Plan',
-      html: `
-        <input id="editFeeHead" class="swal2-input" value="${plan.fee_head_name}">
-        <input id="editClassName" class="swal2-input" value="${plan.class_name}">
-        <input id="editMonths" class="swal2-input" value="${plan.months.join(', ')}">
-        <input id="editAmount" class="swal2-input" value="${plan.amount}">
-      `,
-      showCancelButton: true,
-      confirmButtonText: 'Save',
-      cancelButtonText: 'Cancel',
-    }).then(result => {
-      if (result.isConfirmed) {
-        const newPlan = {
-          feeHead: document.getElementById('editFeeHead').value.trim(),
-          className: document.getElementById('editClassName').value.trim(),
-          months: document.getElementById('editMonths').value.split(',').map(m => m.trim()),
-          amount: document.getElementById('editAmount').value.trim(),
-        };
+  const editFeePlan = (planId) => {
+    // Load existing plan data using the planId
+    $.ajax({
+      url: `../php/feePlan/fetch_fee_plan_by_id.php`, // Endpoint to fetch specific fee plan details
+      type: 'GET',
+      data: { id: planId },
+      dataType: 'json',
+      success: function (response) {
+        const plan = response.data; // Assume the API returns the fee plan object
 
-        $.ajax({
-          url: '../php/update_fee_plan.php',
-          type: 'POST',
-          dataType: 'json',
-          data: { id: plan.id, ...newPlan },
-          success: function (response) {
-            if (response.status === 'success') {
-              Swal.fire('Success', 'Fee plan updated successfully.', 'success');
-              loadFeePlans();
-            } else {
-              Swal.fire('Error', response.message, 'error');
+        Swal.fire({
+          title: 'Edit Fee Plan',
+          html: `
+            <select id="editFeeHead" class="swal2-select">
+              ${Array.from(feeHeadSelect.options).map(option => `
+                <option value="${option.value}" ${option.value === plan.fee_head_name ? 'selected' : ''}>
+                  ${option.text}
+                </option>
+              `).join('')}
+            </select>
+            <select id="editClassName" class="swal2-select">
+              ${Array.from(classNameSelect.options).map(option => `
+                <option value="${option.value}" ${option.value === plan.class_name ? 'selected' : ''}>
+                  ${option.text}
+                </option>
+              `).join('')}
+            </select>
+            <input id="editMonths" class="swal2-input" value="${plan.month_name}">
+            <input id="editAmount" type="number" class="swal2-input" value="${plan.amount}">
+          `,
+          showCancelButton: true,
+          confirmButtonText: 'Save',
+          cancelButtonText: 'Cancel',
+          preConfirm: () => {
+            const feeHead = document.getElementById('editFeeHead').value.trim();
+            const className = document.getElementById('editClassName').value.trim();
+            const months = document.getElementById('editMonths').value.trim();
+            const amount = document.getElementById('editAmount').value.trim();
+
+            if (!feeHead || !className || !months || !amount) {
+              Swal.showValidationMessage('All fields are required!');
+              return false;
             }
-          },
-          error: xhr => handleError('Error updating fee plan.', xhr)
+
+            return { feeHead, className, months, amount };
+          }
+        }).then(result => {
+          if (result.isConfirmed) {
+            const { feeHead, className, months, amount } = result.value;
+
+            $.ajax({
+              url: '../php/feePlan/update_fee_plan.php',
+              type: 'POST',
+              dataType: 'json',
+              data: { id: planId, fee_head_name: feeHead, class_name: className, months, amount },
+              success: function (response) {
+                if (response.status === 'success') {
+                  Swal.fire('Success', 'Fee plan updated successfully.', 'success');
+                  loadFeePlans();
+                } else {
+                  Swal.fire('Error', response.message, 'error');
+                }
+              },
+              error: xhr => handleError('Error updating fee plan.', xhr)
+            });
+          }
         });
-      }
+      },
+      error: xhr => handleError('Error fetching fee plan details.', xhr)
     });
   };
+
 
   // Delete Fee Plan
   const deleteFeePlan = (id) => {
