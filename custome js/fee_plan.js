@@ -429,8 +429,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     cancelButtonText: 'Cancel',
                     preConfirm: () => {
                         const feeHead = document.getElementById('editFeeHead').value.trim();
-                        const className = document.getElementById('editClassName').value.trim();
-                        const month = document.getElementById('editMonth').value = plan.month_name || '';
+                        const className = document.getElementById('editClassName').value= plan.month_name || '';
+                        const month = document.getElementById('editMonth').value.trim();
                         const amount = document.getElementById('editAmount').value.trim();
 
                         if (!feeHead || !className || !month || !amount) {
