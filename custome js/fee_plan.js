@@ -289,11 +289,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const month = Array.from(document.getElementById('month').selectedOptions).map(option => option.value);
     const amount = document.getElementById('feeAmount').value.trim();
 
-    console.log({ feeHead, className, month, amount }); // Debugging values
 
     if (!feeHead || !className || !month.length || !amount) {
         return Swal.fire('Error', 'Please fill all fields!', 'error');
     }
+    console.log({ feeHead, className, month, amount }); // Debugging
     // Prepare data for the AJAX request
     const data = {
       fee_head_name: feeHead,
