@@ -11,7 +11,7 @@ if (!$feePlanId) {
 }
 
 try {
-    $stmt = $conn->prepare("DELETE FROM feePlans WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM FeePlans WHERE id = ?");
     $stmt->bind_param('i', $feePlanId);
 
     if ($stmt->execute()) {
