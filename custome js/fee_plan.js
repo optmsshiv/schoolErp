@@ -397,18 +397,8 @@ document.addEventListener('DOMContentLoaded', function () {
         data: { planId: planId }, // Pass planId to fetch specific record
         dataType: 'json',
         success: function (response) {
-          console.log('API Response:', response);
             if (response.status === 'success' && response.data) {
                 const plan = response.data; // The fee plan data
-                const fee_head_name = response.data.fee_head_name || '';
-                const class_name = response.data.class_name || '';
-                const month_name = response.data.month_name || ''; // Default to empty string
-                const amount = response.data.amount || 0; // Default to 0
-
-                console.log('Fee Head Name:', fee_head_name);
-                console.log('Class Name:', class_name);
-                console.log('Month Name:', month_name);
-                console.log('Amount:', amount);
 
                 Swal.fire({
                     title: 'Edit Fee Plan',
@@ -430,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             `).join('')}
                         </select>
                         <label>Month Name</label>
-                        <input id="editMonth" class="swal2-input" type="text" value="${plan.month_name}">
+                        <input id="editMonth" class="swal2-input" type="text" value="${plan.monthName ? 'month_name' : ''}">
                         <label>Amount</label>
                         <input id="editAmount" class="swal2-input" type="number" value="${plan.amount}">
                     `,
