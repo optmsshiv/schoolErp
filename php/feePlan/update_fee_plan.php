@@ -4,14 +4,14 @@ require_once '../db_connection.php';
 header('Content-Type: application/json');
 
 // Validate and fetch POST data
-$feePlanId = $_POST['id'] ?? null;
-$feeHeadName = $_POST['fee_head_name'] ?? null;
+
 $className = $_POST['class_name'] ?? null;
+$feeHeadName = $_POST['fee_head_name'] ?? null;
 $monthName = $_POST['month_name'] ?? null;
 $amount = $_POST['amount'] ?? null;
 
 // Check if all required fields are provided
-if (!$feePlanId || !$feeHeadName || !$className || !$monthName || !$amount) {
+if (!$feeHeadName || !$className || !$monthName || !$amount) {
     echo json_encode([
         'status' => 'error',
         'message' => 'All fields are required.'
@@ -32,7 +32,7 @@ try {
     $stmt = $pdo->prepare($sql);
 
     // Bind parameters to prevent SQL injection
-    $stmt->bindParam(':feePlanId', $feePlanId, PDO::PARAM_INT);
+    
     $stmt->bindParam(':feeHeadName', $feeHeadName, PDO::PARAM_STR);
     $stmt->bindParam(':className', $className, PDO::PARAM_STR);
     $stmt->bindParam(':monthName', $monthName, PDO::PARAM_STR);
