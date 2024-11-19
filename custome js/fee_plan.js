@@ -420,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             `).join('')}
                         </select>
                         <label>Month Name</label>
-                        <input id="editMonth" class="swal2-input" type="text" value="${plan.month_name ? 'selected':''}">
+                        <input id="editMonth" class="swal2-input" type="text" value="${plan.month_name || ''}" placeholder="Month">
                         <label>Amount</label>
                         <input id="editAmount" class="swal2-input" type="number" value="${plan.amount}">
                     `,
