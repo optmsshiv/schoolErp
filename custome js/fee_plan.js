@@ -309,6 +309,7 @@ document.addEventListener('DOMContentLoaded', function () {
       dataType: 'json',
       data: data,
       success: function (response) {
+        console.log(response); // Log the response for debugging
         if (response.status === 'success') {
           Swal.fire('Success', 'Fee plan added successfully.', 'success');
           feePlanForm.reset();
