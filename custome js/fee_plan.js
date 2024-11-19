@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </option>
               `).join('')}
             </select>
-            <input id="editMonth" class="swal2-input" value="${plan.month}">
+            <input id="editMonth" class="swal2-input" value="${plan.month_name}">
             <input id="editAmount" type="number" class="swal2-input" value="${plan.amount}">
           `,
           showCancelButton: true,
@@ -448,7 +448,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }).then(result => {
       if (result.isConfirmed) {
         $.ajax({
-          url: '../php/delete_fee_plan.php',
+          url: '../php/feePlan/delete_fee_plan.php',
           type: 'POST',
           dataType: 'json',
           data: { id },
