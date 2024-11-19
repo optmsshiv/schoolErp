@@ -343,6 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <td>${plan.month_name}</td>
             <td>${plan.amount}</td>
             <td>${plan.created_at}</td>
+            <td>${plan.updated_at}</td>
           `;
 
           // Create Edit and Delete buttons
