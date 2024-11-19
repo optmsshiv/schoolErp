@@ -417,7 +417,7 @@ document.addEventListener('DOMContentLoaded', function () {
               url: '../php/feePlan/update_fee_plan.php',
               type: 'POST',
               dataType: 'json',
-              data: { id: planId, fee_head_name: feeHead, class_name: className, month: month, amount: amount },
+              data: { id: planId, fee_head_name: feeHead, class_name: className, month_name: month, amount: amount },
               success: function (response) {
                 if (response.status === 'success') {
                   Swal.fire('Success', 'Fee plan updated successfully.', 'success');
