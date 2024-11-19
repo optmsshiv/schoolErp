@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 
 $className = $_POST['class_name'] ?? null;
 $feeHeadName = $_POST['fee_head_name'] ?? null;
-$monthName = $_POST['month_name'] ?? null;
+$monthName = $_POST['monthName'] ?? null;
 $amount = $_POST['amount'] ?? null;
 
 // Check if all required fields are provided
@@ -24,7 +24,7 @@ try {
     $sql = "UPDATE FeePlans
             SET fee_head_name = :feeHeadName,
                 class_name = :className,
-                month_name = :monthName,
+                monthName = :monthName,
                 amount = :amount,
                 updated_at = NOW()
             WHERE fee_plan_id = :feePlanId";
@@ -32,7 +32,7 @@ try {
     $stmt = $pdo->prepare($sql);
 
     // Bind parameters to prevent SQL injection
-    
+
     $stmt->bindParam(':feeHeadName', $feeHeadName, PDO::PARAM_STR);
     $stmt->bindParam(':className', $className, PDO::PARAM_STR);
     $stmt->bindParam(':monthName', $monthName, PDO::PARAM_STR);
