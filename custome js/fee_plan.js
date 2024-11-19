@@ -399,10 +399,7 @@ document.addEventListener('DOMContentLoaded', function () {
         success: function (response) {
             if (response.status === 'success' && response.data) {
                 const feePlan = response.data; // The fee plan data
-                if (!feePlan || feePlan.length === 0) {
-                  Swal.fire('Error', 'No fee plan data found.', 'error');
-                  return;
-              }
+
                 Swal.fire({
                     title: 'Edit Fee Plan',
                     html: `
@@ -436,12 +433,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         const month = document.getElementById('editMonth').value.trim();
                         const amount = document.getElementById('editAmount').value.trim();
 
-                        if (!feeHead || !className || !month || !amount) {
+                        if (!className || !feeHead || !month || !amount) {
                             Swal.showValidationMessage('All fields are required!');
                             return false;
                         }
 
-                        return { feeHead, className, month, amount };
+                        return { className, feeHead, month, amount };
                     }
                 }).then(result => {
                     if (result.isConfirmed) {
