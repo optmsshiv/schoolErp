@@ -398,25 +398,25 @@ document.addEventListener('DOMContentLoaded', function () {
           preConfirm: () => {
             const feeHead = document.getElementById('editFeeHead').value.trim();
             const className = document.getElementById('editClassName').value.trim();
-            const months = document.getElementById('editMonths').value.trim();
+            const month = document.getElementById('editMonth').value.trim();
             const amount = document.getElementById('editAmount').value.trim();
 
-            if (!feeHead || !className || !months || !amount) {
+            if (!feeHead || !className || !month || !amount) {
               Swal.showValidationMessage('All fields are required!');
               return false;
             }
 
-            return { feeHead, className, months, amount };
+            return { feeHead, className, month, amount };
           }
         }).then(result => {
           if (result.isConfirmed) {
-            const { feeHead, className, months, amount } = result.value;
+            const { feeHead, className, month, amount } = result.value;
 
             $.ajax({
               url: '../php/feePlan/update_fee_plan.php',
               type: 'POST',
               dataType: 'json',
-              data: { id: planId, fee_head_name: feeHead, class_name: className, months, amount },
+              data: { id: planId, fee_head_name: feeHead, class_name: className, month, amount },
               success: function (response) {
                 if (response.status === 'success') {
                   Swal.fire('Success', 'Fee plan updated successfully.', 'success');
