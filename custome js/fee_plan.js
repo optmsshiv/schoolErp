@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </option>
               `).join('')}
             </select>
-            <input id="editMonth" class="swal2-input" value="${plan.month_name}">
+            <input id="editMonth" class="swal2-input" value="${plan.month}">
             <input id="editAmount" type="number" class="swal2-input" value="${plan.amount}">
           `,
           showCancelButton: true,
