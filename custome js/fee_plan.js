@@ -290,19 +290,22 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get form field values
     const feeHead = document.getElementById('feeHeadSelect').value.trim();
     const className = document.getElementById('classNameSelect').value.trim();
-    const month = Array.from(document.getElementById('month').selectedOptions).map(option => option.value);
     const amount = document.getElementById('feeAmount').value.trim();
 
+    // Collect selected months (checkboxes)
+    const selectedMonths = Array.from(document.querySelectorAll('.month-checkbox:checked')).map(checkbox => checkbox.value);
 
-    if (!feeHead || !className || !month.length || !amount) {
+    if (!feeHead || !className || !selectedMonths.length || !amount) {
       return Swal.fire('Error', 'Please fill all fields!', 'error');
     }
-    console.log({ feeHead, className, month, amount }); // Debugging
+
+    console.log({ feeHead, className, selectedMonths, amount }); // Debugging
+
     // Prepare data for the AJAX request
     const data = {
       feeHead: feeHead,
       className: className,
-      month: month.join(','),  // convert array to comma-seperated string
+      month: selectedMonths.join(','),  // Convert array to comma-separated string
       amount: amount
     };
 
@@ -317,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (response.status === 'success') {
           Swal.fire('Success', 'Fee plan added successfully.', 'success');
           feePlanForm.reset();
-          loadFeePlans(); // Call a function to reload the fee plans (if applicable)
+          loadFeePlans(); // Reload fee plans if applicable
         } else {
           Swal.fire('Error', response.message, 'error');
         }
@@ -328,7 +331,8 @@ document.addEventListener('DOMContentLoaded', function () {
         Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
       }
     });
-  });
+});
+
 
 
   // Fetch and display fee plans
