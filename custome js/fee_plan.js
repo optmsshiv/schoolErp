@@ -5,14 +5,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const feePlanTable = document.getElementById('feePlanBody');
   const feeHeadSelect = document.getElementById('feeHeadSelect');
   const classNameSelect = document.getElementById('classNameSelect')
-  const selectAllCheckboxs = document.getElementById('selectAllMonths');
   const classNameForm = document.getElementById('classNameForm');
   const classNameList = document.getElementById('classNameList');
 
-const dropdown = document.getElementById("monthDropdown");
-const dropdownMenu = dropdown.querySelector(".dropdown-menu");
-const selectAllCheckbox = document.getElementById("selectAllCheckbox");
-const monthCheckboxes = document.querySelectorAll(".month-checkbox");
+  const dropdown = document.getElementById("monthDropdown");
+  const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+  const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+  const monthCheckboxes = document.querySelectorAll(".month-checkbox");
 
 
   // Utility function to create buttons
@@ -296,7 +295,7 @@ const monthCheckboxes = document.querySelectorAll(".month-checkbox");
 
 
     if (!feeHead || !className || !month.length || !amount) {
-        return Swal.fire('Error', 'Please fill all fields!', 'error');
+      return Swal.fire('Error', 'Please fill all fields!', 'error');
     }
     console.log({ feeHead, className, month, amount }); // Debugging
     // Prepare data for the AJAX request
@@ -305,7 +304,7 @@ const monthCheckboxes = document.querySelectorAll(".month-checkbox");
       className: className,
       month: month.join(','),  // convert array to comma-seperated string
       amount: amount
-  };
+    };
 
     // AJAX call
     $.ajax({
@@ -329,7 +328,7 @@ const monthCheckboxes = document.querySelectorAll(".month-checkbox");
         Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
       }
     });
-});
+  });
 
 
   // Fetch and display fee plans
@@ -488,43 +487,43 @@ const monthCheckboxes = document.querySelectorAll(".month-checkbox");
 
   // Handle "Select All Months" checkbox
   // Toggle dropdown visibility when clicking the select element
-dropdown.addEventListener("click", function (event) {
-  // Prevent the click from closing the dropdown
-  event.stopPropagation();
+  dropdown.addEventListener("click", function (event) {
+    // Prevent the click from closing the dropdown
+    event.stopPropagation();
 
-  // Toggle dropdown visibility only if the dropdown is not already visible
-  if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
-    dropdownMenu.style.display = "block";
-  }
-});
+    // Toggle dropdown visibility only if the dropdown is not already visible
+    if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
+      dropdownMenu.style.display = "block";
+    }
+  });
 
-// Close dropdown if clicked outside
-document.addEventListener("click", function (event) {
-  // Close the dropdown only if the click is outside the dropdown or the select element
-  if (!dropdown.contains(event.target)) {
-    dropdownMenu.style.display = "none";
-  }
-});
+  // Close dropdown if clicked outside
+  document.addEventListener("click", function (event) {
+    // Close the dropdown only if the click is outside the dropdown or the select element
+    if (!dropdown.contains(event.target)) {
+      dropdownMenu.style.display = "none";
+    }
+  });
 
-// "Select All" behavior
-selectAllCheckbox.addEventListener("change", function () {
-  const isChecked = selectAllCheckbox.checked;
+  // "Select All" behavior
+  selectAllCheckbox.addEventListener("change", function () {
+    const isChecked = selectAllCheckbox.checked;
+    monthCheckboxes.forEach((checkbox) => {
+      checkbox.checked = isChecked;
+    });
+  });
+
+  // Update "Select All" based on individual checkboxes
   monthCheckboxes.forEach((checkbox) => {
-    checkbox.checked = isChecked;
-  });
-});
+    checkbox.addEventListener("change", function () {
+      const allChecked = Array.from(monthCheckboxes).every((cb) => cb.checked);
+      selectAllCheckbox.checked = allChecked;
 
-// Update "Select All" based on individual checkboxes
-monthCheckboxes.forEach((checkbox) => {
-  checkbox.addEventListener("change", function () {
-    const allChecked = Array.from(monthCheckboxes).every((cb) => cb.checked);
-    selectAllCheckbox.checked = allChecked;
-
-    // Set indeterminate state if some are selected
-    const someChecked = Array.from(monthCheckboxes).some((cb) => cb.checked);
-    selectAllCheckbox.indeterminate = someChecked && !allChecked;
+      // Set indeterminate state if some are selected
+      const someChecked = Array.from(monthCheckboxes).some((cb) => cb.checked);
+      selectAllCheckbox.indeterminate = someChecked && !allChecked;
+    });
   });
-});
 
   // Initialize
   loadFeeHeads();
