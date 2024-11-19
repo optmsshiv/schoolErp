@@ -4,8 +4,8 @@ require_once '../db_connection.php';
 header('Content-Type: application/json');
 
 // Ensure all necessary fields are available
-$feeHeadName = $_POST['fee_head_name'] ?? null;
-$className = $_POST['class_name'] ?? null;
+$feeHeadName = $_POST['feeHead'] ?? null;
+$className = $_POST['className'] ?? null;
 $month = $_POST['month'] ?? null; // This should be a string after joining in JS
 $amount = $_POST['amount'] ?? null;
 

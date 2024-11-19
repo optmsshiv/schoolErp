@@ -296,8 +296,8 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log({ feeHead, className, month, amount }); // Debugging
     // Prepare data for the AJAX request
     const data = {
-      fee_head_name: feeHead,
-      class_name: className,
+      feeHead: feeHead,
+      className: className,
       month: month.join(','),  // convert array to comma-seperated string
       amount: amount
   };
