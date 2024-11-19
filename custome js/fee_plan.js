@@ -376,16 +376,16 @@ document.addEventListener('DOMContentLoaded', function () {
         Swal.fire({
           title: 'Edit Fee Plan',
           html: `
-            <select id="editFeeHead" class="swal2-select">
-              ${Array.from(feeHeadSelect.options).map(option => `
-                <option value="${option.value}" ${option.value === plan.fee_head_name ? 'selected' : ''}>
+            <select id="editClassName" class="swal2-select">
+              ${Array.from(classNameSelect.options).map(option => `
+                <option value="${option.value}" ${option.value === plan.class_name ? 'selected' : ''}>
                   ${option.text}
                 </option>
               `).join('')}
             </select>
-            <select id="editClassName" class="swal2-select">
-              ${Array.from(classNameSelect.options).map(option => `
-                <option value="${option.value}" ${option.value === plan.class_name ? 'selected' : ''}>
+            <select id="editFeeHead" class="swal2-select">
+              ${Array.from(feeHeadSelect.options).map(option => `
+                <option value="${option.value}" ${option.value === plan.fee_head_name ? 'selected' : ''}>
                   ${option.text}
                 </option>
               `).join('')}
