@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
 
-  // Edit Fee Plan
+  // Update Fee Plan
   const editFeePlan = (planId) => {
     // Fetch the fee plan details using the provided planId
     $.ajax({
@@ -420,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             `).join('')}
                         </select>
                         <label>Month Name</label>
-                        <input id="editMonth" class="swal2-input" type="text" value="${plan.month_name || ''}" placeholder="Month">
+                        <input id="editMonth" class="swal2-input" type="text" value="${plan.month_name}">
                         <label>Amount</label>
                         <input id="editAmount" class="swal2-input" type="number" value="${plan.amount}">
                     `,
