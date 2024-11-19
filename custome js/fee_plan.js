@@ -482,27 +482,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Handle "Select All Months" checkbox
-  // Add an event listener to the "Select All" checkbox
-selectAllCheckbox?.addEventListener('change', function () {
-  // Get all month checkboxes within the dropdown
-  const monthCheckboxes = document.querySelectorAll('.form-check-input[type="checkbox"]:not(#selectAllCheckbox)');
-
-  // Set the checked state of all month checkboxes to match the "Select All" checkbox
-  monthCheckboxes.forEach(checkbox => {
-    checkbox.checked = selectAllCheckbox.checked;
+  // Function to update individual checkboxes when "Select All" is toggled
+selectAllCheckbox.addEventListener("change", () => {
+  const isChecked = selectAllCheckbox.checked;
+  monthCheckboxes.forEach((checkbox) => {
+    checkbox.checked = isChecked;
   });
 });
 
-// Add event listeners to individual month checkboxes
-const individualCheckboxes = document.querySelectorAll('.form-check-input[type="checkbox"]:not(#selectAllCheckbox)');
+// Function to update the "Select All" checkbox based on individual selections
+monthCheckboxes.forEach((checkbox) => {
+  checkbox.addEventListener("change", () => {
+    const allChecked = Array.from(monthCheckboxes).every((cb) => cb.checked);
+    selectAllCheckbox.checked = allChecked;
 
-individualCheckboxes.forEach(checkbox => {
-  checkbox.addEventListener('change', function () {
-    // Check if all individual checkboxes are checked
-    const allSelected = Array.from(individualCheckboxes).every(checkbox => checkbox.checked);
-
-    // If all individual checkboxes are checked, check the "Select All" checkbox
-    selectAllCheckbox.checked = allSelected;
+    // If some checkboxes are selected but not all, indicate partial selection
+    const someChecked = Array.from(monthCheckboxes).some((cb) => cb.checked);
+    selectAllCheckbox.indeterminate = someChecked && !allChecked;
   });
 });
 
