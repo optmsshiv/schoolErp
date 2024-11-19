@@ -334,33 +334,46 @@ document.addEventListener('DOMContentLoaded', function () {
       dataType: 'json',
       success: function (response) {
         feePlanTable.innerHTML = ''; // Clear existing table content
-        response.data.forEach(plan => {
+
+        if (response.data.length === 0) {
+          // If no data, show a message row
           const row = document.createElement('tr');
-
-          row.innerHTML = `
-            <td>${plan.class_name}</td>
-            <td>${plan.fee_head_name}</td>
-            <td>${plan.month_name}</td>
-            <td>${plan.amount}</td>
-            <td>${plan.created_at}</td>
-            <td>${plan.updated_at}</td>
-          `;
-
-          // Create Edit and Delete buttons
-          const actionCell = document.createElement('td');
-          actionCell.append(
-            createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.id)),
-            createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.id))
-          );
-
-          // Append action buttons to the row
-          row.appendChild(actionCell);
+          const messageCell = document.createElement('td');
+          messageCell.colSpan = 6; // Span across all columns
+          messageCell.textContent = 'Data not available';
+          row.appendChild(messageCell);
           feePlanTable.appendChild(row);
-        });
+        } else {
+          // If data is available, populate the table
+          response.data.forEach(plan => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+              <td>${plan.class_name}</td>
+              <td>${plan.fee_head_name}</td>
+              <td>${plan.month_name}</td>
+              <td>${plan.amount}</td>
+              <td>${plan.created_at}</td>
+              <td>${plan.updated_at}</td>
+            `;
+
+            // Create Edit and Delete buttons
+            const actionCell = document.createElement('td');
+            actionCell.append(
+              createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.id)),
+              createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.id))
+            );
+
+            // Append action buttons to the row
+            row.appendChild(actionCell);
+            feePlanTable.appendChild(row);
+          });
+        }
       },
       error: xhr => handleError('Error loading fee plans.', xhr)
     });
   };
+
 
   // Edit Fee Plan
   const editFeePlan = (planId) => {
