@@ -420,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             `).join('')}
                         </select>
                         <label>Month Name</label>
-                        
+
 
                         <label>Amount</label>
                         <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount}">
@@ -485,34 +485,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Delete Fee Plan
-  const deleteFeePlan = (id) => {
+  const deleteFeePlan = (className) => {
     Swal.fire({
-      title: 'Delete Fee Plan?',
-      text: 'Are you sure you want to delete this fee plan?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
+        title: 'Delete Fee Plan?',
+        text: `Are you sure you want to delete all fee plans for class "${className}"?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
     }).then(result => {
-      if (result.isConfirmed) {
-        $.ajax({
-          url: '../php/feePlan/delete_fee_plan.php',
-          type: 'POST',
-          dataType: 'json',
-          data: { feePlanId: id },
-          success: function (response) {
-            if (response.status === 'success') {
-              Swal.fire('Deleted!', 'Fee plan deleted successfully.', 'success');
-              loadFeePlans();
-            } else {
-              Swal.fire('Error', response.message, 'error');
-            }
-          },
-          error: xhr => handleError('Error deleting fee plan.', xhr)
-        });
-      }
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../php/feePlan/delete_fee_plan.php',
+                type: 'POST',
+                dataType: 'json',
+                data: { className: className }, // Send class_name instead of feePlanId
+                success: function (response) {
+                    if (response.status === 'success') {
+                        Swal.fire('Deleted!', response.message, 'success');
+                        loadFeePlans();
+                    } else {
+                        Swal.fire('Error', response.message, 'error');
+                    }
+                },
+                error: xhr => handleError('Error deleting fee plan.', xhr),
+            });
+        }
     });
-  };
+};
+
 
 
   // Handle "Select All Months" checkbox

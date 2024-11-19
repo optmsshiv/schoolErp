@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 
 $className = $_POST['class_name'] ?? null;
 $feeHeadName = $_POST['fee_head_name'] ?? null;
-$monthName = $_POST['monthName'] ?? null;
+
 $amount = $_POST['amount'] ?? null;
 
 // Check if all required fields are provided
