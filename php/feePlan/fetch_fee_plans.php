@@ -10,7 +10,7 @@ try {
 
     if ($id) {
         // Fetch fee plan by ID
-        $sql = "SELECT fee_head_name, class_name, month_name, amount, created_at FROM FeePlans WHERE id = :id";
+        $sql = "SELECT fee_head_name, class_name, month_name, amount, created_at FROM FeePlans WHERE fee_plan_id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
