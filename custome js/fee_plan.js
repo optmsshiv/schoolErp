@@ -420,13 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             `).join('')}
                         </select>
                         <label>Month Name</label>
-                        <select id="editMonth" class="swal2-select">
-                            ${Array.from(monthDropdown.options).map(option => `
-                                <option value="${option.value}" ${option.value === feePlan.month_name ? 'selected' : ''}>
-                                    ${option.text}
-                                </option>
-                            `).join('')}
-                        </select>
+                        
 
                         <label>Amount</label>
                         <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount}">
