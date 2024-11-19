@@ -26,11 +26,16 @@ try {
     $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
 
     // Execute the query
-    if ($stmt->execute()) {
-        echo json_encode(['status' => 'success', 'message' => 'Fee plan added successfully.']);
-    } else {
-        throw new Exception('Error inserting fee plan.');
+    $stmt->execute();
+
+    // Check for errors after executing the query
+    if ($stmt->errorCode() != '00000') {
+        echo json_encode(['status' => 'error', 'message' => $stmt->errorInfo()]);
+        exit;
     }
+
+    // If query executed successfully, send success response
+    echo json_encode(['status' => 'success', 'message' => 'Fee plan added successfully.']);
 } catch (Exception $e) {
     echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
 }
