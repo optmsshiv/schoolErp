@@ -482,12 +482,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Handle "Select All Months" checkbox
-  selectAllCheckbox?.addEventListener('change', function () {
-    const monthCheckboxes = document.querySelectorAll('input[name="month"]');
-    monthCheckboxes.forEach(checkbox => {
-      checkbox.checked = selectAllCheckbox.checked;
-    });
+  // Add an event listener to the "Select All" checkbox
+selectAllCheckbox?.addEventListener('change', function () {
+  // Get all month checkboxes within the dropdown
+  const monthCheckboxes = document.querySelectorAll('.form-check-input[type="checkbox"]:not(#selectAllCheckbox)');
+
+  // Set the checked state of all month checkboxes to match the "Select All" checkbox
+  monthCheckboxes.forEach(checkbox => {
+    checkbox.checked = selectAllCheckbox.checked;
   });
+});
+
+// Add event listeners to individual month checkboxes
+const individualCheckboxes = document.querySelectorAll('.form-check-input[type="checkbox"]:not(#selectAllCheckbox)');
+
+individualCheckboxes.forEach(checkbox => {
+  checkbox.addEventListener('change', function () {
+    // Check if all individual checkboxes are checked
+    const allSelected = Array.from(individualCheckboxes).every(checkbox => checkbox.checked);
+
+    // If all individual checkboxes are checked, check the "Select All" checkbox
+    selectAllCheckbox.checked = allSelected;
+  });
+});
 
   // Initialize
   loadFeeHeads();

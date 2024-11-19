@@ -757,6 +757,17 @@ td {
 }
 
 /* fee plan drop down height */
+/* Custom styling for dropdown */
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Ensure the button and dropdown menu look well */
+.dropdown-toggle {
+  width: 100%;
+  text-align: left;
+}
 
 
 

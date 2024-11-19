@@ -897,44 +897,32 @@
 
                                       <div class="col-md-3 mb-3">
                                         <label for="month" class="form-label">Month(s)</label>
-                                        <div id="month" class="form-check">
-                                          <input type="checkbox" class="form-check-input" id="january" name="month[]" value="January">
-                                          <label class="form-check-label" for="january">January</label>
-
-                                          <input type="checkbox" class="form-check-input" id="february" name="month[]" value="February">
-                                          <label class="form-check-label" for="february">February</label>
-
-                                          <input type="checkbox" class="form-check-input" id="march" name="month[]" value="March">
-                                          <label class="form-check-label" for="march">March</label>
-
-                                          <input type="checkbox" class="form-check-input" id="april" name="month[]" value="April">
-                                          <label class="form-check-label" for="april">April</label>
-
-                                          <input type="checkbox" class="form-check-input" id="may" name="month[]" value="May">
-                                          <label class="form-check-label" for="may">May</label>
-
-                                          <input type="checkbox" class="form-check-input" id="june" name="month[]" value="June">
-                                          <label class="form-check-label" for="june">June</label>
-
-                                          <input type="checkbox" class="form-check-input" id="july" name="month[]" value="July">
-                                          <label class="form-check-label" for="july">July</label>
-
-                                          <input type="checkbox" class="form-check-input" id="august" name="month[]" value="August">
-                                          <label class="form-check-label" for="august">August</label>
-
-                                          <input type="checkbox" class="form-check-input" id="september" name="month[]" value="September">
-                                          <label class="form-check-label" for="september">September</label>
-
-                                          <input type="checkbox" class="form-check-input" id="october" name="month[]" value="October">
-                                          <label class="form-check-label" for="october">October</label>
-
-                                          <input type="checkbox" class="form-check-input" id="november" name="month[]" value="November">
-                                          <label class="form-check-label" for="november">November</label>
-
-                                          <input type="checkbox" class="form-check-input" id="december" name="month[]" value="December">
-                                          <label class="form-check-label" for="december">December</label>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Select Month(s)
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="selectAll" id="selectAllMonth">
+                                                        <label class="form-check-label" for="selectAllMonth">Select All</label>
+                                                    </div>
+                                                </li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="January" id="January"><label class="form-check-label" for="January">January</label></div></li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="February" id="February"><label class="form-check-label" for="February">February</label></div></li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="March" id="March"><label class="form-check-label" for="March">March</label></div></li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="April" id="April"><label class="form-check-label" for="April">April</label></div></li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="May" id="May"><label class="form-check-label" for="May">May</label></div></li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="June" id="June"><label class="form-check-label" for="June">June</label></div></li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="July" id="July"><label class="form-check-label" for="July">July</label></div></li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="August" id="August"><label class="form-check-label" for="August">August</label></div></li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="September" id="September"><label class="form-check-label" for="September">September</label></div></li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="October" id="October"><label class="form-check-label" for="October">October</label></div></li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="November" id="November"><label class="form-check-label" for="November">November</label></div></li>
+                                                <li><div class="form-check"><input class="form-check-input" type="checkbox" value="December" id="December"><label class="form-check-label" for="December">December</label></div></li>
+                                            </ul>
                                         </div>
-                                      </div>
+                                    </div>
 
 
                                       <!-- Fee Amount -->
