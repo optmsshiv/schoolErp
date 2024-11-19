@@ -490,8 +490,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 };
 
-}
-
 
 
 
