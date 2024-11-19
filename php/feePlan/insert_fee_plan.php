@@ -4,18 +4,24 @@ include '../db_connection.php'; // Include PDO database connection script
 header('Content-Type: application/json');
 
 // Get POST data
-$feeHead = $_POST['feeHead'] ?? null;
-$className = $_POST['className'] ?? null;
-$month = $_POST['month'] ?? null; // Expecting an array
-$amount = $_POST['feeAmount'] ?? null;
+$feeHead = trim($_POST['fee_head_name']) ?? null;
+$className = trim($_POST['class_name']) ?? null;
+$month = trim($_POST['month']) ?? null; // Expecting an array
+$amount = trim($_POST['amount']) ?? null;
 
 // Validate input
 if (!$feeHead || !$className || !$month || !$amount) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'All fields are required.'
-    ]);
-    exit;
+  echo json_encode([
+      'status' => 'error',
+      'message' => 'Please fill all fields.',
+      'debug' => [
+          'fee_head_name' => $feeHead,
+          'class_name' => $className,
+          'month' => $month,
+          'amount' => $amount
+      ]
+  ]);
+  exit;
 }
 
 try {
@@ -28,8 +34,8 @@ try {
   $stmt = $conn->prepare($sql);
 
   // Loop through months and insert data
-  $monthsArray = explode(',', $months); // If months are sent as a comma-separated string
-  foreach ($monthsArray as $month_name) {
+  $monthArray = explode(',', $month); // If months are sent as a comma-separated string
+  foreach ($monthArray as $month_name) {
       $stmt->execute([
           ':fee_head_name' => $feeHead,
           ':class_name' => $className,
