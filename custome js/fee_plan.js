@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function () {
         dataType: 'json',
         success: function (response) {
             if (response.status === 'success' && response.data) {
-                const plan = response.data; // The fee plan data
+                const feePlan = response.data; // The fee plan data
 
                 Swal.fire({
                     title: 'Edit Fee Plan',
@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <label>Class Name</label>
                         <select id="editClassName" class="swal2-select">
                             ${Array.from(classNameSelect.options).map(option => `
-                                <option value="${option.value}" ${option.value === plan.class_name ? 'selected' : ''}>
+                                <option value="${option.value}" ${option.value === feePlan.class_name ? 'selected' : ''}>
                                     ${option.text}
                                 </option>
                             `).join('')}
@@ -414,7 +414,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <label>Fee Head Name</label>
                         <select id="editFeeHead" class="swal2-select">
                             ${Array.from(feeHeadSelect.options).map(option => `
-                                <option value="${option.value}" ${option.value === plan.fee_head_name ? 'selected' : ''}>
+                                <option value="${option.value}" ${option.value === feePlan.fee_head_name ? 'selected' : ''}>
                                     ${option.text}
                                 </option>
                             `).join('')}
@@ -422,7 +422,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <label>Month Name</label>
                         <input id="editMonth" class="swal2-input" type="text" value="${feePlan.monthName}">
                         <label>Amount</label>
-                        <input id="editAmount" class="swal2-input" type="number" value="${plan.amount}">
+                        <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount}">
                     `,
                     showCancelButton: true,
                     confirmButtonText: 'Save',
