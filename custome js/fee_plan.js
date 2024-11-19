@@ -399,7 +399,10 @@ document.addEventListener('DOMContentLoaded', function () {
         success: function (response) {
             if (response.status === 'success' && response.data) {
                 const feePlan = response.data; // The fee plan data
-
+                if (!feePlan || feePlan.length === 0) {
+                  Swal.fire('Error', 'No fee plan data found.', 'error');
+                  return;
+              }
                 Swal.fire({
                     title: 'Edit Fee Plan',
                     html: `
