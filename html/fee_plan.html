@@ -844,38 +844,35 @@
                                     </div>
 
                                     <!-- Month Dropdown -->
-
-                                    <div class="col-md-3 mb-3">
-                                      <label for="monthDropdown" class="form-label">Month(s)</label>
-                                      <div class="dropdown">
-                                        <select id="monthDropdown" class="form-select" disabled>
-                                          <option>Select Month(s)</option>
-                                        </select>
-                                        <div class="dropdown-menu p-3" style="width: 100%;">
-                                          <div class="form-check">
-                                            <input type="checkbox" id="selectAllCheckbox" class="form-check-input" />
-                                            <label class="form-check-label" for="selectAllCheckbox">Select All</label>
-                                          </div>
-                                          <div class="form-check">
-                                            <input type="checkbox" id="january" value="January" class="form-check-input month-checkbox" />
-                                            <label class="form-check-label" for="january">January</label>
-                                          </div>
-                                          <div class="form-check">
-                                            <input type="checkbox" id="february" value="February" class="form-check-input month-checkbox" />
-                                            <label class="form-check-label" for="february">February</label>
-                                          </div>
-                                          <div class="form-check">
-                                            <input type="checkbox" id="march" value="March" class="form-check-input month-checkbox" />
-                                            <label class="form-check-label" for="march">March</label>
-                                          </div>
-                                          <!-- Add the rest of the months in a similar format -->
-                                        </div>
+                                    <div class="mb-3">
+                                      <label for="monthName" class="form-label">Month</label>
+                                      <div class="form-check mb-2">
+                                          <input class="form-check-input" type="checkbox" id="selectAllMonths">
+                                          <label class="form-check-label" for="selectAllMonths">
+                                              Select All Months
+                                          </label>
                                       </div>
-                                    </div>
+                                      <select class="form-select col-sm-3" id="monthName" required>
+                                          <option value="">Select a Month</option>
+                                          <option value="January">January</option>
+                                          <option value="February">February</option>
+                                          <option value="March">March</option>
+                                          <option value="April">April</option>
+                                          <option value="May">May</option>
+                                          <option value="June">June</option>
+                                          <option value="July">July</option>
+                                          <option value="August">August</option>
+                                          <option value="September">September</option>
+                                          <option value="October">October</option>
+                                          <option value="November">November</option>
+                                          <option value="December">December</option>
+                                      </select>
+                                  </div>
+
+                                    <!-- end Month Dropdown -->
 
 
                                     <!-- Fee Amount -->
-
                                     <div class="col-md-3 mb-3">
                                       <label for="feeAmount" class="form-label">Fee Amount</label>
                                       <input type="number" class="form-control" id="feeAmount"
@@ -884,7 +881,6 @@
                                   </div>
 
                                   <!-- Submit Button -->
-
                                   <button type="submit" class="btn btn-primary mt-3">Create Fee Plan</button>
                                 </form>
                                 <hr />
