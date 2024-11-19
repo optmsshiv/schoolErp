@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 // Ensure all necessary fields are available
 $feeHeadName = $_POST['fee_head_name'] ?? null;
 $className = $_POST['class_name'] ?? null;
-$month = $_POST['month'] ?? null;
+$month = $_POST['month'] ?? null; // This should be a string after joining in JS
 $amount = $_POST['amount'] ?? null;
 
 if (!$feeHeadName || !$className || !$month || !$amount) {
