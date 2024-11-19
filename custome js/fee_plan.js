@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     preConfirm: () => {
                         const feeHead = document.getElementById('editFeeHead').value.trim();
                         const className = document.getElementById('editClassName').value.trim();
-                        const month = document.getElementById('editMonth').value.trim();
+                        const month = document.getElementById('editMonth').value = plan.month_name || '';
                         const amount = document.getElementById('editAmount').value.trim();
 
                         if (!feeHead || !className || !month || !amount) {
