@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-  
+
   // Add Fee Plan
   feePlanForm?.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -302,6 +302,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return Swal.fire('Error', 'Please fill all fields!', 'error');
     }
 
+    // Validate amount (should be a number and greater than 0)
+    if (isNaN(amount) || parseInt(amount) <= 0) {
+        return Swal.fire('Error', 'Please enter a valid amount!', 'error');
+    }
+
     console.log({ feeHead, className, month, amount }); // Debugging
 
     // Prepare data for the AJAX request
@@ -317,13 +322,14 @@ document.addEventListener('DOMContentLoaded', function () {
         url: '../php/feePlan/insert_fee_plan.php',
         type: 'POST',
         dataType: 'json',
-        data: data,
+        contentType: 'application/json',  // Set content type to JSON
+        data: JSON.stringify(data),  // Send data as a JSON string
         success: function (response) {
             console.log(response); // Log the response for debugging
             if (response.status === 'success') {
                 Swal.fire('Success', 'Fee plan added successfully.', 'success');
-                feePlanForm.reset();
-                loadFeePlans(); // Reload fee plans (if applicable)
+                feePlanForm.reset();  // Reset form
+                loadFeePlans();  // Reload fee plans (if applicable)
             } else {
                 Swal.fire('Error', response.message, 'error');
             }
@@ -335,6 +341,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
 
 
 
