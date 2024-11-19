@@ -5,9 +5,14 @@ document.addEventListener('DOMContentLoaded', function () {
   const feePlanTable = document.getElementById('feePlanBody');
   const feeHeadSelect = document.getElementById('feeHeadSelect');
   const classNameSelect = document.getElementById('classNameSelect')
-  const selectAllCheckbox = document.getElementById('selectAllMonths');
+  const selectAllCheckboxs = document.getElementById('selectAllMonths');
   const classNameForm = document.getElementById('classNameForm');
   const classNameList = document.getElementById('classNameList');
+
+const dropdown = document.getElementById("monthDropdown");
+const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+const monthCheckboxes = document.querySelectorAll(".month-checkbox");
 
 
   // Utility function to create buttons
@@ -482,27 +487,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Handle "Select All Months" checkbox
-  // Add an event listener to the "Select All" checkbox
-selectAllCheckbox?.addEventListener('change', function () {
-  // Get all month checkboxes within the dropdown
-  const monthCheckboxes = document.querySelectorAll('.form-check-input[type="checkbox"]:not(#selectAllCheckbox)');
+  // Toggle dropdown visibility on click
+dropdown.addEventListener("click", function () {
+  dropdownMenu.style.display =
+    dropdownMenu.style.display === "block" ? "none" : "block";
+});
 
-  // Set the checked state of all month checkboxes to match the "Select All" checkbox
-  monthCheckboxes.forEach(checkbox => {
-    checkbox.checked = selectAllCheckbox.checked;
+// Close dropdown if clicked outside
+document.addEventListener("click", function (event) {
+  if (!dropdown.contains(event.target)) {
+    dropdownMenu.style.display = "none";
+  }
+});
+
+// "Select All" behavior
+selectAllCheckbox.addEventListener("change", function () {
+  const isChecked = selectAllCheckbox.checked;
+  monthCheckboxes.forEach((checkbox) => {
+    checkbox.checked = isChecked;
   });
 });
 
-// Add event listeners to individual month checkboxes
-const individualCheckboxes = document.querySelectorAll('.form-check-input[type="checkbox"]:not(#selectAllCheckbox)');
+// Update "Select All" based on individual checkboxes
+monthCheckboxes.forEach((checkbox) => {
+  checkbox.addEventListener("change", function () {
+    const allChecked = Array.from(monthCheckboxes).every((cb) => cb.checked);
+    selectAllCheckbox.checked = allChecked;
 
-individualCheckboxes.forEach(checkbox => {
-  checkbox.addEventListener('change', function () {
-    // Check if all individual checkboxes are checked
-    const allSelected = Array.from(individualCheckboxes).every(checkbox => checkbox.checked);
-
-    // If all individual checkboxes are checked, check the "Select All" checkbox
-    selectAllCheckbox.checked = allSelected;
+    // Set indeterminate state if some are selected
+    const someChecked = Array.from(monthCheckboxes).some((cb) => cb.checked);
+    selectAllCheckbox.indeterminate = someChecked && !allChecked;
   });
 });
 
