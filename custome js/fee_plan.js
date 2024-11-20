@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const actionCell = document.createElement('td');
             actionCell.append(
               createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.id)),
-              createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.id))
+              createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.class_name))
             );
 
             // Append action buttons to the row
@@ -496,33 +496,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }).then(result => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '../php/feePlan/delete_fee_plan.php', // PHP script URL
+                url: '../php/feePlan/delete_fee_plan.php',
                 type: 'POST',
                 dataType: 'json',
-                data: { class_name: class_name }, // Send class_name to PHP
+                data: { class_name: class_name },
                 success: function (response) {
                     if (response.status === 'success') {
-                        Swal.fire({
-                            title: 'Deleted!',
-                            text: 'Fee plan deleted successfully.',
-                            icon: 'success',
-                            timer: 1500,
-                            showConfirmButton: false
-                        });
-                        loadFeePlans(); // Refresh the list of fee plans
+                        Swal.fire('Deleted!', 'Fee plan deleted successfully.', 'success');
+                        loadFeePlans(); // Reload the fee plans to reflect changes
                     } else {
-                        Swal.fire({
-                            title: 'Error',
-                            text: response.message,
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
+                        Swal.fire('Error', response.message, 'error');
                     }
                 },
                 error: (xhr, textStatus, errorThrown) => {
                     Swal.fire({
                         title: 'Error',
-                        text: `An error occurred while deleting the fee plan: ${xhr.statusText || textStatus}`,
+                        text: `An error occurred: ${xhr.statusText || textStatus}`,
                         icon: 'error',
                         confirmButtonText: 'OK'
                     });
