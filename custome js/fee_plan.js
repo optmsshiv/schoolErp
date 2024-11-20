@@ -485,10 +485,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Delete Fee Plan
-  const deleteFeePlan = (class_name) => {
+  const deleteFeePlan = (className) => {
     Swal.fire({
         title: 'Delete Fee Plan?',
-        text: `Are you sure you want to delete all fee plans for class "${class_name}"?`,
+        text: `Are you sure you want to delete the fee plan for class "${className}"?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
@@ -499,20 +499,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 url: '../php/feePlan/delete_fee_plan.php',
                 type: 'POST',
                 dataType: 'json',
-                data: { className: class_name }, // Send class_name instead of feePlanId
+                data: { class_name: className }, // Send class_name to PHP
                 success: function (response) {
                     if (response.status === 'success') {
-                        Swal.fire('Deleted!', response.message, 'success');
+                        Swal.fire('Deleted!', 'Fee plan deleted successfully.', 'success');
                         loadFeePlans();
                     } else {
                         Swal.fire('Error', response.message, 'error');
                     }
                 },
-                error: xhr => handleError('Error deleting fee plan.', xhr),
+                error: xhr => handleError('Error deleting fee plan.', xhr)
             });
         }
     });
 };
+
 
 
 
