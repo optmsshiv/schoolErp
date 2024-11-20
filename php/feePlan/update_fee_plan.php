@@ -4,14 +4,14 @@ require_once '../db_connection.php';
 header('Content-Type: application/json');
 
 // Validate and fetch POST data
+
 $className = $_POST['class_name'] ?? null;
 $feeHeadName = $_POST['fee_head_name'] ?? null;
-$monthName = $_POST['month_name'] ?? null;
+
 $amount = $_POST['amount'] ?? null;
-$planId = $_POST['id'] ?? null;
 
 // Check if all required fields are provided
-if (!$feeHeadName || !$className || !$monthName || !$amount || !$planId) {
+if (!$feeHeadName || !$className || !$monthName || !$amount) {
     echo json_encode([
         'status' => 'error',
         'message' => 'All fields are required.'
@@ -24,7 +24,7 @@ try {
     $sql = "UPDATE FeePlans
             SET fee_head_name = :feeHeadName,
                 class_name = :className,
-                month_name = :monthName,
+                monthName = :monthName,
                 amount = :amount,
                 updated_at = NOW()
             WHERE fee_plan_id = :feePlanId";
@@ -32,11 +32,11 @@ try {
     $stmt = $pdo->prepare($sql);
 
     // Bind parameters to prevent SQL injection
+
     $stmt->bindParam(':feeHeadName', $feeHeadName, PDO::PARAM_STR);
     $stmt->bindParam(':className', $className, PDO::PARAM_STR);
     $stmt->bindParam(':monthName', $monthName, PDO::PARAM_STR);
     $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
-    $stmt->bindParam(':feePlanId', $planId, PDO::PARAM_INT);
 
     // Execute the query
     if ($stmt->execute()) {
@@ -59,5 +59,4 @@ try {
         'message' => 'An error occurred while updating the fee plan.'
     ]);
 }
-
 ?>
