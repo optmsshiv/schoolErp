@@ -391,19 +391,17 @@ document.addEventListener('DOMContentLoaded', function () {
     $.ajax({
         url: '../php/feePlan/fetch_fee_plans.php',
         type: 'GET',
-        data: { planId: planId }, // Pass planId to fetch specific record
+        data: { planId: planId },
         dataType: 'json',
         success: function (response) {
             if (response.status === 'success' && response.data.length > 0) {
-                const feePlan = response.data[0]; // Access the first object
-                console.log(feePlan); // Debugging log
+                const feePlan = response.data[0];
 
                 Swal.fire({
                     title: 'Edit Fee Plan',
                     html: `
-
-                      <label>Id</label>
-                        <input id="getId" class="swal2-input" type="number" value="${feePlan.fee_plan_id}">
+                        <label>Id</label>
+                        <input id="editId" class="swal2-input" type="number" value="${feePlan.fee_plan_id}" readonly>
 
                         <label>Class Name</label>
                         <select id="editClassName" class="swal2-select">
@@ -413,6 +411,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 </option>
                             `).join('')}
                         </select>
+
                         <label>Fee Head Name</label>
                         <select id="editFeeHead" class="swal2-select">
                             ${Array.from(feeHeadSelect.options).map(option => `
@@ -421,15 +420,16 @@ document.addEventListener('DOMContentLoaded', function () {
                                 </option>
                             `).join('')}
                         </select>
+
                         <label>Month Name</label>
                         <input id="editMonth" class="swal2-input" type="text" value="${feePlan.month_name || ''}">
+
                         <label>Amount</label>
                         <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount || ''}">
                     `,
-                    showDenyBotton:true,
+                    showDenyButton: true,
                     showCancelButton: true,
                     confirmButtonText: 'Save',
-                    cancelButtonText: 'Cancel',
                     denyButtonText: `Don't save`,
                     preConfirm: () => {
                         const feeHead = document.getElementById('editFeeHead').value.trim();
@@ -447,7 +447,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }).then(result => {
                     if (result.isConfirmed) {
-                        const { id,  className, feeHead, month, amount } = result.value;
+                        const { id, className, feeHead, month, amount } = result.value;
 
                         $.ajax({
                             url: '../php/feePlan/update_fee_plan.php',
