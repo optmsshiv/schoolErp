@@ -445,8 +445,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         const amount = document.getElementById('editAmount').value.trim();
                         const id = document.getElementById('editId').value.trim();
 
-                        const selectedMonths = Array.from(document.querySelectorAll('#editMonthOptions input[type="checkbox"]:checked'))
-                            .map(checkbox => checkbox.value);
+                        const selectedMonths = Array.from(document.getElementById('editMonth').selectedOptions)
+        .map(option => option.value);
 
                         if (!id || !className || !feeHead || !amount || selectedMonths.length === 0) {
                             Swal.showValidationMessage('All fields are required!');
