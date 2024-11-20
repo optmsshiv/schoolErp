@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 url: '../php/feePlan/delete_fee_plan.php',
                 type: 'POST',
                 dataType: 'json',
-                data: { class_name: class_Name }, // Send class_name to PHP
+                data: { class_name: class_name }, // Send class_name to PHP
                 success: function (response) {
                     if (response.status === 'success') {
                         Swal.fire('Deleted!', 'Fee plan deleted successfully.', 'success');
