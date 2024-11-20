@@ -387,18 +387,20 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
-
   // Update Fee Plan
   const editFeePlan = (planId) => {
+    // Fetch the fee plan details using the provided planId
     $.ajax({
         url: '../php/feePlan/fetch_fee_plans.php',
         type: 'GET',
         data: { planId: planId }, // Pass planId to fetch specific record
         dataType: 'json',
         success: function (response) {
-            if (response.status === 'success' && response.data.length > 0) {
-                const feePlan = response.data[0]; // Access the first object
-                console.log(feePlan); // Debugging log
+            if (response.status === 'success' && response.data) {
+                const feePlan = response.data; // The fee plan data
+
+                // Get the months (as an array)
+                const months = feePlan.month_name.split(','); // Split months if they're comma-separated
 
                 Swal.fire({
                     title: 'Edit Fee Plan',
@@ -420,67 +422,75 @@ document.addEventListener('DOMContentLoaded', function () {
                             `).join('')}
                         </select>
                         <label>Month Name</label>
-                        <input id="editMonth" class="swal2-input" type="text" value="${feePlan.month_name || ''}">
+                        <div id="editMonthOptions">
+                            ${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                              .map(month => `
+                                  <label>
+                                      <input type="checkbox" class="swal2-checkbox" value="${month}" ${months.includes(month) ? 'checked' : ''} />
+                                      ${month}
+                                  </label><br>
+                              `).join('')}
+                        </div>
                         <label>Amount</label>
-                        <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount || ''}">
+                        <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount}">
                     `,
                     showCancelButton: true,
                     confirmButtonText: 'Save',
                     cancelButtonText: 'Cancel',
                     preConfirm: () => {
-                        const feeHead = document.getElementById('editFeeHead').value.trim();
                         const className = document.getElementById('editClassName').value.trim();
-                        const month = document.getElementById('editMonth').value.trim();
+                        const feeHead = document.getElementById('editFeeHead').value.trim();
                         const amount = document.getElementById('editAmount').value.trim();
 
-                        if (!className || !feeHead || !month || !amount) {
+                        // Get selected months
+                        const selectedMonths = Array.from(document.querySelectorAll('#editMonthOptions input[type="checkbox"]:checked'))
+                            .map(checkbox => checkbox.value);
+
+                        if (!className || !feeHead || !amount || selectedMonths.length === 0) {
                             Swal.showValidationMessage('All fields are required!');
                             return false;
                         }
 
-                        return { className, feeHead, month, amount };
+                        return { className, feeHead, selectedMonths, amount };
                     }
                 }).then(result => {
                     if (result.isConfirmed) {
-                        const { feeHead, className, month, amount } = result.value;
+                        const { className, feeHead, selectedMonths, amount } = result.value;
 
+                        // Send the updated data to the server
                         $.ajax({
-                            url: '../php/feePlan/update_fee_plan.php',
-                            type: 'POST',
-                            data: {
-                                id: planId,
-                                fee_head_name: feeHead,
-                                class_name: className,
-                                month_name: month,
-                                amount: amount
-                            },
-                            dataType: 'json',
-                            success: function (response) {
-                                if (response.status === 'success') {
-                                    Swal.fire('Success', response.message, 'success');
-                                    loadFeePlans();
-                                } else {
-                                    Swal.fire('Error', response.message, 'error');
-                                }
-                            },
-                            error: function (xhr) {
-                                Swal.fire('Error', 'An error occurred while updating the fee plan.', 'error');
-                            }
-                        });
+                          url: '../php/feePlan/update_fee_plan.php',
+                          type: 'POST',
+                          data: {
+                              id: planId,
+                              fee_head_name: feeHead,
+                              class_name: className,
+                              month_name: selectedMonths.join(','), // Join months as comma-separated string
+                              amount: amount
+                          },
+                          dataType: 'json',
+                          success: function (response) {
+                              if (response.status === 'success') {
+                                  Swal.fire('Success', response.message, 'success');
+                                  loadFeePlans(); // Reload the table
+                              } else {
+                                  Swal.fire('Error', response.message, 'error');
+                              }
+                          },
+                          error: function (xhr) {
+                              Swal.fire('Error', 'An error occurred while updating the fee plan.', 'error');
+                          }
+                      });
+
                     }
                 });
             } else {
                 Swal.fire('Error', response.message || 'Fee plan not found.', 'error');
             }
         },
-        error: function (xhr) {
-            Swal.fire('Error', 'An error occurred while fetching the fee plan details.', 'error');
-        }
+        error: xhr => handleError('Error fetching fee plan details.', xhr)
     });
 };
-
-
-
 
 
 
