@@ -436,7 +436,7 @@ Swal.fire({
                   .map(month => `
                       <div class="form-check">
                           <input type="checkbox" value="${month}" id="${month.toLowerCase()}" class="form-check-input month-checkbox"
-                              ${month_name.includes(month) ? 'checked' : ''} />
+                              ${monthNameSelect.includes(month) ? 'checked' : ''} />
                           <label class="form-check-label" for="${month.toLowerCase()}">${month}</label>
                       </div>
                   `).join('')}
