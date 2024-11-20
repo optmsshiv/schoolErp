@@ -399,7 +399,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log(feePlan); // Debugging log
 
               // Assuming you have already fetched feePlan and monthNames from your server
-
+                // Convert the month_name string into an array of months
+            const monthNames = response.data.month_name.split(','); // This creates an array from the comma-separated string
 Swal.fire({
   title: 'Edit Fee Plan',
   html: `
@@ -436,7 +437,7 @@ Swal.fire({
                   .map(month => `
                       <div class="form-check">
                           <input type="checkbox" value="${month}" id="${month.toLowerCase()}" class="form-check-input month-checkbox"
-                              ${monthNameSelect.includes(month) ? 'checked' : ''} />
+                              ${monthNames.includes(month) ? 'checked' : ''} />
                           <label class="form-check-label" for="${month.toLowerCase()}">${month}</label>
                       </div>
                   `).join('')}
