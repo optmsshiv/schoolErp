@@ -396,6 +396,7 @@ document.addEventListener('DOMContentLoaded', function () {
         data: { planId: planId }, // Pass planId to fetch specific record
         dataType: 'json',
         success: function (response) {
+          console.log('Response:', response); // Log the response from the server
             if (response.status === 'success' && response.data) {
                 const feePlan = response.data; // The fee plan data
 
