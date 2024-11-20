@@ -493,6 +493,10 @@ document.addEventListener('DOMContentLoaded', function () {
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
         cancelButtonText: 'Cancel',
+        timer: 10000, // Add a timer (in milliseconds)
+        timerProgressBar: true, // Show a timer progress bar
+        allowOutsideClick: false, // Prevent closing the alert by clicking outside
+        allowEscapeKey: false // Prevent closing the alert using the escape key
     }).then(result => {
         if (result.isConfirmed) {
             $.ajax({
@@ -502,10 +506,22 @@ document.addEventListener('DOMContentLoaded', function () {
                 data: { class_name: class_name },
                 success: function (response) {
                     if (response.status === 'success') {
-                        Swal.fire('Deleted!', 'Fee plan deleted successfully.', 'success');
-                        loadFeePlans(); // Reload the fee plans to reflect changes
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: 'Fee plan deleted successfully.',
+                            icon: 'success',
+                            timer: 3000, // Auto close after 3 seconds
+                            timerProgressBar: true,
+                        });
+                        loadFeePlans(); // Reload the fee plans
                     } else {
-                        Swal.fire('Error', response.message, 'error');
+                        Swal.fire({
+                            title: 'Error',
+                            text: response.message,
+                            icon: 'error',
+                            timer: 5000, // Auto close after 5 seconds
+                            timerProgressBar: true,
+                        });
                     }
                 },
                 error: (xhr, textStatus, errorThrown) => {
