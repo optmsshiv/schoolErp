@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         // Send the updated data to the backend via an AJAX request
                         $.ajax({
-                            url: 'your_update_url.php',  // Change this URL to your update endpoint
+                            url: '../php/feePlan/update_fee_plan.php',  // Change this URL to your update endpoint
                             type: 'POST',
                             data: data,
                             success: function (response) {
