@@ -362,6 +362,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const row = document.createElement('tr');
 
             row.innerHTML = `
+              <td>${plan.fee_plan_id}</td>
               <td>${plan.class_name}</td>
               <td>${plan.fee_head_name}</td>
               <td>${plan.month_name}</td>
