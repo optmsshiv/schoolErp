@@ -420,8 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             `).join('')}
                         </select>
                         <label>Month Name</label>
-
-
+                        <input id="editMonth" class="swal2-input" type="text" value="${feePlan.month_name}">
                         <label>Amount</label>
                         <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount}">
                     `,
@@ -439,7 +438,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             return false;
                         }
 
-                        return { className, feeHead, month, amount };
+                        return { feeHead, className, month, amount };
                     }
                 }).then(result => {
                     if (result.isConfirmed) {
@@ -536,8 +535,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 };
-
-
 
 
   // Handle "Select All Months" checkbox
