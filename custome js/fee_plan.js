@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     title: 'Edit Fee Plan',
                     html: `
                     <label>Id</label>
-                        <input id="getId" class="swal2-input" type="number" value="${feePlan.planId}">
+                        <input id="getId" class="swal2-input" type="number" value="${feePlan.fee_plan_id}">
 
                         <label>Class Name</label>
                         <select id="editClassName" class="swal2-select">
