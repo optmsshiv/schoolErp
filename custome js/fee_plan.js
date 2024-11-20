@@ -389,6 +389,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Update Fee Plan
   const editFeePlan = (planId) => {
+    console.log('Editing fee plan with ID:', planId); // Log the planId to confirm it's correct
     $.ajax({
         url: '../php/feePlan/fetch_fee_plans.php',
         type: 'GET',
