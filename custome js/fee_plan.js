@@ -4,15 +4,14 @@ document.addEventListener('DOMContentLoaded', function () {
   const feePlanForm = document.getElementById('feePlanForm');
   const feePlanTable = document.getElementById('feePlanBody');
   const feeHeadSelect = document.getElementById('feeHeadSelect');
-  const classNameSelect = document.getElementById('classNameSelect')
+  const classNameSelect = document.getElementById('classNameSelect');
   const classNameForm = document.getElementById('classNameForm');
   const classNameList = document.getElementById('classNameList');
 
-  const dropdown = document.getElementById("monthDropdown");
-  const dropdownMenu = dropdown.querySelector(".dropdown-menu");
-  const selectAllCheckbox = document.getElementById("selectAllCheckbox");
-  const monthCheckboxes = document.querySelectorAll(".month-checkbox");
-
+  const dropdown = document.getElementById('monthDropdown');
+  const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+  const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+  const monthCheckboxes = document.querySelectorAll('.month-checkbox');
 
   // Utility function to create buttons
   const createButton = (text, className, onClick) => {
@@ -93,14 +92,14 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Edit Fee Head
-  const editFeeHead = (currentName) => {
+  const editFeeHead = currentName => {
     Swal.fire({
       title: 'Edit Fee Head Name',
       input: 'text',
       inputValue: currentName,
       showCancelButton: true,
       confirmButtonText: 'Save',
-      cancelButtonText: 'Cancel',
+      cancelButtonText: 'Cancel'
     }).then(result => {
       const newName = result.value?.trim();
       if (result.isConfirmed && newName && newName !== currentName) {
@@ -124,13 +123,13 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   // Delete Fee Head
-  const deleteFeeHead = (feeHeadName) => {
+  const deleteFeeHead = feeHeadName => {
     Swal.fire({
       title: `Delete Fee Head: "${feeHeadName}"?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
+      cancelButtonText: 'Cancel'
     }).then(result => {
       if (result.isConfirmed) {
         $.ajax({
@@ -209,7 +208,6 @@ document.addEventListener('DOMContentLoaded', function () {
           // Add class names to dropdown
           const option = new Option(classItem.class_name, classItem.class_name);
           classNameSelect.add(option);
-
         });
       },
       error: xhr => handleError('Error loading class names.', xhr)
@@ -224,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
       inputValue: currentName,
       showCancelButton: true,
       confirmButtonText: 'Save',
-      cancelButtonText: 'Cancel',
+      cancelButtonText: 'Cancel'
     }).then(result => {
       const newName = result.value?.trim();
       if (result.isConfirmed && newName && newName !== currentName) {
@@ -248,14 +246,14 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   // Delete Class
-  const deleteClass = (className) => {
+  const deleteClass = className => {
     Swal.fire({
       title: 'Delete Class?',
       text: 'Do you want to delete this class?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
+      cancelButtonText: 'Cancel'
     }).then(result => {
       if (result.isConfirmed) {
         // Use correct parameter name for class_name
@@ -310,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const data = {
       feeHead: feeHead,
       className: className,
-      month: month.join(','),  // Convert array to comma-separated string
+      month: month.join(','), // Convert array to comma-separated string
       amount: amount
     };
 
@@ -319,21 +317,21 @@ document.addEventListener('DOMContentLoaded', function () {
       url: '../php/feePlan/insert_fee_plan.php',
       type: 'POST',
       dataType: 'json',
-      contentType: 'application/json',  // Set content type to JSON
-      data: JSON.stringify(data),  // Send data as a JSON string
+      contentType: 'application/json', // Set content type to JSON
+      data: JSON.stringify(data), // Send data as a JSON string
       success: function (response) {
         console.log(response); // Log the response for debugging
         if (response.status === 'success') {
           Swal.fire('Success', 'Fee plan added successfully.', 'success');
-          feePlanForm.reset();  // Reset form
-          loadFeePlans();  // Reload fee plans (if applicable)
+          feePlanForm.reset(); // Reset form
+          loadFeePlans(); // Reload fee plans (if applicable)
         } else {
           Swal.fire('Error', response.message, 'error');
         }
       },
       error: function (xhr, status, error) {
         console.error(`AJAX Error: ${status}, ${error}`);
-        console.error("Response Text: ", xhr.responseText);
+        console.error('Response Text: ', xhr.responseText);
         Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
       }
     });
@@ -393,19 +391,18 @@ document.addEventListener('DOMContentLoaded', function () {
     $.ajax({
         url: '../php/feePlan/fetch_fee_plans.php',
         type: 'GET',
-        data: { planId: planId },
+        data: { planId: planId }, // Pass planId to fetch specific record
         dataType: 'json',
-        success: function(response) {
-            if (response.status === 'success' && response.data) {
-                const feePlan = response.data[0]; // Access the first item if data is an array
-
-                // Handle missing or undefined month_name gracefully
-                const monthNames = feePlan.month_name ? feePlan.month_name.split(',') : [];
+        success: function (response) {
+            if (response.status === 'success' && response.data.length > 0) {
+                const feePlan = response.data[0]; // Access the first object
+                console.log(feePlan); // Debugging log
 
                 Swal.fire({
                     title: 'Edit Fee Plan',
                     html: `
-                    <label>Id</label>
+
+                      <label>Id</label>
                         <input id="getId" class="swal2-input" type="number" value="${feePlan.fee_plan_id}">
 
                         <label>Class Name</label>
@@ -425,141 +422,157 @@ document.addEventListener('DOMContentLoaded', function () {
                             `).join('')}
                         </select>
                         <label>Month Name</label>
-<select id="editMonth" class="swal2-select" multiple>
-    ${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        .map(month => `
-            <option value="${month}" ${monthNames.includes(month) ? 'selected' : ''}>
-                ${month}
-            </option>
-        `).join('')}
-</select>
+                        <input id="editMonth" class="swal2-input" type="text" value="${feePlan.month_name || ''}">
                         <label>Amount</label>
-                        <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount}">
+                        <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount || ''}">
                     `,
+                    showDenyBotton:true,
                     showCancelButton: true,
                     confirmButtonText: 'Save',
                     cancelButtonText: 'Cancel',
+                    denyButtonText: `Don't save`,
                     preConfirm: () => {
-                        const className = document.getElementById('editClassName').value.trim();
                         const feeHead = document.getElementById('editFeeHead').value.trim();
+                        const className = document.getElementById('editClassName').value.trim();
+                        const month = document.getElementById('editMonth').value.trim();
                         const amount = document.getElementById('editAmount').value.trim();
                         const id = document.getElementById('editId').value.trim();
 
-                        const selectedMonths = Array.from(document.getElementById('editMonth').selectedOptions)
-        .map(option => option.value);
-
-                        if (!id || !className || !feeHead || !amount || selectedMonths.length === 0) {
+                        if (!id || !className || !feeHead || !month || !amount) {
                             Swal.showValidationMessage('All fields are required!');
                             return false;
                         }
 
-                        return { id, className, feeHead, selectedMonths, amount };
+                        return { id, className, feeHead, month, amount };
+                    }
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        const { id,  className, feeHead, month, amount } = result.value;
+
+                        $.ajax({
+                            url: '../php/feePlan/update_fee_plan.php',
+                            type: 'POST',
+                            data: {
+                                id: id,
+                                fee_head_name: feeHead,
+                                class_name: className,
+                                month_name: month,
+                                amount: amount
+                            },
+                            dataType: 'json',
+                            success: function (response) {
+                                if (response.status === 'success') {
+                                    Swal.fire('Success', response.message, 'success');
+                                    loadFeePlans();
+                                } else {
+                                    Swal.fire('Error', response.message, 'error');
+                                }
+                            },
+                            error: function (xhr) {
+                                Swal.fire('Error', 'An error occurred while updating the fee plan.', 'error');
+                            }
+                        });
                     }
                 });
             } else {
                 Swal.fire('Error', response.message || 'Fee plan not found.', 'error');
             }
         },
-        error: function(xhr) {
-            console.error('Error fetching fee plan details:', xhr);
-            Swal.fire('Error', 'Error fetching data from the server.', 'error');
+        error: function (xhr) {
+            Swal.fire('Error', 'An error occurred while fetching the fee plan details.', 'error');
         }
     });
 };
-
-
-
 
   // Delete Fee Plan
-  const deleteFeePlan = (class_name) => {
+  const deleteFeePlan = class_name => {
     Swal.fire({
-        title: 'Delete Fee Plan?',
-        text: `Are you sure you want to delete the fee plan for class "${class_name}"?`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'Cancel',
-        timer: 10000, // Add a timer (in milliseconds)
-        timerProgressBar: true, // Show a timer progress bar
-        allowOutsideClick: false, // Prevent closing the alert by clicking outside
-        allowEscapeKey: false // Prevent closing the alert using the escape key
+      title: 'Delete Fee Plan?',
+      text: `Are you sure you want to delete the fee plan for class "${class_name}"?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      timer: 10000, // Add a timer (in milliseconds)
+      timerProgressBar: true, // Show a timer progress bar
+      allowOutsideClick: false, // Prevent closing the alert by clicking outside
+      allowEscapeKey: false // Prevent closing the alert using the escape key
     }).then(result => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: '../php/feePlan/delete_fee_plan.php',
-                type: 'POST',
-                dataType: 'json',
-                data: { class_name: class_name },
-                success: function (response) {
-                    if (response.status === 'success') {
-                        Swal.fire({
-                            title: 'Deleted!',
-                            text: 'Fee plan deleted successfully.',
-                            icon: 'success',
-                            timer: 3000, // Auto close after 3 seconds
-                            timerProgressBar: true,
-                        });
-                        loadFeePlans(); // Reload the fee plans
-                    } else {
-                        Swal.fire({
-                            title: 'Error',
-                            text: response.message,
-                            icon: 'error',
-                            timer: 5000, // Auto close after 5 seconds
-                            timerProgressBar: true,
-                        });
-                    }
-                },
-                error: (xhr, textStatus, errorThrown) => {
-                    Swal.fire({
-                        title: 'Error',
-                        text: `An error occurred: ${xhr.statusText || textStatus}`,
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '../php/feePlan/delete_fee_plan.php',
+          type: 'POST',
+          dataType: 'json',
+          data: { class_name: class_name },
+          success: function (response) {
+            if (response.status === 'success') {
+              Swal.fire({
+                title: 'Deleted!',
+                text: 'Fee plan deleted successfully.',
+                icon: 'success',
+                timer: 3000, // Auto close after 3 seconds
+                timerProgressBar: true
+              });
+              loadFeePlans(); // Reload the fee plans
+            } else {
+              Swal.fire({
+                title: 'Error',
+                text: response.message,
+                icon: 'error',
+                timer: 5000, // Auto close after 5 seconds
+                timerProgressBar: true
+              });
+            }
+          },
+          error: (xhr, textStatus, errorThrown) => {
+            Swal.fire({
+              title: 'Error',
+              text: `An error occurred: ${xhr.statusText || textStatus}`,
+              icon: 'error',
+              confirmButtonText: 'OK'
             });
-        }
+          }
+        });
+      }
     });
-};
-
+  };
 
   // Handle "Select All Months" checkbox
   // Toggle dropdown visibility when clicking the select element
-  dropdown.addEventListener("click", function (event) {
+  dropdown.addEventListener('click', function (event) {
     // Prevent the click from closing the dropdown
     event.stopPropagation();
 
     // Toggle dropdown visibility only if the dropdown is not already visible
-    if (dropdownMenu.style.display === "none" || dropdownMenu.style.display === "") {
-      dropdownMenu.style.display = "block";
+    if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+      dropdownMenu.style.display = 'block';
     }
   });
 
   // Close dropdown if clicked outside
-  document.addEventListener("click", function (event) {
+  document.addEventListener('click', function (event) {
     // Close the dropdown only if the click is outside the dropdown or the select element
     if (!dropdown.contains(event.target)) {
-      dropdownMenu.style.display = "none";
+      dropdownMenu.style.display = 'none';
     }
   });
 
   // "Select All" behavior
-  selectAllCheckbox.addEventListener("change", function () {
+  selectAllCheckbox.addEventListener('change', function () {
     const isChecked = selectAllCheckbox.checked;
-    monthCheckboxes.forEach((checkbox) => {
+    monthCheckboxes.forEach(checkbox => {
       checkbox.checked = isChecked;
     });
   });
 
   // Update "Select All" based on individual checkboxes
-  monthCheckboxes.forEach((checkbox) => {
-    checkbox.addEventListener("change", function () {
-      const allChecked = Array.from(monthCheckboxes).every((cb) => cb.checked);
+  monthCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+      const allChecked = Array.from(monthCheckboxes).every(cb => cb.checked);
       selectAllCheckbox.checked = allChecked;
 
       // Set indeterminate state if some are selected
-      const someChecked = Array.from(monthCheckboxes).some((cb) => cb.checked);
+      const someChecked = Array.from(monthCheckboxes).some(cb => cb.checked);
       selectAllCheckbox.indeterminate = someChecked && !allChecked;
     });
   });
