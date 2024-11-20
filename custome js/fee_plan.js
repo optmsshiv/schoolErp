@@ -425,15 +425,14 @@ document.addEventListener('DOMContentLoaded', function () {
                             `).join('')}
                         </select>
                         <label>Month Name</label>
-                        <div id="editMonthOptions">
-                            ${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-                                .map(month => `
-                                    <label>
-                                        <input type="checkbox" class="swal2-checkbox" value="${month}" ${monthNames.includes(month) ? 'checked' : ''} />
-                                        ${month}
-                                    </label><br>
-                                `).join('')}
-                        </div>
+<select id="editMonth" class="swal2-select" multiple>
+    ${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        .map(month => `
+            <option value="${month}" ${monthNames.includes(month) ? 'selected' : ''}>
+                ${month}
+            </option>
+        `).join('')}
+</select>
                         <label>Amount</label>
                         <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount}">
                     `,
