@@ -408,6 +408,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 Swal.fire({
                     title: 'Edit Fee Plan',
                     html: `
+                    <label>Amount</label>
+                        <input id="id" class="swal2-input" type="number" value="${feePlan.id}">
                         <label>Class Name</label>
                         <select id="editClassName" class="swal2-select">
                             ${Array.from(classNameSelect.options).map(option => `
