@@ -398,98 +398,111 @@ document.addEventListener('DOMContentLoaded', function () {
                 const feePlan = response.data[0]; // Access the first object
                 console.log(feePlan); // Debugging log
 
-                Swal.fire({
-                  title: 'Edit Fee Plan',
-                  html: `
-                      <label>Id</label>
-                      <input id="getId" class="swal2-input" type="number" value="${feePlan.fee_plan_id}" readonly>
+              // Assuming you have already fetched feePlan and monthNames from your server
 
-                      <label>Class Name</label>
-                      <select id="editClassName" class="swal2-select">
-                          ${Array.from(classNameSelect.options).map(option => `
-                              <option value="${option.value}" ${option.value === feePlan.class_name ? 'selected' : ''}>
-                                  ${option.text}
-                              </option>
-                          `).join('')}
-                      </select>
+Swal.fire({
+  title: 'Edit Fee Plan',
+  html: `
+      <label>Id</label>
+      <input id="getId" class="swal2-input" type="number" value="${feePlan.fee_plan_id}" readonly>
 
-                      <label>Fee Head Name</label>
-                      <select id="editFeeHead" class="swal2-select">
-                          ${Array.from(feeHeadSelect.options).map(option => `
-                              <option value="${option.value}" ${option.value === feePlan.fee_head_name ? 'selected' : ''}>
-                                  ${option.text}
-                              </option>
-                          `).join('')}
-                      </select>
+      <label>Class Name</label>
+      <select id="editClassName" class="swal2-select">
+          ${Array.from(classNameSelect.options).map(option => `
+              <option value="${option.value}" ${option.value === feePlan.class_name ? 'selected' : ''}>
+                  ${option.text}
+              </option>
+          `).join('')}
+      </select>
 
-                      <label>Month Name</label>
-                      <div class="form-select position-relative" id="monthDropdown">
-                          Select Month(s)
-                          <div class="dropdown-menu p-2 w-100 shadow" id="dropdownMenu" style="display: none;">
-                              <div class="form-check">
-                                  <input type="checkbox" id="selectAllCheckbox" class="form-check-input" />
-                                  <label class="form-check-label" for="selectAllCheckbox">Select All</label>
-                              </div>
-                              ${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-                                  .map(month => `
-                                      <div class="form-check">
-                                          <input type="checkbox" value="${month}" id="${month.toLowerCase()}" class="form-check-input month-checkbox"
-                                              ${monthNames.includes(month) ? 'checked' : ''} />
-                                          <label class="form-check-label" for="${month.toLowerCase()}">${month}</label>
-                                      </div>
-                                  `).join('')}
-                          </div>
+      <label>Fee Head Name</label>
+      <select id="editFeeHead" class="swal2-select">
+          ${Array.from(feeHeadSelect.options).map(option => `
+              <option value="${option.value}" ${option.value === feePlan.fee_head_name ? 'selected' : ''}>
+                  ${option.text}
+              </option>
+          `).join('')}
+      </select>
+
+      <label>Month Name</label>
+      <div class="form-select position-relative" id="monthDropdown">
+          Select Month(s)
+          <div class="dropdown-menu p-2 w-100 shadow" id="dropdownMenu" style="display: none;">
+              <div class="form-check">
+                  <input type="checkbox" id="selectAllCheckbox" class="form-check-input" />
+                  <label class="form-check-label" for="selectAllCheckbox">Select All</label>
+              </div>
+              ${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                  .map(month => `
+                      <div class="form-check">
+                          <input type="checkbox" value="${month}" id="${month.toLowerCase()}" class="form-check-input month-checkbox"
+                              ${monthNames.includes(month) ? 'checked' : ''} />
+                          <label class="form-check-label" for="${month.toLowerCase()}">${month}</label>
                       </div>
+                  `).join('')}
+          </div>
+      </div>
 
-                      <label>Amount</label>
-                      <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount}">
-                  `,
-                  preConfirm: () => {
-                      const className = document.getElementById('editClassName').value;
-                      const feeHead = document.getElementById('editFeeHead').value;
-                      const amount = document.getElementById('editAmount').value;
-                      const selectedMonths = Array.from(document.querySelectorAll('.month-checkbox:checked'))
-                          .map(checkbox => checkbox.value);
+      <label>Amount</label>
+      <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount}">
+  `,
+  preConfirm: () => {
+      const className = document.getElementById('editClassName').value;
+      const feeHead = document.getElementById('editFeeHead').value;
+      const amount = document.getElementById('editAmount').value;
+      const selectedMonths = Array.from(document.querySelectorAll('.month-checkbox:checked'))
+          .map(checkbox => checkbox.value);
 
-                      // Validate that required fields are filled
-                      if (!className || !feeHead || !amount || selectedMonths.length === 0) {
-                          Swal.showValidationMessage('Please fill all fields!');
-                          return false;
-                      }
+      // Validate that required fields are filled
+      if (!className || !feeHead || !amount || selectedMonths.length === 0) {
+          Swal.showValidationMessage('Please fill all fields!');
+          return false;
+      }
 
-                      // Return the data to be saved
-                      return { className, feeHead, selectedMonths, amount };
-                  }
-              }).then(result => {
-                  if (result.isConfirmed) {
-                      const { className, feeHead, selectedMonths, amount } = result.value;
+      // Return the data to be saved
+      return { className, feeHead, selectedMonths, amount };
+  }
+}).then(result => {
+  if (result.isConfirmed) {
+      const { className, feeHead, selectedMonths, amount } = result.value;
 
-                      // Prepare the data to be sent to the backend (server)
-                      const data = {
-                          fee_plan_id: document.getElementById('getId').value,
-                          class_name: className,
-                          fee_head_name: feeHead,
-                          months: selectedMonths.join(','),  // Join months as a comma-separated string
-                          amount: amount
-                      };
+      // Prepare the data to be sent to the backend (server)
+      const data = {
+          fee_plan_id: document.getElementById('getId').value,
+          class_name: className,
+          fee_head_name: feeHead,
+          months: selectedMonths.join(','),  // Join months as a comma-separated string
+          amount: amount
+      };
 
-                      // Send the updated data to the backend via an AJAX request (for example)
-                      $.ajax({
-                          url: 'your_update_url.php',  // Change this URL to your update endpoint
-                          type: 'POST',
-                          data: data,
-                          success: function(response) {
-                              if (response.status === 'success') {
-                                  Swal.fire('Updated!', 'Fee plan updated successfully!', 'success');
-                              } else {
-                                  Swal.fire('Error!', 'There was an issue updating the fee plan.', 'error');
-                              }
-                          }
-                      });
-                  }
-              });
+      // Send the updated data to the backend via an AJAX request (for example)
+      $.ajax({
+          url: 'your_update_url.php',  // Change this URL to your update endpoint
+          type: 'POST',
+          data: data,
+          success: function(response) {
+              if (response.status === 'success') {
+                  Swal.fire('Updated!', 'Fee plan updated successfully!', 'success');
+              } else {
+                  Swal.fire('Error!', 'There was an issue updating the fee plan.', 'error');
+              }
+          }
+      });
+  }
+});
 
-              
+
+
+            } else {
+                Swal.fire('Error', response.message || 'Fee plan not found.', 'error');
+            }
+        },
+        error: function (xhr) {
+            Swal.fire('Error', 'An error occurred while fetching the fee plan details.', 'error');
+        }
+    });
+};
+
   // Delete Fee Plan
   const deleteFeePlan = class_name => {
     Swal.fire({
