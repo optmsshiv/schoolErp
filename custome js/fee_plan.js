@@ -496,19 +496,37 @@ document.addEventListener('DOMContentLoaded', function () {
     }).then(result => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '../php/feePlan/delete_fee_plan.php',
+                url: '../php/feePlan/delete_fee_plan.php', // PHP script URL
                 type: 'POST',
                 dataType: 'json',
                 data: { class_name: class_name }, // Send class_name to PHP
                 success: function (response) {
                     if (response.status === 'success') {
-                        Swal.fire('Deleted!', 'Fee plan deleted successfully.', 'success');
-                        loadFeePlans();
+                        Swal.fire({
+                            title: 'Deleted!',
+                            text: 'Fee plan deleted successfully.',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                        loadFeePlans(); // Refresh the list of fee plans
                     } else {
-                        Swal.fire('Error', response.message, 'error');
+                        Swal.fire({
+                            title: 'Error',
+                            text: response.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     }
                 },
-                error: xhr => handleError('Error deleting fee plan.', xhr)
+                error: (xhr, textStatus, errorThrown) => {
+                    Swal.fire({
+                        title: 'Error',
+                        text: `An error occurred while deleting the fee plan: ${xhr.statusText || textStatus}`,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
             });
         }
     });
