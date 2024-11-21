@@ -43,7 +43,7 @@ $(function () {
                                 <td>${student.phone}</td>
                                 <td>${student.user_id}</td>
                                 <td>
-                                  <button class='btn btn-primary btn-sm'>Edit</button>
+                                  <button class='btn btn-primary btn-sm'>View</button>
                                   <button class='btn btn-danger btn-sm'>Delete</button>
                                 </td>
                               </tr>`);

@@ -764,13 +764,20 @@ td {
 .scrollable-checkboxes {
   max-height: 300px; /* Set the maximum height of the scrollable area
   overflow-y: auto; /* Enable vertical scrolling if content exceeds the max height
-  padding-right: 10px; /* Add padding to the right to ensure scroll bar is visible 
+  padding-right: 10px; /* Add padding to the right to ensure scroll bar is visible
 }*/
 #dropdownMenu {
   max-height: 250px; /* Set the maximum height for the dropdown */
   overflow-y: auto; /* Enable vertical scrolling */
   padding-right: 10px; /* Optional: ensures scrollbar doesn't overlap content */
 }
+
+ /* Custom CSS for the header on the border */
+ .border-section-header {
+  top: -12px; /* Adjust to position the header */
+  left: 15px; /* Align with the padding of the border */
+  font-size: .9rem;
+  font-weight: bold;
 
 
 
