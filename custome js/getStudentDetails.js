@@ -3,17 +3,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const userId = urlParams.get("user_id");
 
+  const studentProfileElement = document.getElementById('student-profile');
+
   if (userId) {
+      // Show a loading message
+      studentProfileElement.innerHTML = `<p class="text-info">Loading student details...</p>`;
+
       // Fetch student data from the backend
       fetch(`./getStudentDetails.php?user_id=${userId}`)
           .then(response => response.json())
           .then(data => {
               if (data.error) {
-                  document.getElementById('student-profile').innerHTML = `
+                  // Display error message
+                  studentProfileElement.innerHTML = `
                       <p class="text-danger">${data.error}</p>`;
               } else {
                   // Populate student details
-                  document.getElementById('student-profile').innerHTML = `
+                  studentProfileElement.innerHTML = `
                       <div class="col-md-4">
                           <p><strong>First Name :</strong> ${data.first_name}</p>
                           <p><strong>App ID :</strong> ${data.id}</p>
@@ -39,9 +45,15 @@ document.addEventListener("DOMContentLoaded", () => {
                       </div>`;
               }
           })
-          .catch(error => console.error("Error fetching student data:", error));
+          .catch(error => {
+              // Handle fetch errors
+              console.error("Error fetching student data:", error);
+              studentProfileElement.innerHTML = `
+                  <p class="text-danger">An error occurred while fetching student details. Please try again later.</p>`;
+          });
   } else {
-      document.getElementById('student-profile').innerHTML = `
+      // Display error for missing user_id
+      studentProfileElement.innerHTML = `
           <p class="text-danger">No student selected. Please go back and select a student.</p>`;
   }
 });
