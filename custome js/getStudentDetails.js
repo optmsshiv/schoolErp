@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (userId) {
       // Fetch student data from the backend
-      fetch(`../collectFeeStudentDetails/students_details.php?user_id=${userId}`)
+      fetch(`../collectFeeStudentDetails/getStudentDetails.php?user_id=${userId}`)
           .then(response => response.json())
           .then(data => {
               if (data.error) {
