@@ -43,7 +43,7 @@ $(function () {
                                 <td>${student.phone}</td>
                                 <td>${student.user_id}</td>
                                 <td>
-                                  <button class='btn btn-primary btn-sm' onclick="window.location.href='studentinfo.html?user_id=${student.user_id}'">View</button>
+                                  <button class='btn btn-primary btn-sm' onclick="window.location.href='/html/studentInfo.html?user_id=${student.user_id}'">View</button>
                                   <button class='btn btn-danger btn-sm'>Delete</button>
                                 </td>
                               </tr>`);
