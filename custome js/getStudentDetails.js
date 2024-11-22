@@ -16,24 +16,24 @@ document.addEventListener("DOMContentLoaded", () => {
                   document.getElementById('student-profile').innerHTML = `
                       <div class="col-md-4">
                           <p><strong>First Name :</strong> ${data.first_name}</p>
-                          <p><strong>App ID :</strong> ${data.app_id}</p>
+                          <p><strong>App ID :</strong> ${data.id}</p>
                           <p><strong>Phone :</strong> ${data.phone}</p>
                           <p><strong>Email :</strong> ${data.email}</p>
-                          <p><strong>Aadhar :</strong> ${data.aadhar}</p>
+                          <p><strong>Aadhar :</strong> ${data.aadhar_no}</p>
                           <p><strong>Category :</strong> ${data.category}</p>
                       </div>
                       <div class="col-md-4">
                           <p><strong>Last Name :</strong> ${data.last_name}</p>
                           <p><strong>Gender :</strong> ${data.gender}</p>
-                          <p><strong>Class :</strong> ${data.class}</p>
+                          <p><strong>Class :</strong> ${data.class_name}</p>
                           <p><strong>Religion :</strong> ${data.religion}</p>
-                          <p class="badge bg-label-success me-1"><strong>Status :</strong> ${data.status}</p>
-                          <p><strong>Handicapped :</strong> ${data.handicapped}</p>
+                          <p class="badge bg-label-success me-1"><strong>Status :</strong> Active</p>
+                          <p><strong>Handicapped :</strong> ${data.handicapped ? 'Yes' : 'No'}</p>
                       </div>
                       <div class="col-md-4">
                           <p><strong>Guardian :</strong> ${data.guardian}</p>
-                          <p><strong>Biometric ID :</strong> ${data.biometric_id}</p>
-                          <p><strong>DOB :</strong> ${data.dob}</p>
+                          <p><strong>Biometric ID :</strong> ${data.pen_no}</p>
+                          <p><strong>DOB :</strong> ${data.date_of_birth}</p>
                           <p><strong>Admission Date :</strong> ${data.admission_date}</p>
                           <p><strong>Sr No. :</strong> ${data.sr_no}</p>
                       </div>`;
