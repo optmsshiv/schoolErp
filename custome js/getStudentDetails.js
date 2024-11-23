@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
       studentProfileElement.innerHTML = `<p class="text-info">Loading student details...</p>`;
 
       // Fetch student data from the backend
-      fetch(`./getStudentDetails.php?user_id=${userId}`)
+      fetch(`../php/studentInfo/getStudentDetails.php?user_id=${userId}`)
           .then(response => response.json())
           .then(data => {
               if (data.error) {
