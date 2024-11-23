@@ -16,10 +16,6 @@ async function searchStudents() {
       resultsContainer.innerHTML = '';
 
       if (data.length === 0) {
-          const p = document.createElement('p');
-          p.classList.add('text-center', 'text-danger');
-          p.textContent = 'No students found.';
-          resultsContainer.appendChild(p);
           resultsContainer.innerHTML = '<p class="text-danger"> No students found.</p>';
           return;
       }
