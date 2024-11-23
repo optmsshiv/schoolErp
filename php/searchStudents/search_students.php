@@ -2,11 +2,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Database connection
-include '../db_connection.php';
+// Include the database connection
+include '../db_connection.php';  // $pdo is now available from db_connection.php
 
 try {
-    // Get the search query
+    // Get the search query from the request
     $search = $_GET['query'] ?? '';
 
     // Prepare the SQL statement
@@ -14,22 +14,25 @@ try {
             FROM students
             WHERE first_name LIKE :search OR father_name LIKE :search
             LIMIT 10";
-    $stmt = $conn->prepare($sql);
 
-    // Bind the parameter
+    // Prepare the statement using the $pdo connection
+    $stmt = $pdo->prepare($sql);
+
+    // Bind the parameter for the search term
     $searchTerm = '%' . $search . '%';
     $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
 
-    // Execute the statement
+    // Execute the prepared statement
     $stmt->execute();
 
-    // Fetch results
+    // Fetch results as an associative array
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Return the results as JSON
+    // Return the results as a JSON response
     echo json_encode($data);
+
 } catch (PDOException $e) {
-    // Handle potential errors
+    // In case of an error, output the error message in JSON format
     echo json_encode(['error' => $e->getMessage()]);
 }
 ?>
