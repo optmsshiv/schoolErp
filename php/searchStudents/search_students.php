@@ -1,6 +1,9 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Database connection
-include '../db_connection.php'; // Ensure this file establishes a PDO connection in $conn
+include '../db_connection.php';
 
 try {
     // Get the search query
