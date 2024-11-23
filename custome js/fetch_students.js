@@ -132,7 +132,8 @@ $(function () {
   function viewStudent(userId) {
     // Implement the logic to handle viewing the student details
     console.log(`View details for user ID: ${userId}`);
-    alert(`Viewing details for student with ID: ${userId}`);
+    const $studentProfile = $('#student-profile');
+    $studentProfile.parent().show();
   }
 
   // Event listeners
@@ -157,7 +158,7 @@ $(function () {
   // Event delegation for view button
   $tableBody.on('click', '.view-student', function () {
     const userId = $(this).data('user-id');
-    viewStudent(userId);
+    viewStudent(userId); // Call updateStudent function
   });
 
   // Change page
