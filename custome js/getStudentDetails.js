@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="row">
                     <div class="col-md-4">
                       <p><strong>Father's Name :</strong> ${data.father_name}</p>
-                      <p><strong>Mobile :</strong> ${data.sr_no}</p>
+                      <p><strong>Mobile :</strong> ${data.phone}</p>
                       <p><strong>Email:</strong> ${data.sr_no}</p>
                     </div>
                     <div class="col-md-4">
