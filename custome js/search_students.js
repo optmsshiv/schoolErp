@@ -9,7 +9,7 @@ async function searchStudents() {
   const query = document.getElementById('student_search').value;
 
   try {
-      const response = await fetch(`search_students.php?query=${encodeURIComponent(query)}`);
+      const response = await fetch(`../php/searchStudents/search_students.php?query=${encodeURIComponent(query)}`);
       const data = await response.json();
 
       const resultsContainer = document.getElementById('results');
@@ -22,7 +22,7 @@ async function searchStudents() {
 
       data.forEach(student => {
           const card = document.createElement('div');
-          card.classList.add('custm-card');
+          card.classList.add('student-card');
           card.innerHTML = `
               <h3>${student.first_name} ${student.last_name}</h3>
               <p>Father's Name: ${student.father_name}</p>

@@ -782,32 +782,51 @@ td {
 
  /* Custom CSS for the search card on the border */
 
- .custm-card {
-  border: 2px solid #007BFF; /* Blue border */
-  background-color: #f9f9f9; /* Light background */
-  padding: 20px;
-  margin-bottom: 15px;
+ .card-container {
+  display: none; /* Hidden initially */
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+}
+
+.student-card {
+  border: 2px solid #007bff;
+  padding: 15px;
+  margin-bottom: 10px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  background-color: #f9f9f9;
   transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover effects */
 }
 
-.custm-card:hover {
-  transform: scale(1.02); /* Slight zoom on hover */
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+.student-card:hover {
+  background-color: #e9f7fe;
+  border-color: #0056b3;
 }
 
-.custm-card h3 {
+.student-card h3 {
   margin: 0;
-  font-size: 20px;
-  color: #007BFF; /* Blue color for the title */
+  font-size: 18px;
+  color: #007bff;
 }
 
-.custm-card p {
-  margin: 8px 0;
-  color: #333; /* Darker text color */
+.student-card p {
+  margin: 5px 0;
+  color: #555;
   font-size: 14px;
 }
+
+.no-results {
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
 
 
 
