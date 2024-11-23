@@ -131,7 +131,7 @@ $(function () {
   // View student details
   function viewStudent(userId) {
     // Redirect to the studentinfo.html page with user_id as a query parameter
-    window.location.href = `studentinfo.html?user_id=${userId}`;
+    window.location.href = `studentInfo.html?user_id=${userId}`;
 }
 
   // Event listeners
