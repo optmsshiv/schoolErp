@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const studentProfileElement = document.getElementById('student-profile');
 
   if (userId) {
-      // Show a loading message
+      // Show a loading message while fetching student details
       studentProfileElement.innerHTML = `<p class="text-info">Loading student details...</p>`;
 
       // Fetch student data from the backend
