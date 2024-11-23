@@ -778,8 +778,38 @@ td {
   left: 15px; /* Align with the padding of the border */
   font-size: .9rem;
   font-weight: bold;
+ }
 
+ /* Custom CSS for the search card on the border */
 
+ .card-container {
+  display: none; /* Hidden initially */
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.card p {
+  margin: 5px 0;
+  color: #555;
+}
 
 
 
