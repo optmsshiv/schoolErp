@@ -16,7 +16,7 @@ async function searchStudents() {
       resultsContainer.innerHTML = '';
 
       if (data.length === 0) {
-          resultsContainer.innerHTML = '<p class="text-danger text-center"> No students found.</p>';
+          resultsContainer.innerHTML = '<p class="text-danger text-center"> This student does not exist.</p>';
           return;
       }
 
