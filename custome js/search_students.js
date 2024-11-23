@@ -22,7 +22,7 @@ async function searchStudents() {
 
       data.forEach(student => {
           const card = document.createElement('div');
-          card.classList.add('card');
+          card.classList.add('custm-card');
           card.innerHTML = `
               <h3>${student.first_name} ${student.last_name}</h3>
               <p>Father's Name: ${student.father_name}</p>
