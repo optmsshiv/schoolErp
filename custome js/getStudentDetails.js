@@ -6,20 +6,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const studentProfileElement = document.getElementById('student-profile');
 
   if (userId) {
-      // Show a loading message
-      studentProfileElement.innerHTML = `<p class="text-info">Loading student details...</p>`;
+    // Show a loading message
+    studentProfileElement.innerHTML = `<p class="text-info">Loading student details...</p>`;
 
-      // Fetch student data from the backend
-      fetch(`../php/studentInfo/getStudentDetails.php?user_id=${userId}`)
-          .then(response => response.json())
-          .then(data => {
-              if (data.error) {
-                  // Display error message
-                  studentProfileElement.innerHTML = `
+    // Fetch student data from the backend
+    fetch(`../php/studentInfo/getStudentDetails.php?user_id=${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          // Display error message
+          studentProfileElement.innerHTML = `
                       <p class="text-danger">${data.error}</p>`;
-              } else {
-                  // Populate student details
-                  studentProfileElement.innerHTML = `
+        } else {
+          // Populate student details
+          studentProfileElement.innerHTML = `
                     <div class="container mt-2">
             <h2 class="text-center mb-4">Student Details</h2>
             <!-- Tabs navigation -->
@@ -100,18 +100,18 @@ document.addEventListener("DOMContentLoaded", () => {
                   </div>
                   <div class="row">
                     <div class="col-md-4">
-                      <p><strong>Father's Name :</strong> John</p>
-                      <p><strong>Mobile :</strong> 123456</p>
-                      <p><strong>Email:</strong> john@example.com</p>
+                      <p><strong>Father's Name :</strong> ${data.father_name}</p>
+                      <p><strong>Mobile :</strong> ${data.sr_no}</p>
+                      <p><strong>Email:</strong> ${data.sr_no}</p>
                     </div>
                     <div class="col-md-4">
-                      <p><strong>Occupation :</strong> Govt-job</p>
-                      <p><strong>Age:</strong> Male</p>
+                      <p><strong>Occupation :</strong> ${data.sr_no}</p>
+                      <p><strong>Age:</strong> ${data.sr_no}</p>
                       <p><strong>Religion:</strong> Hindu</p>
                     </div>
                     <div class="col-md-4">
-                      <p><strong>Income :</strong> Mr. Richard Doe</p>
-                      <p><strong>Sr No.:</strong> 1</p>
+                      <p><strong>Income :</strong> ${data.sr_no}</p>
+                      <p><strong>Sr No.:</strong> ${data.sr_no}</p>
                     </div>
                   </div>
                 </div>
@@ -123,18 +123,18 @@ document.addEventListener("DOMContentLoaded", () => {
                   </div>
                   <div class="row">
                     <div class="col-md-4">
-                      <p><strong>Mother's Name:</strong> John</p>
-                      <p><strong>Mobile:</strong> 123456</p>
-                      <p><strong>Email:</strong> john@example.com</p>
+                      <p><strong>Mother's Name:</strong> ${data.mother_name}</p>
+                      <p><strong>Mobile:</strong> ${data.sr_no}</p>
+                      <p><strong>Email:</strong> ${data.sr_no}</p>
                     </div>
                     <div class="col-md-4">
-                      <p><strong>Occupation:</strong> Doe</p>
-                      <p><strong>Age:</strong> Male</p>
-                      <p><strong>Religion:</strong> Hindu</p>
+                      <p><strong>Occupation:</strong> ${data.sr_no}</p>
+                      <p><strong>Age:</strong> ${data.sr_no}</p>
+                      <p><strong>Religion:</strong> ${data.sr_no}</p>
                     </div>
                     <div class="col-md-4">
-                      <p><strong>Income:</strong> Mr. Richard Doe</p>
-                      <p><strong>Sr No.:</strong> 1</p>
+                      <p><strong>Income:</strong> ${data.sr_no}</p>
+                      <p><strong>Sr No.:</strong> ${data.sr_no}</p>
                     </div>
                   </div>
                 </div>
@@ -275,17 +275,17 @@ document.addEventListener("DOMContentLoaded", () => {
             <!---Container-->
           </div>
                       `;
-              }
-          })
-          .catch(error => {
-              // Handle fetch errors
-              console.error("Error fetching student data:", error);
-              studentProfileElement.innerHTML = `
+        }
+      })
+      .catch(error => {
+        // Handle fetch errors
+        console.error("Error fetching student data:", error);
+        studentProfileElement.innerHTML = `
                   <p class="text-danger">An error occurred while fetching student details. Please try again later.</p>`;
-          });
+      });
   } else {
-      // Display error for missing user_id
-      studentProfileElement.innerHTML = `
+    // Display error for missing user_id
+    studentProfileElement.innerHTML = `
           <p class="text-danger">No student selected. Please go back and select a student in Active Students.</p>`;
   }
 });
