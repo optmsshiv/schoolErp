@@ -790,13 +790,13 @@ td {
   padding: 10px;
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-top: 10px;
+  margin-top: 100px;
 }
 
 .student-card {
   border: 2px solid #007bff;
   padding: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   background-color: #f9f9f9;
