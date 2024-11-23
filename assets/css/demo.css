@@ -784,7 +784,7 @@ td {
 
  .card-container {
   display: none; /* Hidden initially */
-  max-height: 300px;
+  max-height: 200px;
   overflow-y: auto;
   border: 1px solid #ccc;
   padding: 10px;
