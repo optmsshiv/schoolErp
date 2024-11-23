@@ -73,7 +73,7 @@ $(function () {
           <td>${student.phone}</td>
           <td>${student.user_id}</td>
           <td>
-            <button class='btn btn-primary btn-sm' onclick="viewStudent(${student.user_id})">View</button>
+            <button class='btn btn-primary btn-sm view-student' data-user-id='${student.user_id}'>View</button>
             <button class='btn btn-danger btn-sm'>Delete</button>
           </td>
         </tr>`);
