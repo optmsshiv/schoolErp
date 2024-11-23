@@ -132,7 +132,7 @@ $(function () {
   function viewStudent(userId) {
     // Implement the logic to handle viewing the student details
     console.log(`View details for user ID: ${userId}`);
-    window.location.href = `studentinfo.html?user_id=${userId}`;
+    window.location.href = `studentInfo.html?user_id=${userId}`;
   }
 
   // Event listeners
