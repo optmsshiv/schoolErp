@@ -4,7 +4,23 @@ $(function () {
   let totalRecords = 0;
   let totalPages = 1;
 
-  // Function to fetch student data with optional search term and class
+  // Cache frequently accessed elements
+  const $searchBar = $('#search-bar');
+  const $classSelect = $('#class-select');
+  const $recordsPerPage = $('#records-per-page');
+  const $tableBody = $('#student-table-body');
+  const $totalRecords = $('#total-records');
+  const $currentRecords = $('#current-records');
+  const $totalPagesEl = $('#total-pages');
+  const $currentPageEl = $('#current-page');
+  const $prevPage = $('#prev-page');
+  const $nextPage = $('#next-page');
+  const $firstPage = $('#first-page');
+  const $lastPage = $('#last-page');
+  const $selectAll = $('#select-all');
+  const $pageNumbers = $('#page-numbers');
+
+  // Fetch student data
   function fetchStudents(searchTerm = '', className = '') {
     $.ajax({
       url: '../php/fetch_active_student.php',
@@ -14,177 +30,142 @@ $(function () {
         search: searchTerm,
         page: currentPage,
         limit: recordsPerPage,
-        class: className // Include class parameter
+        class: className
       },
       success: function (data) {
         totalRecords = data.totalRecords;
         totalPages = Math.ceil(totalRecords / recordsPerPage);
 
-        // Update the total records displayed
-        $('#total-records').text(totalRecords); // Update total records
-        let currentRecordsCount = Math.min(recordsPerPage, totalRecords - (currentPage - 1) * recordsPerPage);
-        $('#current-records').text(currentRecordsCount); // Update current records displayed
+        // Update record counts
+        $totalRecords.text(totalRecords);
+        $currentRecords.text(Math.min(recordsPerPage, totalRecords - (currentPage - 1) * recordsPerPage));
+        $totalPagesEl.text(totalPages);
 
-        $('#total-pages').text(totalPages);
+        // Populate table
+        renderTable(data.students);
 
-        let tableBody = $('#student-table-body');
-        tableBody.empty();
+        // Update pagination
+        updatePaginationUI();
 
-        if (data.students.length > 0) {
-          let sr_no = (currentPage - 1) * recordsPerPage + 1;
-          $.each(data.students, function (index, student) {
-            tableBody.append(`<tr>
-                                <td><input type='checkbox' class='row-checkbox'></td>
-                                <td>${sr_no++}</td>
-                                <td>${student.first_name} ${student.last_name}</td>
-                                <td>${student.father_name}</td>
-                                <td>${student.class_name}</td>
-                                <td>${student.roll_no}</td>
-                                <td>${student.phone}</td>
-                                <td>${student.user_id}</td>
-                                <td>
-                                  <button class='btn btn-primary btn-sm' onclick="viewStudent(${student.user_id})">View</button>
-                                  <button class='btn btn-danger btn-sm'>Delete</button>
-                                </td>
-                              </tr>`);
-          });
-        } else {
-          tableBody.append("<tr><td colspan='9'>No records found</td></tr>");
-        }
-
-        // Update pagination UI
-        $('#current-page').text(currentPage);
-        $('#prev-page').prop('disabled', currentPage === 1);
-        $('#next-page').prop('disabled', currentPage === totalPages);
-
-        // Display current page buttons with highlighting
-        updatePageNumbers();
-
-        // Update the "Select All" checkbox state
+        // Update "Select All" checkbox
         updateSelectAllCheckbox();
       },
       error: function (xhr, status, error) {
         console.error("Error fetching data: ", status, error);
+        $tableBody.html("<tr><td colspan='9'>Error loading data. Please try again later.</td></tr>");
       }
     });
   }
 
-  // Function to update page numbers
-  function updatePageNumbers() {
-    let pageNumbers = $('#page-numbers');
-    pageNumbers.empty();
+  // Render table rows
+  function renderTable(students) {
+    $tableBody.empty();
+    if (students.length > 0) {
+      let sr_no = (currentPage - 1) * recordsPerPage + 1;
+      students.forEach(student => {
+        $tableBody.append(`<tr>
+          <td><input type='checkbox' class='row-checkbox'></td>
+          <td>${sr_no++}</td>
+          <td>${student.first_name} ${student.last_name}</td>
+          <td>${student.father_name}</td>
+          <td>${student.class_name}</td>
+          <td>${student.roll_no}</td>
+          <td>${student.phone}</td>
+          <td>${student.user_id}</td>
+          <td>
+            <button class='btn btn-primary btn-sm view-student' data-user-id='${student.user_id}'>View</button>
+            <button class='btn btn-danger btn-sm'>Delete</button>
+          </td>
+        </tr>`);
+      });
+    } else {
+      $tableBody.html("<tr><td colspan='9'>No records found</td></tr>");
+    }
+  }
 
-    let startPage = Math.max(1, currentPage - 1);
-    let endPage = Math.min(totalPages, currentPage + 1);
+  // Update pagination UI
+  function updatePaginationUI() {
+    $currentPageEl.text(currentPage);
+    $prevPage.prop('disabled', currentPage === 1);
+    $nextPage.prop('disabled', currentPage === totalPages);
+
+    renderPageNumbers();
+  }
+
+  // Render page numbers
+  function renderPageNumbers() {
+    $pageNumbers.empty();
+
+    const startPage = Math.max(1, currentPage - 1);
+    const endPage = Math.min(totalPages, currentPage + 1);
 
     for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.append(
+      $pageNumbers.append(
         `<button class="btn ${i === currentPage ? 'btn-primary' : 'btn-light'}">${i}</button>`
       );
     }
 
     if (endPage < totalPages) {
-      pageNumbers.append('<span class="btn btn-light disabled">...</span>');
-      pageNumbers.append(`<button class="btn btn-light">${totalPages}</button>`);
+      $pageNumbers.append('<span class="btn btn-light disabled">...</span>');
+      $pageNumbers.append(`<button class="btn btn-light">${totalPages}</button>`);
     }
 
-    // Event listener for page number buttons
-    pageNumbers.find('button').on('click', function () {
-      let selectedPage = parseInt($(this).text());
+    $pageNumbers.find('button').on('click', function () {
+      const selectedPage = parseInt($(this).text());
       if (selectedPage !== currentPage) {
         currentPage = selectedPage;
-        fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
+        fetchStudents($searchBar.val(), $classSelect.val());
       }
     });
   }
 
-  // Event listener for search bar
-  $('#search-bar').on('input', function () {
-    currentPage = 1;
-    fetchStudents($(this).val(), $('#class-select').val()); // Pass selected class
-  });
-
-  // Event listener for class selection
-  $('#class-select').on('change', function () {
-    currentPage = 1;
-    fetchStudents($('#search-bar').val(), $(this).val()); // Pass selected class
-  });
-
-  $('#records-per-page').on('change', function () {
-    recordsPerPage = parseInt($(this).val());
-    currentPage = 1;
-    fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
-  });
-
-  $('#prev-page').on('click', function () {
-    if (currentPage > 1) {
-      currentPage--;
-      fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
-    }
-  });
-
-  $('#next-page').on('click', function () {
-    if (currentPage < totalPages) {
-      currentPage++;
-      fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
-    }
-  });
-
-  $('#first-page').on('click', function () {
-    if (currentPage > 1) {
-      currentPage = 1;
-      fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
-    }
-  });
-
-  $('#last-page').on('click', function () {
-    if (currentPage < totalPages) {
-      currentPage = totalPages;
-      fetchStudents($('#search-bar').val(), $('#class-select').val()); // Pass selected class
-    }
-  });
-
-  // "Select All" checkbox functionality
-  $('#select-all').on('change', function () {
-    // Set all checkboxes in the table to match the "Select All" checkbox state
-    $('#student-table-body input[type="checkbox"]').prop('checked', this.checked);
-
-    // Update appearance based on the state
-    updateSelectAllAppearance();
-  });
-
-  // Individual row checkbox functionality
-  $('#student-table-body').on('change', 'input[type="checkbox"]', function () {
-    updateSelectAllCheckbox();
-  });
-
-  // Function to update the "Select All" checkbox state based on individual checkboxes
+  // Update "Select All" checkbox
   function updateSelectAllCheckbox() {
-    const allCheckboxes = $('#student-table-body input[type="checkbox"]');
+    const allCheckboxes = $tableBody.find('input[type="checkbox"]');
     const checkedCheckboxes = allCheckboxes.filter(':checked');
 
-    if (checkedCheckboxes.length === 0) {
-      $('#select-all').prop('checked', false).prop('indeterminate', false);
-    } else if (checkedCheckboxes.length === allCheckboxes.length) {
-      $('#select-all').prop('checked', true).prop('indeterminate', false);
-    } else {
-      $('#select-all').prop('checked', true).prop('indeterminate', true); // Mixed state
-    }
+    $selectAll.prop('checked', checkedCheckboxes.length === allCheckboxes.length);
+    $selectAll.prop('indeterminate', checkedCheckboxes.length > 0 && checkedCheckboxes.length < allCheckboxes.length);
   }
 
-  // Function to update the appearance of the "Select All" checkbox
-  function updateSelectAllAppearance() {
-    const allCheckboxes = $('#student-table-body input[type="checkbox"]');
-    const checkedCheckboxes = allCheckboxes.filter(':checked');
-
-    if (checkedCheckboxes.length === 0) {
-      $('#select-all').prop('checked', false).prop('indeterminate', false);
-    } else if (checkedCheckboxes.length === allCheckboxes.length) {
-      $('#select-all').prop('checked', true).prop('indeterminate', false);
-    } else {
-      $('#select-all').prop('indeterminate', true); // Mixed state
-    }
+  // View student details
+  function viewStudent(userId) {
+    // Implement the logic to handle viewing the student details
+    console.log(`View details for user ID: ${userId}`);
+    alert(`Viewing details for student with ID: ${userId}`);
   }
 
-  fetchStudents(); // Initial fetch
+  // Event listeners
+  $searchBar.on('input', () => fetchStudents($searchBar.val(), $classSelect.val()));
+  $classSelect.on('change', () => fetchStudents($searchBar.val(), $classSelect.val()));
+  $recordsPerPage.on('change', () => {
+    recordsPerPage = parseInt($recordsPerPage.val());
+    fetchStudents($searchBar.val(), $classSelect.val());
+  });
+
+  $prevPage.on('click', () => currentPage > 1 && changePage(currentPage - 1));
+  $nextPage.on('click', () => currentPage < totalPages && changePage(currentPage + 1));
+  $firstPage.on('click', () => currentPage > 1 && changePage(1));
+  $lastPage.on('click', () => currentPage < totalPages && changePage(totalPages));
+
+  $selectAll.on('change', function () {
+    $tableBody.find('input[type="checkbox"]').prop('checked', this.checked);
+  });
+
+  $tableBody.on('change', 'input[type="checkbox"]', updateSelectAllCheckbox);
+
+  // Event delegation for view button
+  $tableBody.on('click', '.view-student', function () {
+    const userId = $(this).data('user-id');
+    viewStudent(userId);
+  });
+
+  // Change page
+  function changePage(page) {
+    currentPage = page;
+    fetchStudents($searchBar.val(), $classSelect.val());
+  }
+
+  // Initial fetch
+  fetchStudents();
 });
