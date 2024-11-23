@@ -787,7 +787,7 @@ td {
   position: absolute;
   top: 100%;  /* Position the cards just below the input field */
   left: 0;
-  width: 600px; /* Set the width for the card container */
+  width: 500px; /* Set the width for the card container */
   max-height: 400px; /* Limit the height for scrolling */
   background-color: #fff;  /* White background for the card container */
   border: 1px solid #ddd;  /* Light border for the container */
