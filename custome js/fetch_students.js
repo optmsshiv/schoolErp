@@ -73,7 +73,7 @@ $(function () {
           <td>${student.phone}</td>
           <td>${student.user_id}</td>
           <td>
-            <button class='btn btn-primary btn-sm view-student' data-user-id='${student.user_id}'>View</button>
+            <button class='btn btn-primary btn-sm' onclick="viewStudent(${student.user_id})">View</button>
             <button class='btn btn-danger btn-sm'>Delete</button>
           </td>
         </tr>`);
@@ -130,10 +130,9 @@ $(function () {
 
   // View student details
   function viewStudent(userId) {
-    // Implement the logic to handle viewing the student details
-    console.log(`View details for user ID: ${userId}`);
-    window.location.href = `studentInfo.html?user_id=${userId}`;
-  }
+    // Redirect to the studentinfo.html page with user_id as a query parameter
+    window.location.href = `studentinfo.html?user_id=${userId}`;
+}
 
   // Event listeners
   $searchBar.on('input', () => fetchStudents($searchBar.val(), $classSelect.val()));

@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const studentProfileElement = document.getElementById('student-profile');
 
   if (userId) {
-      // Show a loading message while fetching student details
+      // Show a loading message
       studentProfileElement.innerHTML = `<p class="text-info">Loading student details...</p>`;
 
       // Fetch student data from the backend
@@ -17,10 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   // Display error message
                   studentProfileElement.innerHTML = `
                       <p class="text-danger">${data.error}</p>`;
-              } else if (data.table !== "student_master") {
-                  // Display error for fetching data from the wrong table
-                  studentProfileElement.innerHTML = `
-                      <p class="text-danger">Data is not fetched from the student_master table.</p>`;
               } else {
                   // Populate student details
                   studentProfileElement.innerHTML = `
@@ -61,4 +57,3 @@ document.addEventListener("DOMContentLoaded", () => {
           <p class="text-danger">No student selected. Please go back and select a student.</p>`;
   }
 });
-
