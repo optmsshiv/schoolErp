@@ -101,7 +101,7 @@ $(function () {
 
     for (let i = startPage; i <= endPage; i++) {
       $pageNumbers.append(
-        `<button class="btn ${i === currentPage ? 'btn-primary' : 'btn btn-label-primary'}">${i}</button>`
+        `<button class="btn ${i === currentPage ? 'btn-primary' : 'btn-outline-primary'}">${i}</button>`
       );
     }
 
