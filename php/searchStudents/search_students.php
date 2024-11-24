@@ -10,7 +10,7 @@ try {
     $search = $_GET['query'] ?? '';
 
     // Prepare the SQL statement
-    $sql = "SELECT first_name, last_name, father_name, class_name, roll_no
+    $sql = "SELECT first_name, last_name, father_name, class_name, roll_no, mother_name, phone, gender, day_hosteler AS type
             FROM students
             WHERE first_name LIKE :search OR father_name LIKE :search
             LIMIT 10";

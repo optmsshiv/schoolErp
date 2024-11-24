@@ -63,23 +63,9 @@ async function searchStudents() {
           `;
 
           // Add click event to fetch additional details and populate the table
-          card.addEventListener('click', async () => {
-            try {
-                const detailsResponse = await fetch(`../php/searchStudents/get_student_details.php?user_id=${encodeURIComponent(student.user_id)}`);
-                const details = await detailsResponse.json();
-
-                if (details.error) {
-                    console.error('Error fetching student details:', details.error);
-                    return;
-                }
-
-                populateStudentTable(details);
-
-                // Hide the card container
-                resultsContainer.style.display = 'none';
-            } catch (error) {
-                console.error('Error fetching detailed student data:', error);
-            }
+          card.addEventListener('click', () => {
+            populateStudentTable(student);
+            resultsContainer.style.display = 'none'; // Hide the card container
         });
 
         resultsContainer.appendChild(card);
