@@ -5,32 +5,33 @@ function showCardContainer() {
 }
 
 // Function to populate the student table
-function populateStudentTable(student) {
+// Function to populate the student table
+function populateStudentTable(details) {
   const studentTable = document.getElementById('student_data').querySelector('tbody');
   studentTable.innerHTML = `
       <tr>
           <td class="fw-bold">Student's Name:</td>
-          <td>${student.first_name} ${student.last_name}</td>
+          <td>${details.first_name} ${details.last_name}</td>
           <td class="fw-bold">Father's Name:</td>
-          <td>${student.father_name || ''}</td>
+          <td>${details.father_name || ''}</td>
           <td class="fw-bold">Monthly Fee:</td>
-          <td>${student.monthly_fee || 'N/A'}</td>
+          <td>${details.monthly_fee || 'N/A'}</td>
       </tr>
       <tr>
           <td class="fw-bold">Class:</td>
-          <td>${student.class_name || ''}</td>
+          <td>${details.class_name || ''}</td>
           <td class="fw-bold">Mother's Name:</td>
-          <td>${student.mother_name || ''}</td>
+          <td>${details.mother_name || 'N/A'}</td>
           <td class="fw-bold">Type:</td>
-          <td>${student.type || ''}</td>
+          <td>${details.student_type || 'N/A'}</td>
       </tr>
       <tr>
           <td class="fw-bold">Roll number:</td>
-          <td>${student.roll_no || ''}</td>
+          <td>${details.roll_no || ''}</td>
           <td class="fw-bold">Mobile:</td>
-          <td>${student.phone || ''}</td>
+          <td>${details.phone || 'N/A'}</td>
           <td class="fw-bold">Gender:</td>
-          <td>${student.gender || ''}</td>
+          <td>${details.gender || 'N/A'}</td>
       </tr>
   `;
 }
@@ -64,29 +65,29 @@ async function searchStudents() {
 
           // Add click event to fetch additional details and populate the table
           card.addEventListener('click', async () => {
-            try {
-                const detailsResponse = await fetch(`../php/searchStudents/get_student_details.php?user_id=${encodeURIComponent(student.user_id)}`);
-                const details = await detailsResponse.json();
+              try {
+                  const detailsResponse = await fetch(`../php/searchStudents/get_student_details.php?user_id=${encodeURIComponent(student.user_id)}`);
+                  const details = await detailsResponse.json();
 
-                if (details.error) {
-                    console.error('Error fetching student details:', details.error);
-                    return;
-                }
+                  if (details.error) {
+                      console.error('Error fetching student details:', details.error);
+                      return;
+                  }
 
-                populateStudentTable(details);
+                  populateStudentTable(details);
 
-                // Hide the card container
-                resultsContainer.style.display = 'none';
-            } catch (error) {
-                console.error('Error fetching detailed student data:', error);
-            }
-        });
+                  // Hide the card container
+                  resultsContainer.style.display = 'none';
+              } catch (error) {
+                  console.error('Error fetching detailed student data:', error);
+              }
+          });
 
-        resultsContainer.appendChild(card);
-    });
+          resultsContainer.appendChild(card);
+      });
 
-    resultsContainer.style.display = 'block'; // Show the card container when results are added
-} catch (error) {
-    console.error('Error fetching students:', error);
-}
+      resultsContainer.style.display = 'block'; // Show the card container when results are added
+  } catch (error) {
+      console.error('Error fetching students:', error);
+  }
 }
