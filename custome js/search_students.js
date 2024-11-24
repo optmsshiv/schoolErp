@@ -20,17 +20,17 @@ function populateStudentTable(student) {
           <td class="fw-bold">Class:</td>
           <td>${student.class_name || ''}</td>
           <td class="fw-bold">Mother's Name:</td>
-          <td>${student.mother_name || 'N/A'}</td>
+          <td>${student.mother_name || ''}</td>
           <td class="fw-bold">Type:</td>
-          <td>${student.type || 'N/A'}</td>
+          <td>${student.type || ''}</td>
       </tr>
       <tr>
           <td class="fw-bold">Roll number:</td>
           <td>${student.roll_no || ''}</td>
           <td class="fw-bold">Mobile:</td>
-          <td>${student.phone || 'N/A'}</td>
+          <td>${student.phone || ''}</td>
           <td class="fw-bold">Gender:</td>
-          <td>${student.gender || 'N/A'}</td>
+          <td>${student.gender || ''}</td>
       </tr>
   `;
 }
@@ -62,17 +62,31 @@ async function searchStudents() {
               <p>Roll No: ${student.roll_no}</p>
           `;
 
-          // Add click event to populate the table and hide cards
-          card.addEventListener('click', () => {
-              populateStudentTable(student);
-              resultsContainer.style.display = 'none'; // Hide the card container
-          });
+          // Add click event to fetch additional details and populate the table
+          card.addEventListener('click', async () => {
+            try {
+                const detailsResponse = await fetch(`../php/searchStudents/get_student_details.php?user_id=${encodeURIComponent(student.user_id)}`);
+                const details = await detailsResponse.json();
 
-          resultsContainer.appendChild(card);
-      });
+                if (details.error) {
+                    console.error('Error fetching student details:', details.error);
+                    return;
+                }
 
-      resultsContainer.style.display = 'block'; // Show the card container when results are added
-  } catch (error) {
-      console.error('Error fetching students:', error);
-  }
+                populateStudentTable(details);
+
+                // Hide the card container
+                resultsContainer.style.display = 'none';
+            } catch (error) {
+                console.error('Error fetching detailed student data:', error);
+            }
+        });
+
+        resultsContainer.appendChild(card);
+    });
+
+    resultsContainer.style.display = 'block'; // Show the card container when results are added
+} catch (error) {
+    console.error('Error fetching students:', error);
+}
 }
