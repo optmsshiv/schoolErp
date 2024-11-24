@@ -110,7 +110,7 @@ $(function () {
         <tr>
           <td colspan='9' class='text-center'>
             <div class='mt-3'>
-              <span class='alert alert-solid-primary fw-bold' role="alert">No records found</span>
+              <h5 class='badge bg-danger fw-bold' role="alert">No records found</h5>
             </div>
           </td>
         </tr>
