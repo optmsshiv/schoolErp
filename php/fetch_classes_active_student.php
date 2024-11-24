@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 include '../db_connection.php'; // Make sure this file is included
 
 // Prepare the query to fetch distinct class names
-$sql = "SELECT DISTINCT class_name FROM students ORDER BY class_name ASC";
+$sql = "SELECT DISTINCT class_name FROM Classes ORDER BY class_name ASC";
 
 try {
     // Prepare and execute the query
