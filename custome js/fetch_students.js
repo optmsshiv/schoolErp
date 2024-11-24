@@ -108,13 +108,12 @@ $(function () {
     } else {
       $tableBody.html(`
         <tr>
-          <td colspan='9' class='text-center'>
-            <div class='mt-3'>
-              <h5 class='badge bg-danger fw-bold' role="alert">No records found</h5>
-            </div>
+          <td colspan="9" class="text-center" style="margin-top: 20px;">
+            <h2 class="badge bg-danger text-center" style="display: block;">No records found</h2>
           </td>
         </tr>
       `);
+
     }
   }
 
