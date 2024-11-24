@@ -15,11 +15,11 @@ try {
     }
 
     // Query to fetch student details
-    $sql = "SELECT s.first_name, s.last_name, s.father_name, s.class_name, s.roll_no,
-                   sd.mother_name, sd.type AS student_type, sd.phone, sd.gender
-            FROM students s
-            LEFT JOIN students_details sd ON s.user_id = sd.user_id
-            WHERE s.user_id = :user_id";
+    $sql = "SELECT first_name, last_name, father_name, class_name, roll_no,
+                   mother_name, type AS student_type, phone, gender
+            FROM students
+            LEFT JOIN students_details sd ON user_id = user_id
+            WHERE user_id = :user_id";
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
