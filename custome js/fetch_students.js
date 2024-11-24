@@ -23,7 +23,7 @@ $(function () {
   // Fetch available class names for the dropdown
   function fetchClasses() {
     $.ajax({
-      url: '../php/fetch_classes.php', // Your PHP endpoint to fetch class names
+      url: '../php/fetch_classes_active_student.php', // Your PHP endpoint to fetch class names
       type: 'GET',
       dataType: 'json',
       success: function (data) {
