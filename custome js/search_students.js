@@ -62,11 +62,16 @@ async function searchStudents() {
               <p>Roll No: ${student.roll_no}</p>
           `;
 
-          // Add click event to populate the table
-          card.addEventListener('click', () => populateStudentTable(student));
+          // Add click event to populate the table and hide cards
+          card.addEventListener('click', () => {
+              populateStudentTable(student);
+              resultsContainer.style.display = 'none'; // Hide the card container
+          });
 
           resultsContainer.appendChild(card);
       });
+
+      resultsContainer.style.display = 'block'; // Show the card container when results are added
   } catch (error) {
       console.error('Error fetching students:', error);
   }
