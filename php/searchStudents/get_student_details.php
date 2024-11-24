@@ -18,7 +18,7 @@ try {
     $sql = "SELECT first_name, last_name, father_name, class_name, roll_no,
                    mother_name, type AS student_type, phone, gender
             FROM students
-            LEFT JOIN students_details sd ON user_id = user_id
+            
             WHERE user_id = :user_id";
 
     $stmt = $pdo->prepare($sql);
