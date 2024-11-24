@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include the database connection
-include '../db_connection.php'; // Make sure this file is included
+include '../php/db_connection.php'; // Make sure this file is included
 
 // Prepare the query to fetch distinct class names
 $sql = "SELECT DISTINCT class_name FROM Classes ORDER BY class_name ASC";
