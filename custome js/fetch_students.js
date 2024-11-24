@@ -106,7 +106,7 @@ $(function () {
     }
 
     if (endPage < totalPages) {
-      $pageNumbers.append('<span class="btn btn-label-primary disabled">...</span>');
+      $pageNumbers.append('<span class="btn btn-outline-primary disabled">...</span>');
       $pageNumbers.append(`<button class="btn btn-label-primary">${totalPages}</button>`);
     }
 
