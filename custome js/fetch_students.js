@@ -106,7 +106,15 @@ $(function () {
         </tr>`);
       });
     } else {
-      $tableBody.html("<tr><td colspan='9' class='badge bg-danger font-weight-bold'>No records found</td></tr>");
+      $tableBody.html(`
+        <tr>
+          <td colspan='9' class='text-center'>
+            <div class='mt-3'>
+              <span class='badge bg-danger fw-bold'>No records found</span>
+            </div>
+          </td>
+        </tr>
+      `);
     }
   }
 
