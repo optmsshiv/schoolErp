@@ -20,6 +20,33 @@ $(function () {
   const $selectAll = $('#select-all');
   const $pageNumbers = $('#page-numbers');
 
+  // Fetch available class names for the dropdown
+  function fetchClasses() {
+    $.ajax({
+      url: '../php/fetch_classes.php', // Your PHP endpoint to fetch class names
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        // Populate class dropdown with available class names
+        $classSelect.empty(); // Clear any existing options
+        $classSelect.append('<option value="All">All</option>'); // Default "All" option
+
+        data.classes.forEach(function (className) {
+          $classSelect.append(
+            `<option value="${className}">${className}</option>`
+          );
+        });
+
+        // Trigger fetchStudents to load student data after classes are populated
+        fetchStudents();
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching class names: ", status, error);
+        $classSelect.append('<option value="">Error loading classes</option>');
+      }
+    });
+  }
+
   // Fetch student data
   function fetchStudents(searchTerm = '', className = '') {
     $.ajax({
@@ -132,7 +159,7 @@ $(function () {
   function viewStudent(userId) {
     // Redirect to the studentinfo.html page with user_id as a query parameter
     window.location.href = `studentInfo.html?user_id=${userId}`;
-}
+  }
 
   // Event listeners
   $searchBar.on('input', () => fetchStudents($searchBar.val(), $classSelect.val()));
@@ -156,7 +183,7 @@ $(function () {
   // Event delegation for view button
   $tableBody.on('click', '.view-student', function () {
     const userId = $(this).data('user-id');
-    viewStudent(userId); // Call updateStudent function
+    viewStudent(userId); // Call viewStudent function
   });
 
   // Change page
@@ -166,5 +193,5 @@ $(function () {
   }
 
   // Initial fetch
-  fetchStudents();
+  fetchClasses(); // First, fetch and populate classes, then fetch students
 });

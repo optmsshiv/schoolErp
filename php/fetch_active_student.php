@@ -18,6 +18,16 @@ if ($conn->connect_error) {
     die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
 }
 
+// Fetch class names from the 'Classes' table
+$classQuery = "SELECT class_name FROM Classes";
+$classResult = $conn->query($classQuery);
+
+$classes = [];
+if ($classResult->num_rows > 0) {
+    while ($row = $classResult->fetch_assoc()) {
+        $classes[] = $row['class_name'];
+}
+
 // Pagination and search parameters
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $class = isset($_GET['class']) ? $_GET['class'] : ''; // New class parameter
@@ -105,10 +115,11 @@ $totalRecords = $totalResult->fetch_assoc()['total'];
 // Set the content type to application/json
 header('Content-Type: application/json');
 
-// Return the JSON response with the fetched data and total records
+// Return the JSON response with the fetched data, total records, and available classes
 echo json_encode([
     'students' => $students,
-    'totalRecords' => $totalRecords
+    'totalRecords' => $totalRecords,
+    'classes' => $classes // Added the classes to the response
 ]);
 
 // Close statements and connection
