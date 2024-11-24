@@ -1,7 +1,38 @@
- // Show the card-container when the search bar gains focus
- function showCardContainer() {
+// Show the card-container when the search bar gains focus
+function showCardContainer() {
   const resultsContainer = document.getElementById('results');
   resultsContainer.style.display = 'block';
+}
+
+// Function to populate the student table
+function populateStudentTable(student) {
+  const studentTable = document.getElementById('student_data').querySelector('tbody');
+  studentTable.innerHTML = `
+      <tr>
+          <td class="fw-bold">Student's Name:</td>
+          <td>${student.first_name} ${student.last_name}</td>
+          <td class="fw-bold">Father's Name:</td>
+          <td>${student.father_name || ''}</td>
+          <td class="fw-bold">Monthly Fee:</td>
+          <td>${student.monthly_fee || 'N/A'}</td>
+      </tr>
+      <tr>
+          <td class="fw-bold">Class:</td>
+          <td>${student.class_name || ''}</td>
+          <td class="fw-bold">Mother's Name:</td>
+          <td>${student.mother_name || 'N/A'}</td>
+          <td class="fw-bold">Type:</td>
+          <td>${student.type || 'N/A'}</td>
+      </tr>
+      <tr>
+          <td class="fw-bold">Roll number:</td>
+          <td>${student.roll_no || ''}</td>
+          <td class="fw-bold">Mobile:</td>
+          <td>${student.phone || 'N/A'}</td>
+          <td class="fw-bold">Gender:</td>
+          <td>${student.gender || 'N/A'}</td>
+      </tr>
+  `;
 }
 
 // Function to fetch and display search results
@@ -16,10 +47,11 @@ async function searchStudents() {
       resultsContainer.innerHTML = '';
 
       if (data.length === 0) {
-          resultsContainer.innerHTML = '<p class="text-danger text-center"> This student does not exist.</p>';
+          resultsContainer.innerHTML = '<p class="text-danger text-center">This student does not exist.</p>';
           return;
       }
 
+      // Create cards for each student result
       data.forEach(student => {
           const card = document.createElement('div');
           card.classList.add('student-card');
@@ -29,6 +61,10 @@ async function searchStudents() {
               <p>Class: ${student.class_name}</p>
               <p>Roll No: ${student.roll_no}</p>
           `;
+
+          // Add click event to populate the table
+          card.addEventListener('click', () => populateStudentTable(student));
+
           resultsContainer.appendChild(card);
       });
   } catch (error) {
