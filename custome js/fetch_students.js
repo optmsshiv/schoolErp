@@ -101,13 +101,13 @@ $(function () {
 
     for (let i = startPage; i <= endPage; i++) {
       $pageNumbers.append(
-        `<button class="btn ${i === currentPage ? 'btn-primary' : 'btn-outline-primary'}">${i}</button>`
+        `<button class="btn ${i === currentPage ? 'btn-primary' : 'btn-label-primary'}">${i}</button>`
       );
     }
 
     if (endPage < totalPages) {
-      $pageNumbers.append('<span class="btn btn-light disabled">...</span>');
-      $pageNumbers.append(`<button class="btn btn-light">${totalPages}</button>`);
+      $pageNumbers.append('<span class="btn btn-label-primary disabled">...</span>');
+      $pageNumbers.append(`<button class="btn label-primary">${totalPages}</button>`);
     }
 
     $pageNumbers.find('button').on('click', function () {
