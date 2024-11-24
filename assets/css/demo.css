@@ -832,10 +832,6 @@ td {
   margin-top: 100px;
 }
 /* active student class dropdown hieght fix*/
-#class-select {
-  max-height: 300px; /* Set a maximum height */
-  overflow-y: auto;  /* Enable vertical scrolling if the content exceeds the height */
-}
 
 
 
