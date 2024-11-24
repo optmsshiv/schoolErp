@@ -106,7 +106,7 @@ $(function () {
         </tr>`);
       });
     } else {
-      $tableBody.html("<tr><td colspan='9'>No records found</td></tr>");
+      $tableBody.html("<tr><td colspan='9' class='badge bg-danger font-weight-bold>No records found</td></tr>");
     }
   }
 
