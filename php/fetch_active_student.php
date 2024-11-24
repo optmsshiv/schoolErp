@@ -3,29 +3,18 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Database configuration
-$servername = "localhost";
-$username = "edrppymy_admin";
-$password = "13579@demo";
-$dbname = "edrppymy_rrgis";
-$port = 3306;
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
-
-// Check connection
-if ($conn->connect_error) {
-    die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
-}
+// Include the database connection
+include '../php/db_connection.php'; // Using PDO connection from db_connection.php
 
 // Fetch class names from the 'Classes' table
 $classQuery = "SELECT class_name FROM Classes";
-$classResult = $conn->query($classQuery);
+$classResult = $pdo->query($classQuery);
 
 $classes = [];
-if ($classResult->num_rows > 0) {
-    while ($row = $classResult->fetch_assoc()) {
+if ($classResult->rowCount() > 0) {
+    while ($row = $classResult->fetch()) {
         $classes[] = $row['class_name'];
+    }
 }
 
 // Pagination and search parameters
@@ -38,79 +27,48 @@ $offset = ($page - 1) * $limit;
 // Prepare query with search term and class filter
 $sql = "SELECT id, first_name, last_name, father_name, class_name, roll_no, phone, user_id
         FROM students
-        WHERE CONCAT(first_name, ' ', last_name) LIKE ?";
+        WHERE CONCAT(first_name, ' ', last_name) LIKE :search";
 
 if (!empty($class) && $class !== "All") {
-    $sql .= " AND class_name = ?";
+    $sql .= " AND class_name = :class";
 }
 
-$sql .= " LIMIT ?, ?";
+$sql .= " LIMIT :offset, :limit";
 
-$stmt = $conn->prepare($sql);
+$stmt = $pdo->prepare($sql);
 
-// Check if statement preparation succeeded
-if (!$stmt) {
-    die(json_encode(['error' => 'Query preparation failed: ' . $conn->error]));
-}
-
+// Bind parameters
 $searchTerm = "%$search%";
-$params = [$searchTerm];
+$stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
 
 if (!empty($class) && $class !== "All") {
-    $params[] = $class; // Add class to parameters
+    $stmt->bindParam(':class', $class, PDO::PARAM_STR);
 }
 
-$params[] = $offset;
-$params[] = $limit;
-
-// Prepare dynamic binding types
-$types = "s"; // String type for search term
-if (!empty($class) && $class !== "All") {
-    $types .= "s"; // Add string type for class
-}
-$types .= "ii"; // Two integer types for offset and limit
-
-// Bind parameters dynamically
-$stmt->bind_param($types, ...$params);
+$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+$stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
 
 $stmt->execute();
-$result = $stmt->get_result();
+$students = $stmt->fetchAll();
 
-$students = [];
-while ($row = $result->fetch_assoc()) {
-    $students[] = $row;
-}
 
 // Get total record count for pagination with class filtering
-$totalRecordsQuery = "SELECT COUNT(*) as total FROM students WHERE CONCAT(first_name, ' ', last_name) LIKE ?";
+$totalRecordsQuery = "SELECT COUNT(*) as total FROM students WHERE CONCAT(first_name, ' ', last_name) LIKE :search";
 
 if (!empty($class) && $class !== "All") {
-    $totalRecordsQuery .= " AND class_name = ?";
+    $totalRecordsQuery .= " AND class_name = :class";
 }
 
-$totalStmt = $conn->prepare($totalRecordsQuery);
+$totalStmt = $pdo->prepare($totalRecordsQuery);
+$totalStmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
 
-if (!$totalStmt) {
-    die(json_encode(['error' => 'Total records query preparation failed: ' . $conn->connect_error]));
-}
-
-$totalParams = [$searchTerm];
 if (!empty($class) && $class !== "All") {
-    $totalParams[] = $class; // Add class to total query parameters
+    $totalStmt->bindParam(':class', $class, PDO::PARAM_STR);
 }
-
-// Prepare dynamic binding types for total records
-$totalTypes = "s";
-if (!empty($class) && $class !== "All") {
-    $totalTypes .= "s"; // Add string type for class
-}
-
-// Bind parameters dynamically for total records
-$totalStmt->bind_param($totalTypes, ...$totalParams);
 
 $totalStmt->execute();
-$totalResult = $totalStmt->get_result();
-$totalRecords = $totalResult->fetch_assoc()['total'];
+$totalResult = $totalStmt->fetch(PDO::FETCH_ASSOC);
+$totalRecords = $totalResult['total'];
 
 // Set the content type to application/json
 header('Content-Type: application/json');
@@ -122,8 +80,6 @@ echo json_encode([
     'classes' => $classes // Added the classes to the response
 ]);
 
-// Close statements and connection
-$stmt->close();
-$totalStmt->close();
-$conn->close();
+// Close the PDO connection (not strictly necessary, but a good practice)
+$pdo = null;
 ?>
