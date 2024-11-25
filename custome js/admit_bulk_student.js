@@ -27,7 +27,7 @@ document.getElementById('processButton').addEventListener('click', function() {
           row.forEach((col, colIndex) => {
             const td = document.createElement('td');
             td.textContent = col;
-            if (colIndex === 12) { // Assuming "Father Name" is the 13th column (index 12)
+            if (colIndex === 27) { // Assuming "Father Name" is the 13th column (index 12)
               td.classList.add('nowrap');
             }
             tr.appendChild(td);
