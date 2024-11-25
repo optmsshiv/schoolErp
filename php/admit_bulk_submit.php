@@ -1,6 +1,6 @@
 <?php
 // Include the database connection
-require '../php/db_connection.php';
+include '../php/db_connection.php';
 
 header('Content-Type: application/json');
 error_reporting(E_ALL);
