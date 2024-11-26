@@ -413,24 +413,55 @@ document.addEventListener('DOMContentLoaded', function () {
           Swal.fire({
             title: 'Edit Fee Plan',
             html: `
-                      <label>Id</label>
-                      <input id="editId" class="swal2-input" type="number" value="${feePlan.fee_plan_id}" readonly>
+                      <div class="fee-plan-form">
+  <div class="form-group">
+    <label for="editId">ID</label>
+    <input
+      id="editId"
+      class="input-field readonly"
+      type="number"
+      value="${feePlan.fee_plan_id}"
+      readonly
+    />
+  </div>
 
-                      <label>Class Name</label>
-                      <select id="editClassName" class="swal2-select">
-                          ${classOptions}
-                      </select>
+  <div class="form-group">
+    <label for="editClassName">Class Name</label>
+    <select id="editClassName" class="select-field">
+      ${classOptions}
+    </select>
+  </div>
 
-                      <label>Fee Head Name</label>
-                      <select id="editFeeHead" class="swal2-select">
-                          ${feeHeadOptions}
-                      </select>
+  <div class="form-group">
+    <label for="editFeeHead">Fee Head Name</label>
+    <select id="editFeeHead" class="select-field">
+      ${feeHeadOptions}
+    </select>
+  </div>
 
-                      <label>Month Name</label>
-                      <input id="editMonth" class="swal2-input" type="text" value="${feePlan.month_name || ''}">
+  <div class="form-group">
+    <label for="editMonth">Month Name</label>
+    <input
+      id="editMonth"
+      class="input-field"
+      type="text"
+      value="${feePlan.month_name || ''}"
+      placeholder="Enter Month Name"
+    />
+  </div>
 
-                      <label>Amount</label>
-                      <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount || ''}">
+  <div class="form-group">
+    <label for="editAmount">Amount</label>
+    <input
+      id="editAmount"
+      class="input-field"
+      type="number"
+      value="${feePlan.amount || ''}"
+      placeholder="Enter Amount"
+    />
+  </div>
+</div>
+
                   `,
             showDenyButton: true,
             showCancelButton: true,

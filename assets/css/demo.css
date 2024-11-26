@@ -908,6 +908,52 @@ td {
     background-color: #ddd; /* Highlight row on hover */
   }
 
+  /* sweet alert fee design css*/
+  .fee-plan-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  .input-field,
+  .select-field {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+
+  .input-field.readonly {
+    background-color: #f9f9f9;
+  }
+
+  .select-field {
+    background-color: #fff;
+  }
+
+  .input-field:focus,
+  .select-field:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  .input-field::placeholder {
+    color: #888;
+  }
+
+
 
 
 
