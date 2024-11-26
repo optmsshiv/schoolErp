@@ -415,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function () {
             html: `
                       <div class="fee-plan-form">
   <div class="form-group">
-    <label for="editId">ID</label>
+    <label for="editId">Fee Plan ID</label>
     <input
       id="editId"
       class="input-field readonly"
