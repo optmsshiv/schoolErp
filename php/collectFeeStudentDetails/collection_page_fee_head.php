@@ -1,5 +1,5 @@
 <?php
-// database connection
+// Include database connection
 include '../db_connection.php';  // Assuming $pdo is the PDO connection
 
 try {
@@ -15,8 +15,16 @@ try {
     // Fetch all data
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Return data as JSON
-    echo json_encode($data);
+    // Structure the data by fee head
+    $structuredData = [];
+
+    // Loop through each record and group by fee_head_name
+    foreach ($data as $record) {
+        $structuredData[$record['fee_head_name']][$record['month_name']] = $record['amount'];
+    }
+
+    // Return structured data as JSON
+    echo json_encode($structuredData);
 
 } catch (PDOException $e) {
     // Handle errors
