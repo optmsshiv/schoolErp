@@ -1,10 +1,20 @@
-// Show the card-container when the search bar gains focus
+// Ensure DOM is fully loaded before attaching event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('student_search');
+  const resultsContainer = document.getElementById('results');
+
+  // Attach event listeners to the search input
+  searchInput.addEventListener('focus', showCardContainer);
+  searchInput.addEventListener('input', debounce(searchStudents, 300));
+});
+
+// Function to show the card container
 function showCardContainer() {
   const resultsContainer = document.getElementById('results');
   resultsContainer.style.display = 'block';
 }
 
-// Function to populate the student table
+// Function to populate the student table with details
 function populateStudentTable(student) {
   const studentTable = document.getElementById('student_data').querySelector('tbody');
   studentTable.innerHTML = `
@@ -37,21 +47,31 @@ function populateStudentTable(student) {
 
 // Function to fetch and display search results
 async function searchStudents() {
-  const query = document.getElementById('student_search').value;
+  const query = document.getElementById('student_search').value.trim();
+  const resultsContainer = document.getElementById('results');
+
+  // Show a loading indicator while fetching data
+  resultsContainer.innerHTML = '<p class="text-info text-center">Loading...</p>';
+
+  // Clear results if query is empty
+  if (!query) {
+      resultsContainer.innerHTML = '';
+      return;
+  }
 
   try {
       const response = await fetch(`../php/searchStudents/search_students.php?query=${encodeURIComponent(query)}`);
       const data = await response.json();
 
-      const resultsContainer = document.getElementById('results');
       resultsContainer.innerHTML = '';
 
+      // Handle no results found
       if (data.length === 0) {
           resultsContainer.innerHTML = '<p class="text-danger text-center">This student does not exist.</p>';
           return;
       }
 
-      // Create cards for each student result
+      // Display results as cards
       data.forEach(student => {
           const card = document.createElement('div');
           card.classList.add('student-card');
@@ -62,17 +82,28 @@ async function searchStudents() {
               <p>Roll No: ${student.roll_no}</p>
           `;
 
-          // Add click event to fetch additional details and populate the table
+          // Add click event to populate student table with details
           card.addEventListener('click', () => {
-            populateStudentTable(student);
-            resultsContainer.style.display = 'none'; // Hide the card container
-        });
+              populateStudentTable(student);
+              resultsContainer.style.display = 'none'; // Hide the card container
+          });
 
-        resultsContainer.appendChild(card);
-    });
+          resultsContainer.appendChild(card);
+      });
 
-    resultsContainer.style.display = 'block'; // Show the card container when results are added
-} catch (error) {
-    console.error('Error fetching students:', error);
+      // Show the card container
+      resultsContainer.style.display = 'block';
+  } catch (error) {
+      console.error('Error fetching students:', error);
+      resultsContainer.innerHTML = '<p class="text-danger text-center">Error fetching data. Please try again later.</p>';
+  }
 }
+
+// Debounce function to limit API calls
+function debounce(func, delay) {
+  let debounceTimeout;
+  return function (...args) {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => func(...args), delay);
+  };
 }
