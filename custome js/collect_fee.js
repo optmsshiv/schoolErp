@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', function () {
         roll_no: tableRows[i + 2].querySelector('td:nth-child(2)').textContent.trim(),
         phone: tableRows[i + 2].querySelector('td:nth-child(4)').textContent.trim(),
         gender: tableRows[i + 2].querySelector('td:nth-child(6)').textContent.trim(),
-        hotel_fee: tableRows[i + 2].querySelector('td:nth-child(8)').textContent.trim(),
-        transport_fee: tableRows[i + 2].querySelector('td:nth-child(10)').textContent.trim(),
+        hotel_fee: tableRows[i + 3].querySelector('td:nth-child(2)').textContent.trim(),
+        transport_fee: tableRows[i + 3].querySelector('td:nth-child(4)').textContent.trim(),
       };
 
       studentData.push(student);
@@ -73,7 +73,8 @@ function fetchStudentData() {
                   <td class="fw-bold">Gender:</td>
                   <td>${student.gender}</td>
               </tr>`;
-              const row4 = `
+
+          const row4 = `
               <tr>
                   <td class="fw-bold">Hotel Fee:</td>
                   <td>${student.hotel_fee}</td>

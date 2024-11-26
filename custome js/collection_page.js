@@ -44,13 +44,13 @@ function populateFeeTable(data) {
         <td class="fw-bold">Gender:</td>
         <td>${student.gender}</td>
       </tr>`;
-      const row4 = `
-              <tr>
-                  <td class="fw-bold">Hotel Fee:</td>
-                  <td>${student.hotel_fee}</td>
-                  <td class="fw-bold">Transport Fee:</td>
-                  <td>${student.transport_fee}</td>
-              </tr>`;
+    const row4 = `
+      <tr>
+          <td class="fw-bold">Hotel Fee:</td>
+          <td>${student.hotel_fee}</td>
+          <td class="fw-bold">Transport Fee:</td>
+          <td>${student.transport_fee}</td>
+      </tr>`;
 
     feeTable.insertAdjacentHTML('beforeend', row1 + row2 + row3 + row4);
   });
