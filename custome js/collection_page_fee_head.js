@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function fetchFeePlansData() {
-  fetch('../php/collectFeeStudentDetails/collection_page_fee_head.php') // Update this with your actual PHP path
+  fetch('../php/collectFeeStudentDetails/collection_page_fee_head.php')  // Update this with your actual PHP path
     .then(response => response.json())
     .then(data => {
       if (data.length > 0) {
