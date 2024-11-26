@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="row">
                     <div class="col-md-4">
                       <p><strong>First Name :</strong> ${data.first_name}</p>
-                      <p><strong>App ID :</strong> ${data.id}</p>
+                      <p><strong>App ID :</strong> ${data.user_id}</p>
                       <p><strong>Phone :</strong> ${data.phone}</p>
                       <p><strong>Email :</strong> ${data.email}</p>
                       <p><strong>Aadhar :</strong> ${data.aadhar_no}</p>
