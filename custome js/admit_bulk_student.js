@@ -5,12 +5,18 @@ document.getElementById('processButton').addEventListener('click', function() {
     const reader = new FileReader();
     reader.onload = function(e) {
       const text = e.target.result;
-      const rows = text.split('\n');
+
+      // Properly parse CSV with fields that might contain commas
+      const rows = text.split('\n').map(row => {
+        const match = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+        return match ? match.map(cell => cell.replace(/^"|"$/g, '')) : [];
+      });
+
       const tableBody = document.querySelector('#dataTable tbody');
       tableBody.innerHTML = ''; // Clear existing rows
+
       rows.slice(1).forEach((row, index) => { // Skip the header row
-        if (row.trim() !== '') { // Check if the row is not empty
-          const cols = row.split(',');
+        if (row.length > 0 && row.join('').trim() !== '') { // Check if the row is not empty
           const tr = document.createElement('tr');
 
           // Add S.No cell
@@ -18,7 +24,7 @@ document.getElementById('processButton').addEventListener('click', function() {
           sNoCell.textContent = index + 1; // Auto-generate S.No
           tr.appendChild(sNoCell);
 
-          cols.forEach((col, colIndex) => {
+          row.forEach((col, colIndex) => {
             const td = document.createElement('td');
             td.textContent = col;
             if (colIndex === 12) { // Assuming "Father Name" is the 13th column (index 12)
