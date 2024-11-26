@@ -4,7 +4,7 @@ include '../db_connection.php';  // Assuming $pdo is the PDO connection
 
 try {
     // Prepare the SQL query to fetch fee head, month name, and amount
-    $sql = "SELECT fee_head_name, month_name, amount FROM FeePlans";
+    $sql = "SELECT fee_head_name, month_name, amount FROM FeePlans ORDER BY fee_head_name, FIELD(month_name, 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'March')";
 
     // Prepare the statement
     $stmt = $pdo->prepare($sql);
@@ -15,16 +15,8 @@ try {
     // Fetch all data
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Structure the data by fee head
-    $structuredData = [];
-
-    // Loop through each record and group by fee_head_name
-    foreach ($data as $record) {
-        $structuredData[$record['fee_head_name']][$record['month_name']] = $record['amount'];
-    }
-
-    // Return structured data as JSON
-    echo json_encode($structuredData);
+    // Return data as JSON array
+    echo json_encode($data);
 
 } catch (PDOException $e) {
     // Handle errors

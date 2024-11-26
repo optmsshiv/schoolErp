@@ -3,10 +3,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function fetchFeePlansData() {
-  fetch('../php/collectFeeStudentDetails/collection_page_fee_head.php') // Update with the correct path to your PHP script
+  fetch('../path/to/fetchFeePlans.php') // Update with the correct path to your PHP script
     .then(response => response.json())
     .then(data => {
-      if (data && Object.keys(data).length > 0) {
+      if (Array.isArray(data) && data.length > 0) {
         const table = document.querySelector('#student_fee_table tbody');
         table.innerHTML = ''; // Clear existing rows
 
@@ -21,8 +21,29 @@ function fetchFeePlansData() {
           headerRow.appendChild(th);
         });
 
-        // Iterate over each fee head and create rows
-        Object.keys(data).forEach(feeHead => {
+        // Create a mapping of fee heads to their respective months and amounts
+        const feeHeads = {};
+
+        // Populate feeHeads map from data array
+        data.forEach(record => {
+          const feeHead = record.fee_head_name;
+          const month = record.month_name;
+          const amount = record.amount;
+
+          // Initialize an array for fee head if not already initialized
+          if (!feeHeads[feeHead]) {
+            feeHeads[feeHead] = new Array(months.length).fill(''); // Initialize with empty values
+          }
+
+          // Get the index of the month and set the fee amount
+          const monthIndex = months.indexOf(month);
+          if (monthIndex !== -1) {
+            feeHeads[feeHead][monthIndex] = amount;
+          }
+        });
+
+        // Iterate over the fee heads and create rows for the table
+        Object.keys(feeHeads).forEach(feeHead => {
           const row = document.createElement('tr');
           row.classList.add('text-center');
 
@@ -32,13 +53,9 @@ function fetchFeePlansData() {
           row.appendChild(feeHeadCell);
 
           // Create a cell for each month and populate the corresponding fee amount
-          months.forEach(month => {
+          feeHeads[feeHead].forEach(amount => {
             const amountCell = document.createElement('td');
-
-            // Check if the amount exists for this month, otherwise leave it blank
-            const amount = data[feeHead][month] || '';
-            amountCell.textContent = amount;
-
+            amountCell.textContent = amount || ''; // If no amount, leave cell empty
             row.appendChild(amountCell);
           });
 
