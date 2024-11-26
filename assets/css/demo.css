@@ -857,6 +857,44 @@ td {
 }
 .plus-button:hover {
   background-color: #45a049;
+}
+
+/* bulk student header css*/
+
+  #dataTable thead th {
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* White text color */
+    text-align: center; /* Center-align text */
+    font-weight: bold; /* Bold text */
+    padding: 10px; /* Add padding for spacing */
+    border: 1px solid #ddd; /* Border for the header cells */
+  }
+
+  /* Add hover effect for better interactivity */
+  #dataTable thead th:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+    cursor: pointer; /* Change cursor to pointer */
+  }
+
+  #dataTable {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Ensure table takes up full width */
+  }
+
+  #dataTable tbody td {
+    border: 1px solid #ddd; /* Add borders to body cells */
+    padding: 8px; /* Add padding */
+  }
+
+  /* Alternate row colors for better readability */
+  #dataTable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  #dataTable tbody tr:hover {
+    background-color: #ddd; /* Highlight row on hover */
+  }
+
 
 
 
