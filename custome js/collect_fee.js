@@ -50,6 +50,8 @@ function fetchStudentData() {
                   <td>${student.father_name}</td>
                   <td class="fw-bold">Monthly Fee:</td>
                   <td>${student.monthly_fee}</td>
+                  <td class="fw-bold">Hotel Fee:</td>
+                  <td>${student.hotel_fee}</td>
               </tr>`;
 
           const row2 = `
