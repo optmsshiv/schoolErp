@@ -7,6 +7,7 @@ header('Content-Type: application/json');
 try {
     // Check if the plan ID parameter is provided
     $planId = isset($_GET['planId']) && !empty($_GET['planId']) ? $_GET['planId'] : null;
+    error_log('Received Plan ID: ' . $planId);
 
     if ($planId) {
         // Fetch fee plan by ID
