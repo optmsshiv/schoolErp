@@ -414,53 +414,53 @@ document.addEventListener('DOMContentLoaded', function () {
             title: 'Edit Fee Plan',
             html: `
                       <div class="fee-plan-form">
-  <div class="form-group">
-    <label for="editId">Fee Plan ID</label>
-    <input
-      id="editId"
-      class="input-field readonly"
-      type="number"
-      value="${feePlan.fee_plan_id}"
-      readonly
-    />
-  </div>
+                         <div class="form-group">
+                           <label for="editId">Fee Plan ID</label>
+                           <input
+                             id="editId"
+                             class="input-field readonly"
+                             type="number"
+                             value="${feePlan.fee_plan_id}"
+                             readonly
+                           />
+                         </div>
 
-  <div class="form-group">
-    <label for="editClassName">Class Name</label>
-    <select id="editClassName" class="select-field">
-      ${classOptions}
-    </select>
-  </div>
+                         <div class="form-group">
+                           <label for="editClassName">Class Name</label>
+                           <select id="editClassName" class="select-field">
+                             ${classOptions}
+                           </select>
+                         </div>
 
-  <div class="form-group">
-    <label for="editFeeHead">Fee Head Name</label>
-    <select id="editFeeHead" class="select-field">
-      ${feeHeadOptions}
-    </select>
-  </div>
+                          <div class="form-group">
+                            <label for="editFeeHead">Fee Head Name</label>
+                            <select id="editFeeHead" class="select-field">
+                              ${feeHeadOptions}
+                            </select>
+                          </div>
 
-  <div class="form-group">
-    <label for="editMonth">Month Name</label>
-    <input
-      id="editMonth"
-      class="input-field"
-      type="text"
-      value="${feePlan.month_name || ''}"
-      placeholder="Enter Month Name"
-    />
-  </div>
+                          <div class="form-group">
+                            <label for="editMonth">Month Name</label>
+                            <input
+                              id="editMonth"
+                              class="input-field"
+                              type="text"
+                              value="${feePlan.month_name || ''}"
+                              placeholder="Enter Month Name"
+                            />
+                          </div>
 
-  <div class="form-group">
-    <label for="editAmount">Amount</label>
-    <input
-      id="editAmount"
-      class="input-field"
-      type="number"
-      value="${feePlan.amount || ''}"
-      placeholder="Enter Amount"
-    />
-  </div>
-</div>
+                          <div class="form-group">
+                            <label for="editAmount">Amount</label>
+                            <input
+                              id="editAmount"
+                              class="input-field"
+                              type="number"
+                              value="${feePlan.amount || ''}"
+                              placeholder="Enter Amount"
+                            />
+                          </div>
+                        </div>
 
                   `,
             showDenyButton: true,
@@ -519,8 +519,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   };
-
-
 
   // Delete Fee Plan
   const deleteFeePlan = class_name => {
