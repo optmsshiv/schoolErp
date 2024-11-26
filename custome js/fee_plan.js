@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Create Edit and Delete buttons
             const actionCell = document.createElement('td');
             actionCell.append(
-              createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.id)),
+              createButton('Edit', 'btn-warning me-2', () => editFeePlan(plan.fee_plan_id)),
               createButton('Delete', 'btn-danger', () => deleteFeePlan(plan.class_name))
             );
 
