@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const studentData = [];
 
     // Iterate through the rows and extract cell data
-    for (let i = 0; i < tableRows.length; i += 3) {
+    for (let i = 0; i < tableRows.length; i += 4) {
       const student = {
         full_name: tableRows[i].querySelector('td:nth-child(2)').textContent.trim(),
         father_name: tableRows[i].querySelector('td:nth-child(4)').textContent.trim(),
@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', function () {
         roll_no: tableRows[i + 2].querySelector('td:nth-child(2)').textContent.trim(),
         phone: tableRows[i + 2].querySelector('td:nth-child(4)').textContent.trim(),
         gender: tableRows[i + 2].querySelector('td:nth-child(6)').textContent.trim(),
+        hotel_fee: tableRows[i + 2].querySelector('td:nth-child(8)').textContent.trim(),
+        transport_fee: tableRows[i + 2].querySelector('td:nth-child(10)').textContent.trim(),
       };
 
       studentData.push(student);
@@ -50,8 +52,6 @@ function fetchStudentData() {
                   <td>${student.father_name}</td>
                   <td class="fw-bold">Monthly Fee:</td>
                   <td>${student.monthly_fee}</td>
-                  <td class="fw-bold">Hotel Fee:</td>
-                  <td>${student.hotel_fee}</td>
               </tr>`;
 
           const row2 = `
@@ -73,8 +73,15 @@ function fetchStudentData() {
                   <td class="fw-bold">Gender:</td>
                   <td>${student.gender}</td>
               </tr>`;
+              const row4 = `
+              <tr>
+                  <td class="fw-bold">Hotel Fee:</td>
+                  <td>${student.hotel_fee}</td>
+                  <td class="fw-bold">Transport Fee:</td>
+                  <td>${student.transport_fee}</td>
+              </tr>`;
 
-          table.insertAdjacentHTML('beforeend', row1 + row2 + row3);
+          table.insertAdjacentHTML('beforeend', row1 + row2 + row3 + row4);
         });
       } else {
         console.log('No data found');
