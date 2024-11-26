@@ -394,8 +394,8 @@ document.addEventListener('DOMContentLoaded', function () {
       data: { planId: planId },
       dataType: 'json',
       success: function (response) {
-        if (response.status === 'success' && response.data.length > 0) {
-          const feePlan = response.data[0];
+        if (response.status === 'success' && response.data) {
+          const feePlan = Array.isArray(response.data) ? response.data[0] : response.data;
 
           // Get dynamic options for the select dropdowns
           const classOptions = Array.from(classNameSelect.options).map(option => `
