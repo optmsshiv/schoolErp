@@ -800,17 +800,21 @@ td {
 .student-card {
   padding: 12px;
   margin: 5px 0;
+  margin-bottom: 10px;
+  cursor: pointer;
   background-color: #f9f9f9; /* Light grey background for cards */
   border: 1px solid #eee;  /* Light border for each card */
   border-radius: 8px;  /* Rounded corners for each card */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow on each card */
   transition: background-color 0.3s ease; /* Smooth hover effect */
-  transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover effects */
+  transition: transform 0.2s, box-shadow 0.3s; /* Smooth hover effects */
 }
 
 .student-card:hover {
   background-color: #e9f7fe;
   border-color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
 .student-card h3 {
@@ -830,6 +834,15 @@ td {
   color: #999;
   font-size: 16px;
   margin-top: 100px;
+}
+
+#results {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+#student_data {
+  margin-top: 20px;
 }
 /* active student fee add button css*/
 .amount-button {
