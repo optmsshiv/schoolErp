@@ -397,36 +397,41 @@ document.addEventListener('DOMContentLoaded', function () {
         if (response.status === 'success' && response.data.length > 0) {
           const feePlan = response.data[0];
 
+          // Get dynamic options for the select dropdowns
+          const classOptions = Array.from(classNameSelect.options).map(option => `
+            <option value="${option.value}" ${option.value === feePlan.class_name ? 'selected' : ''}>
+              ${option.text}
+            </option>
+          `).join('');
+
+          const feeHeadOptions = Array.from(feeHeadSelect.options).map(option => `
+            <option value="${option.value}" ${option.value === feePlan.fee_head_name ? 'selected' : ''}>
+              ${option.text}
+            </option>
+          `).join('');
+
           Swal.fire({
             title: 'Edit Fee Plan',
             html: `
-                        <label>Id</label>
-                        <input id="editId" class="swal2-input" type="number" value="${feePlan.fee_plan_id}" readonly>
+                      <label>Id</label>
+                      <input id="editId" class="swal2-input" type="number" value="${feePlan.fee_plan_id}" readonly>
 
-                        <label>Class Name</label>
-                        <select id="editClassName" class="swal2-select">
-                            ${Array.from(classNameSelect.options).map(option => `
-                                <option value="${option.value}" ${option.value === feePlan.class_name ? 'selected' : ''}>
-                                    ${option.text}
-                                </option>
-                            `).join('')}
-                        </select>
+                      <label>Class Name</label>
+                      <select id="editClassName" class="swal2-select">
+                          ${classOptions}
+                      </select>
 
-                        <label>Fee Head Name</label>
-                        <select id="editFeeHead" class="swal2-select">
-                            ${Array.from(feeHeadSelect.options).map(option => `
-                                <option value="${option.value}" ${option.value === feePlan.fee_head_name ? 'selected' : ''}>
-                                    ${option.text}
-                                </option>
-                            `).join('')}
-                        </select>
+                      <label>Fee Head Name</label>
+                      <select id="editFeeHead" class="swal2-select">
+                          ${feeHeadOptions}
+                      </select>
 
-                        <label>Month Name</label>
-                        <input id="editMonth" class="swal2-input" type="text" value="${feePlan.month_name || ''}">
+                      <label>Month Name</label>
+                      <input id="editMonth" class="swal2-input" type="text" value="${feePlan.month_name || ''}">
 
-                        <label>Amount</label>
-                        <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount || ''}">
-                    `,
+                      <label>Amount</label>
+                      <input id="editAmount" class="swal2-input" type="number" value="${feePlan.amount || ''}">
+                  `,
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Save',
@@ -483,6 +488,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   };
+
 
 
   // Delete Fee Plan
