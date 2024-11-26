@@ -14,14 +14,10 @@ try {
             $stmt = $pdo->prepare("
                 INSERT INTO students (
                     serial_number, first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped,
-                    father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler, user_id,
-                    father_occupation, father_income, father_phone, father_email, father_aadhar,
-                    mother_occupation, mother_income, mother_phone, current_add, permanent_add, city_name, pincode, state, landmark
+                    father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler, user_id
                 ) VALUES (
                     :serial_number, :first_name, :last_name, :phone, :email, :date_of_birth, :gender, :class_name, :category, :religion, :guardian, :handicapped,
-                    :father_name, :mother_name, :roll_no, :sr_no, :pen_no, :aadhar_no, :admission_no, :admission_date, :day_hosteler, :user_id,
-                    :father_occupation, :father_income, :father_phone, :father_email, :father_aadhar,
-                    :mother_occupation, :mother_income, :mother_phone, :current_add, :permanent_add, :city_name, :pincode, :state, :landmark
+                    :father_name, :mother_name, :roll_no, :sr_no, :pen_no, :aadhar_no, :admission_no, :admission_date, :day_hosteler, :user_id
                 )
             ");
 
@@ -51,21 +47,7 @@ try {
                     ':admission_no' => $row['admission_no'],
                     ':admission_date' => $row['admission_date'],
                     ':day_hosteler' => $row['day_hosteler'],
-                    ':user_id' => $user_id,
-                    ':father_occupation' => $row['father_occupation'],
-                    ':father_income' => $row['father_income'],
-                    ':father_phone' => $row['father_phone'],
-                    ':father_email' => $row['father_email'],
-                    ':father_aadhar' => $row['father_aadhar'],
-                    ':mother_occupation' => $row['mother_occupation'],
-                    ':mother_income' => $row['mother_income'],
-                    ':mother_phone' => $row['mother_phone'],
-                    ':current_add' => $row['current_add'],
-                    ':permanent_add' => $row['permanent_add'],
-                    ':city_name' => $row['city_name'],
-                    ':pincode' => $row['pincode'],
-                    ':state' => $row['state'],
-                    ':landmark' => $row['landmark']
+                    ':user_id' => $user_id
                 ]);
             }
 
