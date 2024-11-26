@@ -1,15 +1,15 @@
-document.getElementById('processButton').addEventListener('click', function() {
+document.getElementById('processButton').addEventListener('click', function () {
   const fileInput = document.getElementById('inputGroupFile01');
   const file = fileInput.files[0];
   if (file && file.type === 'text/csv') {
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload = function (e) {
       const text = e.target.result;
 
-      // Properly parse CSV with fields that might contain commas
+      // Properly parse CSV, ensuring values with commas and parentheses are preserved
       const rows = text.split('\n').map(row => {
-        const match = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-        return match ? match.map(cell => cell.replace(/^"|"$/g, '')) : [];
+        const match = row.match(/(".*?"|[^",]+|(?<=,)(?=,))/g);
+        return match ? match.map(cell => cell.trim().replace(/^"|"$/g, '')) : [];
       });
 
       const tableBody = document.querySelector('#dataTable tbody');
@@ -42,7 +42,7 @@ document.getElementById('processButton').addEventListener('click', function() {
   }
 });
 
-document.getElementById('resetButton').addEventListener('click', function() {
+document.getElementById('resetButton').addEventListener('click', function () {
   const tableBody = document.querySelector('#dataTable tbody');
   tableBody.innerHTML = ''; // Clear the table data
 });
