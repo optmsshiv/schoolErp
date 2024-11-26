@@ -14,7 +14,7 @@ function populateStudentTable(student) {
           <td class="fw-bold">Father's Name:</td>
           <td>${student.father_name || ''}</td>
           <td class="fw-bold">Monthly Fee:</td>
-          <td>${student.monthly_fee || 'N/A'}</td>
+          <td>${student.monthly_fee || ''}</td>
       </tr>
       <tr>
           <td class="fw-bold">Class:</td>

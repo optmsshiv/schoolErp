@@ -29,7 +29,7 @@ function fetchStudentData() {
                           <td class="fw-bold">Mother's Name:</td>
                           <td>${student.mother_name}</td>
                           <td class="fw-bold">Type:</td>
-                          <td>${student.day_hostler}</td>
+                          <td>${student.day_hosteler}</td>
                       </tr>`;
 
                   const row3 = `

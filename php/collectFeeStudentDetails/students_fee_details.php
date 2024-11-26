@@ -20,7 +20,7 @@ $sql = "SELECT
             father_name,
             mother_name,
             roll_no,
-            day_hostler,
+            day_hosteler,
             admission_no
         FROM students";
 $result = $conn->query($sql);
