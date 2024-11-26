@@ -9,10 +9,27 @@ try {
     // Get the search query from the request
     $search = $_GET['query'] ?? '';
 
-    // Prepare the SQL statement
-    $sql = "SELECT first_name, last_name, father_name, class_name, roll_no, mother_name, phone, gender, day_hosteler AS type
-            FROM students
-            WHERE first_name LIKE :search OR father_name LIKE :search
+    // Prepare the SQL statement with a JOIN
+    $sql = "SELECT
+                s.first_name,
+                s.last_name,
+                s.father_name,
+                s.class_name,
+                s.roll_no,
+                s.mother_name,
+                s.phone,
+                s.gender,
+                s.day_hosteler AS type,
+                f.monthly_fee
+            FROM
+                students s
+            LEFT JOIN
+                FeePlans f
+            ON
+                s.class_name = f.class_name
+            WHERE
+                s.first_name LIKE :search OR
+                s.father_name LIKE :search
             LIMIT 10";
 
     // Prepare the statement using the $pdo connection
