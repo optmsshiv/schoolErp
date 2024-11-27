@@ -1,12 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Example: You can fetch the class_name dynamically from sessionStorage or another source
-  const className = sessionStorage.getItem('selectedClassName') || '';
-
-  fetchFeePlansData(className);
+  fetchFeePlansData();
 });
 
-function fetchFeePlansData(className) {
-  fetch(`../php/collectFeeStudentDetails/collection_page_fee_head.php?class_name=${encodeURIComponent(className)}`)
+function fetchFeePlansData() {
+  fetch('../php/collectFeeStudentDetails/collection_page_fee_head.php') // Replace with the actual PHP script path
     .then(response => response.json())
     .then(data => {
       if (Array.isArray(data) && data.length > 0) {
@@ -64,7 +61,7 @@ function fetchFeePlansData(className) {
           tableBody.appendChild(row);
         });
       } else {
-        console.error('No data found for class:', className);
+        console.error('No data found');
       }
     })
     .catch(error => console.error('Error fetching fee plans:', error));
