@@ -1,7 +1,7 @@
 // Ensure DOM is fully loaded before attaching event listeners
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('student_search');
-  const resultsContainer = document.getElementById('results');
+ // const resultsContainer = document.getElementById('results');
 
   // Attach event listeners to the search input
   searchInput.addEventListener('focus', showCardContainer);
