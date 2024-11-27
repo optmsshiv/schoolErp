@@ -952,6 +952,23 @@ td {
   .input-field::placeholder {
     color: #888;
   }
+  /* fee table selection fee design css*/
+  /* Table header styles */
+#student_fee_table thead th {
+  background-color: #007bff; /* Blue background */
+  color: #fff;              /* White text */
+  text-align: center;       /* Center align text */
+  padding: 10px;            /* Add spacing */
+  border: 1px solid #ddd;   /* Light border */
+}
+
+/* Table body styles */
+#student_fee_table tbody td {
+  padding: 10px;            /* Add spacing to table cells */
+  border: 1px solid #ddd;   /* Light border for clarity */
+  text-align: center;       /* Center align text */
+}
+
 
 
 
