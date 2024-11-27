@@ -51,6 +51,8 @@ function fetchFeePlansData() {
       const tableBody = document.querySelector('#student_fee_table tbody');
       tableBody.innerHTML = ''; // Clear any existing rows
 
+      let totalAmounts = new Array(months.length).fill(0); // Array to store total amounts for each month
+
       Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
         const row = document.createElement('tr');
         row.classList.add('text-center');
@@ -61,15 +63,44 @@ function fetchFeePlansData() {
         row.appendChild(feeHeadCell);
 
         // Amount columns for each month
-        monthAmounts.forEach(amount => {
+        monthAmounts.forEach((amount, index) => {
           const amountCell = document.createElement('td');
           amountCell.textContent = amount || ''; // Leave empty if no amount
           row.appendChild(amountCell);
+
+          // Add the amount to the total for that month
+          if (amount && !isNaN(amount)) {
+            totalAmounts[index] += parseFloat(amount);
+          }
         });
 
         // Append row to the table body
         tableBody.appendChild(row);
       });
+
+      // Add "Total" row with amount buttons
+      const totalRow = document.createElement('tr');
+      totalRow.classList.add('text-center');
+
+      // Add "Total" cell
+      const totalFeeHeadCell = document.createElement('td');
+      totalFeeHeadCell.textContent = 'Total';
+      totalRow.appendChild(totalFeeHeadCell);
+
+      // Add total amounts for each month
+      totalAmounts.forEach(totalAmount => {
+        const totalAmountCell = document.createElement('td');
+        totalAmountCell.innerHTML = `
+          <div class="amount-button">
+            <div class="amount">${totalAmount || ''}</div>
+            <button class="plus-button"><i class="fas fa-plus"></i></button>
+          </div>
+        `;
+        totalRow.appendChild(totalAmountCell);
+      });
+
+      // Append total row to the table
+      tableBody.appendChild(totalRow);
     })
     .catch(error => {
       console.error('Error fetching fee plans data:', error);
