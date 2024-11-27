@@ -876,26 +876,28 @@ td {
 /**/
 .amount-button {
   display: flex;
-  flex-direction: column; /* Stack the content vertically */
-  align-items: center; /* Horizontally center the content */
-  justify-content: center; /* Vertically center the content */
-  height: 100%; /* Make the container take full height of the table cell */
+  flex-direction: column; /* Stack the amount and button vertically */
+  align-items: center; /* Center the content horizontally */
+  justify-content: center; /* Center the content vertically */
+  height: 100%; /* Make sure the container takes up full height of the cell */
 }
 
 .amount-button .amount {
-  margin-bottom: 10px; /* Adds space between the amount and the button */
+  margin-bottom: 10px; /* Space between the amount and button */
 }
 
 .amount-button button {
-  width: 40px;
+  width: 40px;  /* Button size */
   height: 40px;
   padding: 0;
   font-size: 18px;
-  border-radius: 50%; /* Makes the button circular */
+  border-radius: 50%;  /* Circular button */
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;  /* Center the button horizontally */
 }
+
 
 
 
