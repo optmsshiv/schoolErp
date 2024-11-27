@@ -4,7 +4,7 @@ include '../db_connection.php';  // Assuming $pdo is the PDO connection
 
 try {
     // Prepare the SQL query to fetch fee head, month name, and amount
-    $sql = "SELECT fee_head_name, month_name, amount FROM FeePlans ORDER BY fee_head_name, FIELD(month_name, 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'March')";
+    $sql = "SELECT fee_head_name, month_name, amount FROM FeePlans ORDER BY fee_head_name, FIELD(month_name,'Fee Head', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'March')";
 
     // Prepare the statement
     $stmt = $pdo->prepare($sql);
