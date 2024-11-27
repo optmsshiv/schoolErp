@@ -844,7 +844,8 @@ td {
 #student_data {
   margin-top: 20px;
 }
-/* active student fee add button css*/
+
+/* active student fee add button css
 .amount-button {
   display: flex;
   flex-direction: column;
@@ -855,21 +856,7 @@ td {
   margin-bottom: 5px;
   font-weight: bold;
 }
-.amount-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.amount-button button {
-  width: 35px;
-  height: 35px;
-  padding: 0;
-  font-size: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .plus-button {
   width: 30px;
   height: 30px;
@@ -885,6 +872,22 @@ td {
 }
 .plus-button:hover {
   background-color: #45a049;
+}
+/**/
+.amount-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.amount-button button {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* bulk student header css*/
