@@ -756,6 +756,11 @@ td {
     border: none; /* Removes border */
 }
 
+#student_fee_table {
+  table-layout: auto;
+  width: 100%; /* Ensures the table takes up the full width */
+}
+
 /* fee plan drop down height */
 .form-check-label {
   margin-left: 10px; /* Adjust this value to set the space between the checkbox and the label */
