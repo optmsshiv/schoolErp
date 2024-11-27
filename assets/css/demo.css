@@ -878,6 +878,11 @@ td {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%; /* Ensures the container takes up the full width of the cell */
+}
+
+.amount-button .amount {
+  margin-right: 10px; /* Adds space between the amount and the button */
 }
 
 .amount-button button {
@@ -885,10 +890,12 @@ td {
   height: 40px;
   padding: 0;
   font-size: 18px;
+  border-radius: 50%; /* Makes the button circular */
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 
 /* bulk student header css*/
 
