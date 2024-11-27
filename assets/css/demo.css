@@ -876,13 +876,14 @@ td {
 /**/
 .amount-button {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column; /* Stack the content vertically */
+  align-items: center; /* Horizontally center the content */
+  justify-content: center; /* Vertically center the content */
   width: 100%; /* Ensures the container takes up the full width of the cell */
 }
 
 .amount-button .amount {
-  margin-right: 10px; /* Adds space between the amount and the button */
+  margin-bottom: 10px; /* Adds space between the amount and the button */
 }
 
 .amount-button button {
@@ -895,6 +896,7 @@ td {
   justify-content: center;
   align-items: center;
 }
+
 
 
 /* bulk student header css*/
