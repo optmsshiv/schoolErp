@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Example: You can fetch the class_name dynamically from sessionStorage or another source
-  const className = sessionStorage.getItem('selectedClassName') || 'Class 1';
+  const className = sessionStorage.getItem('selectedClassName') || '';
 
   fetchFeePlansData(className);
 });
