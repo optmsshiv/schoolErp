@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const className = document.getElementById('classNameSelect').value.trim();
     const month = Array.from(document.getElementById('monthDropdown').getElementsByClassName('month-checkbox'))
       .filter(checkbox => checkbox.checked)
-      .map(checkbox => checkbox.value);
+      .map(checkbox => checkbox.value);  // Array of selected months (e.g., ['April', 'May', ...])
     const amount = document.getElementById('feeAmount').value.trim();
 
     // Validate form fields
@@ -302,14 +302,14 @@ document.addEventListener('DOMContentLoaded', function () {
       return Swal.fire('Error', 'Please enter a valid amount!', 'error');
     }
 
-    console.log({ feeHead, className, month, amount }); // Debugging
+    // Log for debugging purposes
+    console.log({ feeHead, className, month, amount });
 
     // Prepare data for the AJAX request
     const data = {
       feeHead: feeHead,
       className: className,
-      month: month.join(','), // Convert array to comma-separated string
-      amount: amount
+      amounts: month.map(m => ({ month: m, amount: parseInt(amount) })) // Create an array of objects { month, amount }
     };
 
     // AJAX call
@@ -335,7 +335,8 @@ document.addEventListener('DOMContentLoaded', function () {
         Swal.fire('Error', 'An unexpected error occurred. Please try again later.', 'error');
       }
     });
-  });
+});
+
 
   // Fetch and display fee plans
   const loadFeePlans = () => {
