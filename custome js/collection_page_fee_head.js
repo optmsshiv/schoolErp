@@ -93,7 +93,7 @@ function fetchFeePlansData() {
         totalAmountCell.innerHTML = `
           <div class="amount-button">
             <div class="amount">${totalAmount || ''}</div>
-            <button class="plus-button"><i class="fas fa-plus"></i></button>
+            <button class="btn btn-outline-success"><i class="fas fa-plus"></i></button>
           </div>
         `;
         totalRow.appendChild(totalAmountCell);
