@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function fetchFeePlansData() {
   const apiUrl = '../php/collectFeeStudentDetails/collection_page_fee_head.php'; // Update path as needed
-  console.log('Fetching fee data from:', apiUrl); // Add log to check if the correct URL is being hit
 
   fetch(apiUrl)
     .then(response => {
@@ -19,8 +18,6 @@ function fetchFeePlansData() {
         showAlert('No data available to display.', 'error'); // Optional user feedback
         return;
       }
-
-      console.log('Data received:', data); // Log the received data
 
       const months = [
         'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March'
@@ -49,8 +46,6 @@ function fetchFeePlansData() {
           feeDataMap[fee_head_name][monthIndex] = amount; // Assign the amount to the correct month
         }
       });
-
-      console.log('Fee Data Map:', feeDataMap); // Log the map to verify data structure
 
       // Populate the table body dynamically
       const tableBody = document.querySelector('#student_fee_table tbody');
