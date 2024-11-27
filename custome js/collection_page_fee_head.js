@@ -1,9 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
-  fetchFeePlansData();
+  const className = sessionStorage.getItem('className'); // Assuming you save className in session storage
+
+  if (!className) {
+    showAlert('Class name is missing. Cannot fetch data.', 'error');
+    return;
+  }
+
+  fetchFeePlansData(className);
 });
 
-function fetchFeePlansData() {
-  const apiUrl = '../php/collectFeeStudentDetails/collection_page_fee_head.php'; // Update path as needed
+function fetchFeePlansData(className) {
+  const apiUrl = `../php/collectFeeStudentDetails/collection_page_fee_head.php?class_name=${encodeURIComponent(className)}`; // Pass class_name as query param
 
   fetch(apiUrl)
     .then(response => {
@@ -15,7 +22,7 @@ function fetchFeePlansData() {
     .then(({ status, data }) => {
       if (status !== 'success' || !Array.isArray(data) || data.length === 0) {
         console.error('No data available or an error occurred');
-        showAlert('No data available to display.', 'error'); // Optional user feedback
+        showAlert('No data available to display.', 'error');
         return;
       }
 
@@ -23,7 +30,6 @@ function fetchFeePlansData() {
         'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March'
       ];
 
-      // Generate the table header dynamically
       const theadRow = document.querySelector('#student_fee_table thead tr');
       theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
 
@@ -33,51 +39,45 @@ function fetchFeePlansData() {
         theadRow.appendChild(th);
       });
 
-      // Create a map to organize data by Fee Head and months
       const feeDataMap = {};
 
       data.forEach(({ fee_head_name, month_name, amount }) => {
         if (!feeDataMap[fee_head_name]) {
-          feeDataMap[fee_head_name] = new Array(months.length).fill(''); // Initialize months array
+          feeDataMap[fee_head_name] = new Array(months.length).fill('');
         }
 
-        const monthIndex = months.indexOf(month_name); // Get month index
+        const monthIndex = months.indexOf(month_name);
         if (monthIndex !== -1) {
-          feeDataMap[fee_head_name][monthIndex] = amount; // Assign the amount to the correct month
+          feeDataMap[fee_head_name][monthIndex] = amount;
         }
       });
 
-      // Populate the table body dynamically
       const tableBody = document.querySelector('#student_fee_table tbody');
-      tableBody.innerHTML = ''; // Clear any existing rows
+      tableBody.innerHTML = '';
 
       Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
         const row = document.createElement('tr');
         row.classList.add('text-center');
 
-        // Fee Head column
         const feeHeadCell = document.createElement('td');
         feeHeadCell.textContent = feeHeadName;
         row.appendChild(feeHeadCell);
 
-        // Amount columns for each month
         monthAmounts.forEach(amount => {
           const amountCell = document.createElement('td');
-          amountCell.textContent = amount || ''; // Leave empty if no amount
+          amountCell.textContent = amount || '';
           row.appendChild(amountCell);
         });
 
-        // Append row to the table body
         tableBody.appendChild(row);
       });
     })
     .catch(error => {
       console.error('Error fetching fee plans data:', error);
-      showAlert('Unable to fetch data. Please try again later.', 'error'); // Optional user feedback
+      showAlert('Unable to fetch data. Please try again later.', 'error');
     });
 }
 
-// Optional helper function to display alerts
 function showAlert(message, type) {
   Swal.fire({
     icon: type,
