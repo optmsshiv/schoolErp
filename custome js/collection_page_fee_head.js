@@ -94,7 +94,7 @@ function fetchFeePlansData() {
           <div class="amount-button">
             <div class="amount">${totalAmount || ''}</div>
             <button class="btn btn-outline-success rounded-circle">
-              <i class="fas fa-plus"></i>
+              <i class="bx bx-plus"></i>
             </button>
           </div>
         `;
