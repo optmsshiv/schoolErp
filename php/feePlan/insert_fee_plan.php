@@ -16,36 +16,53 @@ try {
         $data = json_decode(file_get_contents('php://input'), true);
 
         // Ensure all required fields are present and not empty
-        if (!empty($data['feeHead']) && !empty($data['className']) && !empty($data['month']) && !empty($data['amount'])) {
+        if (!empty($data['feeHead']) && !empty($data['className']) && !empty($data['amounts'])) {
             // Sanitize and trim the input data
             $feeHeadName = trim($data['feeHead']);
             $className = trim($data['className']);
-            $month = trim($data['month']); // Expecting a comma-separated string
-            $amount = (int) $data['amount']; // Ensure it's an integer
+            $amounts = $data['amounts']; // Expecting an array of months and amounts
 
             // Prepare the SQL statement to insert the fee plan
             try {
+                // Prepare one SQL statement to insert the fee data for all months
                 $sql = "INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount)
                         VALUES (:fee_head_name, :class_name, :month_name, :amount)";
                 $stmt = $pdo->prepare($sql);
 
-                // Bind parameters to the query
-                $stmt->bindParam(':fee_head_name', $feeHeadName, PDO::PARAM_STR);
-                $stmt->bindParam(':class_name', $className, PDO::PARAM_STR);
-                $stmt->bindParam(':month_name', $month, PDO::PARAM_STR); // Month is a comma-separated string
-                $stmt->bindParam(':amount', $amount, PDO::PARAM_INT);
+                // Start a transaction for batch insert
+                $pdo->beginTransaction();
 
-                // Execute the statement
-                $stmt->execute();
+                // Iterate through the months and insert each one
+                foreach ($amounts as $feeData) {
+                    // Validate the month and amount
+                    if (!empty($feeData['month']) && isset($feeData['amount'])) {
+                        $stmt->bindParam(':fee_head_name', $feeHeadName, PDO::PARAM_STR);
+                        $stmt->bindParam(':class_name', $className, PDO::PARAM_STR);
+                        $stmt->bindParam(':month_name', $feeData['month'], PDO::PARAM_STR);
+                        $stmt->bindParam(':amount', $feeData['amount'], PDO::PARAM_INT);
+
+                        // Execute the statement for each month
+                        $stmt->execute();
+                    } else {
+                        // If any fee data is invalid, throw an error
+                        throw new Exception("Invalid month or amount for " . $feeData['month']);
+                    }
+                }
+
+                // Commit the transaction
+                $pdo->commit();
 
                 // Respond with success
                 http_response_code(201); // 201 Created
-                echo json_encode(['status' => 'success', 'message' => 'Fee plan added successfully']);
+                echo json_encode(['status' => 'success', 'message' => 'Fee plan added for all months successfully']);
             } catch (PDOException $e) {
-                // Handle duplicate entry error
+                // Rollback transaction on error
+                $pdo->rollBack();
+
+                // Handle duplicate entry error or other PDO exceptions
                 if ($e->getCode() == 23000) { // Integrity constraint violation (e.g., unique constraint)
                     http_response_code(409); // 409 Conflict
-                    echo json_encode(['status' => 'error', 'message' => 'Fee plan for this class and month already exists']);
+                    echo json_encode(['status' => 'error', 'message' => 'Fee plan already exists for this class and month']);
                 } else {
                     http_response_code(500); // 500 Internal Server Error
                     echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
