@@ -12,7 +12,7 @@ function fetchFeePlansData() {
 
         // Create a header row dynamically for the months
         const months = [
-          'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'March'
+         'Fee Head', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'March'
         ];
         const headerRow = document.querySelector('#student_fee_table thead tr');
         months.forEach(month => {
