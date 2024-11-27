@@ -93,7 +93,7 @@ function fetchFeePlansData() {
         totalAmountCell.innerHTML = `
           <div class="amount-button">
             <div class="amount">${totalAmount || ''}</div>
-            <button class="btn btn-outline-success rounded-circle">
+            <button class="btn btn-label-success rounded-circle">
               <i class="bx bx-plus"></i>
             </button>
           </div>
