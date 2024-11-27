@@ -6,9 +6,10 @@ header('Content-Type: application/json');
 
 try {
     // Query to fetch fee plans data sorted by Fee Head and custom month order
-    $sql = "SELECT class_name, fee_head_name, month_name, amount
-        FROM FeePlans
-        ORDER BY class_name, fee_head_name, FIELD(month_name, 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March')";
+    $sql = "SELECT fee_head_name, month_name, amount
+            FROM FeePlans
+            ORDER BY fee_head_name,
+                     FIELD(month_name, 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March')";
 
     // Execute the query
     $stmt = $pdo->prepare($sql);
