@@ -9,7 +9,7 @@ try {
     $sql = "SELECT fee_head_name, month_name, amount
             FROM FeePlans
             ORDER BY fee_head_name,
-                     FIELD(month_name, 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'March')";
+                     FIELD(month_name, 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March')";
 
     // Execute the query
     $stmt = $pdo->prepare($sql);
