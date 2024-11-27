@@ -411,59 +411,64 @@ document.addEventListener('DOMContentLoaded', function () {
             </option>
           `).join('');
 
+          // Get all 12 months and create checkboxes for each
+          const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+          const monthCheckboxes = months.map(month => `
+            <label>
+              <input type="checkbox" class="month-checkbox" value="${month}"
+                ${feePlan.month_name.split(',').includes(month) ? 'checked' : ''}>
+              ${month}
+            </label>
+          `).join('');
+
           Swal.fire({
             title: 'Edit Fee Plan',
             html: `
-                      <div class="fee-plan-form">
-                         <div class="form-group">
-                           <label for="editId">Fee Plan ID</label>
-                           <input
-                             id="editId"
-                             class="input-field readonly"
-                             type="number"
-                             value="${feePlan.fee_plan_id}"
-                             readonly
-                           />
-                         </div>
+              <div class="fee-plan-form">
+                <div class="form-group">
+                  <label for="editId">Fee Plan ID</label>
+                  <input
+                    id="editId"
+                    class="input-field readonly"
+                    type="number"
+                    value="${feePlan.fee_plan_id}"
+                    readonly
+                  />
+                </div>
 
-                         <div class="form-group">
-                           <label for="editClassName">Class Name</label>
-                           <select id="editClassName" class="select-field">
-                             ${classOptions}
-                           </select>
-                         </div>
+                <div class="form-group">
+                  <label for="editClassName">Class Name</label>
+                  <select id="editClassName" class="select-field">
+                    ${classOptions}
+                  </select>
+                </div>
 
-                          <div class="form-group">
-                            <label for="editFeeHead">Fee Head Name</label>
-                            <select id="editFeeHead" class="select-field">
-                              ${feeHeadOptions}
-                            </select>
-                          </div>
+                <div class="form-group">
+                  <label for="editFeeHead">Fee Head Name</label>
+                  <select id="editFeeHead" class="select-field">
+                    ${feeHeadOptions}
+                  </select>
+                </div>
 
-                          <div class="form-group">
-                            <label for="editMonth">Month Name</label>
-                            <input
-                              id="editMonth"
-                              class="input-field"
-                              type="text"
-                              value="${feePlan.month_name || ''}"
-                              placeholder="Enter Month Name"
-                            />
-                          </div>
+                <div class="form-group">
+                  <label for="editMonth">Month Name</label>
+                  <div id="editMonth" class="month-checkboxes">
+                    ${monthCheckboxes}
+                  </div>
+                </div>
 
-                          <div class="form-group">
-                            <label for="editAmount">Amount</label>
-                            <input
-                              id="editAmount"
-                              class="input-field"
-                              type="number"
-                              value="${feePlan.amount || ''}"
-                              placeholder="Enter Amount"
-                            />
-                          </div>
-                        </div>
-
-                  `,
+                <div class="form-group">
+                  <label for="editAmount">Amount</label>
+                  <input
+                    id="editAmount"
+                    class="input-field"
+                    type="number"
+                    value="${feePlan.amount || ''}"
+                    placeholder="Enter Amount"
+                  />
+                </div>
+              </div>
+            `,
             showDenyButton: true,
             showCancelButton: true,
             confirmButtonText: 'Save',
@@ -471,11 +476,13 @@ document.addEventListener('DOMContentLoaded', function () {
             preConfirm: () => {
               const feeHead = document.getElementById('editFeeHead').value.trim();
               const className = document.getElementById('editClassName').value.trim();
-              const month = document.getElementById('editMonth').value.trim();
+              const month = Array.from(document.getElementById('editMonth').getElementsByClassName('month-checkbox'))
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
               const amount = document.getElementById('editAmount').value.trim();
               const id = document.getElementById('editId').value.trim();
 
-              if (!id || !className || !feeHead || !month || !amount) {
+              if (!id || !className || !feeHead || !month.length || !amount) {
                 Swal.showValidationMessage('All fields are required!');
                 return false;
               }
@@ -486,21 +493,24 @@ document.addEventListener('DOMContentLoaded', function () {
             if (result.isConfirmed) {
               const { id, className, feeHead, month, amount } = result.value;
 
+              // Prepare data to send to backend
+              const data = {
+                id: id,
+                fee_head_name: feeHead,
+                class_name: className,
+                month_name: month.join(','), // Join the selected months with commas
+                amount: amount
+              };
+
               $.ajax({
                 url: '../php/feePlan/update_fee_plan.php',
                 type: 'POST',
-                data: {
-                  id: id,
-                  fee_head_name: feeHead,
-                  class_name: className,
-                  month_name: month,
-                  amount: amount
-                },
+                data: data,
                 dataType: 'json',
                 success: function (response) {
                   if (response.status === 'success') {
                     Swal.fire('Success', response.message, 'success');
-                    loadFeePlans();
+                    loadFeePlans(); // Reload fee plans
                   } else {
                     Swal.fire('Error', response.message, 'error');
                   }
@@ -519,7 +529,8 @@ document.addEventListener('DOMContentLoaded', function () {
         Swal.fire('Error', 'An error occurred while fetching the fee plan details.', 'error');
       }
     });
-  };
+};
+
 
   // Delete Fee Plan
   const deleteFeePlan = class_name => {
