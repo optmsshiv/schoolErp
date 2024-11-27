@@ -11,6 +11,16 @@ function fetchFeePlansData() {
           'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'March'
         ];
 
+        // Dynamically populate the table header
+        const theadRow = document.querySelector('#student_fee_table thead tr');
+        theadRow.innerHTML = '<th>Fee Head</th>'; // Add Fee Head column
+
+        months.forEach(month => {
+          const th = document.createElement('th');
+          th.textContent = month;
+          theadRow.appendChild(th);
+        });
+
         // Create a map of fee heads and their corresponding months/amounts
         const feeDataMap = {};
 
@@ -27,21 +37,20 @@ function fetchFeePlansData() {
           }
         });
 
-        // Populate the table dynamically
+        // Populate the table body dynamically
         const tableBody = document.querySelector('#student_fee_table tbody');
         tableBody.innerHTML = ''; // Clear existing rows
 
-        // Iterate over feeDataMap to create rows
         Object.keys(feeDataMap).forEach(feeHeadName => {
           const row = document.createElement('tr');
           row.classList.add('text-center');
 
-          // Fee Head Column
+          // Add Fee Head Column
           const feeHeadCell = document.createElement('td');
           feeHeadCell.textContent = feeHeadName;
           row.appendChild(feeHeadCell);
 
-          // Amount Columns for Each Month
+          // Add Amount Columns for Each Month
           feeDataMap[feeHeadName].forEach(amount => {
             const amountCell = document.createElement('td');
             amountCell.textContent = amount || ''; // Leave empty if no amount
