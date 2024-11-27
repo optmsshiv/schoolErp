@@ -862,7 +862,7 @@ td {
   width: 35px;  /* Button size */
   height: 35px;
   padding: 0;
-  font-size: 14px;
+  font-size: 18px;
   border-radius: 50%;  /* Circular button */
   display: flex;
   justify-content: center;
