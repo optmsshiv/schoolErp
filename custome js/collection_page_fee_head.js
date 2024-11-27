@@ -87,7 +87,7 @@ function fetchFeePlansData() {
       totalFeeHeadCell.textContent = 'Total';
       totalRow.appendChild(totalFeeHeadCell);
 
-      // Add total amounts for each month
+      // Add total amounts for each month with updated button style
       totalAmounts.forEach(totalAmount => {
         const totalAmountCell = document.createElement('td');
         totalAmountCell.innerHTML = `
