@@ -879,7 +879,7 @@ td {
   flex-direction: column; /* Stack the content vertically */
   align-items: center; /* Horizontally center the content */
   justify-content: center; /* Vertically center the content */
-  width: 100%; /* Ensures the container takes up the full width of the cell */
+  height: 100%; /* Make the container take full height of the table cell */
 }
 
 .amount-button .amount {
@@ -896,6 +896,7 @@ td {
   justify-content: center;
   align-items: center;
 }
+
 
 
 
