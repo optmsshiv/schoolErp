@@ -15,15 +15,15 @@ function fetchFeePlansData() {
         const feeDataMap = {};
 
         data.forEach(record => {
-          const { fee_head, month, amount } = record;
+          const { fee_head_name, month_name, amount } = record;
 
-          if (!feeDataMap[fee_head]) {
-            feeDataMap[fee_head] = new Array(months.length).fill(''); // Initialize empty array for months
+          if (!feeDataMap[fee_head_name]) {
+            feeDataMap[fee_head_name] = new Array(months.length).fill(''); // Initialize empty array for months
           }
 
-          const monthIndex = months.indexOf(month); // Get month index
+          const monthIndex = months.indexOf(month_name); // Get month index
           if (monthIndex !== -1) {
-            feeDataMap[fee_head][monthIndex] = amount; // Assign amount to the correct month
+            feeDataMap[fee_head_name][monthIndex] = amount; // Assign amount to the correct month
           }
         });
 
@@ -32,17 +32,17 @@ function fetchFeePlansData() {
         tableBody.innerHTML = ''; // Clear existing rows
 
         // Iterate over feeDataMap to create rows
-        Object.keys(feeDataMap).forEach(feeHead => {
+        Object.keys(feeDataMap).forEach(feeHeadName => {
           const row = document.createElement('tr');
           row.classList.add('text-center');
 
           // Fee Head Column
           const feeHeadCell = document.createElement('td');
-          feeHeadCell.textContent = feeHead;
+          feeHeadCell.textContent = feeHeadName;
           row.appendChild(feeHeadCell);
 
           // Amount Columns for Each Month
-          feeDataMap[feeHead].forEach(amount => {
+          feeDataMap[feeHeadName].forEach(amount => {
             const amountCell = document.createElement('td');
             amountCell.textContent = amount || ''; // Leave empty if no amount
             row.appendChild(amountCell);
