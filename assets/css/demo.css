@@ -855,12 +855,7 @@ td {
   margin-bottom: 5px;
   font-weight: bold;
 }
-.amount-button button {
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  font-size: 18px;
-}
+
 
 .plus-button {
   width: 30px;
