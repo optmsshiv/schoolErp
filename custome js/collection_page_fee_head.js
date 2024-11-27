@@ -20,7 +20,7 @@ function fetchFeePlansData() {
       }
 
       const months = [
-        'April', 'May', 'June', 'July', 'August', 'September', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'March'
+        'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March'
       ];
 
       // Generate the table header dynamically
