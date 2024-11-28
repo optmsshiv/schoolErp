@@ -7,12 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function fetchFeePlansData() {
   const apiUrl = '../php/collectFeeStudentDetails/collection_page_fee_head.php'; // Update path as needed
 
-  // Get class_name from session storage
-  const className = sessionStorage.getItem('class_name');
-  if (!className) {
-    showAlert('Class name not found in session storage.', 'error');
-    return;
-  }
+ 
 
   // Prepare data to send to the backend
   const formData = new FormData();
