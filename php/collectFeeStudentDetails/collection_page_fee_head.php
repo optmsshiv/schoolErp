@@ -1,27 +1,35 @@
 <?php
-// Include database connection
 include '../db_connection.php';
 
 header('Content-Type: application/json');
 
+$class_name = $_GET['class_name'] ?? null; // Retrieve class_name from query parameter
+
+if (!$class_name) {
+    echo json_encode(['status' => 'error', 'message' => 'Class name is required.']);
+    exit;
+}
+
 try {
-    // Query to fetch fee plans data sorted by Fee Head and custom month order
+    // Query to fetch fee plans for the specific class
     $sql = "SELECT fee_head_name, month_name, amount
             FROM FeePlans
+            WHERE class_name = :class_name
             ORDER BY fee_head_name,
                      FIELD(month_name, 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March')";
 
-    // Execute the query
     $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':class_name', $class_name, PDO::PARAM_STR);
     $stmt->execute();
 
-    // Fetch all rows
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Return the data as JSON
-    echo json_encode(['status' => 'success', 'data' => $data]);
+    if (empty($data)) {
+        echo json_encode(['status' => 'error', 'message' => 'No fee plans found for the specified class.']);
+    } else {
+        echo json_encode(['status' => 'success', 'data' => $data]);
+    }
 } catch (PDOException $e) {
-    // Return error details
     echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
 }
 ?>
