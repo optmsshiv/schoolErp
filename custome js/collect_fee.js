@@ -98,7 +98,7 @@ function fetchStudentData() {
         })
         .catch(error => {
           console.error('Error fetching data:', error);
-          table.innerHTML = '<tr><td colspan="6">Error loading data. Please try again.</td></tr>';
+          table.innerHTML = '<tr><td colspan="6">Search student name for collect fee.</td></tr>';
         })
         .finally(() => {
           // Hide loading bar
