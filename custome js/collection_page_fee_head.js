@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-  fetchFeePlansData();
+  const className = "Class Name Placeholder"; // Replace with the actual class name dynamically if needed
+  fetchFeePlansData(className);
 });
 
-function fetchFeePlansData() {
+function fetchFeePlansData(className) {
   const apiUrl = '../php/collectFeeStudentDetails/collection_page_fee_head.php'; // Update path as needed
 
   fetch(apiUrl)
@@ -15,7 +16,10 @@ function fetchFeePlansData() {
     .then(({ status, data }) => {
       if (status !== 'success' || !Array.isArray(data) || data.length === 0) {
         console.error('No data available or an error occurred');
-        showAlert('No data available to display.', 'error'); // Optional user feedback
+        showAlert(
+          `Fee generation not found for the class: ${className}. First generate the fee for this class.`,
+          'error'
+        );
         return;
       }
 
@@ -46,6 +50,15 @@ function fetchFeePlansData() {
           feeDataMap[fee_head_name][monthIndex] = amount; // Assign the amount to the correct month
         }
       });
+
+      if (Object.keys(feeDataMap).length === 0) {
+        // Show Swal alert if no fee data is available
+        showAlert(
+          `Fee generation not found for the class: ${className}. First generate the fee for this class.`,
+          'error'
+        );
+        return;
+      }
 
       // Populate the table body dynamically
       const tableBody = document.querySelector('#student_fee_table tbody');
