@@ -5,31 +5,17 @@ document.addEventListener('DOMContentLoaded', function () {
 function fetchFeePlansData() {
   const apiUrl = '../php/collectFeeStudentDetails/collection_page_fee_head.php'; // Update path as needed
 
-  // Get class_name from session storage
-  const className = sessionStorage.getItem('class_name');
-  if (!className) {
-    showAlert('Class name not found in session storage.', 'error');
-    return;
-  }
-
-  // Prepare data to send to the backend
-  const formData = new FormData();
-  formData.append('class_name', className);
-
-  fetch(apiUrl, {
-    method: 'POST',
-    body: formData,
-  })
+  fetch(apiUrl)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       return response.json();
     })
-    .then(({ status, data, message }) => {
+    .then(({ status, data }) => {
       if (status !== 'success' || !Array.isArray(data) || data.length === 0) {
-        console.error(message || 'No data available or an error occurred');
-        showAlert(message || 'No data available to display.', 'error'); // Optional user feedback
+        console.error('No data available or an error occurred');
+        showAlert('No data available to display.', 'error'); // Optional user feedback
         return;
       }
 
