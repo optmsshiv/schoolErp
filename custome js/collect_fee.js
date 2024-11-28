@@ -35,14 +35,15 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function fetchStudentData() {
+  const loader = document.getElementById('loader');
+  loader.style.display = 'block'; // Show loader
+
   fetch('../collectFeeStudentDetails/students_details.php')
     .then(response => response.json())
     .then(data => {
+      const table = document.querySelector('#student_data tbody');
+      table.innerHTML = ''; // Clear existing rows
       if (data.length > 0) {
-        const table = document.querySelector('#student_data tbody');
-        table.innerHTML = ''; // Clear existing rows
-
-        // Create table rows
         data.forEach(student => {
           const row1 = `
               <tr>
@@ -82,11 +83,17 @@ function fetchStudentData() {
                   <td>${student.transport_fee}</td>
               </tr>`;
 
-          table.insertAdjacentHTML('beforeend', row1 + row2 + row3 + row4);
+              table.insertAdjacentHTML('beforeend', rows);
+            });
+          } else {
+            table.innerHTML = '<tr><td colspan="6">No student data available</td></tr>';
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+          alert('Failed to load student data. Please try again.');
+        })
+        .finally(() => {
+          loader.style.display = 'none'; // Hide loader
         });
-      } else {
-        console.log('No data found');
-      }
-    })
-    .catch(error => console.error('Error fetching data:', error));
-}
+    }
