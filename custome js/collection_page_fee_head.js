@@ -46,14 +46,13 @@ function fetchFeePlansData() {
           feeDataMap[fee_head_name][monthIndex] = amount; // Assign the amount to the correct month
         }
 
-        // Skip classes with missing fee amounts
+        // Check if any fee is missing for the class, and show alert if necessary
         if (!amount) {
           Swal.fire({
             icon: 'error',
             title: 'Fee Not Generated',
             text: `Fee not generated for class: ${class_name}`,
           });
-          return; // Skip further processing for this class
         }
       });
 
@@ -64,9 +63,6 @@ function fetchFeePlansData() {
       let totalAmounts = new Array(months.length).fill(0); // Array to store total amounts for each month
 
       Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
-        // Skip fee heads with no valid data
-        if (monthAmounts.every(amount => !amount)) return;
-
         const row = document.createElement('tr');
         row.classList.add('text-center');
 
@@ -106,7 +102,7 @@ function fetchFeePlansData() {
         totalAmountCell.innerHTML = `
           <div class="amount-button">
             <div class="amount">${totalAmount || ''}</div>
-            <button class="btn btn-outline-success rounded-circle">
+            <button class="btn btn-outline-primary rounded-circle">
               <i class="bx bx-plus"></i>
             </button>
           </div>
