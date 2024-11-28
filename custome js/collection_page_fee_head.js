@@ -1,18 +1,77 @@
 document.addEventListener('DOMContentLoaded', function () {
-  fetchFeePlansData();
+  // Retrieve the student data from session storage
+  const studentData = JSON.parse(sessionStorage.getItem('studentData'));
+
+  if (studentData && studentData.length > 0) {
+    // Extract class_name from the first student record
+    const className = studentData[0]?.class_name;
+
+    if (className) {
+      console.log('Class Name:', className); // Use class_name as needed
+      // Example: Use class_name to fetch fee plans
+      fetchFeePlansData(className);
+    } else {
+      console.error('Class name not found in student data.');
+    }
+
+    // Populate the fee table
+    populateFeeTable(studentData);
+  } else {
+    console.error('No student data found in session storage.');
+  }
 });
 
-function fetchFeePlansData() {
-  const apiUrl = '../php/collectFeeStudentDetails/collection_page_fee_head.php'; // Update path as needed
+function populateFeeTable(data) {
+  const feeTable = document.querySelector('#student_fee_data tbody');
+  feeTable.innerHTML = ''; // Clear existing rows
 
-  // Get class_name from session storage
-  const className = sessionStorage.getItem('class_name');
-  if (!className) {
-    showAlert('Class name not found in session storage.', 'error');
-    return;
-  }
+  // Iterate through the student data and create table rows
+  data.forEach(student => {
+    const row1 = `
+      <tr>
+        <td class="fw-bold">Student's Name:</td>
+        <td>${student.full_name}</td>
+        <td class="fw-bold">Father's Name:</td>
+        <td>${student.father_name}</td>
+        <td class="fw-bold">Monthly Fee:</td>
+        <td>${student.monthly_fee}</td>
+      </tr>`;
 
-  // Prepare data to send to the backend
+    const row2 = `
+      <tr>
+        <td class="fw-bold">Class:</td>
+        <td>${student.class_name}</td>
+        <td class="fw-bold">Mother's Name:</td>
+        <td>${student.mother_name}</td>
+        <td class="fw-bold">Type:</td>
+        <td>${student.day_hosteler}</td>
+      </tr>`;
+
+    const row3 = `
+      <tr>
+        <td class="fw-bold">Roll number:</td>
+        <td>${student.roll_no}</td>
+        <td class="fw-bold">Mobile:</td>
+        <td>${student.phone}</td>
+        <td class="fw-bold">Gender:</td>
+        <td>${student.gender}</td>
+      </tr>`;
+
+    const row4 = `
+      <tr>
+        <td class="fw-bold">Hostel Fee:</td>
+        <td>${student.hotel_fee}</td>
+        <td class="fw-bold">Transport Fee:</td>
+        <td>${student.transport_fee}</td>
+      </tr>`;
+
+    feeTable.insertAdjacentHTML('beforeend', row1 + row2 + row3 + row4);
+  });
+}
+
+// Example function to fetch fee plans using class_name
+function fetchFeePlansData(className) {
+  const apiUrl = '../php/collectFeeStudentDetails/collection_page_fee_head.php';
   const formData = new FormData();
   formData.append('class_name', className);
 
@@ -26,122 +85,14 @@ function fetchFeePlansData() {
       }
       return response.json();
     })
-    .then(({ status, data, message }) => {
-      if (status !== 'success' || !Array.isArray(data) || data.length === 0) {
-        console.error(message || 'No data available or an error occurred');
-        showAlert(message || 'No data available to display.', 'error'); // Optional user feedback
+    .then(({ status, data }) => {
+      if (status !== 'success') {
+        console.error('Error fetching fee plans:', data);
         return;
       }
-
-      const months = [
-        'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March'
-      ];
-
-      // Generate the table header dynamically
-      const theadRow = document.querySelector('#student_fee_table thead tr');
-      theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
-
-      months.forEach(month => {
-        const th = document.createElement('th');
-        th.textContent = month;
-        theadRow.appendChild(th);
-      });
-
-      // Create a map to organize data by Fee Head and months
-      const feeDataMap = {};
-
-      data.forEach(({ fee_head_name, month_name, amount, class_name }) => {
-        if (!feeDataMap[fee_head_name]) {
-          feeDataMap[fee_head_name] = new Array(months.length).fill(''); // Initialize months array
-        }
-
-        const monthIndex = months.indexOf(month_name); // Get month index
-        if (monthIndex !== -1) {
-          feeDataMap[fee_head_name][monthIndex] = amount; // Assign the amount to the correct month
-        }
-
-        // Skip classes with missing fee amounts
-        if (!amount) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Fee Not Generated',
-            text: `Fee not generated for class: ${class_name}`,
-          });
-          return; // Skip further processing for this class
-        }
-      });
-
-      // Populate the table body dynamically
-      const tableBody = document.querySelector('#student_fee_table tbody');
-      tableBody.innerHTML = ''; // Clear any existing rows
-
-      let totalAmounts = new Array(months.length).fill(0); // Array to store total amounts for each month
-
-      Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
-        // Skip fee heads with no valid data
-        if (monthAmounts.every(amount => !amount)) return;
-
-        const row = document.createElement('tr');
-        row.classList.add('text-center');
-
-        // Fee Head column
-        const feeHeadCell = document.createElement('td');
-        feeHeadCell.textContent = feeHeadName;
-        row.appendChild(feeHeadCell);
-
-        // Amount columns for each month
-        monthAmounts.forEach((amount, index) => {
-          const amountCell = document.createElement('td');
-          amountCell.textContent = amount || ''; // Leave empty if no amount
-          row.appendChild(amountCell);
-
-          // Add the amount to the total for that month
-          if (amount && !isNaN(amount)) {
-            totalAmounts[index] += parseFloat(amount);
-          }
-        });
-
-        // Append row to the table body
-        tableBody.appendChild(row);
-      });
-
-      // Add "Total" row with amount buttons
-      const totalRow = document.createElement('tr');
-      totalRow.classList.add('text-center');
-
-      // Add "Total" cell
-      const totalFeeHeadCell = document.createElement('td');
-      totalFeeHeadCell.textContent = 'Total';
-      totalRow.appendChild(totalFeeHeadCell);
-
-      // Add total amounts for each month
-      totalAmounts.forEach(totalAmount => {
-        const totalAmountCell = document.createElement('td');
-        totalAmountCell.innerHTML = `
-          <div class="amount-button">
-            <div class="amount">${totalAmount || ''}</div>
-            <button class="btn btn-outline-success rounded-circle">
-              <i class="bx bx-plus"></i>
-            </button>
-          </div>
-        `;
-        totalRow.appendChild(totalAmountCell);
-      });
-
-      // Append total row to the table
-      tableBody.appendChild(totalRow);
+      console.log('Fee plans fetched successfully:', data);
     })
     .catch(error => {
-      console.error('Error fetching fee plans data:', error);
-      showAlert('Unable to fetch data. Please try again later.', 'error'); // Optional user feedback
+      console.error('Error:', error);
     });
-}
-
-// Optional helper function to display alerts
-function showAlert(message, type) {
-  Swal.fire({
-    icon: type,
-    title: type === 'error' ? 'Error' : 'Info',
-    text: message,
-  });
 }
