@@ -15,6 +15,16 @@ function populateFeeTable(data) {
 
   // Iterate through the student data and create table rows
   data.forEach(student => {
+    // Check if fee is generated for this student's class
+    if (!isFeeGeneratedForClass(student.class_name)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: `Fee is not generated for the class: ${student.class_name}`,
+      });
+      return; // Skip further processing for this student if fee is not generated
+    }
+
     const row1 = `
       <tr>
         <td class="fw-bold">Student's Name:</td>
@@ -44,6 +54,7 @@ function populateFeeTable(data) {
         <td class="fw-bold">Gender:</td>
         <td>${student.gender}</td>
       </tr>`;
+
     const row4 = `
       <tr>
           <td class="fw-bold">Hotel Fee:</td>
@@ -54,4 +65,11 @@ function populateFeeTable(data) {
 
     feeTable.insertAdjacentHTML('beforeend', row1 + row2 + row3 + row4);
   });
+}
+
+// Function to check if the fee is generated for the class (using sessionStorage or any condition)
+function isFeeGeneratedForClass(className) {
+  // You can replace this logic with your own fee-generation check (e.g., based on sessionStorage or API response)
+  const feeGeneratedClasses = JSON.parse(sessionStorage.getItem('generatedFeeClasses')) || [];
+  return feeGeneratedClasses.includes(className); // Check if the class is in the list of generated fee classes
 }
