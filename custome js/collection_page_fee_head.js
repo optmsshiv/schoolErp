@@ -1,17 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Retrieve the class name from session storage
-  const className = sessionStorage.getItem('className');
-
-  if (className) {
-    // Proceed to fetch the fee plans data for the class
-    fetchFeePlansData(className);
-  } else {
-    console.error("Class name not found in session storage.");
-    showAlert('Class name not found in session storage. Please ensure the class is set first.', 'error');
-  }
+  fetchFeePlansData();
 });
 
-function fetchFeePlansData(className) {
+function fetchFeePlansData() {
   const apiUrl = '../php/collectFeeStudentDetails/collection_page_fee_head.php'; // Update path as needed
 
   fetch(apiUrl)
@@ -24,7 +15,7 @@ function fetchFeePlansData(className) {
     .then(({ status, data }) => {
       if (status !== 'success' || !Array.isArray(data) || data.length === 0) {
         console.error('No data available or an error occurred');
-        showAlert(`Fee generation not found for the class: ${className}. First generate the Fee for this class.`, 'error');
+        showAlert('No data available to display.', 'error'); // Optional user feedback
         return;
       }
 
@@ -62,8 +53,6 @@ function fetchFeePlansData(className) {
 
       let totalAmounts = new Array(months.length).fill(0); // Array to store total amounts for each month
 
-      let feeDataFound = false; // Flag to check if any fee data exists
-
       Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
         const row = document.createElement('tr');
         row.classList.add('text-center');
@@ -82,18 +71,12 @@ function fetchFeePlansData(className) {
           // Add the amount to the total for that month
           if (amount && !isNaN(amount)) {
             totalAmounts[index] += parseFloat(amount);
-            feeDataFound = true; // If any fee data is found, set flag to true
           }
         });
 
         // Append row to the table body
         tableBody.appendChild(row);
       });
-
-      // If no fee data is found for the class, show an alert
-      if (!feeDataFound) {
-        showAlert(`Fee generation not found for the class: ${className}. First generate the Fee for this class.`, 'error');
-      }
 
       // Add "Total" row with amount buttons
       const totalRow = document.createElement('tr');
@@ -110,8 +93,8 @@ function fetchFeePlansData(className) {
         totalAmountCell.innerHTML = `
           <div class="amount-button">
             <div class="amount">${totalAmount || ''}</div>
-            <button class="btn btn-outline-success rounded-circle">
-              <i class="fas fa-plus"></i>
+            <button class="btn btn-outline-primary rounded-circle">
+              <i class="bx bx-plus"></i>
             </button>
           </div>
         `;
@@ -123,7 +106,7 @@ function fetchFeePlansData(className) {
     })
     .catch(error => {
       console.error('Error fetching fee plans data:', error);
-      showAlert('Unable to fetch data. Please try again later.', 'error');
+      showAlert('Unable to fetch data. Please try again later.', 'error'); // Optional user feedback
     });
 }
 
