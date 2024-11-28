@@ -765,17 +765,13 @@
                     <h5 class="fw-bold ms-3 mb-0">Fee Details</h5>
                     <a class="btn btn-outline-primary" id="collect_fee_btn" href="collection-page.html">Collect Fee</a>
                   </div>
-
-                  <div class="container my-3">
-                    <div class="row g-4">
-                      <!-- Card 1: Total Paid Amount -->
-
-                      <!-- Card 2: Pending Amount -->
-
-                      <!-- Card 3: Hostel Amount -->
-
-                      <!-- Card 4: Transport Amount -->
-
+                  <!-- Card Container: Click to Show Fee Cards -->
+                  <div id="card-container" class="card-container" style="cursor: pointer;">
+                    <h5>Click to View Fee Details</h5>
+                  </div>
+                  <div class="container my-3" style="display: none;">
+                    <div class="row g-4" id="fee-cards-container">
+                      <!-- Fee cards will be populated here dynamically -->
                     </div>
                   </div>
 
@@ -795,7 +791,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                       
+
                       </tbody>
                     </table>
                   </div>
