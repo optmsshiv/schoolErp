@@ -1,54 +1,43 @@
-// Ensure DOM is fully loaded before attaching event listeners
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('student_search');
+  const cardContainer = document.getElementById('card-container'); // Container for showing the fee cards
+  const feeCardsContainer = document.querySelector(".row.g-4"); // Container for the fee cards
+
+  // Initially hide the fee cards
+  feeCardsContainer.style.display = 'none';
+
   // Attach event listeners to the search input
   searchInput.addEventListener('focus', showCardContainer);
   searchInput.addEventListener('input', debounce(searchStudents, 300));
 
-  // Dynamically populate fee cards and table data
-  populateCards(feeDetails.cards);
-  populateTable(feeDetails.tableData);
+  // Attach event listener to the card container to show fee cards on click
+  cardContainer.addEventListener('click', showFeeCards);
 });
 
-// Data structure for fee details (you can fetch this from a backend API)
-const feeDetails = {
-  cards: [
-    { title: "Total Paid Amount", amount: 50000, icon: "fa-wallet" },
-    { title: "Pending Amount", amount: 15000, icon: "fa-exclamation-circle" },
-    { title: "Hostel Fee", amount: 10000, icon: "fa-bed" },
-    { title: "Transport Fee", amount: 5000, icon: "fa-bus" },
-  ],
-  tableData: [
-    {
-      receiptId: "R001",
-      month: "January",
-      dueAmount: 2000,
-      pendingAmount: 500,
-      receivedAmount: 1500,
-      totalAmount: 2000,
-      status: "Paid",
-    },
-    {
-      receiptId: "R002",
-      month: "February",
-      dueAmount: 2000,
-      pendingAmount: 2000,
-      receivedAmount: 0,
-      totalAmount: 2000,
-      status: "Pending",
-    },
-  ],
-};
-
-// Function to show the card container
+// Function to show the card container (search results)
 function showCardContainer() {
   const resultsContainer = document.getElementById('results');
   resultsContainer.style.display = 'block';
 }
 
+// Function to display the fee cards when the card container is clicked
+function showFeeCards() {
+  const feeCardsContainer = document.querySelector(".row.g-4");
+
+  // Show fee cards
+  feeCardsContainer.style.display = 'block';
+
+  // Optionally, you can populate the fee cards here (if not done already)
+  populateCards(feeDetails.cards);
+}
+
 // Function to populate the fee cards dynamically
 function populateCards(cards) {
   const cardContainer = document.querySelector(".row.g-4");
+
+  // Clear previous cards (if any)
+  cardContainer.innerHTML = '';
+
   cards.forEach((card) => {
     const cardHTML = `
       <div class="col-lg-3 col-md-6">
@@ -103,6 +92,36 @@ function populateTable(data) {
     tableBody.insertAdjacentHTML("beforeend", rowHTML);
   });
 }
+
+// Data structure for fee details (you can fetch this from a backend API)
+const feeDetails = {
+  cards: [
+    { title: "Total Paid Amount", amount: 50000, icon: "fa-wallet" },
+    { title: "Pending Amount", amount: 15000, icon: "fa-exclamation-circle" },
+    { title: "Hostel Fee", amount: 10000, icon: "fa-bed" },
+    { title: "Transport Fee", amount: 5000, icon: "fa-bus" },
+  ],
+  tableData: [
+    {
+      receiptId: "R001",
+      month: "January",
+      dueAmount: 2000,
+      pendingAmount: 500,
+      receivedAmount: 1500,
+      totalAmount: 2000,
+      status: "Paid",
+    },
+    {
+      receiptId: "R002",
+      month: "February",
+      dueAmount: 2000,
+      pendingAmount: 2000,
+      receivedAmount: 0,
+      totalAmount: 2000,
+      status: "Pending",
+    },
+  ],
+};
 
 // Function to populate the student table with details
 function populateStudentTable(student) {
