@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const className = "Class Name Placeholder"; // Replace with the actual class name dynamically if needed
+  const className = "class_name"; // Replace with the actual class name dynamically if needed
   fetchFeePlansData(className);
 });
 
