@@ -5,6 +5,14 @@ document.addEventListener('DOMContentLoaded', function () {
 function fetchFeePlansData() {
   const apiUrl = '../php/collectFeeStudentDetails/collection_page_fee_head.php'; // Update path as needed
 
+  // Retrieve the class_name from session storage
+  const classNameFromSession = sessionStorage.getItem('class_name'); // Ensure class_name is stored in session storage
+
+  if (!classNameFromSession) {
+    console.error('Class name is not found in session storage');
+    return;
+  }
+
   fetch(apiUrl)
     .then(response => {
       if (!response.ok) {
@@ -36,7 +44,13 @@ function fetchFeePlansData() {
       // Create a map to organize data by Fee Head and months
       const feeDataMap = {};
 
+      // Filter the data based on the class_name from session storage
       data.forEach(({ fee_head_name, month_name, amount, class_name }) => {
+        // Only process data for the class that matches the session class_name
+        if (class_name !== classNameFromSession) {
+          return; // Skip data that doesn't match
+        }
+
         if (!feeDataMap[fee_head_name]) {
           feeDataMap[fee_head_name] = new Array(months.length).fill(''); // Initialize months array
         }
@@ -44,6 +58,15 @@ function fetchFeePlansData() {
         const monthIndex = months.indexOf(month_name); // Get month index
         if (monthIndex !== -1) {
           feeDataMap[fee_head_name][monthIndex] = amount; // Assign the amount to the correct month
+        }
+
+        // Check if fee is missing for the class and show alert if necessary
+        if (!amount) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Fee Not Generated',
+            text: `Fee not generated for class: ${class_name}`,
+          });
         }
       });
 
@@ -54,6 +77,9 @@ function fetchFeePlansData() {
       let totalAmounts = new Array(months.length).fill(0); // Array to store total amounts for each month
 
       Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
+        // Skip fee heads with no valid data
+        if (monthAmounts.every(amount => !amount)) return;
+
         const row = document.createElement('tr');
         row.classList.add('text-center');
 
