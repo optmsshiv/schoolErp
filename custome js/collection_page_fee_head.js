@@ -36,7 +36,7 @@ function fetchFeePlansData() {
       // Create a map to organize data by Fee Head and months
       const feeDataMap = {};
 
-      data.forEach(({ fee_head_name, month_name, amount }) => {
+      data.forEach(({ fee_head_name, month_name, amount, class_name }) => {
         if (!feeDataMap[fee_head_name]) {
           feeDataMap[fee_head_name] = new Array(months.length).fill(''); // Initialize months array
         }
@@ -44,6 +44,15 @@ function fetchFeePlansData() {
         const monthIndex = months.indexOf(month_name); // Get month index
         if (monthIndex !== -1) {
           feeDataMap[fee_head_name][monthIndex] = amount; // Assign the amount to the correct month
+        }
+
+        // Check if any fee is missing for the class, and show alert if necessary
+        if (!amount) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Fee Not Generated',
+            text: `Fee not generated for class: ${class_name}`,
+          });
         }
       });
 
