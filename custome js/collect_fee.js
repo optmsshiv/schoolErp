@@ -32,9 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Save the student data in session storage
     sessionStorage.setItem('studentData', JSON.stringify(studentData));
   });
-
-  // Dynamically load fee details and table data
-  fetchFeeDetails();
 });
 
 function fetchStudentData() {
@@ -44,6 +41,7 @@ function fetchStudentData() {
   // Show loading bar
   loadingBar.style.display = 'block';
   table.innerHTML = ''; // Clear existing rows
+
 
   fetch('../collectFeeStudentDetails/students_details.php')
     .then(response => response.json())
@@ -92,113 +90,18 @@ function fetchStudentData() {
                   <td>${student.transport_fee}</td>
               </tr>`;
 
-          table.insertAdjacentHTML('beforeend', row1 + row2 + row3 + row4);
+              table.insertAdjacentHTML('beforeend', row1 + row2 + row3 + row4);
+            });
+          } else {
+            table.innerHTML = '<tr><td colspan="6">No student data available</td></tr>';
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+          table.innerHTML = '<tr><td colspan="6">Search student name for collect fee.</td></tr>';
+        })
+        .finally(() => {
+          // Hide loading bar
+          loadingBar.style.display = 'none';
         });
-      } else {
-        table.innerHTML = '<tr><td colspan="6">No student data available</td></tr>';
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-      table.innerHTML = '<tr><td colspan="6">Search student name for collect fee.</td></tr>';
-    })
-    .finally(() => {
-      // Hide loading bar
-      loadingBar.style.display = 'none';
-    });
-}
-
-function fetchFeeDetails() {
-  const feeDetails = {
-    cards: [
-      { title: "Total Paid Amount", amount: 50000, icon: "fa-wallet" },
-      { title: "Pending Amount", amount: 15000, icon: "fa-exclamation-circle" },
-      { title: "Hostel Fee", amount: 10000, icon: "fa-bed" },
-      { title: "Transport Fee", amount: 5000, icon: "fa-bus" },
-    ],
-    tableData: [
-      {
-        receiptId: "R001",
-        month: "January",
-        dueAmount: 2000,
-        pendingAmount: 500,
-        receivedAmount: 1500,
-        totalAmount: 2000,
-        status: "Paid",
-      },
-      {
-        receiptId: "R002",
-        month: "February",
-        dueAmount: 2000,
-        pendingAmount: 2000,
-        receivedAmount: 0,
-        totalAmount: 2000,
-        status: "Pending",
-      },
-    ],
-  };
-
-  // Populate the fee details cards
-  populateCards(feeDetails.cards);
-
-  // Populate the fee details table
-  populateTable(feeDetails.tableData);
-}
-
-// Function to populate cards
-function populateCards(cards) {
-  const cardContainer = document.querySelector(".row.g-4");
-  cards.forEach((card) => {
-    const cardHTML = `
-      <div class="col-lg-3 col-md-6">
-        <div class="border rounded p-4 d-flex justify-content-between align-items-center">
-          <div>
-            <h5 class="card-title fw-bold">${card.title}</h5>
-            <p class="card-text">&#8377; ${card.amount}</p>
-          </div>
-          <i class="fas ${card.icon} fa-2x ms-auto"></i>
-        </div>
-      </div>
-    `;
-    cardContainer.insertAdjacentHTML("beforeend", cardHTML);
-  });
-}
-
-// Function to populate table
-function populateTable(data) {
-  const tableBody = document.querySelector("#optms tbody");
-  data.forEach((row) => {
-    const rowHTML = `
-      <tr>
-        <td>${row.receiptId}</td>
-        <td>${row.month}</td>
-        <td align="center">&#8377; ${row.dueAmount}</td>
-        <td align="center">&#8377; ${row.pendingAmount}</td>
-        <td align="center">&#8377; ${row.receivedAmount}</td>
-        <td align="center">&#8377; ${row.totalAmount}</td>
-        <td>
-          <span class="badge ${
-            row.status === "Paid"
-              ? "bg-label-success"
-              : "bg-label-danger"
-          } me-1">${row.status}</span>
-        </td>
-        <td align="center">
-          <div class="dropdown">
-            <button class="btn text-muted p-0" type="button" id="dropdownMenuButton"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bx bx-dots-vertical-rounded bx-sm"></i>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item border-bottom" href="#">View Fee Receipt</a></li>
-              <li><a class="dropdown-item border-bottom" href="#">Send Fee Receipt</a></li>
-              <li><a class="dropdown-item border-bottom" href="#">Send Fee Message</a></li>
-              <li><a class="dropdown-item" href="#">Delete</a></li>
-            </ul>
-          </div>
-        </td>
-      </tr>
-    `;
-    tableBody.insertAdjacentHTML("beforeend", rowHTML);
-  });
-}
+    }
