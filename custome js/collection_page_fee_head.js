@@ -5,6 +5,20 @@ document.addEventListener('DOMContentLoaded', function () {
 function fetchFeePlansData() {
   const apiUrl = '../php/collectFeeStudentDetails/collection_page_fee_head.php'; // Update path as needed
 
+  // Check if the class fee is available in sessionStorage
+  const className = sessionStorage.getItem('class_name'); // Get the class name from sessionStorage
+
+  // If no class is selected or fee is not generated, show an alert
+  if (!className || !isFeeGeneratedForClass(className)) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: `Fee is not generated for the class: ${className || 'N/A'}.`,
+    });
+    return; // Prevent further execution if fee is not generated
+  }
+
+  // Proceed with fetching fee plans data from the server if the fee is generated
   fetch(apiUrl)
     .then(response => {
       if (!response.ok) {
@@ -93,7 +107,7 @@ function fetchFeePlansData() {
         totalAmountCell.innerHTML = `
           <div class="amount-button">
             <div class="amount">${totalAmount || ''}</div>
-            <button class="btn btn-outline-primary rounded-circle">
+            <button class="btn btn-outline-success rounded-circle">
               <i class="bx bx-plus"></i>
             </button>
           </div>
@@ -108,6 +122,18 @@ function fetchFeePlansData() {
       console.error('Error fetching fee plans data:', error);
       showAlert('Unable to fetch data. Please try again later.', 'error'); // Optional user feedback
     });
+}
+
+// Function to check if fee is generated for the class
+function isFeeGeneratedForClass(className) {
+  // You can add the logic here to verify if the fee is generated for the class
+  // For example, check if the fee head for the class exists in sessionStorage or on the server
+  const feeGeneratedClasses = sessionStorage.getItem('generatedFeeClasses');
+  if (feeGeneratedClasses) {
+    const generatedClasses = JSON.parse(feeGeneratedClasses);
+    return generatedClasses.includes(className); // Return true if fee is generated for the class
+  }
+  return false; // Default false if no fee info is found
 }
 
 // Optional helper function to display alerts
