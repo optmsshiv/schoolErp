@@ -30,27 +30,15 @@ function fetchFeePlansData(studentData) {
   studentData.forEach(student => {
     const { monthly_fee } = student;
 
-    // Populate "Monthly Fee" for all months, or use "N/A" if no fee is available
+    // Populate "Monthly Fee" for all months
     if (!feeDataMap['Monthly Fee']) {
-      feeDataMap['Monthly Fee'] = new Array(months.length).fill(monthly_fee || 'N/A');
+      feeDataMap['Monthly Fee'] = new Array(months.length).fill(monthly_fee || 'N/A'); // Default to N/A if fee is not available
     }
   });
 
   // Populate the table body dynamically
   const tableBody = document.querySelector('#student_fee_table tbody');
   tableBody.innerHTML = ''; // Clear any existing rows
-
-  // If no data is found, show "N/A" for all months
-  if (Object.keys(feeDataMap).length === 0) {
-    const row = document.createElement('tr');
-    row.classList.add('text-center');
-    const noDataCell = document.createElement('td');
-    noDataCell.setAttribute('colspan', months.length + 1); // Spanning all columns
-    noDataCell.textContent = 'N/A';
-    row.appendChild(noDataCell);
-    tableBody.appendChild(row);
-    return;
-  }
 
   let totalAmounts = new Array(months.length).fill(0); // Array to store total amounts for each month
 
@@ -66,10 +54,10 @@ function fetchFeePlansData(studentData) {
     // Amount columns for each month
     monthAmounts.forEach((amount, index) => {
       const amountCell = document.createElement('td');
-      amountCell.textContent = amount || 'N/A'; // Default to "N/A" if no amount
+      amountCell.textContent = amount !== 'N/A' && amount ? amount : 'N/A'; // Display N/A if no amount
       row.appendChild(amountCell);
 
-      // Add the amount to the total for that month
+      // Add the amount to the total for that month (only if it's numeric)
       if (amount && !isNaN(amount)) {
         totalAmounts[index] += parseFloat(amount);
       }
@@ -91,7 +79,14 @@ function fetchFeePlansData(studentData) {
   // Add total amounts for each month
   totalAmounts.forEach(totalAmount => {
     const totalAmountCell = document.createElement('td');
-    totalAmountCell.textContent = totalAmount || 'N/A'; // Default to "N/A" if no total
+    totalAmountCell.innerHTML = `
+      <div class="amount-button">
+        <div class="amount">${totalAmount > 0 ? totalAmount : 'N/A'}</div> <!-- Show N/A if total is 0 -->
+        <button class="btn btn-outline-primary rounded-circle">
+          <i class="bx bx-plus"></i>
+        </button>
+      </div>
+    `;
     totalRow.appendChild(totalAmountCell);
   });
 
