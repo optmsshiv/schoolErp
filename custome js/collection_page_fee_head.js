@@ -34,7 +34,7 @@ function fetchFeePlansData(studentData) {
     if (!feeDataMap['Monthly Fee']) {
       feeDataMap['Monthly Fee'] = new Array(months.length).fill(monthly_fee);
     }
-
+ /*  // if need this then we activate it
     // Populate "Hostel Fee" for all months (if applicable)
     if (!feeDataMap['Hostel Fee']) {
       feeDataMap['Hostel Fee'] = new Array(months.length).fill(hotel_fee || '');
@@ -44,7 +44,7 @@ function fetchFeePlansData(studentData) {
     if (!feeDataMap['Transport Fee']) {
       feeDataMap['Transport Fee'] = new Array(months.length).fill(transport_fee || '');
     }
-  });
+  });*/
 
   // Populate the table body dynamically
   const tableBody = document.querySelector('#student_fee_table tbody');
