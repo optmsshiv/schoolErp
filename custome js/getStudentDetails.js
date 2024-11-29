@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           // Populate student details
           studentProfileElement.innerHTML = `
-                    <div class="container mt-2">
+
             <h2 class="text-center mb-4">Student Details</h2>
             <!-- Tabs navigation -->
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="col-md-3">
                     <div class="border text-center">
                       <div class="card-body">
-                        <h5 class="card-title">Total Fee</h5>
+                        <h5 class="card-title">Total Paid Fee</h5>
                         <p class="card-text fs-4">₹50,000</p>
                       </div>
                     </div>
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   <div class="col-md-3">
                     <div class="card text-center">
                       <div class="card-body">
-                        <h5 class="card-title">Total Amount</h5>
+                        <h5 class="card-title">Total Pending Fee</h5>
                         <p class="card-text fs-4">₹80,000</p>
                       </div>
                     </div>
@@ -270,10 +270,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 <p>Additional information goes here.</p>
               </div>
             </div>
-
-
-            <!---Container-->
-          </div>
                       `;
         }
       })
