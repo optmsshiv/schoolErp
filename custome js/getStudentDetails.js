@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="row mt-4">
                   <!-- Total Fee Card -->
                   <div class="col-md-3">
-                    <div class="card text-center">
+                    <div class="border text-center">
                       <div class="card-body">
                         <h5 class="card-title">Total Fee</h5>
                         <p class="card-text fs-4">₹50,000</p>
