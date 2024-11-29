@@ -16,7 +16,7 @@ function fetchFeePlansData(studentData) {
 
   // Generate the table header dynamically
   const theadRow = document.querySelector('#student_fee_table thead tr');
-  theadRow.innerHTML = '<th>Fee Head</th>';  // Add "Fee Head" column
+  theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
 
   months.forEach(month => {
     const th = document.createElement('th');
@@ -28,21 +28,11 @@ function fetchFeePlansData(studentData) {
   const feeDataMap = {};
 
   studentData.forEach(student => {
-    const { monthly_fee, hotel_fee, transport_fee } = student;
+    const { monthly_fee } = student;
 
     // Populate "Monthly Fee" for all months
     if (!feeDataMap['Monthly Fee']) {
       feeDataMap['Monthly Fee'] = new Array(months.length).fill(monthly_fee);
-    }
- 
-    // Populate "Hostel Fee" for all months (if applicable)
-    if (!feeDataMap['Hostel Fee']) {
-      feeDataMap['Hostel Fee'] = new Array(months.length).fill(hotel_fee || '');
-    }
-
-    // Populate "Transport Fee" for all months (if applicable)
-    if (!feeDataMap['Transport Fee']) {
-      feeDataMap['Transport Fee'] = new Array(months.length).fill(transport_fee || '');
     }
   });
 
