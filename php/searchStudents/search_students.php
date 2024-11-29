@@ -30,7 +30,7 @@ try {
             WHERE
                 s.first_name LIKE :search OR
                 s.father_name LIKE :search
-            LIMIT 10";
+            LIMIT 15";
 
     // Prepare the statement using the $pdo connection
     $stmt = $pdo->prepare($sql);
