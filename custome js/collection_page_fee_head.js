@@ -16,7 +16,7 @@ function fetchFeePlansData(studentData) {
 
   // Generate the table header dynamically
   const theadRow = document.querySelector('#student_fee_table thead tr');
-  theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
+  theadRow.innerHTML = '<th>Fee Head</th>';  // Add "Fee Head" column
 
   months.forEach(month => {
     const th = document.createElement('th');
