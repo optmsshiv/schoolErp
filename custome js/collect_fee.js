@@ -43,7 +43,7 @@ function fetchStudentData() {
   table.innerHTML = ''; // Clear existing rows
 
 
-  fetch('../php/collectFeeStudentDetails/students_details.php')
+  fetch('../php/collectFeeStudentDetails/students_fee_details.php')
     .then(response => response.json())
     .then(data => {
       if (data.length > 0) {
