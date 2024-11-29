@@ -30,15 +30,27 @@ function fetchFeePlansData(studentData) {
   studentData.forEach(student => {
     const { monthly_fee } = student;
 
-    // Populate "Monthly Fee" for all months
+    // Populate "Monthly Fee" for all months, or use "N/A" if no fee is available
     if (!feeDataMap['Monthly Fee']) {
-      feeDataMap['Monthly Fee'] = new Array(months.length).fill(monthly_fee);
+      feeDataMap['Monthly Fee'] = new Array(months.length).fill(monthly_fee || 'N/A');
     }
   });
 
   // Populate the table body dynamically
   const tableBody = document.querySelector('#student_fee_table tbody');
   tableBody.innerHTML = ''; // Clear any existing rows
+
+  // If no data is found, show "N/A" for all months
+  if (Object.keys(feeDataMap).length === 0) {
+    const row = document.createElement('tr');
+    row.classList.add('text-center');
+    const noDataCell = document.createElement('td');
+    noDataCell.setAttribute('colspan', months.length + 1); // Spanning all columns
+    noDataCell.textContent = 'N/A';
+    row.appendChild(noDataCell);
+    tableBody.appendChild(row);
+    return;
+  }
 
   let totalAmounts = new Array(months.length).fill(0); // Array to store total amounts for each month
 
@@ -54,7 +66,7 @@ function fetchFeePlansData(studentData) {
     // Amount columns for each month
     monthAmounts.forEach((amount, index) => {
       const amountCell = document.createElement('td');
-      amountCell.textContent = amount || ''; // Leave empty if no amount
+      amountCell.textContent = amount || 'N/A'; // Default to "N/A" if no amount
       row.appendChild(amountCell);
 
       // Add the amount to the total for that month
@@ -79,14 +91,7 @@ function fetchFeePlansData(studentData) {
   // Add total amounts for each month
   totalAmounts.forEach(totalAmount => {
     const totalAmountCell = document.createElement('td');
-    totalAmountCell.innerHTML = `
-      <div class="amount-button">
-        <div class="amount">${totalAmount || ''}</div>
-        <button class="btn btn-outline-primary rounded-circle">
-          <i class="bx bx-plus"></i>
-        </button>
-      </div>
-    `;
+    totalAmountCell.textContent = totalAmount || 'N/A'; // Default to "N/A" if no total
     totalRow.appendChild(totalAmountCell);
   });
 
