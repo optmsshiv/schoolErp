@@ -23,20 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
                       <div class="d-flex justify-content-end mb-3">
                         <button class="btn btn-primary btn-sm">Edit</button>
                       </div>
-                      <table class="table table-bordered">
-                        <thead>
-                          <tr class="table-info">
-                            <th>Field</th>
-                            <th>:</th>
-                            <th>Value</th>
-                            <th>Field</th>
-                            <th>:</th>
-                            <th>Value</th>
-                            <th>Field</th>
-                            <th>:</th>
-                            <th>Value</th>
-                          </tr>
-                        </thead>
+                      <table class="table">
+
                         <tbody>
                           <tr>
                             <td><strong>First Name</strong></td>
