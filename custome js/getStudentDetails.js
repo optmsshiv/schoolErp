@@ -113,20 +113,20 @@ document.addEventListener("DOMContentLoaded", () => {
   <div class="d-flex justify-content-end mb-3">
     <button class="btn btn-primary btn-sm">Edit</button>
   </div>
-  <table class="table">
+  <table class="table table-borderless">
     <thead>
-      <tr class="table-info">
-        <th>Field</th>
-        <th>:</th>
-        <th>Value</th>
-        <th>Field</th>
-        <th>:</th>
-        <th>Value</th>
-        <th>Field</th>
-        <th>:</th>
-        <th>Value</th>
-      </tr>
-    </thead>
+                          <tr class="table-info">
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                          </tr>
+                        </thead>
     <tbody>
       <tr>
         <td><strong>Father's Name</strong></td>
@@ -170,20 +170,20 @@ document.addEventListener("DOMContentLoaded", () => {
   <div class="d-flex justify-content-end mb-3">
     <button class="btn btn-primary btn-sm">Edit</button>
   </div>
-  <table class="table">
+  <table class="table table-borderless">
     <thead>
-      <tr class="table-info">
-        <th>Field</th>
-        <th>:</th>
-        <th>Value</th>
-        <th>Field</th>
-        <th>:</th>
-        <th>Value</th>
-        <th>Field</th>
-        <th>:</th>
-        <th>Value</th>
-      </tr>
-    </thead>
+                          <tr class="table-info">
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                          </tr>
+                        </thead>
     <tbody>
       <tr>
         <td><strong>Mother's Name</strong></td>
@@ -228,20 +228,20 @@ document.addEventListener("DOMContentLoaded", () => {
   <div class="d-flex justify-content-end mb-3">
     <button class="btn btn-primary btn-sm">Edit</button>
   </div>
-  <table class="table table-bordered">
+  <table class="table table-borderless">
     <thead>
-      <tr class="table-info">
-        <th>Field</th>
-        <th>:</th>
-        <th>Value</th>
-        <th>Field</th>
-        <th>:</th>
-        <th>Value</th>
-        <th>Field</th>
-        <th>:</th>
-        <th>Value</th>
-      </tr>
-    </thead>
+                          <tr class="table-info">
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                          </tr>
+                        </thead>
     <tbody>
       <tr>
         <td><strong>Current Address</strong></td>
