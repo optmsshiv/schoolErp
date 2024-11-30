@@ -57,8 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <!-- Student Info Tab -->
               <div class="tab-pane fade show active" id="student-info" role="tabpanel"
                 aria-labelledby="student-info-tab">
-                <div class="px-2 alert alert-warning" role="alert">
-                <h4>Student Information : </h4></div>
+                
 
                 <!-- Student Profile Section -->
                 <div class="border p-3 mb-2 mt-3 position-relative">
