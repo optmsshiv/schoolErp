@@ -106,6 +106,51 @@ document.addEventListener("DOMContentLoaded", () => {
                           </tr>
                         </tbody>
                       </table>
+
+                      <!-- Father Details Table -->
+                        <table class="table table-borderless mb-4">
+                            <thead class="table-info">
+                                <thead>
+                          <tr class="table-info">
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
+                            <th></th>
+                          </tr>
+                        </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>Father's Name</td>
+                                    <td>${data.father_name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mobile</td>
+                                    <td>${data.father_phone}</td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>${data.father_email}</td>
+                                </tr>
+                                <tr>
+                                    <td>Occupation</td>
+                                    <td>${data.father_occupation}</td>
+                                </tr>
+                                <tr>
+                                    <td>Age</td>
+                                    <td>${data.father_age}</td>
+                                </tr>
+                                <tr>
+                                    <td>Income</td>
+                                    <td>${data.father_income}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>`;
               }
           })
