@@ -27,13 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
                         <thead>
                           <tr class="table-info">
                             <th style="width: 3%;"></th>
-                            <th></th>
-                            <th></th>
-                            <th style="width: 3%;"></th>
-                            <th></th>
+                            <th style="width: 0%;"></th>
                             <th></th>
                             <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
                             <th></th>
+                            <th style="width: 3%;"></th>
+                            <th style="width: 0%;"></th>
                             <th></th>
                           </tr>
                         </thead>
