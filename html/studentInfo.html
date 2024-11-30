@@ -819,6 +819,7 @@
                                     style=" width:100%">
                                     <thead class="thead-light">
                                       <tr>
+                                        <th scope="col" class="fw-bold" style="width: 20%;">Reciept Id</th>
                                         <th scope="col" class="fw-bold" style="width: 20%;">Month</th>
                                         <th scope="col" class="fw-bold" style="width: 5%;">Due Amount</th>
                                         <th scope="col" class="fw-bold" style="width: 5%;">Pending Amount</th>
@@ -836,7 +837,20 @@
                                         <td>15000</td>
                                         <td>24000</td>
                                         <td><span class="badge bg-label-success me-1">Paid</span></td>
-                                        <td>Action</td>
+                                        <td align="center">
+                                          <div class="dropdown">
+                                            <button class="btn text-muted p-0 " type="button" id="dropdownMenuButton"
+                                              data-bs-toggle="dropdown" aria-expanded="false">
+                                              <i class="bx bx-dots-vertical-rounded bx-sm"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                              <li><a class="dropdown-item border-bottom" href="#">View Fee Reciept</a></li>
+                                              <li><a class="dropdown-item border-bottom" href="#">Send Fee Reciept</a></li>
+                                              <li><a class="dropdown-item border-bottom" href="#">Send Fee Message</a></li>
+                                              <li><a class="dropdown-item" href="#">Delete</a></li>
+                                            </ul>
+                                          </div>
+                                        </td>
                                       </tr>
                                       <tr>
                                         <td>September</td>
