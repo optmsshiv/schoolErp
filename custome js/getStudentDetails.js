@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <!-- Student Info Tab -->
               <div class="tab-pane fade show active" id="student-info" role="tabpanel"
                 aria-labelledby="student-info-tab">
-                
+
 
                 <!-- Student Profile Section -->
                 <div class="border p-3 mb-2 mt-3 position-relative">
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       <p><strong>Gender :</strong> ${data.gender}</p>
                       <p><strong>Class :</strong> ${data.class_name}</p>
                       <p><strong>Religion :</strong> ${data.religion}</p>
-                      <p class="badge bg-label-success me-1"><strong>Status :</strong> Active</p>
+                      <p><strong>Status :</strong> <span class="badge bg-label-success">${data.status || 'Active'}</span></p>
                       <p><strong>Handicapped :</strong> ${data.handicapped ? 'Yes' : 'No'}</p>
                   </div>
                   <div class="col-md-4">
