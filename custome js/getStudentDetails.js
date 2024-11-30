@@ -4,20 +4,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const userId = urlParams.get("user_id");
 
   if (userId) {
-      // Show a loading message
-      document.querySelector("#student-info").innerHTML = `<p class="text-info">Loading student details...</p>`;
+    // Show a loading message
+    document.querySelector("#student-info").innerHTML = `<p class="text-info">Loading student details...</p>`;
 
-      // Fetch student data from the backend
-      fetch(`../php/studentInfo/getStudentDetails.php?user_id=${userId}`)
-          .then(response => response.json())
-          .then(data => {
-              if (data.error) {
-                  // Display error message
-                  document.querySelector("#student-info").innerHTML = `
+    // Fetch student data from the backend
+    fetch(`../php/studentInfo/getStudentDetails.php?user_id=${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          // Display error message
+          document.querySelector("#student-info").innerHTML = `
                     <p class="text-danger">${data.error}</p>`;
-              } else {
-                  // Populate the table with fetched data
-                  document.querySelector("#student-info").innerHTML = `
+        } else {
+          // Populate the table with fetched data
+          document.querySelector("#student-info").innerHTML = `
                     <div class="border p-3 mb-2 mt-5 position-relative">
                       <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Student Profile</h5>
                       <div class="d-flex justify-content-end mb-3">
@@ -107,61 +107,74 @@ document.addEventListener("DOMContentLoaded", () => {
                         </tbody>
                       </table>
 
-                      <!-- Father Details Table -->
-                        <table class="table table-borderless mb-4">
-                            <thead class="table-info">
-                                <thead>
-                          <tr class="table-info">
-                            <th style="width: 3%;"></th>
-                            <th style="width: 0%;"></th>
-                            <th></th>
-                            <th style="width: 3%;"></th>
-                            <th style="width: 0%;"></th>
-                            <th></th>
-                            <th style="width: 3%;"></th>
-                            <th style="width: 0%;"></th>
-                            <th></th>
-                          </tr>
-                        </thead>
+                      <div class="border p-3 mb-2 mt-4 position-relative">
+  <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Father Details</h5>
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-primary btn-sm">Edit</button>
+  </div>
+  <table class="table">
+    <thead>
+      <tr class="table-info">
+        <th>Field</th>
+        <th>:</th>
+        <th>Value</th>
+        <th>Field</th>
+        <th>:</th>
+        <th>Value</th>
+        <th>Field</th>
+        <th>:</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Father's Name</strong></td>
+        <td>:</td>
+        <td>${data.father_name}</td>
+        <td><strong>Mobile</strong></td>
+        <td>:</td>
+        <td>${data.phone}</td>
+        <td><strong>Email</strong></td>
+        <td>:</td>
+        <td>${data.sr_no}</td>
+      </tr>
+      <tr>
+        <td><strong>Occupation</strong></td>
+        <td>:</td>
+        <td>${data.sr_no}</td>
+        <td><strong>Age</strong></td>
+        <td>:</td>
+        <td>${data.sr_no}</td>
+        <td><strong>Religion</strong></td>
+        <td>:</td>
+        <td>Hindu</td>
+      </tr>
+      <tr>
+        <td><strong>Income</strong></td>
+        <td>:</td>
+        <td>${data.sr_no}</td>
+        <td><strong>Sr No.</strong></td>
+        <td>:</td>
+        <td>${data.sr_no}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-                            <tbody>
-                                <tr>
-                                    <td>Father's Name</td>
-                                    <td>${data.father_name}</td>
-                                </tr>
-                                <tr>
-                                    <td>Mobile</td>
-                                    <td>${data.father_phone}</td>
-                                </tr>
-                                <tr>
-                                    <td>Email</td>
-                                    <td>${data.father_email}</td>
-                                </tr>
-                                <tr>
-                                    <td>Occupation</td>
-                                    <td>${data.father_occupation}</td>
-                                </tr>
-                                <tr>
-                                    <td>Age</td>
-                                    <td>${data.father_age}</td>
-                                </tr>
-                                <tr>
-                                    <td>Income</td>
-                                    <td>${data.father_income}</td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>`;
-              }
-          })
-          .catch(error => {
-              console.error("Error fetching student data:", error);
-              document.querySelector("#student-info").innerHTML = `
+        }
+      })
+      .catch(error => {
+        console.error("Error fetching student data:", error);
+        document.querySelector("#student-info").innerHTML = `
                 <p class="text-danger">An error occurred while fetching student details. Please try again later.</p>`;
-          });
+      });
   } else {
-      // Display error for missing user_id
-      document.querySelector("#student-info").innerHTML = `
+    // Display error for missing user_id
+    document.querySelector("#student-info").innerHTML = `
         <p class="text-danger">No student selected. Please go back and select a student in Active Students.</p>`;
   }
 });
