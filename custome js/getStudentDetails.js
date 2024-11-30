@@ -106,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
                           </tr>
                         </tbody>
                       </table>
+                      </div>
 
                       <div class="border p-3 mb-2 mt-4 position-relative">
   <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Father Details</h5>
