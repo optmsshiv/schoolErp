@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </tbody>
                       </table>
                     </div>
-                    </div>`;
+                  </div>`;
         }
       })
       .catch(error => {
