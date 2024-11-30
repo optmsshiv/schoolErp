@@ -108,13 +108,14 @@ document.addEventListener("DOMContentLoaded", () => {
                       </table>
                       </div>
 
+                      <!-- Father Details -->
                       <div class="border p-3 mb-2 mt-4 position-relative">
-  <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Father Details</h5>
-  <div class="d-flex justify-content-end mb-3">
-    <button class="btn btn-primary btn-sm">Edit</button>
-  </div>
-  <table class="table table-borderless">
-    <thead>
+                         <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Father Details</h5>
+                         <div class="d-flex justify-content-end mb-3">
+                           <button class="btn btn-primary btn-sm">Edit</button>
+                      </div>
+                         <table class="table table-borderless">
+                        <thead>
                           <tr class="table-info">
                             <th style="width: 3%;"></th>
                             <th style="width: 0%;"></th>
@@ -127,51 +128,52 @@ document.addEventListener("DOMContentLoaded", () => {
                             <th></th>
                           </tr>
                         </thead>
-    <tbody>
-      <tr>
-        <td><strong>Father's Name</strong></td>
-        <td>:</td>
-        <td>${data.father_name}</td>
-        <td><strong>Mobile</strong></td>
-        <td>:</td>
-        <td>${data.phone}</td>
-        <td><strong>Email</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-      </tr>
-      <tr>
-        <td><strong>Occupation</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-        <td><strong>Age</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-        <td><strong>Religion</strong></td>
-        <td>:</td>
-        <td>Hindu</td>
-      </tr>
-      <tr>
-        <td><strong>Income</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-        <td><strong>Sr No.</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+                             <tbody>
+                               <tr>
+                                 <td><strong>Father's Name</strong></td>
+                                 <td>:</td>
+                                 <td>${data.father_name}</td>
+                                 <td><strong>Mobile</strong></td>
+                                 <td>:</td>
+                                 <td>${data.father_phone}</td>
+                                 <td><strong>Email</strong></td>
+                                 <td>:</td>
+                                 <td>${data.sr_no}</td>
+                               </tr>
+                               <tr>
+                                 <td><strong>Occupation</strong></td>
+                                 <td>:</td>
+                                 <td>${data.father_occupation}</td>
+                                 <td><strong>Age</strong></td>
+                                 <td>:</td>
+                                 <td>${data.sr_no}</td>
+                                 <td><strong>Father Aadhar</strong></td>
+                                 <td>:</td>
+                                 <td>${data.father_aadhar}</td>
+                               </tr>
+                               <tr>
+                                 <td><strong>Income</strong></td>
+                                 <td>:</td>
+                                 <td>${data.father_income}</td>
+                                 <td><strong>Sr No.</strong></td>
+                                 <td>:</td>
+                                 <td>${data.sr_no}</td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                               </tr>
+                             </tbody>
+                         </table>
+                        </div>
 
-                <div class="border p-3 mb-3 position-relative mt-4">
-  <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Mother Info</h5>
-  <div class="d-flex justify-content-end mb-3">
-    <button class="btn btn-primary btn-sm">Edit</button>
-  </div>
-  <table class="table table-borderless">
-    <thead>
+                        <!-- Mother Details -->
+                   <div class="border p-3 mb-3 position-relative mt-4">
+                        <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Mother Info</h5>
+                        <div class="d-flex justify-content-end mb-3">
+                          <button class="btn btn-primary btn-sm">Edit</button>
+                    </div>
+                        <table class="table table-borderless">
+                        <thead>
                           <tr class="table-info">
                             <th style="width: 3%;"></th>
                             <th style="width: 0%;"></th>
@@ -184,105 +186,101 @@ document.addEventListener("DOMContentLoaded", () => {
                             <th></th>
                           </tr>
                         </thead>
-    <tbody>
-      <tr>
-        <td><strong>Mother's Name</strong></td>
-        <td>:</td>
-        <td>${data.mother_name}</td>
-        <td><strong>Mobile</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-        <td><strong>Email</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-      </tr>
-      <tr>
-        <td><strong>Occupation</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-        <td><strong>Age</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-        <td><strong>Religion</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-      </tr>
-      <tr>
-        <td><strong>Income</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-        <td><strong>Sr No.</strong></td>
-        <td>:</td>
-        <td>${data.sr_no}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-<div class="border p-3 mb-2 mt-4 position-relative">
-  <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Address</h5>
-  <div class="d-flex justify-content-end mb-3">
-    <button class="btn btn-primary btn-sm">Edit</button>
-  </div>
-  <table class="table table-borderless">
-    <thead>
-                          <tr class="table-info">
-                            <th style="width: 3%;"></th>
-                            <th style="width: 0%;"></th>
-                            <th></th>
-                            <th style="width: 3%;"></th>
-                            <th style="width: 0%;"></th>
-                            <th></th>
-                            <th style="width: 3%;"></th>
-                            <th style="width: 0%;"></th>
-                            <th></th>
+                        <tbody>
+                          <tr>
+                            <td><strong>Mother's Name</strong></td>
+                            <td>:</td>
+                            <td>${data.mother_name}</td>
+                            <td><strong>Mobile</strong></td>
+                            <td>:</td>
+                            <td>${data.mother_phone}</td>
+                            <td><strong>Email</strong></td>
+                            <td>:</td>
+                            <td>${data.mother_email}</td>
                           </tr>
+                          <tr>
+                            <td><strong>Occupation</strong></td>
+                            <td>:</td>
+                            <td>${data.mother_occupation}</td>
+                            <td><strong>Age</strong></td>
+                            <td>:</td>
+                            <td>${data.mother_age}</td>
+                            <td><strong>Mohter Aadhar</strong></td>
+                            <td>:</td>
+                            <td>${data.mother_aadhar}</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Income</strong></td>
+                            <td>:</td>
+                            <td>${data.mother_income}</td>
+                            <td><strong>Sr No.</strong></td>
+                            <td>:</td>
+                            <td>${data.sr_no}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <!-- Address Details -->
+                    <div class="border p-3 mb-2 mt-4 position-relative">
+                      <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Address</h5>
+                      <div class="d-flex justify-content-end mb-3">
+                        <button class="btn btn-primary btn-sm">Edit</button>
+                      </div>
+                      <table class="table table-borderless">
+                        <thead>
+                            <tr class="table-info">
+                              <th style="width: 3%;"></th>
+                              <th style="width: 0%;"></th>
+                              <th></th>
+                              <th style="width: 3%;"></th>
+                              <th style="width: 0%;"></th>
+                              <th></th>
+                              <th style="width: 3%;"></th>
+                              <th style="width: 0%;"></th>
+                              <th></th>
+                            </tr>
                         </thead>
-    <tbody>
-      <tr>
-        <td><strong>Current Address</strong></td>
-        <td>:</td>
-        <td>${data.current_address || ''}</td>
-        <td><strong>City</strong></td>
-        <td>:</td>
-        <td>${data.city || ''}</td>
-        <td><strong>State</strong></td>
-        <td>:</td>
-        <td>${data.state || ''}</td>
-      </tr>
-      <tr>
-        <td><strong>Permanent Address</strong></td>
-        <td>:</td>
-        <td>${data.permanent_address || ''}</td>
-        <td><strong>Pincode</strong></td>
-        <td>:</td>
-        <td>${data.pincode || ''}</td>
-        <td><strong>Country</strong></td>
-        <td>:</td>
-        <td>${data.country || ''}</td>
-      </tr>
-      <tr>
-        <td><strong>Landmark</strong></td>
-        <td>:</td>
-        <td>${data.landmark || ''}</td>
-        <td><strong>Sr No.</strong></td>
-        <td>:</td>
-        <td>${data.sr_no || ''}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-
-
-
+                        <tbody>
+                          <tr>
+                            <td><strong>Current Address</strong></td>
+                            <td>:</td>
+                            <td>${data.current_add}</td>
+                            <td><strong>City</strong></td>
+                            <td>:</td>
+                            <td>${data.city_name}</td>
+                            <td><strong>State</strong></td>
+                            <td>:</td>
+                            <td>${data.state}</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Permanent Address</strong></td>
+                            <td>:</td>
+                            <td>${data.permanent_add}</td>
+                            <td><strong>Pincode</strong></td>
+                            <td>:</td>
+                            <td>${data.pincode}</td>
+                            <td><strong>Country</strong></td>
+                            <td>:</td>
+                            <td>${data.country}</td>
+                          </tr>
+                          <tr>
+                            <td><strong>Landmark</strong></td>
+                            <td>:</td>
+                            <td>${data.landmark}</td>
+                            <td><strong>Sr No.</strong></td>
+                            <td>:</td>
+                            <td>${data.sr_no || ''}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                     </div>`;
         }
       })
