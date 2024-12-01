@@ -114,6 +114,6 @@ function showAlert(message, type) {
 // Helper function to toggle bank dropdown visibility
 function toggleBankDropdown() {
   const paymentType = document.getElementById("paymentType").value;
-  const bankDropdown = document.getElementById("bankDropdown");
+  const bankDropdown = document.getElementById("bankName");
   bankDropdown.style.display = paymentType === "bank" ? "block" : "none";
 }
