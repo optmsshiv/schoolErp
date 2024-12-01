@@ -1,17 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const studentData = JSON.parse(sessionStorage.getItem('studentData')); // Retrieve data from session storage
+  try {
+    const studentData = JSON.parse(sessionStorage.getItem('studentData')); // Retrieve data from session storage
 
-  if (studentData && studentData.length > 0) {
-    fetchFeePlansData(studentData);
-  } else {
-    console.error('No student data found in session storage.');
-    showAlert('Student data is missing.', 'error');
+    if (studentData && Array.isArray(studentData) && studentData.length > 0) {
+      fetchFeePlansData(studentData);
+    } else {
+      console.error('No valid student data found in session storage.');
+      showAlert('Student data is missing or invalid.', 'error');
+    }
+  } catch (error) {
+    console.error('Error parsing student data:', error);
+    showAlert('Failed to load student data.', 'error');
   }
 });
 
 function fetchFeePlansData(studentData) {
   const months = [
-    'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December', 'January', 'February', 'March'
+    'April', 'May', 'June', 'July', 'August',
+    'September', 'October', 'November', 'December',
+    'January', 'February', 'March'
   ];
 
   // Generate the table header dynamically
@@ -81,7 +88,7 @@ function fetchFeePlansData(studentData) {
     const totalAmountCell = document.createElement('td');
     totalAmountCell.innerHTML = `
       <div class="amount-button">
-        <div class="amount">${totalAmount > 0 ? totalAmount : 'N/A'}</div> <!-- Show N/A if total is 0 -->
+        <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(2) : 'N/A'}</div> <!-- Show N/A if total is 0 -->
         <button class="btn btn-outline-primary rounded-circle">
           <i class="bx bx-plus"></i>
         </button>
@@ -94,21 +101,19 @@ function fetchFeePlansData(studentData) {
   tableBody.appendChild(totalRow);
 }
 
-// Optional helper function to display alerts
+// Helper function to display alerts
 function showAlert(message, type) {
   Swal.fire({
     icon: type,
     title: type === 'error' ? 'Error' : 'Info',
     text: message,
+    confirmButtonText: 'OK',
   });
 }
-// Optional helper function to toggle bank dropdown
+
+// Helper function to toggle bank dropdown visibility
 function toggleBankDropdown() {
   const paymentType = document.getElementById("paymentType").value;
   const bankDropdown = document.getElementById("bankDropdown");
-  if (paymentType === "bank") {
-      bankDropdown.style.display = "block";
-  } else {
-      bankDropdown.style.display = "none";
-  }
+  bankDropdown.style.display = paymentType === "bank" ? "block" : "none";
 }
