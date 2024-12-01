@@ -969,9 +969,6 @@ td {
 }
 
 /* Bank account table styles */
-.hidden {
-  display: none;
-}
 #bankDropdown {
   display: none;
 }
