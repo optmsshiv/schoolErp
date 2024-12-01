@@ -88,7 +88,7 @@ function fetchFeePlansData(studentData) {
     const totalAmountCell = document.createElement('td');
     totalAmountCell.innerHTML = `
       <div class="amount-button">
-        <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(2) : 'N/A'}</div> <!-- Show N/A if total is 0 -->
+        <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div> <!-- Show N/A if total is 0 -->
         <button class="btn btn-outline-primary rounded-circle">
           <i class="bx bx-plus"></i>
         </button>
