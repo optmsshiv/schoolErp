@@ -803,19 +803,48 @@
 
                           <div class="col-10 ms-3 row border mt-3 p-2 align-items-center">
                             <!-- Label -->
-                            <label class="col-md-5 text-start mb-0" for="concessionFee">Total Payable Amount:</label>
+                            <label class="col-md-5 ms-5 text-start mb-0" for="concessionFee">Total Payable
+                              Amount:</label>
                             <!-- Input Field -->
-                            <div class="col-md-6">
-                                <input type="number" id="concessionFee" name="payableAmount" class="form-control" placeholder="0">
+                            <div class="col-md-5">
+                              <input type="number" id="concessionFee" name="payableAmount" class="form-control"
+                                placeholder="0">
                             </div>
-                        </div>
+                          </div>
 
+                          <!-- Recieved  Amount Column -->
+                          <div class="col-sm-3 mt-3 ms-3">
+                            <label for="recievedFee">Recieved Fee</label>
+                            <input type="number" id="recievedFee" name="recievedFee" class="form-control"
+                              placeholder="0">
+                          </div>
+
+                          <!-- Due Fee Column -->
+                          <div class="col-sm-3 mt-3 ms-0">
+                            <label for="dueAmount">Due Amount</label>
+                            <input type="number" id="dueAmount" name="dueAmount" class="form-control"
+                              placeholder="0">
+                          </div>
+
+                          <!-- Advanced Fee Column -->
+                          <div class="col-sm-3 mt-3 ms-0">
+                            <label for="advancedFee">Advanced Fee</label>
+                            <input type="number" id="advancedFee" name="advancedFee" class="form-control"
+                              placeholder="0">
+                          </div>
+                          <div class="col-sm-3 mt-3 ms-0">
+                            <label for="paymentStatus" class="form-label">Payment Status</label>
+                            <select id="paymentStatus" name="paymentStatus" class="form-select">
+                                <option value="paid">Paid</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </div>
 
                         </div>
                       </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                       <div class="card-body">
                         <!-- Table Section -->
                         <table id="FeeCollection" class="table table-sm table-bordered text-center"
