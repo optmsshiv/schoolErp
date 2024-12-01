@@ -968,6 +968,11 @@ td {
   text-align: center;       /* Center align text */
 }
 
+/* Bank account table styles */
+.hidden {
+  display: none;
+}
+
 
 
 

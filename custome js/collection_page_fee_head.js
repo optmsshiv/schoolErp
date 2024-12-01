@@ -102,3 +102,13 @@ function showAlert(message, type) {
     text: message,
   });
 }
+// Optional helper function to toggle bank dropdown
+function toggleBankDropdown() {
+  const paymentType = document.getElementById("paymentType").value;
+  const bankDropdown = document.getElementById("bankDropdown");
+  if (paymentType === "bank") {
+      bankDropdown.style.display = "block";
+  } else {
+      bankDropdown.style.display = "none";
+  }
+}
