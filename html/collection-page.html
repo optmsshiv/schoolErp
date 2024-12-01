@@ -842,7 +842,7 @@
 
                           <div class="col-sm-3 mt-3 ms-3">
                             <!-- Payment Type Dropdown -->
-                            <label for="paymentType" class="form-label">Payment Type</label>
+                            <label for="paymentType">Payment Type</label>
                             <select id="paymentType" name="paymentType" class="form-select"
                               onchange="toggleBankDropdown()">
                               <option value="cash">Cash</option>
@@ -853,7 +853,7 @@
 
                           <!-- Bank Name Dropdown (Hidden by Default) -->
                           <div id="bankDropdown" class="col-sm-4 mt-3 ms-0 mb-3 hidden">
-                            <label for="bankName" class="form-label">Bank Name</label>
+                            <label for="bankName">Bank Name</label>
                             <select id="bankName" name="bankName" class="form-select">
                               <option value="sbi">State Bank of India (SBI)</option>
                               <option value="cbi">Central Bank of India (CBI)</option>
@@ -862,16 +862,16 @@
                           </div>
 
                           <div class="col-sm-4 mt-3 ms-0">
-                            <label for="dateSelection" class="form-label">Select Date</label>
+                            <label for="dateSelection">Select Date</label>
                             <input type="date" id="dateSelection" name="dateSelection" class="form-control">
                           </div>
                           <!-- Remark Column -->
                           <div class="col-md-8 mt-3 ms-3">
-                            <label for="remark" class="form-label">Remark</label>
+                            <label for="remark">Remark : </label>
                             <textarea id="remark" name="remark" class="form-control" rows="4"
                               placeholder="Enter your remark here..."></textarea>
                           </div>
-                          <div class="row">
+                          <div class="row mb-4">
                             <!-- Submit Button -->
                             <div class="col-sm-4 mt-5 ms-3">
                               <button type="submit" class="btn btn-primary w-100">Submit</button>
