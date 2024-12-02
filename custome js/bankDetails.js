@@ -71,16 +71,23 @@ $(document).ready(function () {
     const id = row.data("id");
 
     // Retrieve existing data and populate the form for editing
-    $("#bankName").val(row.find("td:eq(1)").text());
-    $("#branchName").val(row.find("td:eq(2)").text());
-    $("#accountNumber").val(row.find("td:eq(3)").text());
-    $("#ifscCode").val(row.find("td:eq(4)").text());
-    $("#accountType").val(row.find("td:eq(5)").text());
+    const bankName = row.find("td:eq(1)").text();
+    const branchName = row.find("td:eq(2)").text();
+    const accountNumber = row.find("td:eq(3)").text();
+    const ifscCode = row.find("td:eq(4)").text();
+    const accountType = row.find("td:eq(5)").text();
+
+    // Populate form fields
+    $("#bankName").val(bankName);
+    $("#branchName").val(branchName);
+    $("#accountNumber").val(accountNumber);
+    $("#ifscCode").val(ifscCode);
+    $("#accountType").val(accountType);
 
     // Open SweetAlert confirmation dialog before updating
     Swal.fire({
       title: 'Are you sure?',
-      text: "You are about to update this bank record.",
+      text: `You are about to update the bank record for "${bankName}".`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, update it!',
@@ -145,6 +152,7 @@ $(document).ready(function () {
       }
     });
   });
+
 
 
   // Handle delete button click
