@@ -177,9 +177,9 @@ function showAlert(message, type) {
   });
 }
 
- // Function to toggle bank dropdown visibility
- function toggleBankDropdown() {
-  const paymentType = document.getElementById('paymentType').value;
-  const bankDropdown = document.getElementById('bankDropdown');
-  bankDropdown.classList.toggle('d-none', paymentType !== 'bank');
+// Helper function to toggle bank dropdown visibility
+function toggleBankDropdown() {
+  const paymentType = document.getElementById("paymentType").value;
+  const bankDropdown = document.getElementById("bankDropdown");
+  bankDropdown.style.display = paymentType === "bank" ? "block" : "none";
 }
