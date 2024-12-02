@@ -20,7 +20,7 @@ $(document).ready(function () {
       success: function (response) {
         // Parse response if needed and add the new entry to the table
         rowCount++;
-        $("#bankTable tbody").append(`
+        $("#bankHeadList tbody").append(`
           <tr data-id="${response.id}"> <!-- Assuming response includes the new record's ID -->
             <td>${rowCount}</td>
             <td>${bankData.bankName}</td>
