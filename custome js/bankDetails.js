@@ -100,7 +100,7 @@ $(document).ready(function () {
 
         // Send AJAX request to update the record
         $.ajax({
-          url: "editBankDetails.php", // Replace with your PHP endpoint
+          url: "../php/bankDetails/editBankDetails.php", // Replace with your PHP endpoint
           type: "POST",
           data: updatedData,
           success: function (response) {
