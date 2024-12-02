@@ -79,6 +79,52 @@ $(document).ready(function () {
       });
     }
   });
- 
+  $(document).ready(function () {
+    // Fetch bank details on page load
+    function fetchBankDetails() {
+      $.ajax({
+        url: "../php/bankDetails/fetchBankDetails.php", // Replace with the PHP file's URL
+        type: "GET",
+        success: function (response) {
+          const data = JSON.parse(response);
+
+          if (data.status === "success") {
+            const tableBody = $("#bankTable tbody");
+            tableBody.empty(); // Clear existing rows
+
+            data.data.forEach((bank, index) => {
+              tableBody.append(`
+                <tr data-id="${bank.BankID}">
+                  <td>${index + 1}</td>
+                  <td>${bank.BankName}</td>
+                  <td>${bank.Branch}</td>
+                  <td>${bank.AccountNumber}</td>
+                  <td>${bank.IFSCCode}</td>
+                  <td>${bank.AccountType}</td>
+                  <td>
+                    <button class="btn btn-sm btn-warning editBtn" title="Edit"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-sm btn-danger deleteBtn" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                  </td>
+                </tr>
+              `);
+            });
+          } else {
+            alert(data.message || "Failed to fetch data.");
+          }
+        },
+        error: function () {
+          alert("An error occurred while fetching bank details.");
+        },
+      });
+    }
+
+    // Initial fetch
+    fetchBankDetails();
+
+    // Other actions like edit or delete can trigger refetch
+    // Example:
+    // $(document).on('click', '.deleteBtn', function() { ... fetchBankDetails(); });
+  });
+
 
 });
