@@ -12,6 +12,32 @@ document.addEventListener('DOMContentLoaded', function () {
     console.error('Error parsing student data:', error);
     showAlert('Failed to load student data.', 'error');
   }
+
+  // Event listener for the "plus" buttons
+  document.querySelector('#student_fee_table').addEventListener('click', function (event) {
+    if (event.target.closest('.btn-outline-primary')) {
+      const button = event.target.closest('.btn-outline-primary');
+      const cell = button.closest('td'); // Get the cell containing the button
+      const row = cell.closest('tr'); // Get the parent row
+      const monthIndex = Array.from(row.children).indexOf(cell); // Find the month index
+      const feeHead = row.children[0].textContent; // Get the Fee Head from the first column
+      const amount = cell.querySelector('.amount').textContent; // Get the amount from the clicked cell
+
+      // Get the month name from the header
+      const month = document.querySelector(`#student_fee_table thead tr th:nth-child(${monthIndex + 1})`).textContent;
+
+      // Add the data to the Fee Collection table
+      addToFeeCollection(month, feeHead, amount);
+    }
+  });
+
+  // Event listener for delete buttons in the Fee Collection table
+  document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
+    if (event.target.closest('#deleteButton')) {
+      const row = event.target.closest('tr');
+      row.remove(); // Remove the row from the table
+    }
+  });
 });
 
 function fetchFeePlansData(studentData) {
@@ -61,7 +87,14 @@ function fetchFeePlansData(studentData) {
     // Amount columns for each month
     monthAmounts.forEach((amount, index) => {
       const amountCell = document.createElement('td');
-      amountCell.textContent = amount !== 'N/A' && amount ? amount : 'N/A'; // Display N/A if no amount
+      amountCell.innerHTML = `
+        <div class="amount-button">
+          <div class="amount">${amount !== 'N/A' && amount ? amount : 'N/A'}</div>
+          <button class="btn btn-outline-primary rounded-circle">
+            <i class="bx bx-plus"></i>
+          </button>
+        </div>
+      `;
       row.appendChild(amountCell);
 
       // Add the amount to the total for that month (only if it's numeric)
@@ -88,7 +121,7 @@ function fetchFeePlansData(studentData) {
     const totalAmountCell = document.createElement('td');
     totalAmountCell.innerHTML = `
       <div class="amount-button">
-        <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div> <!-- Show N/A if total is 0 -->
+        <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
         <button class="btn btn-outline-primary rounded-circle">
           <i class="bx bx-plus"></i>
         </button>
@@ -99,6 +132,25 @@ function fetchFeePlansData(studentData) {
 
   // Append total row to the table
   tableBody.appendChild(totalRow);
+}
+
+// Function to add data to the Fee Collection table
+function addToFeeCollection(month, feeType, amount) {
+  const tableBody = document.querySelector('#FeeCollection tbody');
+  const newRow = document.createElement('tr');
+
+  newRow.innerHTML = `
+    <td>${month}</td>
+    <td>${feeType}</td>
+    <td>${amount}</td>
+    <td class="text-center">
+      <button class="btn text-muted h-px-30" type="button" id="deleteButton">
+        <i class="bx bx-trash bx-sm"></i>
+      </button>
+    </td>
+  `;
+
+  tableBody.appendChild(newRow);
 }
 
 // Helper function to display alerts
