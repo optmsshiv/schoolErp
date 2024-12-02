@@ -6,7 +6,6 @@ $(document).ready(function () {
     e.preventDefault();
 
     const bankData = {
-      bankId: $("#bankId").val(),
       bankName: $("#bankName").val(),
       branchName: $("#branchName").val(),
       accountNumber: $("#accountNumber").val(),
@@ -25,7 +24,6 @@ $(document).ready(function () {
           $("#bankTable tbody").append(`
             <tr data-id="${result.id}">
               <td>${rowCount}</td>
-              <td>${bankData.bankId}</td>
               <td>${bankData.bankName}</td>
               <td>${bankData.branchName}</td>
               <td>${bankData.accountNumber}</td>
