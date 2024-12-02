@@ -181,9 +181,5 @@ function showAlert(message, type) {
  function toggleBankDropdown() {
   const paymentType = document.getElementById('paymentType').value;
   const bankDropdown = document.getElementById('bankDropdown');
-  if (paymentType === 'bank') {
-    bankDropdown.classList.remove('d-none');
-  } else {
-    bankDropdown.classList.add('d-none');
-  }
+  bankDropdown.classList.toggle('d-none', paymentType !== 'bank');
 }
