@@ -10,16 +10,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Make sure the bankName is not empty
     if (empty($bankName)) {
-      echo json_encode(['status' => 'error', 'message' => 'Bank Name is required']);
-      exit;
-  }
+        echo json_encode(['status' => 'error', 'message' => 'Bank Name is required']);
+        exit;
+    }
 
     try {
         $stmt = $pdo->prepare("
             UPDATE BankDetails
             SET BankName = :bankName, Branch = :branchName, AccountNumber = :accountNumber,
                 IFSCCode = :ifscCode, AccountType = :accountType
-            WHERE BankName = :bankName
+            WHERE BankID = :id
         ");
         $stmt->execute([
             ':id' => $id,
