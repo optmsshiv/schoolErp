@@ -963,21 +963,64 @@
                             <!-- Bank Setup Tab -->
                             <div class="tab-pane fade" id="bank-tab-content" role="tabpanel" aria-labelledby="bank-tab-btn">
                               <h4>Create Bank Head Name</h4>
-                              <form id="bankTabForm">
-                                <div class="mb-3 row">
-                                  <div class="col-sm-5">
-                                    <label for="bankTabName" class="form-label">Bank Head Name</label>
-                                    <input type="text" class="form-control" id="bankTabName"
+                              
+                              <form id="bankDetailsForm">
+                                <div class="row mb-3">
+                                  <div class="col-md-3">
+                                    <label for="bankName" class="form-label">Bank Name</label>
+                                    <input type="text" class="form-control" id="bankName" name="bankName"
                                            placeholder="Enter bank name" required />
                                   </div>
-                                  <div class="col-sm-4 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary w-100">Add Bank Name</button>
+                                  <div class="col-md-3">
+                                    <label for="branchName" class="form-label">Branch</label>
+                                    <input type="text" class="form-control" id="branchName" name="branchName"
+                                           placeholder="Enter branch name" required />
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label for="accountNumber" class="form-label">Account Number</label>
+                                    <input type="text" class="form-control" id="accountNumber" name="accountNumber"
+                                           placeholder="Enter account number" required />
+                                  </div>
+                                  <div class="col-md-3">
+                                    <label for="ifscCode" class="form-label">IFSC Code</label>
+                                    <input type="text" class="form-control" id="ifscCode" name="ifscCode"
+                                           placeholder="Enter IFSC code" required />
                                   </div>
                                 </div>
+
+                                <div class="row mb-3">
+                                  <div class="col-md-3">
+                                    <label for="accountType" class="form-label">Account Type</label>
+                                    <select class="form-select" id="accountType" name="accountType" required>
+                                      <option value="">Select account type</option>
+                                      <option value="Savings">Savings</option>
+                                      <option value="Current">Current</option>
+                                      <option value="Other">Other</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                  <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
                               </form>
+
                               <hr />
                               <h5>Existing Fee Heads</h5>
                               <ul id="bankHeadList" class="list-group mt-2 col-sm-6"></ul>
+                              <table class="table table-striped">
+                                <thead class="table-light">
+                                  <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Bank Name</th>
+                                    <th scope="col">Branch</th>
+                                    <th scope="col">Account Number</th>
+                                    <th scope="col">IFSC Code</th>
+                                    <th scope="col">Account Type</th>
+                                    <th scope="col">Actions</th>
+                                  </tr>
+                                </thead>
+                              </table>
+
                             </div>
 
                             <!-- Other Tab -->
