@@ -747,6 +747,12 @@
                               href="#fee-plan" role="tab">
                               Fee Plan
                             </button>
+
+                            <button class="btn btn-outline-info mt-3" id="bank-tab" data-bs-toggle="tab"
+                              href="#bank-tab" role="tab">
+                              Bank Setup
+                            </button>
+
                           </ul>
                         </div>
 
@@ -820,6 +826,26 @@
                               <hr />
                               <h5>Existing Fee Heads</h5>
                               <ul id="feeHeadList" class="list-group mt-2 col-sm-6"></ul>
+                            </div>
+
+                            <!-- Bank Setup Tab -->
+                            <div class="tab-pane fade" id="bank-tab" role="tabpanel">
+                              <h4>Create Bank Head Name</h4>
+                              <form id="bankTabForm">
+                                <div class="mb-3 row">
+                                  <div class="col-sm-5">
+                                    <label for="bankTabName" class="form-label">Bank Head Name</label>
+                                    <input type="text" class="form-control" id="bankTabName"
+                                      placeholder="Enter bank name" required />
+                                  </div>
+                                  <div class="col-sm-4 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary w-100">Add Bank Name</button>
+                                  </div>
+                                </div>
+                              </form>
+                              <hr />
+                              <h5>Existing Fee Heads</h5>
+                              <ul id="bankHeadList" class="list-group mt-2 col-sm-6"></ul>
                             </div>
 
                             <!-- Fee Plan Tab -->
