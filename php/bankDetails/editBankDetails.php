@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':accountType' => $accountType,
         ]);
 
+        // Check how many rows were affected
         if ($stmt->rowCount() > 0) {
             echo json_encode(['status' => 'success']);
         } else {
