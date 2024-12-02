@@ -13,18 +13,27 @@ document.addEventListener('DOMContentLoaded', function () {
     showAlert('Failed to load student data.', 'error');
   }
 
-  // Event listener for the "plus" button in the Total cell
+  // Event listener for the "plus" buttons in the "Total" row
   document.querySelector('#student_fee_table').addEventListener('click', function (event) {
     if (event.target.closest('.btn-outline-primary')) {
       const button = event.target.closest('.btn-outline-primary');
       const cell = button.closest('td'); // Get the cell containing the button
-      const monthIndex = Array.from(cell.parentNode.children).indexOf(cell); // Find the month index
-      const feeType = 'Monthly Fee'; // Default fee type to "Monthly Fee"
-      const totalAmount = cell.querySelector('.amount').textContent; // Get the total amount
+      const row = cell.closest('tr'); // Get the parent row
+      const monthIndex = Array.from(row.children).indexOf(cell); // Find the month index
+      const feeHead = row.children[0].textContent; // Get the Fee Head from the first column
+      const amount = cell.querySelector('.amount').textContent; // Get the amount from the clicked cell
+
+      // Get the month name from the header
       const month = document.querySelector(`#student_fee_table thead tr th:nth-child(${monthIndex + 1})`).textContent;
 
-      // Add the data to the Fee Collection table
-      addToFeeCollection(month, feeType, totalAmount);
+      // If the clicked row is the "Total" row, use the first Fee Head ("Monthly Fee")
+      if (feeHead === 'Total') {
+        const monthlyFeeType = 'Monthly Fee'; // The fee type from the first fee head
+        addToFeeCollection(month, monthlyFeeType, amount); // Add to Fee Collection table
+
+        // Hide the plus button
+        button.style.display = 'none';
+      }
     }
   });
 
@@ -32,7 +41,22 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
     if (event.target.closest('#deleteButton')) {
       const row = event.target.closest('tr');
+      const month = row.children[0].textContent; // Get the month from the row
       row.remove(); // Remove the row from the table
+
+      // Find the corresponding plus button in the Total row and show it
+      const monthIndex = Array.from(document.querySelectorAll('#student_fee_table thead th')).findIndex(
+        th => th.textContent === month
+      );
+
+      if (monthIndex > 0) { // Ignore the "Fee Head" column
+        const totalRow = document.querySelector('#student_fee_table tbody tr:last-child');
+        const totalCell = totalRow.children[monthIndex];
+        const plusButton = totalCell.querySelector('.btn-outline-primary');
+        if (plusButton) {
+          plusButton.style.display = 'inline-block'; // Show the plus button again
+        }
+      }
     }
   });
 });
@@ -81,10 +105,10 @@ function fetchFeePlansData(studentData) {
     feeHeadCell.textContent = feeHeadName;
     row.appendChild(feeHeadCell);
 
-    // Amount columns for each month
+    // Amount columns for each month (No button here for monthly fee)
     monthAmounts.forEach((amount, index) => {
       const amountCell = document.createElement('td');
-      amountCell.textContent = amount !== 'N/A' && amount ? amount : 'N/A'; // Display N/A if no amount
+      amountCell.textContent = amount !== 'N/A' && amount ? amount : 'N/A'; // Show amount if available
       row.appendChild(amountCell);
 
       // Add the amount to the total for that month (only if it's numeric)
@@ -97,7 +121,7 @@ function fetchFeePlansData(studentData) {
     tableBody.appendChild(row);
   });
 
-  // Add "Total" row with an add button in each cell
+  // Add "Total" row with amount buttons
   const totalRow = document.createElement('tr');
   totalRow.classList.add('text-center');
 
@@ -106,7 +130,7 @@ function fetchFeePlansData(studentData) {
   totalFeeHeadCell.textContent = 'Total';
   totalRow.appendChild(totalFeeHeadCell);
 
-  // Add total amounts for each month
+  // Add total amounts for each month with the plus button
   totalAmounts.forEach(totalAmount => {
     const totalAmountCell = document.createElement('td');
     totalAmountCell.innerHTML = `
@@ -135,7 +159,7 @@ function addToFeeCollection(month, feeType, amount) {
     <td>${amount}</td>
     <td class="text-center">
       <button class="btn text-muted h-px-30" type="button" id="deleteButton">
-        <i class="btn-outline-danger bx bx-trash bx-sm"></i>
+        <i class="bx bx-trash bx-sm"></i>
       </button>
     </td>
   `;
@@ -151,11 +175,4 @@ function showAlert(message, type) {
     text: message,
     confirmButtonText: 'OK',
   });
-}
-
-// Helper function to toggle bank dropdown visibility
-function toggleBankDropdown() {
-  const paymentType = document.getElementById("paymentType").value;
-  const bankDropdown = document.getElementById("bankDropdown");
-  bankDropdown.style.display = paymentType === "bank" ? "block" : "none";
 }
