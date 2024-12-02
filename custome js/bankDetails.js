@@ -70,14 +70,13 @@ $(document).ready(function () {
     const row = $(this).closest("tr");
     const bankName = row.find("td:eq(1)").text(); // Get the bank name from the table
 
-
     // Retrieve existing data and populate the form for editing
     const branchName = row.find("td:eq(2)").text();
     const accountNumber = row.find("td:eq(3)").text();
     const ifscCode = row.find("td:eq(4)").text();
     const accountType = row.find("td:eq(5)").text();
 
-    // Populate form fields
+    // Populate form fields with the retrieved data
     $("#bankName").val(bankName);
     $("#branchName").val(branchName);
     $("#accountNumber").val(accountNumber);
@@ -86,71 +85,55 @@ $(document).ready(function () {
 
     // Open SweetAlert confirmation dialog before updating
     Swal.fire({
-      title: 'Are you sure?',
-      text: `You are about to update the bank record for "${bankName}".`,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, update it!',
-      cancelButtonText: 'No, cancel!',
-      reverseButtons: true
+        title: 'Are you sure?',
+        text: `You are about to update the bank record for "${bankName}".`,  // Show bank name here
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, update it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
     }).then((result) => {
-      if (result.isConfirmed) {
-        // Collect form data
-        const updatedData = {
-          bankName: $("#bankName").val(),
-          branchName: $("#branchName").val(),
-          accountNumber: $("#accountNumber").val(),
-          ifscCode: $("#ifscCode").val(),
-          accountType: $("#accountType").val(),
-        };
+        if (result.isConfirmed) {
+            // Collect data to send to the server
+            const updatedData = {
+                bankName: $("#bankName").val(),
+                branchName: $("#branchName").val(),
+                accountNumber: $("#accountNumber").val(),
+                ifscCode: $("#ifscCode").val(),
+                accountType: $("#accountType").val(),
+            };
 
-        // Send AJAX request to update the record
-        $.ajax({
-          url: "../php/bankDetails/editBankDetails.php", // Replace with your PHP endpoint
-          type: "POST",
-          data: updatedData,
-          success: function (response) {
-            console.log('Updating record with ID:', id); // Log the response for debugging
-            const data = JSON.parse(response);
+            // Send AJAX request to update the record based on bank name
+            $.ajax({
+                url: "../php/bankDetails/editBankDetails.php", // Replace with your PHP endpoint
+                type: "POST",
+                data: updatedData,
+                success: function (response) {
+                    const data = JSON.parse(response);
 
-            if (data.status === "success") {
-              // Update table row dynamically
-              row.find("td:eq(1)").text(updatedData.bankName);
-              row.find("td:eq(2)").text(updatedData.branchName);
-              row.find("td:eq(3)").text(updatedData.accountNumber);
-              row.find("td:eq(4)").text(updatedData.ifscCode);
-              row.find("td:eq(5)").text(updatedData.accountType);
+                    if (data.status === "success") {
+                        // Update table row dynamically
+                        row.find("td:eq(1)").text(updatedData.bankName);
+                        row.find("td:eq(2)").text(updatedData.branchName);
+                        row.find("td:eq(3)").text(updatedData.accountNumber);
+                        row.find("td:eq(4)").text(updatedData.ifscCode);
+                        row.find("td:eq(5)").text(updatedData.accountType);
 
-              Swal.fire(
-                'Updated!',
-                'The bank details have been updated.',
-                'success'
-              );
-            } else {
-              Swal.fire(
-                'Error!',
-                'Failed to update the bank details.',
-                'error'
-              );
-            }
-          },
-          error: function () {
-            Swal.fire(
-              'Error!',
-              'There was a problem with the request.',
-              'error'
-            );
-          }
-        });
-      } else {
-        Swal.fire(
-          'Cancelled',
-          'Your update has been cancelled.',
-          'info'
-        );
-      }
+                        Swal.fire('Updated!', 'The bank details have been updated.', 'success');
+                    } else {
+                        Swal.fire('Error!', 'Failed to update the bank details.', 'error');
+                    }
+                },
+                error: function () {
+                    Swal.fire('Error!', 'There was a problem with the request.', 'error');
+                }
+            });
+        } else {
+            Swal.fire('Cancelled', 'Your update has been cancelled.', 'info');
+        }
     });
-  });
+});
+
 
 
 
