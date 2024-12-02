@@ -1,9 +1,9 @@
 <?php
-require '../db_connection.php'; // Include the PDO configuration
+require '../db_connection.php'; // Include your PDO connection setup
 
 try {
     $stmt = $pdo->query("SELECT BankID, BankName, Branch, AccountNumber, IFSCCode, AccountType FROM BankDetails");
-    $bankDetails = $stmt->fetchAll(); // Fetch all records as an associative array
+    $bankDetails = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch data as an associative array
 
     echo json_encode(['status' => 'success', 'data' => $bankDetails]);
 } catch (PDOException $e) {
