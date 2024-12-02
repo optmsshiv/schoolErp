@@ -13,21 +13,18 @@ document.addEventListener('DOMContentLoaded', function () {
     showAlert('Failed to load student data.', 'error');
   }
 
-  // Event listener for the "plus" buttons
+  // Event listener for the "plus" button in the Total cell
   document.querySelector('#student_fee_table').addEventListener('click', function (event) {
     if (event.target.closest('.btn-outline-primary')) {
       const button = event.target.closest('.btn-outline-primary');
       const cell = button.closest('td'); // Get the cell containing the button
-      const row = cell.closest('tr'); // Get the parent row
-      const monthIndex = Array.from(row.children).indexOf(cell); // Find the month index
-      const feeHead = row.children[0].textContent; // Get the Fee Head from the first column
-      const amount = cell.querySelector('.amount').textContent; // Get the amount from the clicked cell
-
-      // Get the month name from the header
+      const monthIndex = Array.from(cell.parentNode.children).indexOf(cell); // Find the month index
+      const feeType = 'Monthly Fee'; // Default fee type to "Monthly Fee"
+      const totalAmount = cell.querySelector('.amount').textContent; // Get the total amount
       const month = document.querySelector(`#student_fee_table thead tr th:nth-child(${monthIndex + 1})`).textContent;
 
       // Add the data to the Fee Collection table
-      addToFeeCollection(month, feeHead, amount);
+      addToFeeCollection(month, feeType, totalAmount);
     }
   });
 
@@ -87,14 +84,7 @@ function fetchFeePlansData(studentData) {
     // Amount columns for each month
     monthAmounts.forEach((amount, index) => {
       const amountCell = document.createElement('td');
-      amountCell.innerHTML = `
-        <div class="amount-button">
-          <div class="amount">${amount !== 'N/A' && amount ? amount : 'N/A'}</div>
-          <button class="btn btn-outline-primary rounded-circle">
-            <i class="bx bx-plus"></i>
-          </button>
-        </div>
-      `;
+      amountCell.textContent = amount !== 'N/A' && amount ? amount : 'N/A'; // Display N/A if no amount
       row.appendChild(amountCell);
 
       // Add the amount to the total for that month (only if it's numeric)
@@ -107,7 +97,7 @@ function fetchFeePlansData(studentData) {
     tableBody.appendChild(row);
   });
 
-  // Add "Total" row with amount buttons
+  // Add "Total" row with an add button in each cell
   const totalRow = document.createElement('tr');
   totalRow.classList.add('text-center');
 
