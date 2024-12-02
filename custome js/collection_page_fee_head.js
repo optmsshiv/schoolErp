@@ -176,3 +176,14 @@ function showAlert(message, type) {
     confirmButtonText: 'OK',
   });
 }
+
+ // Function to toggle bank dropdown visibility
+ function toggleBankDropdown() {
+  const paymentType = document.getElementById('paymentType').value;
+  const bankDropdown = document.getElementById('bankDropdown');
+  if (paymentType === 'bank') {
+    bankDropdown.classList.remove('d-none');
+  } else {
+    bankDropdown.classList.add('d-none');
+  }
+}
