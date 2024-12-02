@@ -116,7 +116,7 @@ $(document).ready(function () {
         const data = JSON.parse(response);
 
         if (data.status === "success") {
-          const tableBody = $("#bankTable tbody");
+          const tableBody = $("#bankTableBody");
           tableBody.empty(); // Clear existing rows
 
           if (data.data.length > 0) {
