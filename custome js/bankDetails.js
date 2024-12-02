@@ -119,6 +119,8 @@ $(document).ready(function () {
           const tableBody = $("#bankTable tbody");
           tableBody.empty(); // Clear existing rows
 
+          if (data.data.length > 0) {
+            // Iterate over the bank data and append rows to the table
           data.data.forEach((bank, index) => {
             tableBody.append(`
               <tr data-id="${bank.BankID}">
@@ -136,6 +138,14 @@ $(document).ready(function () {
             `);
           });
         } else {
+          // If no records found, display a placeholder row
+          tableBody.append(`
+            <tr>
+              <td colspan="7" class="text-center">No bank details found.</td>
+            </tr>
+          `);
+        }
+       } else {
           Swal.fire({
             icon: "error",
             title: "Error",
