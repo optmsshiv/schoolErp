@@ -65,6 +65,87 @@ $(document).ready(function () {
     });
   });
 
+  // Handle edit button click
+  $(document).on("click", ".editBtn", function () {
+    const row = $(this).closest("tr");
+    const id = row.data("id");
+
+    // Retrieve existing data and populate the form for editing
+    $("#bankName").val(row.find("td:eq(1)").text());
+    $("#branchName").val(row.find("td:eq(2)").text());
+    $("#accountNumber").val(row.find("td:eq(3)").text());
+    $("#ifscCode").val(row.find("td:eq(4)").text());
+    $("#accountType").val(row.find("td:eq(5)").text());
+
+    // Open SweetAlert confirmation dialog before updating
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You are about to update this bank record.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, update it!',
+      cancelButtonText: 'No, cancel!',
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Collect form data
+        const updatedData = {
+          id: id,
+          bankName: $("#bankName").val(),
+          branchName: $("#branchName").val(),
+          accountNumber: $("#accountNumber").val(),
+          ifscCode: $("#ifscCode").val(),
+          accountType: $("#accountType").val(),
+        };
+
+        // Send AJAX request to update the record
+        $.ajax({
+          url: "editBankDetails.php", // Replace with your PHP endpoint
+          type: "POST",
+          data: updatedData,
+          success: function (response) {
+            const data = JSON.parse(response);
+
+            if (data.status === "success") {
+              // Update table row dynamically
+              row.find("td:eq(1)").text(updatedData.bankName);
+              row.find("td:eq(2)").text(updatedData.branchName);
+              row.find("td:eq(3)").text(updatedData.accountNumber);
+              row.find("td:eq(4)").text(updatedData.ifscCode);
+              row.find("td:eq(5)").text(updatedData.accountType);
+
+              Swal.fire(
+                'Updated!',
+                'The bank details have been updated.',
+                'success'
+              );
+            } else {
+              Swal.fire(
+                'Error!',
+                'Failed to update the bank details.',
+                'error'
+              );
+            }
+          },
+          error: function () {
+            Swal.fire(
+              'Error!',
+              'There was a problem with the request.',
+              'error'
+            );
+          }
+        });
+      } else {
+        Swal.fire(
+          'Cancelled',
+          'Your update has been cancelled.',
+          'info'
+        );
+      }
+    });
+  });
+
+
   // Handle delete button click
   $(document).on("click", ".deleteBtn", function () {
     const row = $(this).closest("tr");
