@@ -104,6 +104,7 @@ $(document).ready(function () {
           type: "POST",
           data: updatedData,
           success: function (response) {
+            console.log(response); // Log the response for debugging
             const data = JSON.parse(response);
 
             if (data.status === "success") {
