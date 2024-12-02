@@ -136,7 +136,7 @@ function fetchFeePlansData(studentData) {
     totalAmountCell.innerHTML = `
       <div class="amount-button">
         <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-        <button class="btn btn-outline-danger rounded-circle">
+        <button class="btn btn-outline-primary rounded-circle">
           <i class="bx bx-plus"></i>
         </button>
       </div>
