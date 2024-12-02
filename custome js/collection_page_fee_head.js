@@ -134,8 +134,8 @@ function addToFeeCollection(month, feeType, amount) {
     <td>${feeType}</td>
     <td>${amount}</td>
     <td class="text-center">
-      <button class="btn text-muted h-px-30" type="button" id="deleteButton">
-        <i class="btn btn-danger bx bx-trash bx-sm"></i>
+      <button class="btn btn-icon btn-danger text-muted h-px-30" type="button" id="deleteButton">
+        <i class="bx bx-trash bx-sm"></i>
       </button>
     </td>
   `;
