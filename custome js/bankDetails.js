@@ -68,10 +68,10 @@ $(document).ready(function () {
   // Handle edit button click
   $(document).on("click", ".editBtn", function () {
     const row = $(this).closest("tr");
-    const id = row.data("id");
+    const bankName = row.find("td:eq(1)").text(); // Get the bank name from the table
+
 
     // Retrieve existing data and populate the form for editing
-    const bankName = row.find("td:eq(1)").text();
     const branchName = row.find("td:eq(2)").text();
     const accountNumber = row.find("td:eq(3)").text();
     const ifscCode = row.find("td:eq(4)").text();
@@ -97,7 +97,6 @@ $(document).ready(function () {
       if (result.isConfirmed) {
         // Collect form data
         const updatedData = {
-          id: id,
           bankName: $("#bankName").val(),
           branchName: $("#branchName").val(),
           accountNumber: $("#accountNumber").val(),

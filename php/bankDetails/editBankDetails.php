@@ -2,19 +2,24 @@
 require '../db_connection.php'; // Include the PDO configuration
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $_POST['id'] ?? 0;
     $bankName = $_POST['bankName'] ?? '';
     $branchName = $_POST['branchName'] ?? '';
     $accountNumber = $_POST['accountNumber'] ?? '';
     $ifscCode = $_POST['ifscCode'] ?? '';
     $accountType = $_POST['accountType'] ?? '';
 
+    // Make sure the bankName is not empty
+    if (empty($bankName)) {
+      echo json_encode(['status' => 'error', 'message' => 'Bank Name is required']);
+      exit;
+  }
+
     try {
         $stmt = $pdo->prepare("
             UPDATE BankDetails
             SET BankName = :bankName, Branch = :branchName, AccountNumber = :accountNumber,
                 IFSCCode = :ifscCode, AccountType = :accountType
-            WHERE BankID = :id
+            WHERE BankName = :bankName
         ");
         $stmt->execute([
             ':id' => $id,
