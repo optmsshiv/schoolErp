@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+
 function fetchFeePlansData(studentData) {
   const months = [
     'April', 'May', 'June', 'July', 'August',
@@ -165,15 +166,6 @@ function addToFeeCollection(month, feeType, amount) {
   `;
 
   tableBody.appendChild(newRow);
-  // Datepicker
-$(document).ready(function(){
-  $('#datepicker').datepicker({
-      format: 'mm/dd/yyyy',
-      todayBtn: "linked",
-      clearBtn: true,
-      autoclose: true
-  });
-});
 }
 
 // Helper function to display alerts
