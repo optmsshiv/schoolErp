@@ -1,5 +1,3 @@
-
-
 <!-- Offcanvas -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="addFeeCanvas" aria-labelledby="addFeeCanvasLabel">
   <div class="offcanvas-header">
@@ -11,7 +9,9 @@
     <form>
       <div class="mb-3">
         <label for="feeType" class="form-label">Fee Type</label>
-        <input type="text" id="feeType" name="feeType" class="form-control" placeholder="e.g., School Fee" required>
+        <select id="feeType" name="feeType" class="form-select" required>
+          <option value="" disabled selected>Loading...</option>
+        </select>
       </div>
 
       <div class="mb-3">
@@ -50,3 +50,5 @@
     </form>
   </div>
 </div>
+
+<script src="../custome js/canvas_drop_down.js"></script>
