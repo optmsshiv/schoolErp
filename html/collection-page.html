@@ -781,8 +781,12 @@
                 <div class="card userCard p-3">
                   <div class="d-flex justify-content-between align-items-center">
                     <h5 class="fw-bold ms-3 mb-0">Fee Details</h5>
-                    <a class="btn btn-outline-primary" href="add_fee_canvas.html"><i class="bx bx-plus"></i> Add</a>
+                    <button class="btn btn-outline-primary" data-bs-toggle="offcanvas" data-bs-target="#addFeeCanvas" aria-controls="addFeeCanvas">
+                      <i class="bx bx-plus"></i> Add
+                    </button>
                   </div>
+                  <!-- Include Canvas HTML -->
+                  <div id="canvas-container"></div>
                   <div class="row mt-3">
                     <div class="col-md-7">
                       <div class=" border-end pe-3">
@@ -903,22 +907,22 @@
                         <div class="card-body p-2">
                           <!-- Table Section -->
 
-                            <table id="FeeCollection" class="table table-sm table-bordered text-center mb-0"
+                          <table id="FeeCollection" class="table table-sm table-bordered text-center mb-0"
                             style="table-layout: auto; min-width: 100px">
-                              <thead>
-                                <tr class="table-secondary">
-                                  <th class="fw-bold" style="width: 5%;">Month</th>
-                                  <th class="fw-bold" style="width: 3%;">Fee Type</th>
-                                  <th class="fw-bold" style="width: 2%;">Total</th>
-                                  <th class="fw-bold" style="width: 2%;">Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <!-- Rows dynamically generated via JS -->
-                                </tr>
-                              </tbody>
-                            </table>
+                            <thead>
+                              <tr class="table-secondary">
+                                <th class="fw-bold" style="width: 5%;">Month</th>
+                                <th class="fw-bold" style="width: 3%;">Fee Type</th>
+                                <th class="fw-bold" style="width: 2%;">Total</th>
+                                <th class="fw-bold" style="width: 2%;">Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <!-- Rows dynamically generated via JS -->
+                              </tr>
+                            </tbody>
+                          </table>
 
                         </div>
                       </div>
@@ -979,6 +983,8 @@
     <script src="../custome js/collection_page.js"></script>
     <!------>
     <script src="../custome js/collection_page_fee_head.js"></script>
+    <!-- Add Fee Canvas -->
+     <script src="../custome js/add_fee_canva.js"></script>
 
     <!--Chart js-->
 
