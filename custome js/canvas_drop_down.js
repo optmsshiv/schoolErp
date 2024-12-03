@@ -1,5 +1,5 @@
  // Fetch Feeheads from the server
- fetch('../php/feeCanvas/fetch_canva_feeHead.php')
+ fetch('../php/feeCanva/fetch_canva_feeHead.php')
  .then(response => response.json())
  .then(data => {
    const feeTypeDropdown = document.getElementById('feeType');
