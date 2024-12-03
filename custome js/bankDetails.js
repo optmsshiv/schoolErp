@@ -156,10 +156,6 @@ $(document).ready(function () {
     });
 });
 
-
-
-
-
   // Handle delete button click
   $(document).on("click", ".deleteBtn", function () {
     const row = $(this).closest("tr");
@@ -203,6 +199,7 @@ $(document).ready(function () {
   });
 
   // Fetch bank details on page load
+  let serialNumber = 0; // Initialize the serial number globally to track it
   function fetchBankDetails() {
     $.ajax({
         url: "../php/bankDetails/fetchBankDetails.php", // Replace with the PHP file's URL
@@ -215,23 +212,24 @@ $(document).ready(function () {
                 tableBody.empty(); // Clear existing rows
 
                 if (data.data.length > 0) {
-                    // Iterate over the bank data and append rows to the table
-                    data.data.forEach((bank, index) => {
-                        tableBody.append(`
-                            <tr data-id="${bank.BankID}">
-                                <td>${index + 1}</td>  <!-- Serial Number -->
-                                <td>${bank.BankName}</td>
-                                <td>${bank.Branch}</td>
-                                <td>${bank.AccountNumber}</td>
-                                <td>${bank.IFSCCode}</td>
-                                <td>${bank.AccountType}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-warning editBtn" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-danger deleteBtn" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                                </td>
-                            </tr>
-                        `);
-                    });
+                  // Iterate over the bank data and append rows to the table
+                  data.data.forEach((bank) => {
+                      serialNumber++; // Increment the serial number for each row
+                      tableBody.append(`
+                          <tr data-id="${bank.BankID}">
+                              <td>${serialNumber}</td>  <!-- Serial Number -->
+                              <td>${bank.BankName}</td>
+                              <td>${bank.Branch}</td>
+                              <td>${bank.AccountNumber}</td>
+                              <td>${bank.IFSCCode}</td>
+                              <td>${bank.AccountType}</td>
+                              <td>
+                                  <button class="btn btn-sm btn-warning editBtn" title="Edit"><i class="fas fa-edit"></i></button>
+                                  <button class="btn btn-sm btn-danger deleteBtn" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                              </td>
+                          </tr>
+                      `);
+                  });
                 } else {
                     // If no records found, display a placeholder row
                     tableBody.append(`
