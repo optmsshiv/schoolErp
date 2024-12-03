@@ -199,9 +199,7 @@ $(document).ready(function () {
   });
 
   // Fetch bank details on page load
-  let serialNumber = 1; // Initialize serial number globally outside the function
-
-function fetchBankDetails() {
+  function fetchBankDetails() {
     $.ajax({
         url: "../php/bankDetails/fetchBankDetails.php", // Replace with the PHP file's URL
         type: "GET",
@@ -214,10 +212,10 @@ function fetchBankDetails() {
 
                 if (data.data.length > 0) {
                     // Iterate over the bank data and append rows to the table
-                    data.data.forEach((bank) => {
+                    data.data.forEach((bank, index) => {
                         tableBody.append(`
                             <tr data-id="${bank.BankID}">
-                                <td>${serialNumber}</td>  <!-- Serial Number -->
+                                <td>${index + 1}</td>  <!-- Serial Number -->
                                 <td>${bank.BankName}</td>
                                 <td>${bank.Branch}</td>
                                 <td>${bank.AccountNumber}</td>
@@ -229,7 +227,6 @@ function fetchBankDetails() {
                                 </td>
                             </tr>
                         `);
-                        serialNumber++; // Increment serial number after adding each row
                     });
                 } else {
                     // If no records found, display a placeholder row
@@ -256,6 +253,7 @@ function fetchBankDetails() {
         },
     });
 }
+
 // Initial fetch
 fetchBankDetails();
 
