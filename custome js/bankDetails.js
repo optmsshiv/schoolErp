@@ -68,6 +68,7 @@ $(document).ready(function () {
   // Handle edit button click
   $(document).on("click", ".editBtn", function () {
     const row = $(this).closest("tr");
+    const bankID = row.data("id"); // Retrieve BankID from a data attribute
     const bankName = row.find("td:eq(1)").text(); // Get the bank name from the table
     const branchName = row.find("td:eq(2)").text();
     const accountNumber = row.find("td:eq(3)").text();
@@ -77,7 +78,7 @@ $(document).ready(function () {
     // Show the first SweetAlert to confirm the update
     Swal.fire({
         title: 'Are you sure?',
-        text: `You are about to update the bank record for "${bankName}".`,  // Show bank name here
+        text: `You are about to update the bank record for "${bankName}".`, // Show bank name here
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, update it!',
@@ -96,8 +97,9 @@ $(document).ready(function () {
                     <select id="swalAccountType" class="swal2-input">
                         <option value="Savings" ${accountType === "Savings" ? "selected" : ""}>Savings</option>
                         <option value="Current" ${accountType === "Current" ? "selected" : ""}>Current</option>
-                        <option value="Salary" ${accountType === "Other" ? "selected" : ""}>Other</option>
+                        <option value="Salary" ${accountType === "Salary" ? "selected" : ""}>Salary</option>
                         <option value="Fixed Deposit" ${accountType === "Fixed Deposit" ? "selected" : ""}>Fixed Deposit</option>
+                        <option value="Other" ${accountType === "Other" ? "selected" : ""}>Other</option>
                     </select>
                 `,
                 focusConfirm: false,
@@ -106,6 +108,7 @@ $(document).ready(function () {
                 cancelButtonText: 'Cancel',
                 preConfirm: () => {
                     return {
+                        id: bankID, // Include BankID for the backend
                         bankName: document.getElementById('swalBankName').value,
                         branchName: document.getElementById('swalBranchName').value,
                         accountNumber: document.getElementById('swalAccountNumber').value,
@@ -118,7 +121,7 @@ $(document).ready(function () {
                     // Collect the updated data from SweetAlert input fields
                     const updatedData = result.value;
 
-                    // Send AJAX request to update the record based on bank name
+                    // Send AJAX request to update the record based on BankID
                     $.ajax({
                         url: "../php/bankDetails/editBankDetails.php", // Replace with your PHP endpoint
                         type: "POST",
@@ -136,7 +139,7 @@ $(document).ready(function () {
 
                                 Swal.fire('Updated!', 'The bank details have been updated.', 'success');
                             } else {
-                                Swal.fire('Error!', 'Failed to update the bank details.', 'error');
+                                Swal.fire('Error!', data.message || 'Failed to update the bank details.', 'error');
                             }
                         },
                         error: function () {
