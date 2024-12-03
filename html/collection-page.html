@@ -786,54 +786,57 @@
                   <div class="row mt-3">
                     <div class="col-md-7">
                       <div class=" border-end pe-3">
-                        <div class="row">
+                        <div class="row ms-1">
                           <!-- Additional Amount Column -->
-                          <div class="col-sm-4 col-md-4 ms-3">
+                          <div class="col-sm-4 col-md-4">
                             <label for="additionalAmount">Additional Amount</label>
                             <input type="number" id="additionalAmount" name="additionalAmount" class="form-control"
                               placeholder="additional amount">
                           </div>
 
                           <!-- Concession Fee Column -->
-                          <div class="col-sm-4 col-md-4 ms-3">
+                          <div class="col-sm-4 col-md-4">
                             <label for="concessionFee">Concession Fee</label>
                             <input type="number" id="concessionFee" name="concessionFee" class="form-control"
                               placeholder="concession fee">
                           </div>
 
-                          <div class="col-10 ms-3 row border border-info mt-3 p-2 align-items-center">
+                          <div class="col-12 row border border-info mt-3 p-2 align-items-center">
                             <!-- Label -->
-                            <label class="col-sm-5 col-md-5 ms-3 mb-0 fw-bold badge bg-label-warning"
-                              style="font-size: 1.0rem;" for="concessionFee">Total Payable
-                              Amount :</label>
+                            <label class="col-5 fw-bold badge bg-label-warning mb-0" style="font-size: 1rem;"
+                              for="payableAmount">
+                              Total Payable Amount:
+                            </label>
                             <!-- Input Field -->
-                            <div class="col-sm-5 col-md-4 ms-3">
-                              <input type="number" id="concessionFee" name="payableAmount" class="form-control" readOnly
+                            <div class="col-4">
+                              <input type="number" id="payableAmount" name="payableAmount" class="form-control" readonly
                                 placeholder="0">
                             </div>
                           </div>
+
+                          <!-- Fee Details Row -->
                           <div class="row g-3 ms-1">
                             <!-- Recieved  Amount Column -->
-                            <div class="col-12 col-sm-6 col-md-3">
+                            <div class="col-md-3">
                               <label for="recievedFee">Recieved Fee</label>
                               <input type="number" id="recievedFee" name="recievedFee" class="form-control"
                                 placeholder="0">
                             </div>
 
                             <!-- Due Fee Column -->
-                            <div class="col-12 col-sm-6 col-md-3">
+                            <div class="col-md-3">
                               <label for="dueAmount">Due Amount</label>
                               <input type="number" id="dueAmount" name="dueAmount" class="form-control" placeholder="0">
                             </div>
 
                             <!-- Advanced Fee Column -->
-                            <div class="col-12 col-sm-6 col-md-3">
+                            <div class="col-md-3">
                               <label for="advancedFee">Advanced Fee</label>
                               <input type="number" id="advancedFee" name="advancedFee" class="form-control"
                                 placeholder="0">
                             </div>
-
-                            <div class="col-12 col-sm-4 col-md-3">
+                            <!-- Payment Status -->
+                            <div class="col-md-3">
                               <label for="paymentStatus">Payment Status</label>
                               <select id="paymentStatus" name="paymentStatus" class="form-select">
                                 <option value="paid">Paid</option>
@@ -842,7 +845,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-3 mt-3 ms-3">
+                          <div class="col-12 col-sm-4 col-md-3 mt-3 ms-2">
                             <!-- Payment Type Dropdown -->
                             <label for="paymentType">Payment Type</label>
                             <select id="paymentType" name="paymentType" class="form-select"
@@ -854,7 +857,7 @@
                           </div>
 
                           <!-- Bank Name Dropdown (Hidden by Default) -->
-                          <div id="bankDropdown" class="col-sm-4 mt-3 ms-0 mb-3 hidden">
+                          <div id="bankDropdown" class="col-sm-4 mt-3 ms-0 mb-3 d-none">
                             <label for="bankName">Bank Name</label>
                             <select id="bankName" name="bankName" class="form-select">
                               <option value="sbi">State Bank of India (SBI)</option>
@@ -867,12 +870,18 @@
                             <label for="dateSelection">Select Date</label>
                             <input type="date" id="dateSelection" name="dateSelection" class="form-control">
                           </div>
-                          <!-- Remark Column -->
-                          <div class="col-md-8 mt-3 ms-3">
-                            <label for="remark">Remark : </label>
+                          <div class="col-sm-4 mb-3">
+                            <label for="datepicker" >Select a Date</label>
+                            <input type="text" id="datepicker" class="form-control" placeholder="Select a date">
+                          </div>
+
+                          <!-- Remark Section -->
+                          <div class="mt-3">
+                            <label for="remark">Remark</label>
                             <textarea id="remark" name="remark" class="form-control" rows="3"
                               placeholder="Enter your remark here..."></textarea>
                           </div>
+
                           <div class="row mb-4">
                             <!-- Submit Button -->
                             <div class="col-sm-4 mt-5 ms-3">

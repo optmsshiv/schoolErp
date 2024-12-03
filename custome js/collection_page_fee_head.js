@@ -181,5 +181,19 @@ function showAlert(message, type) {
 function toggleBankDropdown() {
   const paymentType = document.getElementById("paymentType").value;
   const bankDropdown = document.getElementById("bankDropdown");
-  bankDropdown.style.display = paymentType === "bank" ? "block" : "none";
+
+  if (paymentType === "bank") {
+    bankDropdown.classList.remove("d-none");
+  } else {
+    bankDropdown.classList.add("d-none");
+  }
 }
+// Datepicker
+$(document).ready(function(){
+  $('#datepicker').datepicker({
+      format: 'mm/dd/yyyy',
+      todayBtn: "linked",
+      clearBtn: true,
+      autoclose: true
+  });
+});
