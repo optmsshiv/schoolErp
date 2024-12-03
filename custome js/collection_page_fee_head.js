@@ -165,6 +165,15 @@ function addToFeeCollection(month, feeType, amount) {
   `;
 
   tableBody.appendChild(newRow);
+  // Datepicker
+$(document).ready(function(){
+  $('#datepicker').datepicker({
+      format: 'mm/dd/yyyy',
+      todayBtn: "linked",
+      clearBtn: true,
+      autoclose: true
+  });
+});
 }
 
 // Helper function to display alerts
@@ -188,12 +197,4 @@ function toggleBankDropdown() {
     bankDropdown.classList.add("d-none");
   }
 }
-// Datepicker
-$(document).ready(function(){
-  $('#datepicker').datepicker({
-      format: 'mm/dd/yyyy',
-      todayBtn: "linked",
-      clearBtn: true,
-      autoclose: true
-  });
-});
+
