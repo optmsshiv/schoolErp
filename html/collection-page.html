@@ -783,19 +783,19 @@
                     <h5 class="fw-bold ms-3 mb-0">Fee Details</h5>
                     <a class="btn btn-outline-primary" href="add_fee_canvas.html"><i class="bx bx-plus"></i> Add</a>
                   </div>
-                  <div class="row">
+                  <div class="row mt-3">
                     <div class="col-md-7">
                       <div class=" border-end">
                         <div class="row">
                           <!-- Additional Amount Column -->
-                          <div class="col-sm-3 ms-3">
+                          <div class="col-sm-4 col-md-4 ms-3">
                             <label for="additionalAmount">Additional Amount</label>
                             <input type="number" id="additionalAmount" name="additionalAmount" class="form-control"
                               placeholder="additional amount">
                           </div>
 
                           <!-- Concession Fee Column -->
-                          <div class="col-sm-3 ms-3">
+                          <div class="col-sm-4 col-md-4 ms-3">
                             <label for="concessionFee">Concession Fee</label>
                             <input type="number" id="concessionFee" name="concessionFee" class="form-control"
                               placeholder="concession fee">
@@ -803,43 +803,44 @@
 
                           <div class="col-10 ms-3 row border border-info mt-3 p-2 align-items-center">
                             <!-- Label -->
-                            <label class="col-md-5 ms-5 text-start mb-0 fw-bold badge bg-label-warning"
-                              style="font-size: 1.1rem;" for="concessionFee">Total Payable
+                            <label class="col-sm-5 col-md-5 ms-3 mb-0 fw-bold badge bg-label-warning"
+                              style="font-size: 1.0rem;" for="concessionFee">Total Payable
                               Amount :</label>
                             <!-- Input Field -->
-                            <div class="col-md-3">
+                            <div class="col-sm-5 col-md-4 ms-3">
                               <input type="number" id="concessionFee" name="payableAmount" class="form-control" readOnly
                                 placeholder="0">
                             </div>
                           </div>
+                          <div class="container-xxl row">
+                            <!-- Recieved  Amount Column -->
+                            <div class="col-sm-4 col-md-3 mt-3 ms-3">
+                              <label for="recievedFee">Recieved Fee</label>
+                              <input type="number" id="recievedFee" name="recievedFee" class="form-control"
+                                placeholder="0">
+                            </div>
 
-                          <!-- Recieved  Amount Column -->
-                          <div class="col-sm-3 mt-3 ms-3">
-                            <label for="recievedFee">Recieved Fee</label>
-                            <input type="number" id="recievedFee" name="recievedFee" class="form-control"
-                              placeholder="0">
-                          </div>
+                            <!-- Due Fee Column -->
+                            <div class="col-sm-3 col-md-3 mt-3 ms-0">
+                              <label for="dueAmount">Due Amount</label>
+                              <input type="number" id="dueAmount" name="dueAmount" class="form-control" placeholder="0">
+                            </div>
 
-                          <!-- Due Fee Column -->
-                          <div class="col-sm-3 mt-3 ms-0">
-                            <label for="dueAmount">Due Amount</label>
-                            <input type="number" id="dueAmount" name="dueAmount" class="form-control" placeholder="0">
-                          </div>
+                            <!-- Advanced Fee Column -->
+                            <div class="col-sm-4 col-md-3 mt-3 ms-0">
+                              <label for="advancedFee">Advanced Fee</label>
+                              <input type="number" id="advancedFee" name="advancedFee" class="form-control"
+                                placeholder="0">
+                            </div>
 
-                          <!-- Advanced Fee Column -->
-                          <div class="col-sm-3 mt-3 ms-0">
-                            <label for="advancedFee">Advanced Fee</label>
-                            <input type="number" id="advancedFee" name="advancedFee" class="form-control"
-                              placeholder="0">
+                            <div class="col-sm-3 col-md-3 mt-3 ms-0">
+                              <label for="paymentStatus">Payment Status</label>
+                              <select id="paymentStatus" name="paymentStatus" class="form-select">
+                                <option value="paid">Paid</option>
+                                <option value="pending">Pending</option>
+                              </select>
+                            </div>
                           </div>
-                          <div class="col-sm-3 mt-3 ms-0">
-                            <label for="paymentStatus">Payment Status</label>
-                            <select id="paymentStatus" name="paymentStatus" class="form-select">
-                              <option value="paid">Paid</option>
-                              <option value="pending">Pending</option>
-                            </select>
-                          </div>
-
                           <div class="col-sm-3 mt-3 ms-3">
                             <!-- Payment Type Dropdown -->
                             <label for="paymentType">Payment Type</label>
