@@ -97,8 +97,6 @@ $(document).ready(function () {
                     <select id="swalAccountType" class="swal2-input">
                         <option value="Savings" ${accountType === "Savings" ? "selected" : ""}>Savings</option>
                         <option value="Current" ${accountType === "Current" ? "selected" : ""}>Current</option>
-                        <option value="Salary" ${accountType === "Salary" ? "selected" : ""}>Salary</option>
-                        <option value="Fixed Deposit" ${accountType === "Fixed Deposit" ? "selected" : ""}>Fixed Deposit</option>
                         <option value="Other" ${accountType === "Other" ? "selected" : ""}>Other</option>
                     </select>
                 `,
