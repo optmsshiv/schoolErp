@@ -93,9 +93,17 @@ $(document).ready(function () {
                     <input id="swalBranchName" class="swal2-input" value="${branchName}" placeholder="Enter branch name">
                     <input id="swalAccountNumber" class="swal2-input" value="${accountNumber}" placeholder="Enter account number">
                     <input id="swalIfscCode" class="swal2-input" value="${ifscCode}" placeholder="Enter IFSC code">
-                    <input id="swalAccountType" class="swal2-input" value="${accountType}" placeholder="Enter account type">
+                    <select id="swalAccountType" class="swal2-input">
+                        <option value="Savings" ${accountType === "Savings" ? "selected" : ""}>Savings</option>
+                        <option value="Current" ${accountType === "Current" ? "selected" : ""}>Current</option>
+                        <option value="Salary" ${accountType === "Other" ? "selected" : ""}>Other</option>
+                        <option value="Fixed Deposit" ${accountType === "Fixed Deposit" ? "selected" : ""}>Fixed Deposit</option>
+                    </select>
                 `,
                 focusConfirm: false,
+                showCancelButton: true, // Show the cancel button
+                confirmButtonText: 'Update',
+                cancelButtonText: 'Cancel',
                 preConfirm: () => {
                     return {
                         bankName: document.getElementById('swalBankName').value,
@@ -144,6 +152,7 @@ $(document).ready(function () {
         }
     });
 });
+
 
 
 
