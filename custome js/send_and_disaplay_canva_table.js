@@ -1,4 +1,3 @@
-/*
 document.addEventListener("DOMContentLoaded", function () {
   const saveFeeButton = document.getElementById("saveFeeButton");
 
@@ -48,4 +47,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-*/

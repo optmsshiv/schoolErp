@@ -18,6 +18,8 @@
    const feeTypeDropdown = document.getElementById('feeType');
    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
  });
+
+ /*
 // Handle Save Fee button click
 document.getElementById('saveFeeButton').addEventListener('click', function (e) {
   e.preventDefault();
@@ -67,3 +69,4 @@ document.getElementById('saveFeeButton').addEventListener('click', function (e) 
     offcanvasInstance.hide();
   }
 });
+*/
