@@ -1,63 +1,49 @@
-// Function to handle fee saving
-function saveFee() {
-  const feeHeadId = document.getElementById('feeHeadDropdown').value;
-  const feeAmount = document.getElementById('feeAmount').value;
+document.addEventListener("DOMContentLoaded", function () {
+  const saveFeeButton = document.getElementById("saveFeeButton");
 
-  // Validate inputs
-  if (!feeHeadId || !feeAmount) {
-      alert('Please select a fee head and enter an amount.');
-      return;
-  }
+  // Handle Save Fee Button Click
+  saveFeeButton.addEventListener("click", function () {
+    const feeMonth = document.getElementById("feeMonth").value;
+    const feeType = document.getElementById("feeType").value;
+    const feeAmount = document.getElementById("feeAmount").value;
 
-  // Send data to the server using AJAX
-  fetch('../php/feeCanva/save_canva_fee.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-          fee_head_id: feeHeadId,
-          fee_amount: feeAmount
-      })
-  })
-  .then(response => response.json())
-  .then(data => {
-      if (data.status === 'success') {
-          addRowToTable(data.data);
-      } else {
-          alert(data.message || 'Failed to save fee.');
-      }
-  })
-  .catch(error => console.error('Error:', error));
-}
+    if (feeMonth && feeType && feeAmount) {
+      // Reference the FeeCollection table's body
+      const feeTableBody = document.querySelector("#FeeCollection tbody");
 
-// Function to add a row to the table
-function addRowToTable(data) {
-  const tableBody = document.querySelector('#FeeCollection tbody');
+      // Create a new row
+      const newRow = document.createElement("tr");
 
-  const row = document.createElement('tr');
-  row.innerHTML = `
-      <td>${data.fee_type}</td>
-      <td>${data.total}</td>
-      <td>
-          <button class="btn text-danger p-0" onclick="deleteRow(${data.id}, this)">
-              <i class="bx bx-trash bx-sm"></i>
+      // Add cells with the entered data
+      newRow.innerHTML = `
+        <td>${feeMonth}</td>
+        <td>${feeType}</td>
+        <td>${feeAmount}</td>
+        <td>
+          <button type="button" class="btn btn-danger btn-sm deleteFeeButton">
+            <i class="bx bx-trash"></i>
           </button>
-      </td>
-  `;
+        </td>
+      `;
 
-  tableBody.appendChild(row);
-}
+      // Append the new row to the FeeCollection table
+      feeTableBody.appendChild(newRow);
 
-// Function to delete a row from the table and database
-function deleteRow(id, button) {
-  fetch(`../php/feeCanva/delete_canva_fee_from_table.php?id=${id}`, { method: 'GET' })
-  .then(response => response.json())
-  .then(data => {
-      if (data.status === 'success') {
-          const row = button.closest('tr');
-          row.remove();
-      } else {
-          alert(data.message || 'Failed to delete fee.');
+      // Clear the form fields in the canvas
+      document.getElementById("feeForm").reset();
+
+      // Add event listener for the delete button
+      newRow.querySelector(".deleteFeeButton").addEventListener("click", function () {
+        newRow.remove(); // Remove the row from the table
+      });
+
+      // Close the offcanvas (if desired)
+      const addFeeCanvas = bootstrap.Offcanvas.getInstance(document.getElementById("addFeeCanvas"));
+      if (addFeeCanvas) {
+        addFeeCanvas.hide();
       }
-  })
-  .catch(error => console.error('Error:', error));
-}
+    } else {
+      alert("Please fill out all fields before saving.");
+    }
+  });
+});
