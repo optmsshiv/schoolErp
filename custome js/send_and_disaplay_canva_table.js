@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Handle Save Fee Button Click
   saveFeeButton.addEventListener("click", function () {
     const feeMonth = document.getElementById("feeMonth").value;
-    const feeType = document.getElementById("feeType").value;
+    const feeTypeDropdown = document.getElementById('feeType');
+    const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
     const feeAmount = document.getElementById("feeAmount").value;
 
     if (feeMonth && feeType && feeAmount) {
