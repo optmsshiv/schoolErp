@@ -1,26 +1,26 @@
 <!-- Offcanvas -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="addFeeCanvas" aria-labelledby="addFeeCanvasLabel">
   <div class="offcanvas-header">
-    <h5 id="addFeeCanvasLabel" class="offcanvas-title">Add Fee</h5>
+    <h5 id="addFeeCanvasLabel" class="offcanvas-title border-bottom">Add Fee</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     <!-- Add Fee Form -->
     <form>
       <div class="mb-3">
-        <label for="feeType" class="form-label">Fee Type</label>
+        <label for="feeType">Fee Type</label>
         <select id="feeType" name="feeType" class="form-select" required>
           <option value="" disabled selected>Loading...</option>
         </select>
       </div>
 
       <div class="mb-3">
-        <label for="feeAmount" class="form-label">Fee Amount</label>
+        <label for="feeAmount">Fee Amount</label>
         <input type="number" id="feeAmount" name="feeAmount" class="form-control" placeholder="Enter amount" required>
       </div>
 
       <div class="mb-3">
-        <label for="feeMonth" class="form-label">Month</label>
+        <label for="feeMonth">Month</label>
         <select id="feeMonth" name="feeMonth" class="form-select" required>
           <option value="" disabled selected>Select Month</option>
           <option value="january">January</option>
@@ -39,7 +39,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="remarks" class="form-label">Remarks</label>
+        <label for="remarks">Remarks</label>
         <textarea id="remarks" name="remarks" class="form-control" rows="3" placeholder="Optional"></textarea>
       </div>
 
@@ -51,4 +51,4 @@
   </div>
 </div>
 
-<script src="../custome js/canvas_drop_down.js"></script>
+
