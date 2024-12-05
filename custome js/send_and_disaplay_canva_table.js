@@ -127,34 +127,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   };
 
-  
-// Handle Save Fee button click
+  // Handle Save Fee button click
 const handleSaveFee = () => {
   const validatedData = validateForm();
   if (validatedData) {
     addRowToTable(validatedData);
 
-    // Reset the form and prevent validation alert during offcanvas hide
+    // Reset the form
     feeForm.reset();
 
     // Close the offcanvas (if desired)
     const addFeeCanvas = bootstrap.Offcanvas.getInstance(document.getElementById("addFeeCanvas"));
     if (addFeeCanvas) {
-      // Temporarily disable validation to prevent alert on hiding
-      feeForm.classList.add("no-validation");
       addFeeCanvas.hide();
-      setTimeout(() => feeForm.classList.remove("no-validation"), 300); // Re-enable validation after hiding
     }
 
-    // Show a success alert
+    // Show a success alert (optional)
     Swal.fire("Success", "Fee details added successfully.", "success");
   } else {
-    // Show error alert if validation fails
     Swal.fire("Error", "Please fill out all fields before saving.", "error");
   }
 };
 
- // Initialize event listeners
+  // Initialize event listeners
   const initialize = () => {
     fetchFeeHeads();
 
