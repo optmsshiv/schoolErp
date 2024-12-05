@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
         title: "Success",
         text: "Fee details added successfully.",
         icon: "success",
-        timer: 3000,
+        timer: 1000,
         timerProgressBar: true,
         didOpen: () => Swal.showLoading(),
       });
