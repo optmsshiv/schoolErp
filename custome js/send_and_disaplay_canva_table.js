@@ -3,7 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const saveFeeButton = document.getElementById("saveFeeButton");
   const feeForm = document.getElementById("feeForm");
   const feeTableBody = document.querySelector("#FeeCollection tbody");
-  const addFeeCanvas = bootstrap.Offcanvas.getInstance(document.getElementById("addFeeCanvas"));
+  const addFeeCanvasEl = document.getElementById("addFeeCanvas");
+  let isSaveButtonClicked = false; // Track if Save button was clicked
+
+  const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
 
   // Fetch fee heads and populate the dropdown
   const fetchFeeHeads = async () => {
@@ -34,21 +37,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const feeAmount = document.getElementById("feeAmount").value.trim();
 
     if (!feeMonth) {
-      alert("Please select a valid month.");
-      return false;
+      return { isValid: false, message: "Please select a valid month." };
     }
 
     if (!feeType || feeTypeDropdown.value === "") {
-      alert("Please select a fee type.");
-      return false;
+      return { isValid: false, message: "Please select a fee type." };
     }
 
     if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0) {
-      alert("Please enter a valid fee amount.");
-      return false;
+      return { isValid: false, message: "Please enter a valid fee amount." };
     }
 
-    return { feeMonth, feeType, feeAmount };
+    return { isValid: true, feeMonth, feeType, feeAmount };
   };
 
   // Add a new row to the FeeCollection table
@@ -128,31 +128,39 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // Handle Save Fee button click
-const handleSaveFee = () => {
-  const validatedData = validateForm();
-  if (validatedData) {
-    addRowToTable(validatedData);
+  const handleSaveFee = () => {
+    isSaveButtonClicked = true; // Mark save button as clicked
 
-    // Reset the form
-    feeForm.reset();
+    const { isValid, message, ...data } = validateForm();
+    if (isValid) {
+      addRowToTable(data);
 
-    // Close the offcanvas (if desired)
-    const addFeeCanvas = bootstrap.Offcanvas.getInstance(document.getElementById("addFeeCanvas"));
-    if (addFeeCanvas) {
+      // Reset the form
+      feeForm.reset();
+
+      // Close the offcanvas
       addFeeCanvas.hide();
+
+      // Show a success alert (optional)
+      Swal.fire("Success", "Fee details added successfully.", "success");
+    } else {
+      Swal.fire("Error", message, "error");
     }
 
-    // Show a success alert (optional)
-    Swal.fire("Success", "Fee details added successfully.", "success");
-  } else {
-    Swal.fire("Error", "Please fill out all fields before saving.", "error");
-  }
-};
+    isSaveButtonClicked = false; // Reset after action
+  };
+
+  // Handle Offcanvas Hide Event
+  addFeeCanvasEl.addEventListener("hide.bs.offcanvas", (event) => {
+    if (!isSaveButtonClicked) {
+      // Prevent validation alert during offcanvas hiding
+      feeForm.reset();
+    }
+  });
 
   // Initialize event listeners
   const initialize = () => {
     fetchFeeHeads();
-
     saveFeeButton.addEventListener("click", handleSaveFee);
   };
 
