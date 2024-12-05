@@ -63,8 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
         <button class="btn  editFeeButton">
           <i class="btn-outline-warning bx bx-edit bx-sm"></i>
         </button>
-        <button type="button" class="btn btn-danger btn-sm deleteFeeButton">
-          <i class="bx bx-trash"></i>
+        <button type="button" class="btn btn-danger deleteFeeButton">
+          <i class="btn-outline-danger bx bx-trash bx-sm"></i>
         </button>
       </td>
     `;
