@@ -60,8 +60,8 @@ document.addEventListener("DOMContentLoaded", function () {
       <td>${feeType}</td>
       <td>${feeAmount}</td>
       <td>
-        <button class="btn  btn-sm editFeeButton">
-          <i class="btn-outline-warning bx bx-edit"></i>
+        <button class="btn  editFeeButton">
+          <i class="btn-outline-warning bx bx-edit bx-sm"></i>
         </button>
         <button type="button" class="btn btn-danger btn-sm deleteFeeButton">
           <i class="bx bx-trash"></i>
