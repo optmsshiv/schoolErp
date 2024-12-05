@@ -136,11 +136,12 @@ document.addEventListener("DOMContentLoaded", function () {
       // Reset the form
       feeForm.reset();
 
-      // Close the offcanvas
-      if (addFeeCanvas) {
-        addFeeCanvas.hide();
-      }
+       // Close the offcanvas (if desired)
+    const addFeeCanvas = bootstrap.Offcanvas.getInstance(document.getElementById("addFeeCanvas"));
+    if (addFeeCanvas) {
+      addFeeCanvas.hide();
     }
+
   };
 
   // Initialize event listeners
@@ -150,5 +151,5 @@ document.addEventListener("DOMContentLoaded", function () {
     saveFeeButton.addEventListener("click", handleSaveFee);
   };
 
-  initialize();
+  initialize();}
 });
