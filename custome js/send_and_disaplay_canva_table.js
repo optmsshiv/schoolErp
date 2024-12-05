@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (addFeeCanvas) {
       addFeeCanvas.hide();
     }
-    }
+
   };
 
   // Initialize event listeners
@@ -152,4 +152,5 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   initialize();
+  }
 });
