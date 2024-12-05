@@ -141,9 +141,17 @@ document.addEventListener("DOMContentLoaded", function () {
       // Close the offcanvas
       addFeeCanvas.hide();
 
-      // Show a success alert (optional)
-      Swal.fire("Success", "Fee details added successfully.", "success");
-    } else {
+     // Show a success alert with a timer
+    Swal.fire({
+      title: "Success",
+      text: "Fee details added successfully.",
+      icon: "success",
+      timer: 3000, // Close after 3 seconds
+      timerProgressBar: true, // Show horizontal progress bar
+      didOpen: () => {
+        Swal.showLoading(); // Ensures the loading animation starts with the timer
+      },
+    });} else {
       Swal.fire("Error", message, "error");
     }
 
