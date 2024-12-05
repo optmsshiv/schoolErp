@@ -61,10 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
       <td>${feeAmount}</td>
       <td>
   <div class="d-flex gap-1">
-    <button class="btn editFeeButton" style="margin: 0 4px;">
+    <button class="btn editFeeButton" style="margin: 0 -8px;">
       <i class="btn-outline-warning bx bx-edit bx-sm"></i>
     </button>
-    <button type="button" class="btn deleteFeeButton" style="margin: 0 4px;">
+    <button type="button" class="btn deleteFeeButton" style="margin: 0 -8px;">
       <i class="btn-outline-danger bx bx-trash bx-sm"></i>
     </button>
   </div>
