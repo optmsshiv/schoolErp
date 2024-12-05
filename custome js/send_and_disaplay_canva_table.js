@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const feeForm = document.getElementById("feeForm");
   const feeTableBody = document.querySelector("#FeeCollection tbody");
   const addFeeCanvasEl = document.getElementById("addFeeCanvas");
-  let isSaveButtonClicked = false; // Track if Save button was clicked
 
+  let isSaveButtonClicked = false; // Track if Save button was clicked
   const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
 
   // Fetch fee heads and populate the dropdown
@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       const data = await response.json();
-
-      // Populate dropdown options
       feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
       data.forEach((feehead) => {
         const option = document.createElement("option");
@@ -36,17 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
     const feeAmount = document.getElementById("feeAmount").value.trim();
 
-    if (!feeMonth) {
-      return { isValid: false, message: "Please select a valid month." };
-    }
-
-    if (!feeType || feeTypeDropdown.value === "") {
-      return { isValid: false, message: "Please select a fee type." };
-    }
-
-    if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0) {
-      return { isValid: false, message: "Please enter a valid fee amount." };
-    }
+    if (!feeMonth) return { isValid: false, message: "Please select a valid month." };
+    if (!feeType || feeTypeDropdown.value === "") return { isValid: false, message: "Please select a fee type." };
+    if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0) return { isValid: false, message: "Please enter a valid fee amount." };
 
     return { isValid: true, feeMonth, feeType, feeAmount };
   };
@@ -60,26 +50,22 @@ document.addEventListener("DOMContentLoaded", function () {
       <td>${feeType}</td>
       <td>${feeAmount}</td>
       <td>
-  <div class="d-flex gap-1">
-    <button class="btn editFeeButton" style="margin: 0 -8px;">
-      <i class="btn-outline-warning bx bx-edit bx-sm"></i>
-    </button>
-    <button type="button" class="btn deleteFeeButton" style="margin: 0 -8px;">
-      <i class="btn-outline-danger bx bx-trash bx-sm"></i>
-    </button>
-  </div>
-</td>
+        <div class="d-flex">
+          <button class="btn editFeeButton" style="margin: 0 2px;">
+            <i class="btn-outline-warning bx bx-edit bx-sm"></i>
+          </button>
+          <button type="button" class="btn deleteFeeButton" style="margin: 0 2px;">
+            <i class="btn-outline-danger bx bx-trash bx-sm"></i>
+          </button>
+        </div>
+      </td>
     `;
 
     feeTableBody.appendChild(newRow);
 
-    // Add event listener to the delete button
-    const deleteButton = newRow.querySelector(".deleteFeeButton");
-    deleteButton.addEventListener("click", () => newRow.remove());
-
-    // Add event listener to the edit button
-    const editButton = newRow.querySelector(".editFeeButton");
-    editButton.addEventListener("click", () => handleEditFee(newRow));
+    // Add event listeners for delete and edit buttons
+    newRow.querySelector(".deleteFeeButton").addEventListener("click", () => newRow.remove());
+    newRow.querySelector(".editFeeButton").addEventListener("click", () => handleEditFee(newRow));
   };
 
   // Handle Edit Fee
@@ -88,7 +74,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const feeTypeCell = row.children[1];
     const feeAmountCell = row.children[2];
 
-    // Show Swal with pre-filled values
     Swal.fire({
       title: "Edit Fee Details",
       html: `
@@ -118,8 +103,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }).then((result) => {
       if (result.isConfirmed) {
         const { editedFeeMonth, editedFeeType, editedFeeAmount } = result.value;
-
-        // Update row data
         feeMonthCell.textContent = editedFeeMonth;
         feeTypeCell.textContent = editedFeeType;
         feeAmountCell.textContent = editedFeeAmount;
@@ -131,40 +114,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Handle Save Fee button click
   const handleSaveFee = () => {
-    isSaveButtonClicked = true; // Mark save button as clicked
+    isSaveButtonClicked = true;
 
     const { isValid, message, ...data } = validateForm();
     if (isValid) {
       addRowToTable(data);
-
-      // Reset the form
       feeForm.reset();
-
-      // Close the offcanvas
       addFeeCanvas.hide();
 
-     // Show a success alert with a timer
-    Swal.fire({
-      title: "Success",
-      text: "Fee details added successfully.",
-      icon: "success",
-      timer: 3000, // Close after 3 seconds
-      timerProgressBar: true, // Show horizontal progress bar
-      didOpen: () => {
-        Swal.showLoading(); // Ensures the loading animation starts with the timer
-      },
-    });} else {
+      Swal.fire({
+        title: "Success",
+        text: "Fee details added successfully.",
+        icon: "success",
+        timer: 3000,
+        timerProgressBar: true,
+      });
+    } else {
       Swal.fire("Error", message, "error");
     }
 
-    isSaveButtonClicked = false; // Reset after action
+    isSaveButtonClicked = false;
   };
 
   // Handle Offcanvas Hide Event
-  addFeeCanvasEl.addEventListener("hide.bs.offcanvas", (event) => {
+  addFeeCanvasEl.addEventListener("hide.bs.offcanvas", () => {
     if (!isSaveButtonClicked) {
-      // Prevent validation alert during offcanvas hiding
-      feeForm.reset();
+      feeForm.reset(); // Reset form only if save button wasn't clicked
     }
   });
 
