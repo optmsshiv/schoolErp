@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
       total += feeAmount;
     });
 
-    payableAmountEl.textContent = total.toFixed(2);
+    payableAmountEl.value = total.toFixed(2);
     recalculateFees(); // Recalculate other fee fields
   };
 
