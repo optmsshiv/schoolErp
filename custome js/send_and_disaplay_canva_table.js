@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
         title: "Success",
         text: "Fee details added successfully.",
         icon: "success",
-        timer: 1000,
+        timer: 2000,
         timerProgressBar: true,
         didOpen: () => Swal.showLoading(),
       });
@@ -120,7 +120,25 @@ document.addEventListener("DOMContentLoaded", function () {
     feeTableBody.appendChild(newRow);
 
     const deleteButton = newRow.querySelector(".deleteFeeButton");
-    deleteButton.addEventListener("click", () => newRow.remove());
+   // deleteButton.addEventListener("click", () => newRow.remove());
+   deleteButton.addEventListener("click", () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        newRow.remove();
+        Swal.fire("Deleted!", "The fee record has been deleted.", "success");
+      }
+    });
+  });
+
 
     const editButton = newRow.querySelector(".editFeeButton");
     editButton.addEventListener("click", () => handleEditFee(newRow));
