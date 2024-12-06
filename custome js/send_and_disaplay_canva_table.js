@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Example: Call updateTotalFee whenever rows are added, edited, or deleted
   feeTableBody.addEventListener("change", updateTotalFee);
-});
+
 
   // Utility function to capitalize the first letter of each word
   const capitalize = (str) => {
