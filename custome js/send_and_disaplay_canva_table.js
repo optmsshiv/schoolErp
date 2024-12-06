@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const feeForm = document.getElementById("feeForm");
   const feeTableBody = document.querySelector("#FeeCollection tbody");
   const addFeeCanvasEl = document.getElementById("addFeeCanvas");
+  const payableAmountEl = document.getElementById("payableAmount");
+  const receivedFeeInput = document.getElementById("receivedFee");
+  const dueAmountEl = document.getElementById("dueAmount");
+  const advancedFeeEl = document.getElementById("advancedFee");
   let isSaveButtonClicked = false;
 
   const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
@@ -48,6 +52,33 @@ document.addEventListener("DOMContentLoaded", function () {
     return str
       .toLowerCase()
       .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  // Recalculate fees
+  const recalculateFees = () => {
+    const payableAmount = parseFloat(payableAmountEl.textContent) || 0;
+    const receivedFee = parseFloat(receivedFeeInput.value) || 0;
+
+    const dueAmount = Math.max(payableAmount - receivedFee, 0); // Cannot be negative
+    const advancedFee = Math.max(receivedFee - payableAmount, 0); // Only positive if receivedFee > payableAmount
+
+    // Update the UI
+    dueAmountEl.textContent = dueAmount.toFixed(2);
+    advancedFeeEl.textContent = advancedFee.toFixed(2);
+  };
+
+  // Update total fee
+  const updateTotalFee = () => {
+    let total = 0;
+
+    feeTableBody.querySelectorAll("tr").forEach((row) => {
+      const feeAmountCell = row.children[2];
+      const feeAmount = parseFloat(feeAmountCell.textContent) || 0;
+      total += feeAmount;
+    });
+
+    payableAmountEl.value = total.toFixed(2);
+    recalculateFees(); // Recalculate other fee fields
   };
 
   // Validate form fields
@@ -120,81 +151,32 @@ document.addEventListener("DOMContentLoaded", function () {
     feeTableBody.appendChild(newRow);
 
     const deleteButton = newRow.querySelector(".deleteFeeButton");
-   // deleteButton.addEventListener("click", () => newRow.remove());
-   deleteButton.addEventListener("click", () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        newRow.remove();
-        Swal.fire("Deleted!", "The fee record has been deleted.", "success");
-      }
+    deleteButton.addEventListener("click", () => {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          newRow.remove();
+          updateTotalFee(); // Update total fee after deletion
+          Swal.fire("Deleted!", "The fee record has been deleted.", "success");
+        }
+      });
     });
-  });
-
 
     const editButton = newRow.querySelector(".editFeeButton");
     editButton.addEventListener("click", () => handleEditFee(newRow));
+    updateTotalFee(); // Update total fee after adding a new row
   };
 
-  // Handle Edit Fee
-  const handleEditFee = (row) => {
-    const feeMonthCell = row.children[0];
-    const feeTypeCell = row.children[1];
-    const feeAmountCell = row.children[2];
-
-    Swal.fire({
-      title: "Edit Fee Details",
-      html: `
-        <label for="editFeeMonth" class="form-label">Fee Month</label>
-        <input id="editFeeMonth" class="swal2-input" value="${capitalize(feeMonthCell.textContent)}">
-
-        <label for="editFeeType" class="form-label">Fee Type</label>
-        <input id="editFeeType" class="swal2-input" value="${feeTypeCell.textContent}">
-
-        <label for="editFeeAmount" class="form-label">Fee Amount</label>
-        <input id="editFeeAmount" class="swal2-input" type="number" value="${feeAmountCell.textContent}">
-      `,
-      confirmButtonText: "Save",
-      showCancelButton: true,
-      preConfirm: () => {
-        const editedFeeMonth = capitalize(document.getElementById("editFeeMonth").value.trim());
-        const editedFeeType = document.getElementById("editFeeType").value.trim();
-        const editedFeeAmount = document.getElementById("editFeeAmount").value.trim();
-
-        if (!editedFeeMonth || !editedFeeType || !editedFeeAmount || isNaN(editedFeeAmount) || Number(editedFeeAmount) <= 0) {
-          Swal.showValidationMessage("Please fill out all fields correctly.");
-          return false;
-        }
-
-        return { editedFeeMonth, editedFeeType, editedFeeAmount };
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const { editedFeeMonth, editedFeeType, editedFeeAmount } = result.value;
-
-        feeMonthCell.textContent = editedFeeMonth;
-        feeTypeCell.textContent = editedFeeType;
-        feeAmountCell.textContent = editedFeeAmount;
-
-        Swal.fire("Updated!", "Fee details have been updated successfully.", "success");
-      }
-    });
-  };
-
-  // Handle Offcanvas Hide Event
-  addFeeCanvasEl.addEventListener("hide.bs.offcanvas", (event) => {
-    if (!isSaveButtonClicked) {
-      feeForm.reset();
-    }
-  });
+  // Event listener for receivedFeeInput
+  receivedFeeInput.addEventListener("input", recalculateFees);
 
   // Initialize event listeners
   const initialize = () => {
