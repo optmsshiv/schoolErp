@@ -4,9 +4,20 @@ document.addEventListener("DOMContentLoaded", function () {
   const feeForm = document.getElementById("feeForm");
   const feeTableBody = document.querySelector("#FeeCollection tbody");
   const addFeeCanvasEl = document.getElementById("addFeeCanvas");
+  const payableAmountEl = document.getElementById("payableAmount");
+  const receivedFeeInput = document.getElementById("recievedFee");
+  const dueAmountEl = document.getElementById("dueAmount");
+  const advancedFeeEl = document.getElementById("advancedFee");
   let isSaveButtonClicked = false;
 
   const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
+
+  // Utility function to capitalize the first letter of each word
+  const capitalize = (str) => {
+    return str
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 
   // Fetch fee heads and populate the dropdown
   const fetchFeeHeads = async (retryCount = 3) => {
@@ -16,13 +27,10 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       const data = await response.json();
-
-      // Check if the response data is valid
       if (!Array.isArray(data) || data.length === 0) {
         throw new Error("No data received or invalid response format.");
       }
 
-      // Populate dropdown options
       feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
       data.forEach((feehead) => {
         const option = document.createElement("option");
@@ -32,22 +40,14 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     } catch (error) {
       console.error("Error fetching fee types:", error);
-
       if (retryCount > 0) {
         console.warn(`Retrying... Attempts left: ${retryCount}`);
-        await fetchFeeHeads(retryCount - 1); // Retry fetching fee heads
+        await fetchFeeHeads(retryCount - 1);
       } else {
         feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
         Swal.fire("Error", "Failed to load fee types. Please try again later.", "error");
       }
     }
-  };
-
-  // Utility function to capitalize the first letter of each word
-  const capitalize = (str) => {
-    return str
-      .toLowerCase()
-      .replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
   // Validate form fields
@@ -69,6 +69,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     return { isValid: true, feeMonth, feeType, feeAmount };
+  };
+
+  // Update Total Fee
+  const updateTotalFee = () => {
+    let total = 0;
+
+    feeTableBody.querySelectorAll("tr").forEach((row) => {
+      const feeAmountCell = row.children[2];
+      const feeAmount = parseFloat(feeAmountCell.textContent) || 0;
+      total += feeAmount;
+    });
+
+    payableAmountEl.textContent = total.toFixed(2);
+    recalculateFees();
+  };
+
+  // Recalculate Due and Advanced Fees
+  const recalculateFees = () => {
+    const payableAmount = parseFloat(payableAmountEl.textContent) || 0;
+    const receivedFee = parseFloat(receivedFeeInput.value) || 0;
+
+    const dueAmount = Math.max(payableAmount - receivedFee, 0);
+    const advancedFee = Math.max(receivedFee - payableAmount, 0);
+
+    dueAmountEl.textContent = dueAmount.toFixed(2);
+    advancedFeeEl.textContent = advancedFee.toFixed(2);
   };
 
   // Handle Save Fee button click
@@ -120,28 +146,12 @@ document.addEventListener("DOMContentLoaded", function () {
     feeTableBody.appendChild(newRow);
 
     const deleteButton = newRow.querySelector(".deleteFeeButton");
-   // deleteButton.addEventListener("click", () => newRow.remove());
-   deleteButton.addEventListener("click", () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        newRow.remove();
-        Swal.fire("Deleted!", "The fee record has been deleted.", "success");
-      }
-    });
-  });
-
+    deleteButton.addEventListener("click", () => handleDeleteFee(newRow));
 
     const editButton = newRow.querySelector(".editFeeButton");
     editButton.addEventListener("click", () => handleEditFee(newRow));
+
+    updateTotalFee();
   };
 
   // Handle Edit Fee
@@ -184,7 +194,25 @@ document.addEventListener("DOMContentLoaded", function () {
         feeTypeCell.textContent = editedFeeType;
         feeAmountCell.textContent = editedFeeAmount;
 
+        updateTotalFee();
         Swal.fire("Updated!", "Fee details have been updated successfully.", "success");
+      }
+    });
+  };
+
+  // Handle Delete Fee
+  const handleDeleteFee = (row) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        row.remove();
+        updateTotalFee();
+        Swal.fire("Deleted!", "The fee entry has been deleted.", "success");
       }
     });
   };
@@ -195,6 +223,9 @@ document.addEventListener("DOMContentLoaded", function () {
       feeForm.reset();
     }
   });
+
+  // Event Listener for Received Fee Input
+  receivedFeeInput.addEventListener("input", recalculateFees);
 
   // Initialize event listeners
   const initialize = () => {
