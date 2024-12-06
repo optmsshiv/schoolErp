@@ -119,10 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     feeTableBody.appendChild(newRow);
 
-    // Update Total Payable Amount
-    updatePayableAmount();// Call this function to update the total payable amount
-
-
+    // Add Delete Button Event Listener
     const deleteButton = newRow.querySelector(".deleteFeeButton");
    // deleteButton.addEventListener("click", () => newRow.remove());
    deleteButton.addEventListener("click", () => {
@@ -147,24 +144,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const editButton = newRow.querySelector(".editFeeButton");
     editButton.addEventListener("click", () => handleEditFee(newRow));
   };
-
-  const updatePayableAmount = () => {
-  const rows = feeTableBody.querySelectorAll("tr");
-  let totalFee = 0;
-
-    // Loop through each row and sum the fee amounts
-  rows.forEach((row) => {
-    const feeAmount = parseFloat(row.children[2].textContent.trim());
-    if (!isNaN(feeAmount)) {
-      totalFee += feeAmount;
-    }
-  });
-
-  // Update the payableAmount input field
-  document.getElementById("payableAmount").value = totalFee.toFixed(2);
-  // Log the total to the console for debugging
-  console.log("Total Payable Amount: ", totalFee.toFixed(2));
-};
 
 
   // Handle Edit Fee
