@@ -123,21 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
     updatePayableAmount();// Call this function to update the total payable amount
 
 
-    const updatePayableAmount = () => {
-  const rows = feeTableBody.querySelectorAll("tr");
-  let totalFee = 0;
-
-  rows.forEach((row) => {
-    const feeAmount = parseFloat(row.children[2].textContent.trim());
-    if (!isNaN(feeAmount)) {
-      totalFee += feeAmount;
-    }
-  });
-
-  // Update the payableAmount input field
-  document.getElementById("payableAmount").value = totalFee.toFixed(2);
-};
-
     const deleteButton = newRow.querySelector(".deleteFeeButton");
    // deleteButton.addEventListener("click", () => newRow.remove());
    deleteButton.addEventListener("click", () => {
@@ -162,6 +147,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const editButton = newRow.querySelector(".editFeeButton");
     editButton.addEventListener("click", () => handleEditFee(newRow));
   };
+
+  const updatePayableAmount = () => {
+  const rows = feeTableBody.querySelectorAll("tr");
+  let totalFee = 0;
+
+  rows.forEach((row) => {
+    const feeAmount = parseFloat(row.children[2].textContent.trim());
+    if (!isNaN(feeAmount)) {
+      totalFee += feeAmount;
+    }
+  });
+
+  // Update the payableAmount input field
+  document.getElementById("payableAmount").value = totalFee.toFixed(2);
+};
+
 
   // Handle Edit Fee
   const handleEditFee = (row) => {
