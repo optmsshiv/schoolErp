@@ -4,11 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const feeForm = document.getElementById("feeForm");
   const feeTableBody = document.querySelector("#FeeCollection tbody");
   const addFeeCanvasEl = document.getElementById("addFeeCanvas");
-  const concessionFeeInput = document.getElementById("concessionFee");
-  const payableAmountInput = document.getElementById("payableAmount");
-  const receivedFeeInput = document.getElementById("receivedFee");
-  const dueAmountDisplay = document.getElementById("dueAmount");
-  const advancedFeeDisplay = document.getElementById("advancedFee");
   let isSaveButtonClicked = false;
 
   const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
@@ -47,49 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   };
-
-  // Utility Function to Update Total Fee and Calculate Related Values
-  const updateTotalFee = () => {
-    let totalFee = 0;
-
-    // Calculate total fee from the table
-    feeTableBody.querySelectorAll("tr").forEach((row) => {
-      const feeAmountCell = row.children[2];
-      const feeAmount = parseFloat(feeAmountCell.textContent) || 0;
-      totalFee += feeAmount;
-    });
-
-    // Apply concession fee
-    const concessionFee = parseFloat(concessionFeeInput.value) || 0;
-    totalFee = Math.max(totalFee - concessionFee, 0); // Ensure no negative payable amount
-
-    // Update Total Payable Amount
-    payableAmountInput.value = totalFee.toFixed(2);
-
-    // Recalculate Related Fields
-    recalculateFees();
-  };
-
-  // Recalculate Received Fee, Due Amount, and Advanced Fee
-  const recalculateFees = () => {
-    const payableAmount = parseFloat(payableAmountInput.value) || 0;
-    const receivedFee = parseFloat(receivedFeeInput.value) || 0;
-
-    const dueAmount = Math.max(payableAmount - receivedFee, 0);
-    const advancedFee = Math.max(receivedFee - payableAmount, 0);
-
-    // Update the UI
-    dueAmountDisplay.textContent = dueAmount.toFixed(2);
-    advancedFeeDisplay.textContent = advancedFee.toFixed(2);
-  };
-
-  // Add Event Listeners
-  concessionFeeInput.addEventListener("input", updateTotalFee);
-  receivedFeeInput.addEventListener("input", recalculateFees);
-
-  // Example: Call updateTotalFee whenever rows are added, edited, or deleted
-  feeTableBody.addEventListener("change", updateTotalFee);
-
 
   // Utility function to capitalize the first letter of each word
   const capitalize = (str) => {
