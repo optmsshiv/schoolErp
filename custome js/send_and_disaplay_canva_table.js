@@ -152,6 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const rows = feeTableBody.querySelectorAll("tr");
   let totalFee = 0;
 
+    // Loop through each row and sum the fee amounts
   rows.forEach((row) => {
     const feeAmount = parseFloat(row.children[2].textContent.trim());
     if (!isNaN(feeAmount)) {
@@ -161,6 +162,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Update the payableAmount input field
   document.getElementById("payableAmount").value = totalFee.toFixed(2);
+  // Log the total to the console for debugging
+  console.log("Total Payable Amount: ", totalFee.toFixed(2));
 };
 
 
