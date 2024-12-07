@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
       const data = await response.json();
 
       // Check if the response data is valid
