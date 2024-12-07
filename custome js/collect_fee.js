@@ -39,7 +39,11 @@ function fetchStudentData() {
   const table = document.querySelector('#student_data tbody');
 
   // Show loading bar
-  loadingBar.style.display = 'block';
+    // Show loading bar if it exists
+  if (loadingBar) {
+    loadingBar.style.display = 'block';
+  }
+  
   table.innerHTML = ''; // Clear existing rows
 
 
@@ -98,7 +102,7 @@ function fetchStudentData() {
         })
         .catch(error => {
           console.error('Error fetching data:', error);
-          table.innerHTML = '<tr><td colspan="6">Search student name for collect fee.</td></tr>';
+          table.innerHTML = '<tr><td colspan="6">Error loading data.</td></tr>';
         })
         .finally(() => {
           // Hide loading bar
