@@ -1,0 +1,42 @@
+<!-- Offcanvas for Hostel Details -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="hostelCanvas" aria-labelledby="hostelCanvasLabel">
+    <div class="offcanvas-header">
+        <h5 id="hostelCanvasLabel">Add Hostel Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <form id="hostelForm">
+            <!-- Hostel Name Dropdown -->
+            <div class="mb-3">
+                <label for="hostelName" class="form-label">Hostel Name</label>
+                <select class="form-select" id="hostelName" required>
+                    <option selected disabled>Select Hostel</option>
+                    <option value="Hostel A">Hostel A</option>
+                    <option value="Hostel B">Hostel B</option>
+                    <option value="Hostel C">Hostel C</option>
+                    <option value="Hostel D">Hostel D</option>
+                </select>
+            </div>
+            <!-- Hostel Fee -->
+            <div class="mb-3">
+                <label for="hostelFee" class="form-label">Hostel Fee</label>
+                <input type="number" class="form-control" id="hostelFee" placeholder="Enter Hostel Fee" required>
+            </div>
+            <!-- Joining Date -->
+            <div class="mb-3">
+                <label for="joiningDate" class="form-label">Joining Date</label>
+                <input type="date" class="form-control" id="joiningDate" required>
+            </div>
+            <!-- Leaving Date -->
+            <div class="mb-3">
+                <label for="leavingDate" class="form-label">Leaving Date</label>
+                <input type="date" class="form-control" id="leavingDate" required>
+            </div>
+            <!-- Submit and Cancel Buttons -->
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success me-2">Submit</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

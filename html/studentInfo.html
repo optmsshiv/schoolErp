@@ -762,7 +762,7 @@
                         <!-- Student Info Tab -->
                         <div class="tab-pane fade show active" id="student-info" role="tabpanel"
                           aria-labelledby="student-info-tab">
-                         <!-- Content will be dynamically inserted here -->
+                          <!-- Content will be dynamically inserted here -->
                         </div>
 
                         <!-- Fee Details Tab -->
@@ -845,9 +845,12 @@
                                               <i class="bx bx-dots-vertical-rounded bx-sm"></i>
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                              <li><a class="dropdown-item border-bottom" href="#">View Fee Reciept</a></li>
-                                              <li><a class="dropdown-item border-bottom" href="#">Send Fee Reciept</a></li>
-                                              <li><a class="dropdown-item border-bottom" href="#">Send Fee Message</a></li>
+                                              <li><a class="dropdown-item border-bottom" href="#">View Fee Reciept</a>
+                                              </li>
+                                              <li><a class="dropdown-item border-bottom" href="#">Send Fee Reciept</a>
+                                              </li>
+                                              <li><a class="dropdown-item border-bottom" href="#">Send Fee Message</a>
+                                              </li>
                                               <li><a class="dropdown-item" href="#">Delete</a></li>
                                             </ul>
                                           </div>
@@ -875,16 +878,25 @@
                           <h4>Transport</h4>
                           <p>Details about transport go here.</p>
                         </div>
+
                         <!-- Hostel Tab -->
                         <div class="tab-pane fade" id="hostel" role="tabpanel" aria-labelledby="hostel-tab">
                           <h4>Hostel</h4>
                           <p>Details about hostel accommodation go here.</p>
+                          <!-- Add Button -->
+                          <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#hostelCanvas"
+                            aria-controls="hostelCanvas">
+                            Add
+                          </button>
                         </div>
+                        <div id="offcanvasContainer"></div>
+
                         <!-- Documents Tab -->
                         <div class="tab-pane fade" id="documents" role="tabpanel" aria-labelledby="documents-tab">
                           <h4>Documents</h4>
                           <p>Details about submitted documents go here.</p>
                         </div>
+
                         <!-- Others Tab -->
                         <div class="tab-pane fade" id="others" role="tabpanel" aria-labelledby="others-tab">
                           <h4>Others</h4>
