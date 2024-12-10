@@ -1,0 +1,42 @@
+<!-- Offcanvas for Transport Details -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="transportCanvas" aria-labelledby="transportCanvasLabel">
+    <div class="offcanvas-header">
+        <h5 id="transportCanvasLabel">Add Transport Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <form id="transportForm">
+            <!-- Transport Type Dropdown -->
+            <div class="mb-3">
+                <label for="transportType" class="form-label">Transport Type</label>
+                <select class="form-select" id="transportType" required>
+                    <option selected disabled>Select Transport</option>
+                    <option value="Bus">Bus</option>
+                    <option value="Van">Van</option>
+                    <option value="Car">Car</option>
+                    <option value="Bike">Bike</option>
+                </select>
+            </div>
+            <!-- Transport Fee -->
+            <div class="mb-3">
+                <label for="transportFee" class="form-label">Transport Fee</label>
+                <input type="number" class="form-control" id="transportFee" placeholder="Enter Transport Fee" required>
+            </div>
+            <!-- Start Date -->
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="startDate" required>
+            </div>
+            <!-- End Date -->
+            <div class="mb-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="endDate" required>
+            </div>
+            <!-- Submit and Cancel Buttons -->
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success me-2">Submit</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

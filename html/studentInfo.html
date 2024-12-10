@@ -873,19 +873,26 @@
                             </div>
                           </div>
                         </div>
+
                         <!-- Transport Tab -->
                         <div class="tab-pane fade" id="transport" role="tabpanel" aria-labelledby="transport-tab">
                           <h4>Transport</h4>
                           <p>Details about transport go here.</p>
+                          <button class="btn btn-primary" id="loadOffcanvasTrans" data-bs-toggle="offcanvas" data-bs-target="#transportCanvas"
+                            aria-controls="transportCanvas">
+                            Add
+                          </button>
                         </div>
+                        <!-- Container for dynamic offcanvas -->
+                        <div id="offcanvasContainerTransport"></div>
 
                         <!-- Hostel Tab -->
                         <div class="tab-pane fade" id="hostel" role="tabpanel" aria-labelledby="hostel-tab">
                           <h4>Hostel</h4>
                           <p>Details about hostel accommodation go here.</p>
                           <!-- Add Button -->
-                          <button class="btn btn-primary" id="loadOffcanvas" data-bs-toggle="offcanvas" data-bs-target="#hostelCanvas"
-                            aria-controls="hostelCanvas">
+                          <button class="btn btn-primary" id="loadOffcanvas" data-bs-toggle="offcanvas"
+                            data-bs-target="#hostelCanvas" aria-controls="hostelCanvas">
                             Add
                           </button>
                         </div>
@@ -949,10 +956,10 @@
           <script src="../assets/vendor/js/menu.js"></script>
           <script src="../custome js/getStudentDetails.js"></script>
           <script src="../custome js/hostel/hostel_off_canva.js"></script>
+          <script src="../custome js/hostel/transport_off_canva.js"></script>
 
 
           <!-- endbuild -->
-
           <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
           <!-- endbuild-->
 
