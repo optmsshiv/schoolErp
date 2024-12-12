@@ -707,7 +707,7 @@
                     <h5 class="card-title fw-bold badge pill bg-label-primary">New Student Admission Form : </h5>
                     <form action="/submit_school_admission_form" method="post">
                       <!-- Personal Details -->
-                      <div class="border p-3 mb-4 position-relative">
+                      <div class="border p-3 mb-4 position-relative mt-4">
                         <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Personal
                           Details</h5>
                         <div class="row">
@@ -790,7 +790,7 @@
                               <option value="AB-">AB-</option>
                             </select>
                           </div>
-                          <div class="col-md-2 mb-3">
+                          <div class="col-md-3 mb-3">
                             <label for="student-type" class="form-label">Student Type</label>
                             <select class="form-control" id="student-type" name="student_type" required>
                               <option value="day_scholar">Day Scholar</option>
@@ -822,6 +822,29 @@
                               <option value="no">No</option>
                             </select>
                           </div>
+                          <div class="col-md-3 mb-3">
+                            <label for="religion" class="form-label">Religion</label>
+                            <select class="form-control" id="religion" name="religion">
+                              <option value="">Select Religion</option>
+                              <option value="hindu">Hindu</option>
+                              <option value="muslim">Muslim</option>
+                              <option value="christian">Christian</option>
+                              <option value="sikh">Sikh</option>
+                              <option value="other">Other</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-3 mb-3">
+                            <label for="caste" class="form-label">Caste</label>
+                            <select class="form-control" id="caste" name="caste">
+                              <option value="">Select Caste</option>
+                              <option value="general">General</option>
+                              <option value="obc-i">OBC-I</option>
+                              <option value="obc-ii">OBC-II (NCL)</option>
+                              <option value="sc">SC</option>
+                              <option value="st">ST</option>
+                            </select>
+                          </div>
                           <div class="col-md-4 mb-3">
                             <label for="medical-condition" class="form-label">Medical Condition</label>
                             <textarea class="form-control" id="medical-condition" name="medical_condition" rows="3"
@@ -829,6 +852,42 @@
                           </div>
                         </div>
                       </div>
+
+                      <div class="border p-3 mb-4 position-relative">
+                        <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Academic Information</h5>
+                        <div class="row">
+                        <div class="col-md-3 mb-3">
+                          <label for="last-school" class="form-label">Last School Name</label>
+                          <input type="text" class="form-control" id="last-school" name="last_school"
+                            placeholder="Enter last school name" required>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                          <label for="academic-class" class="form-label">Class</label>
+                          <select class="form-control" id="academic-class" name="academic_class">
+                            <option value="1">Class 1</option>
+                            <option value="2">Class 2</option>
+                            <option value="3">Class 3</option>
+                            <option value="4">Class 4</option>
+                            <option value="5">Class 5</option>
+                            <option value="6">Class 6</option>
+                            <option value="7">Class 7</option>
+                            <option value="8">Class 8</option>
+                            <option value="9">Class 9</option>
+                            <option value="10">Class 10</option>
+                            <option value="11">Class 11</option>
+                            <option value="12">Class 12</option>
+                          </select>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                          <label for="roll-number" class="form-label">Roll Number</label>
+                          <input type="text" class="form-control" id="roll-number" name="roll_number"
+                            placeholder="Enter roll number" required>
+                        </div>
+                      </div>
+                      </div>
+
 
                       <!-- Parent/Guardian Information -->
                       <div class="border p-3 mb-4 position-relative">
