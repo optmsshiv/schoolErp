@@ -16,20 +16,40 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         <div class="offcanvas-body">
           <form id="feeForm">
-            <div class="mb-3">
-              <label for="feeMonth" class="form-label">Fee Month</label>
-              <input type="text" class="form-control" id="feeMonth" placeholder="Enter Fee Month">
-            </div>
-            <div class="mb-3">
+          <div class="mb-3">
               <label for="feeType" class="form-label">Fee Type</label>
               <select class="form-select" id="feeType">
                 <option value="" disabled selected>Select Fee Type</option>
               </select>
             </div>
             <div class="mb-3">
+              <label for="feeMonth" class="form-label">Fee Month</label>
+              <select id="feeMonth" name="feeMonth" class="form-select" required>
+                   <option value="" disabled selected>Select Month</option>
+                   <option value="january">January</option>
+                   <option value="february">February</option>
+                   <option value="march">March</option>
+                   <option value="april">April</option>
+                   <option value="may">May</option>
+                   <option value="june">June</option>
+                   <option value="july">July</option>
+                   <option value="august">August</option>
+                   <option value="september">September</option>
+                   <option value="october">October</option>
+                   <option value="november">November</option>
+                   <option value="december">December</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
               <label for="feeAmount" class="form-label">Fee Amount</label>
               <input type="number" class="form-control" id="feeAmount" placeholder="Enter Fee Amount">
             </div>
+
+              <div class="mb-3">
+                <label for="remarks">Remarks</label>
+                <textarea id="remarks" name="remarks" class="form-control" rows="3" placeholder="Optional"></textarea>
+              </div>
             <button type="button" id="saveFeeButton" class="btn btn-primary">Save</button>
           </form>
         </div>
