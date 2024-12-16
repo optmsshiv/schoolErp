@@ -4,7 +4,7 @@ require_once '../db_connection.php'; // Ensure this path points to your database
 
 try {
     // Fetch Feeheads data (id and fee_head_name)
-    $stmt = $pdo->query("SELECT id, fee_head_name FROM FeeHeads");
+    $stmt = $pdo->query("SELECT fee_head_id, fee_head_name FROM FeeHeads");
 
     // Fetch all rows as an associative array
     $feeheads = $stmt->fetchAll(PDO::FETCH_ASSOC);
