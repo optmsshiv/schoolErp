@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const canvasContainer = document.getElementById("canvas-container");
   let isSaveButtonClicked = false;
 
+  // Utility function to capitalize the first letter of a string
+  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
   // Dynamically append the offcanvas HTML structure to #canvas-container
   if (canvasContainer) {
     canvasContainer.innerHTML = `
@@ -16,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         <div class="offcanvas-body">
           <form id="feeForm">
-          <div class="mb-3">
+            <div class="mb-3">
               <label for="feeType" class="form-label">Fee Type</label>
               <select class="form-select" id="feeType">
                 <option value="" disabled selected>Select Fee Type</option>
@@ -25,31 +28,29 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="mb-3">
               <label for="feeMonth" class="form-label">Fee Month</label>
               <select id="feeMonth" name="feeMonth" class="form-select" required>
-                   <option value="" disabled selected>Select Month</option>
-                   <option value="january">January</option>
-                   <option value="february">February</option>
-                   <option value="march">March</option>
-                   <option value="april">April</option>
-                   <option value="may">May</option>
-                   <option value="june">June</option>
-                   <option value="july">July</option>
-                   <option value="august">August</option>
-                   <option value="september">September</option>
-                   <option value="october">October</option>
-                   <option value="november">November</option>
-                   <option value="december">December</option>
+                <option value="" disabled selected>Select Month</option>
+                <option value="january">January</option>
+                <option value="february">February</option>
+                <option value="march">March</option>
+                <option value="april">April</option>
+                <option value="may">May</option>
+                <option value="june">June</option>
+                <option value="july">July</option>
+                <option value="august">August</option>
+                <option value="september">September</option>
+                <option value="october">October</option>
+                <option value="november">November</option>
+                <option value="december">December</option>
               </select>
             </div>
-
             <div class="mb-3">
               <label for="feeAmount" class="form-label">Fee Amount</label>
               <input type="number" class="form-control" id="feeAmount" placeholder="Enter Fee Amount">
             </div>
-
-              <div class="mb-3">
-                <label for="remarks">Remarks</label>
-                <textarea id="remarks" name="remarks" class="form-control" rows="3" placeholder="Optional"></textarea>
-              </div>
+            <div class="mb-3">
+              <label for="remarks">Remarks</label>
+              <textarea id="remarks" name="remarks" class="form-control" rows="3" placeholder="Optional"></textarea>
+            </div>
             <button type="button" id="saveFeeButton" class="btn btn-primary">Save</button>
           </form>
         </div>
@@ -60,58 +61,40 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const addFeeCanvasEl = document.getElementById("addFeeCanvas");
-
-  // Initialize Offcanvas
   const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
 
   // Fetch fee heads and populate the dropdown
   const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
-  const feeTypeDropdown = document.getElementById("feeType");
-  if (!feeTypeDropdown) {
-    console.error("Fee type dropdown element not found.");
-    return;
-  }
+    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
+    try {
+      const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-  feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
-  try {
-    const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-    const result = await response.json();
-
-    // Check response structure
-    if (result.status === "success" && Array.isArray(result.data) && result.data.length > 0) {
-      // Populate dropdown
-      feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
-      result.data.forEach((feehead) => {
-        if (feehead.fee_head_id && feehead.fee_head_name) {
-          const option = document.createElement("option");
-          option.value = feehead.fee_head_id;
-          option.textContent = feehead.fee_head_name;
-          feeTypeDropdown.appendChild(option);
-        } else {
-          console.warn("Skipping invalid fee head entry:", feehead);
-        }
-      });
-    } else {
-      console.error("No valid fee heads received:", result);
-      throw new Error(result.message || "No valid data received.");
+      const result = await response.json();
+      if (result.status === "success" && Array.isArray(result.data) && result.data.length > 0) {
+        feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
+        result.data.forEach((feehead) => {
+          if (feehead.fee_head_id && feehead.fee_head_name) {
+            const option = document.createElement("option");
+            option.value = feehead.fee_head_id;
+            option.textContent = feehead.fee_head_name;
+            feeTypeDropdown.appendChild(option);
+          }
+        });
+      } else {
+        throw new Error(result.message || "No valid data received.");
+      }
+    } catch (error) {
+      console.error("Error fetching fee types:", error.message);
+      if (retryCount > 0) {
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+        await fetchFeeHeads(retryCount - 1, delayMs);
+      } else {
+        feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
+        Swal.fire("Error", "Failed to load fee types after multiple attempts.", "error");
+      }
     }
-  } catch (error) {
-    console.error("Error fetching fee types:", error.message);
-
-    // Retry logic
-    if (retryCount > 0) {
-      console.warn(`Retrying... Attempts left: ${retryCount}`);
-      await new Promise((resolve) => setTimeout(resolve, delayMs));
-      await fetchFeeHeads(retryCount - 1, delayMs);
-    } else {
-      feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
-      Swal.fire("Error", "Failed to load fee types after multiple attempts. Please try again later.", "error");
-    }
-  }
-};
-
+  };
 
   // Validate form fields
   const validateForm = () => {
@@ -138,10 +121,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const handleSaveFee = () => {
     isSaveButtonClicked = true;
 
-    const { isValid, message, feeMonth, feeType, feeAmount } = validateForm();
+    const { isValid, message, ...data } = validateForm();
     if (isValid) {
-      addRowToTable({ feeMonth, feeType, feeAmount });
-
+      addRowToTable(data);
       feeForm.reset();
       addFeeCanvas.hide();
 
@@ -181,13 +163,77 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
 
     feeTableBody.appendChild(newRow);
+
+    // Add Delete Button Event Listener
+    newRow.querySelector(".deleteFeeButton").addEventListener("click", () => {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          newRow.remove();
+          Swal.fire("Deleted!", "The fee record has been deleted.", "success");
+        }
+      });
+    });
+
+    // Add Edit Button Event Listener
+    newRow.querySelector(".editFeeButton").addEventListener("click", () => handleEditFee(newRow));
   };
 
-  // Initialize event listeners
-  const initialize = () => {
-    fetchFeeHeads();
-    saveFeeButton.addEventListener("click", handleSaveFee);
+  // Handle Edit Fee
+  const handleEditFee = (row) => {
+    const feeMonthCell = row.children[0];
+    const feeTypeCell = row.children[1];
+    const feeAmountCell = row.children[2];
+
+    Swal.fire({
+      title: "Edit Fee Details",
+      html: `
+        <label for="editFeeMonth">Fee Month</label>
+        <input type="text" id="editFeeMonth" class="form-control" value="${feeMonthCell.textContent}" />
+        <label for="editFeeType">Fee Type</label>
+        <input type="text" id="editFeeType" class="form-control" value="${feeTypeCell.textContent}" />
+        <label for="editFeeAmount">Fee Amount</label>
+        <input type="number" id="editFeeAmount" class="form-control" value="${feeAmountCell.textContent}" />
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      preConfirm: () => {
+        const feeMonth = document.getElementById("editFeeMonth").value.trim();
+        const feeType = document.getElementById("editFeeType").value.trim();
+        const feeAmount = document.getElementById("editFeeAmount").value.trim();
+
+        if (!feeMonth || !feeType || isNaN(feeAmount) || Number(feeAmount) <= 0) {
+          Swal.showValidationMessage("Please fill all fields correctly.");
+          return null;
+        }
+
+        return { feeMonth, feeType, feeAmount };
+      },
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        feeMonthCell.textContent = result.value.feeMonth;
+        feeTypeCell.textContent = result.value.feeType;
+        feeAmountCell.textContent = result.value.feeAmount;
+
+        Swal.fire("Updated!", "Fee details updated successfully.", "success");
+      }
+    });
   };
 
-  initialize();
+  // Reset form if the offcanvas is closed without saving
+  addFeeCanvasEl.addEventListener("hidden.bs.offcanvas", () => {
+    if (!isSaveButtonClicked) {
+      feeForm.reset();
+    }
+  });
+
+  saveFeeButton.addEventListener("click", handleSaveFee);
+  fetchFeeHeads();
 });
