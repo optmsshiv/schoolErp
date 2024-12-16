@@ -46,27 +46,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Fetch fee heads and populate the dropdown
   const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
-    const feeTypeDropdown = document.getElementById("feeType");
-    if (!feeTypeDropdown) {
-      console.error("Fee type dropdown element not found.");
-      return;
-    }
+  const feeTypeDropdown = document.getElementById("feeType");
+  if (!feeTypeDropdown) {
+    console.error("Fee type dropdown element not found.");
+    return;
+  }
 
-    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
-    try {
-      const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
+  try {
+    const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-      const data = await response.json();
+    const result = await response.json();
 
-      // Validate response data
-      if (!Array.isArray(data) || data.length === 0) {
-        throw new Error("No valid data received.");
-      }
-
+    // Check response structure
+    if (result.status === "success" && Array.isArray(result.data) && result.data.length > 0) {
       // Populate dropdown
       feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
-      data.forEach((feehead) => {
+      result.data.forEach((feehead) => {
         if (feehead.fee_head_id && feehead.fee_head_name) {
           const option = document.createElement("option");
           option.value = feehead.fee_head_id;
@@ -76,20 +73,25 @@ document.addEventListener("DOMContentLoaded", function () {
           console.warn("Skipping invalid fee head entry:", feehead);
         }
       });
-    } catch (error) {
-      console.error("Error fetching fee types:", error);
-
-      // Retry logic
-      if (retryCount > 0) {
-        console.warn(`Retrying... Attempts left: ${retryCount}`);
-        await new Promise((resolve) => setTimeout(resolve, delayMs));
-        await fetchFeeHeads(retryCount - 1, delayMs);
-      } else {
-        feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
-        Swal.fire("Error", "Failed to load fee types after multiple attempts. Please try again later.", "error");
-      }
+    } else {
+      console.error("No valid fee heads received:", result);
+      throw new Error(result.message || "No valid data received.");
     }
-  };
+  } catch (error) {
+    console.error("Error fetching fee types:", error.message);
+
+    // Retry logic
+    if (retryCount > 0) {
+      console.warn(`Retrying... Attempts left: ${retryCount}`);
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+      await fetchFeeHeads(retryCount - 1, delayMs);
+    } else {
+      feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
+      Swal.fire("Error", "Failed to load fee types after multiple attempts. Please try again later.", "error");
+    }
+  }
+};
+
 
   // Validate form fields
   const validateForm = () => {
