@@ -31,9 +31,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Populate dropdown
     feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
     data.forEach((feehead) => {
-      if (feehead.id && feehead.fee_head_name) { // Validate fields exist
+      if (feehead.fee_head_id && feehead.fee_head_name) { // Validate fields exist
         const option = document.createElement("option");
-        option.value = feehead.id;
+        option.value = feehead.fee_head_id;
         option.textContent = feehead.fee_head_name;
         feeTypeDropdown.appendChild(option);
       } else {
