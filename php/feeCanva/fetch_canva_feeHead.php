@@ -3,20 +3,24 @@
 require_once '../db_connection.php'; // Ensure this path points to your database connection script
 
 try {
-    // Fetch Feeheads data
-    $stmt = $pdo->query("SELECT fee_head_name FROM FeeHeads");
+    // Fetch Feeheads data (id and fee_head_name)
+    $stmt = $pdo->query("SELECT id, fee_head_name FROM FeeHeads");
 
     // Fetch all rows as an associative array
-    $feeheads = $stmt->fetchAll();
+    $feeheads = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Return data as a JSON response
-    echo json_encode($feeheads);
+    // Return structured JSON response
+    if ($feeheads) {
+        echo json_encode(['status' => 'success', 'data' => $feeheads]);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'No fee heads found.']);
+    }
 } catch (PDOException $e) {
     // Log the error and respond with a generic error message
     error_log('Error fetching Feeheads: ' . $e->getMessage(), 0);
     echo json_encode([
         'status' => 'error',
-        'message' => 'Failed to fetch fee heads. Please try again later.'
+        'message' => 'An unexpected error occurred. Please try again later.'
     ]);
     exit;
 }

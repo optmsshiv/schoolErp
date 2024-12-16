@@ -15,34 +15,48 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Fetch fee heads and populate the dropdown
-  const fetchFeeHeads = async (retryCount = 3) => {
-    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
-    try {
-      const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-      const data = await response.json();
+  const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
+  feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
+  try {
+    const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-      if (!Array.isArray(data) || data.length === 0) {
-        throw new Error("No valid data received.");
-      }
+    const data = await response.json();
 
-      feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
-      data.forEach((feehead) => {
+    // Validate response data
+    if (!Array.isArray(data) || data.length === 0) {
+      throw new Error("No valid data received.");
+    }
+
+    // Populate dropdown
+    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
+    data.forEach((feehead) => {
+      if (feehead.id && feehead.fee_head_name) { // Validate fields exist
         const option = document.createElement("option");
         option.value = feehead.id;
         option.textContent = feehead.fee_head_name;
         feeTypeDropdown.appendChild(option);
-      });
-    } catch (error) {
-      console.error("Error fetching fee types:", error);
-      feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
-      if (retryCount > 0) {
-        await fetchFeeHeads(retryCount - 1);
       } else {
-        Swal.fire("Error", "Failed to load fee types. Please try again later.", "error");
+        console.warn("Skipping invalid fee head entry:", feehead);
       }
+    });
+  } catch (error) {
+    console.error("Error fetching fee types:", error);
+
+    // Update dropdown with error message
+    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
+
+    // Retry logic
+    if (retryCount > 0) {
+      console.warn(`Retrying... Attempts left: ${retryCount}`);
+      await new Promise((resolve) => setTimeout(resolve, delayMs)); // Delay before retrying
+      await fetchFeeHeads(retryCount - 1, delayMs); // Retry fetching fee heads
+    } else {
+      Swal.fire("Error", "Failed to load fee types after multiple attempts. Please try again later.", "error");
     }
-  };
+  }
+};
+
 
   // Utility function to capitalize the first letter of each word
   const capitalize = (str) => {
