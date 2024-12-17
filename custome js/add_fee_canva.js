@@ -1,4 +1,4 @@
-fetch('../html/add_fee_canva.html')
+fetch('../html/add_fee_canvas.html')
 .then(response => response.text())
 .then(html => {
   document.getElementById('canvas-container').innerHTML = html;
