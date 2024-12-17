@@ -15,44 +15,38 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Fetch fee heads and populate the dropdown
-  const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
+ const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
   feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
   try {
     const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-    const data = await response.json();
-
-    // Validate response data
-    if (!Array.isArray(data) || data.length === 0) {
-      throw new Error("No valid data received.");
+    const result = await response.json();
+    if (result.status !== 'success' || !Array.isArray(result.data)) {
+      throw new Error("Invalid response structure or no data.");
     }
 
     // Populate dropdown
+    const feeheads = result.data;
     feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
-    data.forEach((feehead) => {
-      if (feehead.fee_head_id && feehead.fee_head_name) { // Validate fields exist
+    feeheads.forEach(({ fee_head_id, fee_head_name }) => {
+      if (fee_head_id && fee_head_name) {
         const option = document.createElement("option");
-        option.value = feehead.fee_head_id;
-        option.textContent = feehead.fee_head_name;
+        option.value = fee_head_id;
+        option.textContent = fee_head_name;
         feeTypeDropdown.appendChild(option);
-      } else {
-        console.warn("Skipping invalid fee head entry:", feehead);
       }
     });
   } catch (error) {
     console.error("Error fetching fee types:", error);
-
-    // Update dropdown with error message
     feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
 
-    // Retry logic
     if (retryCount > 0) {
       console.warn(`Retrying... Attempts left: ${retryCount}`);
-      await new Promise((resolve) => setTimeout(resolve, delayMs)); // Delay before retrying
-      await fetchFeeHeads(retryCount - 1, delayMs); // Retry fetching fee heads
+      await new Promise((resolve) => setTimeout(resolve, delayMs));
+      await fetchFeeHeads(retryCount - 1, delayMs);
     } else {
-      Swal.fire("Error", "Failed to load fee types after multiple attempts. Please try again later.", "error");
+      Swal.fire("Error", "Failed to load fee types after multiple attempts.", "error");
     }
   }
 };
@@ -168,49 +162,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   // Handle Edit Fee
-  const handleEditFee = (row) => {
-    const feeMonthCell = row.children[0];
-    const feeTypeCell = row.children[1];
-    const feeAmountCell = row.children[2];
+const handleEditFee = (row) => {
+  const feeMonthCell = row.children[0];
+  const feeTypeCell = row.children[1];
+  const feeAmountCell = row.children[2];
 
-    Swal.fire({
-      title: "Edit Fee Details",
-      html: `
-        <label for="editFeeMonth" class="form-label">Fee Month</label>
-        <input id="editFeeMonth" class="swal2-input" value="${capitalize(feeMonthCell.textContent)}">
+  Swal.fire({
+    title: "Edit Fee Details",
+    html: `
+      <label for="editFeeMonth" class="form-label">Fee Month</label>
+      <input id="editFeeMonth" class="swal2-input" value="${capitalize(feeMonthCell.textContent)}">
 
-        <label for="editFeeType" class="form-label">Fee Type</label>
-        <input id="editFeeType" class="swal2-input" value="${feeTypeCell.textContent}">
+      <label for="editFeeType" class="form-label">Fee Type</label>
+      <select id="editFeeType" class="swal2-select">${feeTypeDropdown.innerHTML}</select>
 
-        <label for="editFeeAmount" class="form-label">Fee Amount</label>
-        <input id="editFeeAmount" class="swal2-input" type="number" value="${feeAmountCell.textContent}">
-      `,
-      confirmButtonText: "Save",
-      showCancelButton: true,
-      preConfirm: () => {
-        const editedFeeMonth = capitalize(document.getElementById("editFeeMonth").value.trim());
-        const editedFeeType = document.getElementById("editFeeType").value.trim();
-        const editedFeeAmount = document.getElementById("editFeeAmount").value.trim();
+      <label for="editFeeAmount" class="form-label">Fee Amount</label>
+      <input id="editFeeAmount" class="swal2-input" type="number" value="${feeAmountCell.textContent}">
+    `,
+    confirmButtonText: "Save",
+    showCancelButton: true,
+    preConfirm: () => {
+      const editedFeeMonth = capitalize(document.getElementById("editFeeMonth").value.trim());
+      const editedFeeType = document.getElementById("editFeeType").options[document.getElementById("editFeeType").selectedIndex].text;
+      const editedFeeAmount = document.getElementById("editFeeAmount").value.trim();
 
-        if (!editedFeeMonth || !editedFeeType || !editedFeeAmount || isNaN(editedFeeAmount) || Number(editedFeeAmount) <= 0) {
-          Swal.showValidationMessage("Please fill out all fields correctly.");
-          return false;
-        }
-
-        return { editedFeeMonth, editedFeeType, editedFeeAmount };
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const { editedFeeMonth, editedFeeType, editedFeeAmount } = result.value;
-
-        feeMonthCell.textContent = editedFeeMonth;
-        feeTypeCell.textContent = editedFeeType;
-        feeAmountCell.textContent = editedFeeAmount;
-
-        Swal.fire("Updated!", "Fee details have been updated successfully.", "success");
+      if (!editedFeeMonth || !editedFeeType || !editedFeeAmount || isNaN(editedFeeAmount) || Number(editedFeeAmount) <= 0) {
+        Swal.showValidationMessage("Please fill out all fields correctly.");
+        return false;
       }
-    });
-  };
+
+      return { editedFeeMonth, editedFeeType, editedFeeAmount };
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const { editedFeeMonth, editedFeeType, editedFeeAmount } = result.value;
+      feeMonthCell.textContent = editedFeeMonth;
+      feeTypeCell.textContent = editedFeeType;
+      feeAmountCell.textContent = editedFeeAmount;
+
+      Swal.fire("Updated!", "Fee details have been updated successfully.", "success");
+    }
+  });
+};
+
 
   // Handle Offcanvas Hide Event
   addFeeCanvasEl.addEventListener("hide.bs.offcanvas", (event) => {
@@ -227,4 +221,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
   initialize();
 });
-
