@@ -1,11 +1,15 @@
-document.getElementById('loadOffcanvas').addEventListener('click', function () {
-    fetch('/html/hostel_canva.html')
+document.getElementById('loadHostelOffcanvas').addEventListener('click', function () {
+    // Dynamically load offcanvas content if needed
+    fetch('offcanvas-hostel.html')
         .then(response => response.text())
         .then(html => {
-            document.getElementById('offcanvasContainer').innerHTML = html;
-            // Trigger the offcanvas
-            const offcanvasElement = new bootstrap.Offcanvas(document.getElementById('hostelCanvas'));
-            offcanvasElement.show();
+            const container = document.getElementById('offcanvasContainer');
+            container.innerHTML = html;
+
+            // Initialize offcanvas only after it's in the DOM
+            const offcanvasElement = document.getElementById('hostelCanvas');
+            const bootstrapOffcanvas = new bootstrap.Offcanvas(offcanvasElement);
+            bootstrapOffcanvas.show();
         })
         .catch(error => console.error('Error loading offcanvas:', error));
 });
