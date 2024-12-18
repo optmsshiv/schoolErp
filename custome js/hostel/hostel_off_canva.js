@@ -1,4 +1,4 @@
-document.getElementById('loadHostelOffcanvas').addEventListener('click', function () {
+document.getElementById('loadOffcanvas').addEventListener('click', function () {
     // Dynamically load offcanvas content if needed
     fetch('/html/hostel_canva.html')
         .then(response => response.text())
