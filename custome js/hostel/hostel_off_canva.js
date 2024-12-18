@@ -1,6 +1,6 @@
 document.getElementById('loadHostelOffcanvas').addEventListener('click', function () {
     // Dynamically load offcanvas content if needed
-    fetch('offcanvas-hostel.html')
+    fetch('/html/hostel_canva.html')
         .then(response => response.text())
         .then(html => {
             const container = document.getElementById('offcanvasContainer');
