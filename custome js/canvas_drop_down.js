@@ -295,7 +295,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /****************************************** */
-
 const fetchFeeHeads = async (retryCount = 3) => {
     feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
     try {
