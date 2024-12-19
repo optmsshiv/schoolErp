@@ -753,7 +753,7 @@
                         </li>
                         <!-- / Hostel Tab -->
 
-                         <!-- Documents Tab -->
+                        <!-- Documents Tab -->
                         <li class="nav-item" role="presentation">
                           <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents"
                             type="button" role="tab" aria-controls="documents" aria-selected="false">Documents</button>
@@ -810,7 +810,7 @@
                                 <i class="fas fa-bed fa-2x ms-auto"></i>
                               </div>
                             </div>
-                            
+
                             <!-- Total Pending Amount Card -->
                             <div class="col-lg-3 col-md-6">
                               <div class="border rounded p-4 d-flex justify-content-between align-items-center">
@@ -890,8 +890,8 @@
                         <div class="tab-pane fade" id="transport" role="tabpanel" aria-labelledby="transport-tab">
                           <h4>Transport</h4>
                           <p>Details about transport go here.</p>
-                          <button class="btn btn-primary" id="loadOffcanvasTrans" data-bs-toggle="offcanvas" data-bs-target="#transportCanvas"
-                            aria-controls="transportCanvas">
+                          <button class="btn btn-primary" id="loadOffcanvasTrans" data-bs-toggle="offcanvas"
+                            data-bs-target="#transportCanvas" aria-controls="transportCanvas">
                             Add
                           </button>
                         </div>
@@ -900,14 +900,38 @@
 
                         <!-- Hostel Tab -->
                         <div class="tab-pane fade" id="hostel" role="tabpanel" aria-labelledby="hostel-tab">
-                          <h4>Hostel</h4>
-                          <p>Details about hostel accommodation go here.</p>
+                          <!-- Content will be dynamically inserted here -->
                           <!-- Add Button -->
-                          <button class="btn btn-primary" id="loadOffcanvas" data-bs-toggle="offcanvas"
-                            data-bs-target="#hostelCanvas" aria-controls="hostelCanvas">
-                            Add
-                          </button>
+                          <div class="d-flex">
+                            <button class="btn btn-primary ms-auto" id="loadOffcanvas" data-bs-toggle="offcanvas"
+                              data-bs-target="#hostelCanvas" aria-controls="hostelCanvas">
+                              Add
+                            </button>
+                          </div>
+
+                          <div>
+                            <h3 class="card-header bg-secondary text-white mt-4">Student Hostel Details</h3>
+                            <table id="hostelTable" class="table table-md table-hover table-bordered  border-bottom"
+                              border="1" cellspacing="0" cellpadding="8">
+                              <thead>
+                                <tr class="table-secondary">
+                                  <th scope="col" class="fw-bold" style="width: 2%;">Student ID</th>
+                                  <th class="fw-bold">Student Name</th>
+                                  <th scope="col" class="fw-bold" style="width: 5%;">Hostel Name</th>
+                                  <th scope="col" class="fw-bold" style="width: 2%;">Hostel Fee</th>
+                                  <th class="fw-bold">Start Date</th>
+                                  <th class="fw-bold">Leave Date</th>
+                                  <th scope="col" class="fw-bold" style="width: 4%;">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <!-- Rows will be dynamically inserted here -->
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
+
+                        <!-- Container for dynamic offcanvas -->
                         <div id="offcanvasContainer"></div>
 
                         <!-- Documents Tab -->
