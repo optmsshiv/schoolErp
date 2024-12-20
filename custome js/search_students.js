@@ -13,7 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
  * @param {HTMLElement} resultsContainer - The container for displaying search results.
  */
 function showCardContainer(resultsContainer) {
-  resultsContainer.style.display = 'block';
+  const resultsContainer = document.getElementById('resultsContainer');
+  if (resultsContainer) {
+    resultsContainer.style.display = 'block';
+  }
 }
 
 /**
