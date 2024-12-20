@@ -15,7 +15,7 @@ $sql = "SELECT
             students.class_name,
             students.phone,
             students.date_of_birth,
-            students.gender,
+            students.gende,
             students.father_name,
             students.mother_name,
             students.roll_no,
