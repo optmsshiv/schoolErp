@@ -9,7 +9,7 @@ try {
     // Get the search query from the request
     $search = $_GET['query'] ?? '';
 
-    // Prepare the SQL statement with a JOIN
+    // Prepare the SQL statement with JOINs
     $sql = "SELECT
                 s.first_name,
                 s.last_name,
@@ -20,13 +20,18 @@ try {
                 s.phone,
                 s.gender,
                 s.day_hosteler AS type,
-                f.amount AS monthly_fee
+                f.amount AS monthly_fee,
+                h.hostel_fee
             FROM
                 students s
             LEFT JOIN
                 FeePlans f
             ON
                 s.class_name = f.class_name
+            LEFT JOIN
+                hostels h
+            ON
+                s.hostel_id = h.id
             WHERE
                 s.first_name LIKE :search OR
                 s.father_name LIKE :search
