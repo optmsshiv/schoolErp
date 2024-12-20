@@ -21,7 +21,8 @@ try {
                 s.gender,
                 s.day_hosteler AS type,
                 f.amount AS monthly_fee,
-                h.hostel_fee
+                h.hostel_fee,
+                t.transport_fee
             FROM
                 students s
             LEFT JOIN
@@ -32,6 +33,10 @@ try {
                 hostels h
             ON
                 s.hostel_id = h.hostel_id
+            LEFT JOIN
+                transport t
+            ON
+                s.transport_id = t.transport_id
             WHERE
                 s.first_name LIKE :search OR
                 s.father_name LIKE :search
