@@ -22,11 +22,9 @@ $sql = "SELECT
             students.day_hosteler,
             students.admission_no,
             students.hostel_id,
-            hostels.hostel_name,
-            hostels.hostel_fee,
             students.transport_id
-        FROM students
-        LEFT JOIN hostels ON students.hostel_id = hostels.hostel_id"; // Join with hostels table
+        FROM students";
+        // Join with hostels table
 
 $result = $conn->query($sql);
 
