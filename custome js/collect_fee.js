@@ -81,7 +81,7 @@ function renderStudentData(tableBody, data) {
       </tr>
       <tr>
         <td class="fw-bold">Hostel Fee:</td>
-        <td>${student.hostel_fee || 'N/A'}</td>
+        <td>${student.hostel_id || 'N/A'}</td>
         <td class="fw-bold">Transport Fee:</td>
         <td>${student.transport_fee || 'N/A'}</td>
       </tr>`;
