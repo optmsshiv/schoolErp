@@ -19,25 +19,12 @@ async function fetchStudentData() {
   try {
     // Fetch student data from the server
     const response = await fetch('../php/collectFeeStudentDetails/students_fee_details.php');
-
-    // Check if the response is okay
-    if (!response.ok) {
-      throw new Error(`Error fetching data: ${response.status}`);
-    }
-
     const data = await response.json();
-
-    // Validate the data
-    if (!Array.isArray(data) || data.length === 0) {
-      renderNoDataMessage(tableBody);
-      return;
-    }
 
     // Clear table and populate rows
     renderStudentData(tableBody, data);
   } catch (error) {
     console.error('Error fetching student data:', error);
-    renderErrorMessage(tableBody);
   } finally {
     // Hide loading bar
     if (loadingBar) loadingBar.style.display = 'none';
@@ -51,6 +38,11 @@ async function fetchStudentData() {
  */
 function renderStudentData(tableBody, data) {
   tableBody.innerHTML = ''; // Clear existing rows
+
+  if (data.length === 0) {
+    tableBody.innerHTML = '<tr><td colspan="6">No student data available</td></tr>';
+    return;
+  }
 
   // Generate table rows for each student
   data.forEach(student => {
@@ -96,12 +88,6 @@ function collectFeeData() {
   const tableRows = document.querySelectorAll('#student_data tbody tr');
   const studentData = [];
 
-  // Validate if the table contains any data
-  if (tableRows.length === 0) {
-    console.error('No student data available to collect.');
-    return;
-  }
-
   // Group rows in sets of 4 to represent each student's data
   for (let i = 0; i < tableRows.length; i += 4) {
     const student = {
@@ -114,8 +100,8 @@ function collectFeeData() {
       roll_no: getCellText(tableRows[i + 2], 2),
       phone: getCellText(tableRows[i + 2], 4),
       gender: getCellText(tableRows[i + 2], 6),
-      hostel_fee: getCellText(tableRows[i + 3], 2),
-      transport_fee: getCellText(tableRows[i + 3], 4),
+      hostel_id: getCellText(tableRows[i + 3], 2),
+      transport_id: getCellText(tableRows[i + 3], 4),
     };
     studentData.push(student);
   }
@@ -131,22 +117,5 @@ function collectFeeData() {
  * @returns {string} - The trimmed text content of the cell.
  */
 function getCellText(row, cellIndex) {
-  const cell = row.querySelector(`td:nth-child(${cellIndex})`);
-  return cell ? cell.textContent.trim() : 'N/A';
-}
-
-/**
- * Render a message when no data is available.
- * @param {HTMLElement} tableBody - The table body element.
- */
-function renderNoDataMessage(tableBody) {
-  tableBody.innerHTML = '<tr><td colspan="6">No student data available</td></tr>';
-}
-
-/**
- * Render an error message in the table body.
- * @param {HTMLElement} tableBody - The table body element.
- */
-function renderErrorMessage(tableBody) {
-  tableBody.innerHTML = '<tr><td colspan="6">Error fetching student data. Please try again later.</td></tr>';
+  return row.querySelector(`td:nth-child(${cellIndex})`).textContent.trim();
 }
