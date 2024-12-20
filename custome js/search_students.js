@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function showCardContainer(resultsContainer) {
   if (resultsContainer) {
-    resultsContainer.style.display = 'block'; // Show the container
+    resultsContainer.style.display = 'block'; // Show the container when the input is focused
   } else {
     console.error('Results container not found.');
   }
