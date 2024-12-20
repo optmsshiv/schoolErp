@@ -1,20 +1,25 @@
 // Ensure DOM is fully loaded before attaching event listeners
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('student_search');
- // const resultsContainer = document.getElementById('results');
+  const resultsContainer = document.getElementById('results');
 
   // Attach event listeners to the search input
-  searchInput.addEventListener('focus', showCardContainer);
-  searchInput.addEventListener('input', debounce(searchStudents, 300));
+  searchInput.addEventListener('focus', () => showCardContainer(resultsContainer));
+  searchInput.addEventListener('input', debounce(() => searchStudents(searchInput, resultsContainer), 300));
 });
 
-// Function to show the card container
-function showCardContainer() {
-  const resultsContainer = document.getElementById('results');
+/**
+ * Show the card container.
+ * @param {HTMLElement} resultsContainer - The container for displaying search results.
+ */
+function showCardContainer(resultsContainer) {
   resultsContainer.style.display = 'block';
 }
 
-// Function to populate the student table with details
+/**
+ * Populate the student table with details.
+ * @param {Object} student - The student object containing details.
+ */
 function populateStudentTable(student) {
   const studentTable = document.getElementById('student_data').querySelector('tbody');
   studentTable.innerHTML = `
@@ -43,73 +48,86 @@ function populateStudentTable(student) {
           <td>${student.gender || ''}</td>
       </tr>
       <tr>
-          <td class="fw-bold">Hotel Fee:</td>
-          <td>${student.hotel_fee || ''}</td>
+          <td class="fw-bold">Hostel Fee:</td>
+          <td>${student.hostel_fee || ''}</td>
           <td class="fw-bold">Transport Fee:</td>
           <td>${student.transport_fee || ''}</td>
       </tr>
   `;
 }
 
-// Function to fetch and display search results
-async function searchStudents() {
-  const query = document.getElementById('student_search').value.trim();
-  const resultsContainer = document.getElementById('results');
+/**
+ * Fetch and display search results.
+ * @param {HTMLInputElement} searchInput - The search input element.
+ * @param {HTMLElement} resultsContainer - The container for displaying search results.
+ */
+async function searchStudents(searchInput, resultsContainer) {
+  const query = searchInput.value.trim();
 
   // Show a loading indicator while fetching data
   resultsContainer.innerHTML = '<p class="text-info text-center">Loading...</p>';
 
   // Clear results if query is empty
   if (!query) {
-      resultsContainer.innerHTML = '';
-      return;
+    resultsContainer.innerHTML = '';
+    return;
   }
 
   try {
-      const response = await fetch(`../php/searchStudents/search_students.php?query=${encodeURIComponent(query)}`);
-      const data = await response.json();
+    const response = await fetch(`../php/searchStudents/search_students.php?query=${encodeURIComponent(query)}`);
 
-      resultsContainer.innerHTML = '';
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
 
-      // Handle no results found
-      if (data.length === 0) {
-          resultsContainer.innerHTML = '<p class="text-danger text-center">This student does not exist.</p>';
-          return;
-      }
+    const data = await response.json();
 
-      // Display results as cards
-      data.forEach(student => {
-          const card = document.createElement('div');
-          card.classList.add('student-card');
-          card.innerHTML = `
-              <h3>${student.first_name} ${student.last_name}</h3>
-              <p>Father's Name: ${student.father_name}</p>
-              <p>Class: ${student.class_name}</p>
-              <p>Roll No: ${student.roll_no}</p>
-          `;
+    resultsContainer.innerHTML = '';
 
-          // Add click event to populate student table with details
-          card.addEventListener('click', () => {
-              populateStudentTable(student);
-              resultsContainer.style.display = 'none'; // Hide the card container
-          });
+    // Handle no results found
+    if (data.length === 0) {
+      resultsContainer.innerHTML = '<p class="text-danger text-center">This student does not exist.</p>';
+      return;
+    }
 
-          resultsContainer.appendChild(card);
+    // Display results as cards
+    data.forEach(student => {
+      const card = document.createElement('div');
+      card.classList.add('student-card');
+      card.innerHTML = `
+          <h3>${student.first_name} ${student.last_name}</h3>
+          <p>Father's Name: ${student.father_name}</p>
+          <p>Class: ${student.class_name}</p>
+          <p>Roll No: ${student.roll_no}</p>
+      `;
+
+      // Add click event to populate student table with details
+      card.addEventListener('click', () => {
+        populateStudentTable(student);
+        resultsContainer.style.display = 'none'; // Hide the card container
       });
 
-      // Show the card container
-      resultsContainer.style.display = 'block';
+      resultsContainer.appendChild(card);
+    });
+
+    // Show the card container
+    resultsContainer.style.display = 'block';
   } catch (error) {
-      console.error('Error fetching students:', error);
-      resultsContainer.innerHTML = '<p class="text-danger text-center">Error fetching data. Please try again later.</p>';
+    console.error('Error fetching students:', error);
+    resultsContainer.innerHTML = '<p class="text-danger text-center">Error fetching data. Please try again later.</p>';
   }
 }
 
-// Debounce function to limit API calls
+/**
+ * Debounce function to limit API calls.
+ * @param {Function} func - The function to debounce.
+ * @param {number} delay - The delay in milliseconds.
+ * @returns {Function} - The debounced function.
+ */
 function debounce(func, delay) {
   let debounceTimeout;
   return function (...args) {
-      clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(() => func(...args), delay);
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(() => func(...args), delay);
   };
 }
