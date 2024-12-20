@@ -21,7 +21,9 @@ $sql = "SELECT
             mother_name,
             roll_no,
             day_hosteler,
-            admission_no
+            admission_no,
+            hostel_id,
+            transport_id
         FROM students";
 $result = $conn->query($sql);
 

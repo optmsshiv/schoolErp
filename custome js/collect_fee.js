@@ -73,9 +73,9 @@ function renderStudentData(tableBody, data) {
       </tr>
       <tr>
         <td class="fw-bold">Hotel Fee:</td>
-        <td>${student.hotel_fee}</td>
+        <td>${student.hotel_id}</td>
         <td class="fw-bold">Transport Fee:</td>
-        <td>${student.transport_fee}</td>
+        <td>${student.transport_id}</td>
       </tr>`;
     tableBody.insertAdjacentHTML('beforeend', rows);
   });
@@ -100,8 +100,8 @@ function collectFeeData() {
       roll_no: getCellText(tableRows[i + 2], 2),
       phone: getCellText(tableRows[i + 2], 4),
       gender: getCellText(tableRows[i + 2], 6),
-      hotel_fee: getCellText(tableRows[i + 3], 2),
-      transport_fee: getCellText(tableRows[i + 3], 4),
+      hotel_id: getCellText(tableRows[i + 3], 2),
+      transport_id: getCellText(tableRows[i + 3], 4),
     };
     studentData.push(student);
   }
