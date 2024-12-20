@@ -21,8 +21,8 @@ try {
                 s.gender,
                 s.day_hosteler AS type,
                 f.amount AS monthly_fee,
-                h.hostel_fee,
-                t.transport_fee
+                COALESCE(h.hostel_fee, 'Not Available') AS hostel_fee,
+                COALESCE(t.transport_fee, 'Not Available') AS transport_fee
             FROM
                 students s
             LEFT JOIN
