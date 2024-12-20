@@ -44,9 +44,11 @@ function populateFeeTable(data) {
         <td class="fw-bold">Gender:</td>
         <td>${student.gender}</td>
       </tr>`;
+
     const row4 = `
       <tr>
-          
+          <td class="fw-bold">Hotel Fee:</td>
+          <td>${student.hostel_fee}</td>
           <td class="fw-bold">Transport Fee:</td>
           <td>${student.transport_fee}</td>
       </tr>`;
