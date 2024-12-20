@@ -31,7 +31,7 @@ try {
             LEFT JOIN
                 hostels h
             ON
-                s.hostel_id = h.id
+                s.hostel_id = h.hostel_id
             WHERE
                 s.first_name LIKE :search OR
                 s.father_name LIKE :search
