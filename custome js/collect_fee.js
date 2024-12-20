@@ -77,7 +77,7 @@ function renderStudentData(tableBody, data) {
         <td class="fw-bold">Mobile:</td>
         <td>${student.phone || 'N/A'}</td>
         <td class="fw-bold">Gender:</td>
-        <td>${student.gender || 'N/A'}</td>
+        <td>${student.gendr || 'N/A'}</td>
       </tr>
       <tr>
         <td class="fw-bold">Hostel Fee:</td>
