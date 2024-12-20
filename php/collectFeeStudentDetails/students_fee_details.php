@@ -1,6 +1,5 @@
 <?php
 // Database connection
-// Include the database connection file
 include '../db_connection.php';
 
 header('Content-Type: application/json');
@@ -10,21 +9,25 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Query to fetch student data
+// Query to fetch student data along with hostel fee
 $sql = "SELECT
-            CONCAT(first_name, ' ', last_name) AS full_name,
-            class_name,
-            phone,
-            date_of_birth,
-            gender,
-            father_name,
-            mother_name,
-            roll_no,
-            day_hosteler,
-            admission_no,
-            hostel_id,
-            transport_id
-        FROM students";
+            CONCAT(students.first_name, ' ', students.last_name) AS full_name,
+            students.class_name,
+            students.phone,
+            students.date_of_birth,
+            students.gender,
+            students.father_name,
+            students.mother_name,
+            students.roll_no,
+            students.day_hosteler,
+            students.admission_no,
+            students.hostel_id,
+            hostels.hostel_name,
+            hostels.hostel_fee,
+            students.transport_id
+        FROM students
+        LEFT JOIN hostels ON students.hostel_id = hostels.hostel_id"; // Join with hostels table
+
 $result = $conn->query($sql);
 
 $data = [];
@@ -36,7 +39,6 @@ if ($result->num_rows > 0) {
 }
 
 // Return data as JSON
-header('Content-Type: application/json');
 echo json_encode($data);
 
 $conn->close();

@@ -19,12 +19,25 @@ async function fetchStudentData() {
   try {
     // Fetch student data from the server
     const response = await fetch('../php/collectFeeStudentDetails/students_fee_details.php');
+
+    // Check if the response is okay
+    if (!response.ok) {
+      throw new Error(`Error fetching data: ${response.status}`);
+    }
+
     const data = await response.json();
+
+    // Validate the data
+    if (!Array.isArray(data) || data.length === 0) {
+      renderNoDataMessage(tableBody);
+      return;
+    }
 
     // Clear table and populate rows
     renderStudentData(tableBody, data);
   } catch (error) {
     console.error('Error fetching student data:', error);
+    renderErrorMessage(tableBody);
   } finally {
     // Hide loading bar
     if (loadingBar) loadingBar.style.display = 'none';
@@ -39,43 +52,38 @@ async function fetchStudentData() {
 function renderStudentData(tableBody, data) {
   tableBody.innerHTML = ''; // Clear existing rows
 
-  if (data.length === 0) {
-    tableBody.innerHTML = '<tr><td colspan="6">No student data available</td></tr>';
-    return;
-  }
-
   // Generate table rows for each student
   data.forEach(student => {
     const rows = `
       <tr>
         <td class="fw-bold">Student's Name:</td>
-        <td>${student.full_name}</td>
+        <td>${student.full_name || 'N/A'}</td>
         <td class="fw-bold">Father's Name:</td>
-        <td>${student.father_name}</td>
+        <td>${student.father_name || 'N/A'}</td>
         <td class="fw-bold">Monthly Fee:</td>
-        <td>${student.monthly_fee}</td>
+        <td>${student.monthly_fee || 'N/A'}</td>
       </tr>
       <tr>
         <td class="fw-bold">Class:</td>
-        <td>${student.class_name}</td>
+        <td>${student.class_name || 'N/A'}</td>
         <td class="fw-bold">Mother's Name:</td>
-        <td>${student.mother_name}</td>
+        <td>${student.mother_name || 'N/A'}</td>
         <td class="fw-bold">Type:</td>
-        <td>${student.day_hosteler}</td>
+        <td>${student.day_hosteler || 'N/A'}</td>
       </tr>
       <tr>
         <td class="fw-bold">Roll Number:</td>
-        <td>${student.roll_no}</td>
+        <td>${student.roll_no || 'N/A'}</td>
         <td class="fw-bold">Mobile:</td>
-        <td>${student.phone}</td>
+        <td>${student.phone || 'N/A'}</td>
         <td class="fw-bold">Gender:</td>
-        <td>${student.gender}</td>
+        <td>${student.gender || 'N/A'}</td>
       </tr>
       <tr>
-        <td class="fw-bold">Hotel Fee:</td>
-        <td>${student.hotel_id}</td>
+        <td class="fw-bold">Hostel Fee:</td>
+        <td>${student.hostel_fee || 'N/A'}</td>
         <td class="fw-bold">Transport Fee:</td>
-        <td>${student.transport_id}</td>
+        <td>${student.transport_fee || 'N/A'}</td>
       </tr>`;
     tableBody.insertAdjacentHTML('beforeend', rows);
   });
@@ -87,6 +95,12 @@ function renderStudentData(tableBody, data) {
 function collectFeeData() {
   const tableRows = document.querySelectorAll('#student_data tbody tr');
   const studentData = [];
+
+  // Validate if the table contains any data
+  if (tableRows.length === 0) {
+    console.error('No student data available to collect.');
+    return;
+  }
 
   // Group rows in sets of 4 to represent each student's data
   for (let i = 0; i < tableRows.length; i += 4) {
@@ -100,8 +114,8 @@ function collectFeeData() {
       roll_no: getCellText(tableRows[i + 2], 2),
       phone: getCellText(tableRows[i + 2], 4),
       gender: getCellText(tableRows[i + 2], 6),
-      hotel_id: getCellText(tableRows[i + 3], 2),
-      transport_id: getCellText(tableRows[i + 3], 4),
+      hostel_fee: getCellText(tableRows[i + 3], 2),
+      transport_fee: getCellText(tableRows[i + 3], 4),
     };
     studentData.push(student);
   }
@@ -117,5 +131,22 @@ function collectFeeData() {
  * @returns {string} - The trimmed text content of the cell.
  */
 function getCellText(row, cellIndex) {
-  return row.querySelector(`td:nth-child(${cellIndex})`).textContent.trim();
+  const cell = row.querySelector(`td:nth-child(${cellIndex})`);
+  return cell ? cell.textContent.trim() : 'N/A';
+}
+
+/**
+ * Render a message when no data is available.
+ * @param {HTMLElement} tableBody - The table body element.
+ */
+function renderNoDataMessage(tableBody) {
+  tableBody.innerHTML = '<tr><td colspan="6">No student data available</td></tr>';
+}
+
+/**
+ * Render an error message in the table body.
+ * @param {HTMLElement} tableBody - The table body element.
+ */
+function renderErrorMessage(tableBody) {
+  tableBody.innerHTML = '<tr><td colspan="6">Error fetching student data. Please try again later.</td></tr>';
 }
