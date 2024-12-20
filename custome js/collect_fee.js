@@ -37,7 +37,10 @@ async function fetchStudentData() {
     renderStudentData(tableBody, data);
   } catch (error) {
     console.error('Error fetching student data:', error);
-    renderErrorMessage(tableBody);
+    // Do not show error message if it was triggered by search
+    if (!error.message.includes('search')) {
+      renderErrorMessage(tableBody);
+    }
   } finally {
     // Hide loading bar
     if (loadingBar) loadingBar.style.display = 'none';
