@@ -1,29 +1,28 @@
 <?php
+// Include the database connection
 include '../db_connection.php';
 
-$studentId = $_GET['studentId'];
-
 try {
-    $sql = "
-        SELECT
-            s.id,
-            s.name AS student_name,
-            h.hostel_name,
-            h.hostel_fee,
-            sh.start_date,
-            sh.leave_date
-        FROM student_hostels sh
-        JOIN students s ON sh.id = s.id
-        JOIN hostels h ON sh.hostel_id = h.hostel_id
-        WHERE s.id = :studentId
-    ";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':studentId' => $studentId]);
-    $result = $stmt->fetchAll();
+    // SQL to fetch hostel and student details
+    $sql = "SELECT
+                students.user_id AS student_id,
+                students.name AS student_name,
+                hostels.hostel_name,
+                hostels.hostel_fee,
+                hostels.start_date,
+                hostels.leave_date
+            FROM students
+            LEFT JOIN hostels ON students.hostel_id = hostels.hostel_id";
 
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Respond with JSON data
     echo json_encode(["status" => "success", "data" => $result]);
 } catch (PDOException $e) {
-    error_log('Database error: ' . $e->getMessage(), 0);
+    // Log and respond with error
+    error_log('Database error: ' . $e->getMessage());
     echo json_encode(["status" => "error", "message" => "Failed to fetch hostel details."]);
 }
 ?>
