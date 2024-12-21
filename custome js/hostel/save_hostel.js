@@ -16,6 +16,15 @@ document.addEventListener('submit', function (event) {
             return;
         }
 
+        // Get userId from the URL (or any other source you are using)
+        const userId = new URLSearchParams(window.location.search).get('user_id');
+
+        // Check if userId is available
+        if (!userId) {
+            alert('User ID is missing!');
+            return;
+        }
+
         // Prepare data for submission
         const formData = {
             hostelType,
@@ -23,6 +32,7 @@ document.addEventListener('submit', function (event) {
             hostelFee,
             startDate,
             leaveDate,
+            userId, // Include userId in the form data
         };
 
         // Send data to the server
