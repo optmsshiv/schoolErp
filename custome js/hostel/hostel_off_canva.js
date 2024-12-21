@@ -3,7 +3,7 @@ document.getElementById('loadOffcanvas').addEventListener('click', function () {
     fetch('/html/hostel_canva.html')
         .then(response => response.text())
         .then(html => {
-            const container = document.getElementById('offcanvasContainer');
+            const container = document.getElementById('offcanvasContainerHostel');
             container.innerHTML = html;
 
             // Initialize offcanvas only after it's in the DOM

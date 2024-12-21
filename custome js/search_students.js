@@ -66,6 +66,7 @@ function populateStudentTable(student) {
  * @param {HTMLElement} resultsContainer - The container for displaying search results.
  */
 async function searchStudents(searchInput, resultsContainer) {
+  //ccessing properties of searchInput and resultsContainer, ensure both are defined.
   if (!searchInput || !resultsContainer) {
     console.error('Required elements not found');
     return;
