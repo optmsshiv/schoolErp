@@ -42,6 +42,7 @@ try {
     error_log('Database error: ' . $e->getMessage(), 0);
 
     // Respond with a generic error
+     http_response_code(500); // Internal Server Error
     echo json_encode(["status" => "error", "message" => "Failed to save hostel details. Please try again later."]);
 }
 ?>
