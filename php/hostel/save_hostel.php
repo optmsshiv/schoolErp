@@ -17,7 +17,7 @@ $hostelName = htmlspecialchars($data['hostelName']);
 $hostelFee = (int)$data['hostelFee'];
 $startDate = $data['startDate'];
 $leaveDate = $data['leaveDate'];
-$userId = (int)$data['userId'];  // User ID (student ID)
+$userId = htmlspecialchars($data['userId']);  // Allow alphanumeric IDs
 $createdAt = date("Y-m-d H:i:s");
 $updatedAt = date("Y-m-d H:i:s");
 
@@ -38,6 +38,11 @@ try {
 
     // Get the hostel_id of the newly inserted hostel
     $hostelId = $pdo->lastInsertId();  // This retrieves the last inserted hostel_id
+
+    if (!$hostelId) {
+        echo json_encode(["status" => "error", "message" => "Failed to retrieve hostel ID."]);
+        exit;
+    }
 
     // Step 2: Update the student record with the hostel_id
     $sqlUpdateStudent = "UPDATE students
