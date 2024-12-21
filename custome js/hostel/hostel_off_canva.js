@@ -14,6 +14,11 @@ document.getElementById('loadOffcanvas').addEventListener('click', function () {
             if (hiddenInput) {
                 hiddenInput.value = userId;
             }
+             // Set the readonly input field with the user_id
+            const userIdInput = container.querySelector('#userIdInput');
+            if (userIdInput) {
+                userIdInput.value = userId;
+            }
 
             // Initialize offcanvas only after it's in the DOM
             const offcanvasElement = document.getElementById('hostelCanvas');
