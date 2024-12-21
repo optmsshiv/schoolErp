@@ -66,6 +66,10 @@ function populateStudentTable(student) {
  * @param {HTMLElement} resultsContainer - The container for displaying search results.
  */
 async function searchStudents(searchInput, resultsContainer) {
+  if (!searchInput || !resultsContainer) {
+    console.error('Required elements not found');
+    return;
+  }
   const query = searchInput.value.trim();
 
   // Show a loading indicator while fetching data
