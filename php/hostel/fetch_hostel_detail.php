@@ -6,7 +6,7 @@ try {
     // SQL to fetch hostel and student details
     $sql = "SELECT
                 students.user_id AS student_id,
-                students.name AS student_name,
+                CONCAT(students.first_name, ' ', students.last_name) AS student_name,
                 hostels.hostel_name,
                 hostels.hostel_fee,
                 hostels.start_date,
