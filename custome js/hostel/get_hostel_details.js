@@ -30,12 +30,12 @@ document.addEventListener('DOMContentLoaded', function () {
           const tr = document.createElement('tr');
           tr.innerHTML = `
                         <tr>
-                            <td>${row.student_id || 'N/A'}</td>
-                            <td>${row.student_name || 'N/A'}</td>
-                            <td>${row.hostel_name || 'N/A'}</td>
-                            <td>${row.hostel_fee || 'N/A'}</td>
-                            <td>${row.startDateFormatted || 'N/A'}</td>
-                            <td>${row.leave_date || 'N/A'}</td>
+                            <td>${student.student_id}</td>
+            <td>${student.first_name} ${student.last_name}</td>
+            <td>${student.hostel_name}</td>
+            <td>${student.hostel_fee}</td>
+            <td>${startDateFormatted}</td>
+            <td>${leaveDateFormatted}</td>
                             <td>
                                 <button class="btn btn-sm btn-danger">Remove</button>
                             </td>
