@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Fetch hostel details when the page loads
-    fetch('/php/hostel/fetch_hostel_details.php')
+    fetch('/php/hostel/fetch_hostel_detail.php')
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
