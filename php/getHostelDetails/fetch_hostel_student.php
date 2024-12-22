@@ -19,6 +19,12 @@ try {
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+     // Add serial number to each result
+    $serial_number = 1;
+    foreach ($result as &$row) {
+        $row['serial_number'] = $serial_number++;
+    }
+
     // Respond with JSON data
     echo json_encode(["status" => "success", "data" => $result]);
 } catch (PDOException $e) {
