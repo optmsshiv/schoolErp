@@ -20,12 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                         <tr>
-                            <td>${item.student_id || 'N/A'}</td>
-                            <td>${item.student_name || 'N/A'}</td>
-                            <td>${item.hostel_name || 'N/A'}</td>
-                            <td>${item.hostel_fee || 'N/A'}</td>
-                            <td>${item.start_date || 'N/A'}</td>
-                            <td>${item.leave_date || 'N/A'}</td>
+                            <td>${row.student_id || 'N/A'}</td>
+                            <td>${row.student_name || 'N/A'}</td>
+                            <td>${row.hostel_name || 'N/A'}</td>
+                            <td>${row.hostel_fee || 'N/A'}</td>
+                            <td>${row.start_date || 'N/A'}</td>
+                            <td>${row.leave_date || 'N/A'}</td>
                             <td>
                                 <button class="btn btn-sm btn-danger">Remove</button>
                             </td>
@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         })
         .catch(error => {
-            console.error('Error fetching data:', data.message);
             console.error('Error:', error);
             alert('An error occurred while fetching hostel details.');
         });
