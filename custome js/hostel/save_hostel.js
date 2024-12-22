@@ -56,14 +56,14 @@ document.addEventListener('submit', function (event) {
                         text: data.message
                     }).then((result) => {
         // Check if the user clicked the "OK" button
-        if (result.isConfirmed) {
+
             // Close the offcanvas
             const offcanvasElement = bootstrap.Offcanvas.getInstance(document.getElementById('hostelCanvas'));
             offcanvasElement.hide();
 
             // Clear the form
             document.getElementById('hostelForm').reset();
-
+                      if (result.isConfirmed) {
             // Reload the page after clicking OK
             window.location.reload();
         }
