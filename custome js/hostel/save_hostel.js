@@ -12,7 +12,11 @@ document.addEventListener('submit', function (event) {
 
         // Validate form data
         if (!hostelType || !hostelName || !hostelFee || !startDate) {
-            alert('Please fill out all fields!');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Please fill out all required fields!'
+            });
             return;
         }
 
@@ -46,7 +50,11 @@ document.addEventListener('submit', function (event) {
             .then((response) => response.json())
             .then((data) => {
                 if (data.status === 'success') {
-                    alert(data.message);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: data.message
+                    });
                     // Close the offcanvas
                     const offcanvasElement = bootstrap.Offcanvas.getInstance(document.getElementById('hostelCanvas'));
                     offcanvasElement.hide();
@@ -54,12 +62,20 @@ document.addEventListener('submit', function (event) {
                     // Clear the form
                     document.getElementById('hostelForm').reset();
                 } else {
-                    alert(`Error: ${data.message}`);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message
+                    });
                 }
             })
             .catch((error) => {
                 console.error('Error:', error);
-                alert('An error occurred while saving data.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while saving data.'
+                });
             });
     }
 });

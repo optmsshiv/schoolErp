@@ -22,6 +22,19 @@ $createdAt = date("Y-m-d H:i:s");
 $updatedAt = date("Y-m-d H:i:s");
 
 try {
+
+  // Check if the student already has a hostel assigned
+    $checkSql = "SELECT students.first_name, students.last_name FROM students WHERE user_id = :userId AND hostel_id IS NOT NULL";
+    $checkStmt = $pdo->prepare($checkSql);
+    $checkStmt->execute([':userId' => $userId]);
+    $existingStudent = $checkStmt->fetch();
+
+    if ($existingStudent) {
+        $studentName = $existingStudent['first_name'] . ' ' . $existingStudent['last_name'];
+        echo json_encode(["status" => "error", "message" => "$studentName is already assigned to a hostel."]);
+        exit;
+    }
+
     // Step 1: Insert data into the hostels table
     $sql = "INSERT INTO hostels (hostel_type, hostel_name, hostel_fee, start_date, leave_date, created_at, updated_at)
             VALUES (:hostelType, :hostelName, :hostelFee, :startDate, :leaveDate, :createdAt, :updatedAt)";
