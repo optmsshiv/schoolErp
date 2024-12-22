@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         </tr>
                     `;
           tableBody.insertAdjacentHTML('beforeend', row);
+
+           // Increment the serial number for the next row
+             serialNumber++;
         });
       } else {
         console.error('Error fetching data:', data.message);
