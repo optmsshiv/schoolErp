@@ -7,21 +7,35 @@ document.addEventListener('click', function (event) {
         Swal.fire({
             title: 'Edit Hostel Details',
             html: `
-                <input type="text" id="editHostelType" class="swal2-input" placeholder="Hostel Type">
-                <input type="text" id="editHostelName" class="swal2-input" placeholder="Hostel Name">
-                <input type="number" id="editHostelFee" class="swal2-input" placeholder="Hostel Fee">
-                <input type="date" id="editStartDate" class="swal2-input">
-                <input type="date" id="editLeaveDate" class="swal2-input" placeholder="Leave Date (Optional)">
+                <label for="editHostelName">Hostel Name:</label>
+              <input id="editHostelName" class="swal2-input" value="${hostelDetails.hostel_name || ''}">
+
+              <label for="editHostelType">Hostel Type:</label>
+              <input id="editHostelType" class="swal2-input" value="${hostelDetails.hostel_type || ''}">
+
+              <label for="editHostelFee">Hostel Fee:</label>
+              <input id="editHostelFee" class="swal2-input" type="number" value="${hostelDetails.hostel_fee || ''}">
+
+              <label for="editStartDate">Start Date:</label>
+              <input id="editStartDate" class="swal2-input" type="date" value="${hostelDetails.start_date || ''}">
+
+              <label for="editLeaveDate">Leave Date:</label>
+              <input id="editLeaveDate" class="swal2-input" type="date" value="${hostelDetails.leave_date || ''}">
             `,
+            showCancelButton: true,
             confirmButtonText: 'Save Changes',
             preConfirm: () => {
                 return {
-                    hostelType: document.getElementById('editHostelType').value,
-                    hostelName: document.getElementById('editHostelName').value,
-                    hostelFee: document.getElementById('editHostelFee').value,
-                    startDate: document.getElementById('editStartDate').value,
-                    leaveDate: document.getElementById('editLeaveDate').value
+                     hostelName: document.getElementById('editHostelName').value,
+                hostelType: document.getElementById('editHostelType').value,
+                hostelFee: document.getElementById('editHostelFee').value,
+                startDate: document.getElementById('editStartDate').value,
+                leaveDate: document.getElementById('editLeaveDate').value,
+                userId: userId, // Include the userId for the update
                 };
+
+                // Return the edited details for further processing
+              return editedDetails;
             }
         }).then((result) => {
             if (result.isConfirmed) {
