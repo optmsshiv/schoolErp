@@ -974,18 +974,39 @@ td {
 }*/
 
 /* Hostel Table styles */
+/* General table styles */
+#hostelTable {
+  width: 100%;
+  table-layout: auto;
+  /* Auto-adjust column widths */
+  border-collapse: collapse;
+  /* Merge borders for a cleaner look */
+}
+
 #hostelTable th,
 #hostelTable td {
   text-align: center;
   vertical-align: middle;
+  padding: 8px;
   white-space: nowrap;
-  /* Prevent content wrapping */
+  /* Prevent text wrapping for smaller content */
 }
 
-#hostelTable {
-  width: 100%;
-  border-collapse: collapse;
-  /* Merge table borders for a cleaner look */
+/* Responsive behavior */
+.table-responsive {
+  overflow-x: auto;
+  /* Horizontal scrolling on smaller screens */
+}
+
+@media (max-width: 768px) {
+
+  #hostelTable th,
+  #hostelTable td {
+    font-size: 12px;
+    /* Adjust font size for smaller screens */
+    white-space: normal;
+    /* Allow text wrapping for narrow displays */
+  }
 }
 
 
