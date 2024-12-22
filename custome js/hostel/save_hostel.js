@@ -61,6 +61,7 @@ document.addEventListener('submit', function (event) {
 
                     // Clear the form
                     document.getElementById('hostelForm').reset();
+                    location.reload();
                 } else {
                     Swal.fire({
                         icon: 'error',
