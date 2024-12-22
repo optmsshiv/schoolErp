@@ -7,31 +7,31 @@ document.addEventListener('DOMContentLoaded', function () {
         const tableBody = document.querySelector('#hostelTable tbody');
         tableBody.innerHTML = ''; // Clear any existing rows
 
-         // Display total number of students
-            document.getElementById('totalStudents').innerText = `Total Students: ${data.total_students}`;
+        // Display total number of students
+        document.getElementById('totalStudents').innerText = `Total Students: ${data.total_students}`;
 
-        // Assuming 'data' contains the rows of student data
+        // Assuming 'data.data' contains the rows of student data
         let serialNumber = 1;
-        
+
         // Loop through the data and insert rows
         data.data.forEach(item => {
           const row = `
-                        <tr>
-                            <td>${serialNumber}</td> <!-- Serial number column -->
-                            <td style="display:none;">${item.student_id || 'N/A'}</td> <!-- Hidden Student ID column -->
-                            <td>${item.student_name || 'N/A'}</td>
-                            <td>${item.father_name || 'N/A'}</td>
-                            <td>${item.mobile_number || 'N/A'}</td>
-                            <td>${item.hostel_name || 'N/A'}</td>
-                            <td>${item.hostel_fee || 'N/A'}</td>
-                            <td>${item.start_date || 'N/A'}</td>
-                            <td>${item.leave_date || 'N/A'}</td>
-                        </tr>
-                    `;
+            <tr>
+              <td>${serialNumber}</td> <!-- Serial number column -->
+              <td style="display:none;">${item.student_id || 'N/A'}</td> <!-- Hidden Student ID column -->
+              <td>${item.student_name || 'N/A'}</td>
+              <td>${item.father_name || 'N/A'}</td>
+              <td>${item.mobile_number || 'N/A'}</td>
+              <td>${item.hostel_name || 'N/A'}</td>
+              <td>${item.hostel_fee || 'N/A'}</td>
+              <td>${item.start_date || 'N/A'}</td>
+              <td>${item.leave_date || 'N/A'}</td>
+            </tr>
+          `;
           tableBody.insertAdjacentHTML('beforeend', row);
 
-           // Increment the serial number for the next row
-             serialNumber++;
+          // Increment the serial number for the next row
+          serialNumber++;
         });
       } else {
         console.error('Error fetching data:', data.message);
@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .catch(error => {
       console.error('Error:', error);
+      document.getElementById('errorMessage').style.display = 'block'; // Show error message
     });
 });
 
