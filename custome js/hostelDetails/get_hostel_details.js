@@ -6,10 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
       if (data.status === 'success') {
         const tableBody = document.querySelector('#hostelTable tbody');
         tableBody.innerHTML = ''; // Clear any existing rows
+
          // Display total number of students
             document.getElementById('totalStudents').innerText = `Total Students: ${data.total_students}`;
+
         // Assuming 'data' contains the rows of student data
         let serialNumber = 1;
+        
         // Loop through the data and insert rows
         data.data.forEach(item => {
           const row = `
