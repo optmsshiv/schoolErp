@@ -7,6 +7,8 @@ try {
     $sql = "SELECT
                 students.user_id AS student_id,
                 CONCAT(students.first_name, ' ', students.last_name) AS student_name,
+                students.father_name AS father_name,
+                students.phone AS mobile_number,
                 hostels.hostel_name,
                 hostels.hostel_fee,
                 hostels.start_date,

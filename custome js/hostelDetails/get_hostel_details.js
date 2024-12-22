@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             <td>${serialNumber}</td> <!-- Serial number column -->
                             <td style="display:none;">${item.student_id || 'N/A'}</td> <!-- Hidden Student ID column -->
                             <td>${item.student_name || 'N/A'}</td>
+                            <td>${item.father_name || 'N/A'}</td>
+                            <td>${item.mobile_number || 'N/A'}</td>
                             <td>${item.hostel_name || 'N/A'}</td>
                             <td>${item.hostel_fee || 'N/A'}</td>
                             <td>${item.start_date || 'N/A'}</td>
