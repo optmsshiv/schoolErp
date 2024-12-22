@@ -149,6 +149,9 @@ function fetchFeePlansData(studentData) {
   tableBody.appendChild(totalRow);
 }
 
+// Variable to keep track of the total
+  let totalAmount = 0;
+
 // Function to add data to the Fee Collection table
 function addToFeeCollection(month, feeType, amount) {
   const tableBody = document.querySelector('#FeeCollection tbody');
@@ -166,6 +169,10 @@ function addToFeeCollection(month, feeType, amount) {
   `;
 
   tableBody.appendChild(newRow);
+
+  // Update total amount
+    totalAmount += parseFloat(amount); // Add the new amount to the total
+    document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the input field
 }
 
 // Helper function to display alerts
