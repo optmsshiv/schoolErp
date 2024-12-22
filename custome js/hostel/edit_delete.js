@@ -20,12 +20,22 @@ document.addEventListener('click', function (event) {
                     Swal.fire({
                         title: 'Edit Hostel Details',
                         html: `
-                            <input type="text" id="editHostelType" class="swal2-input" placeholder="Hostel Type" value="${hostelDetails.hostel_type || ''}">
-                            <input type="text" id="editHostelName" class="swal2-input" placeholder="Hostel Name" value="${hostelDetails.hostel_name || ''}">
-                            <input type="number" id="editHostelFee" class="swal2-input" placeholder="Hostel Fee" value="${hostelDetails.hostel_fee || ''}">
-                            <input type="date" id="editStartDate" class="swal2-input" value="${hostelDetails.start_date || ''}">
-                            <input type="date" id="editLeaveDate" class="swal2-input" placeholder="Leave Date (Optional)" value="${hostelDetails.leave_date || ''}">
+                            <label for="editHostelName">Hostel Name:</label>
+              <input id="editHostelName" class="swal2-input" value="${hostelDetails.hostel_name || ''}">
+
+              <label for="editHostelType">Hostel Type:</label>
+              <input id="editHostelType" class="swal2-input" value="${hostelDetails.hostel_type || ''}">
+
+              <label for="editHostelFee">Hostel Fee:</label>
+              <input id="editHostelFee" class="swal2-input" type="number" value="${hostelDetails.hostel_fee || ''}">
+
+              <label for="editStartDate">Start Date:</label>
+              <input id="editStartDate" class="swal2-input" type="date" value="${hostelDetails.start_date || ''}">
+
+              <label for="editLeaveDate">Leave Date:</label>
+              <input id="editLeaveDate" class="swal2-input" type="date" value="${hostelDetails.leave_date || ''}">
                         `,
+                        showCancelButton: true,
                         confirmButtonText: 'Save Changes',
                         preConfirm: () => {
                             // Return updated details
