@@ -150,7 +150,7 @@ function fetchFeePlansData(studentData) {
 }
 
 // Variable to keep track of the total
-let totalAmount = 0;
+  let totalAmount = 0;
 
 // Function to add data to the Fee Collection table
 function addToFeeCollection(month, feeType, amount) {
@@ -162,7 +162,7 @@ function addToFeeCollection(month, feeType, amount) {
     <td>${feeType}</td>
     <td>${amount}</td>
     <td class="text-center">
-      <button class="btn text-muted h-px-30 delete-button" type="button">
+      <button class="btn text-muted h-px-30" type="button" id="deleteButton">
         <i class="btn-outline-danger bx bx-trash bx-sm"></i>
       </button>
     </td>
@@ -171,25 +171,10 @@ function addToFeeCollection(month, feeType, amount) {
   tableBody.appendChild(newRow);
 
   // Update total amount
-  totalAmount += parseFloat(amount); // Add the new amount to the total
-  document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the input field
+    totalAmount += parseFloat(amount); // Add the new amount to the total
+    document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the input field
 
-  // Add event listener to the delete button
-  const deleteButton = newRow.querySelector('.delete-button');
-  deleteButton.addEventListener('click', function () {
-    // Subtract the row's amount from totalAmount
-    const rowAmount = parseFloat(newRow.cells[2].textContent);
-    totalAmount -= rowAmount;
-
-    // Update the total amount display
-    document.querySelector('#payableAmount').value = totalAmount.toFixed(2);
-
-    // Remove the row from the table
-    newRow.remove();
-  });
 }
-
-
 
 // Helper function to display alerts
 function showAlert(message, type) {
