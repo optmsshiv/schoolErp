@@ -37,8 +37,6 @@ try {
         "total_students" => $total_students
     ]);
 
-    // Respond with JSON data
-    echo json_encode(["status" => "success", "data" => $result]);
 } catch (PDOException $e) {
     // Log and respond with error
     error_log('Database error: ' . $e->getMessage());
