@@ -12,7 +12,8 @@ try {
                 hostels.start_date,
                 hostels.leave_date
             FROM students
-            LEFT JOIN hostels ON students.hostel_id = hostels.hostel_id";
+            LEFT JOIN hostels ON students.hostel_id = hostels.hostel_id
+            WHERE students.day_hosteler = 'Hosteler'";  // Add condition to filter by 'Hosteler'
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
