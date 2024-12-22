@@ -973,7 +973,20 @@ td {
   display: none;
 }*/
 
-/* Gradient button with hover */
+/* Hostel Table styles */
+#hostelTable th,
+#hostelTable td {
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  /* Prevent content wrapping */
+}
+
+#hostelTable {
+  width: 100%;
+  border-collapse: collapse;
+  /* Merge table borders for a cleaner look */
+}
 
 
 

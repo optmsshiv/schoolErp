@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <td>${row.start_date || 'N/A'}</td>
                             <td>${row.leave_date || 'N/A'}</td>
                             <td>
+                                <button class="btn btn-sm btn-alert">Edit</button>
                                 <button class="btn btn-sm btn-danger">Remove</button>
                             </td>
                         </tr>
