@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             <td>${row.start_date || 'N/A'}</td>
                             <td>${row.leave_date || 'N/A'}</td>
                             <td>
-                              <button class="btn btn-warning btn-sm edit-hostel" data-user-id="${student.user_id}">Edit</button>
-                              <button class="btn btn-danger btn-sm remove-hostel" data-user-id="${student.user_id}">Remove</button>
+                              <button class="btn btn-warning btn-sm edit-hostel" data-user-id="${students.user_id}">Edit</button>
+                              <button class="btn btn-danger btn-sm remove-hostel" data-user-id="${students.user_id}">Remove</button>
                             </td>
 
                         </tr>
