@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
           return `${day}-${month}-${year}`;
         }
         // When populating the table rows:
-        data.data.forEach((row) => {
+        data.forEach((student) => {
           const startDateFormatted = formatDate(student.start_date);
           const leaveDateFormatted = student.leave_date ? formatDate(student.leave_date) : 'N/A';
           const tr = document.createElement('tr');

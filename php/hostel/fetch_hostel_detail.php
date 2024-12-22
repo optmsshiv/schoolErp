@@ -26,6 +26,10 @@ try {
     $stmt->bindParam(':userId', $userId, PDO::PARAM_STR);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($result as &$row) {
+    $row['start_date'] = date('d-m-Y', strtotime($row['start_date']));
+    $row['leave_date'] = $row['leave_date'] ? date('d-m-Y', strtotime($row['leave_date'])) : null;
+}
 
     if ($result) {
         echo json_encode(["status" => "success", "data" => $result]);
