@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         // When populating the table rows:
         data.data.forEach((row) => {
+          const startDateFormatted = formatDate(student.start_date);
+          const leaveDateFormatted = student.leave_date ? formatDate(student.leave_date) : 'N/A';
           const tr = document.createElement('tr');
           tr.innerHTML = `
                         <tr>
@@ -32,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <td>${row.student_name || 'N/A'}</td>
                             <td>${row.hostel_name || 'N/A'}</td>
                             <td>${row.hostel_fee || 'N/A'}</td>
-                            <td>${row.start_date || 'N/A'}</td>
+                            <td>${row.startDateFormatted || 'N/A'}</td>
                             <td>${row.leave_date || 'N/A'}</td>
                             <td>
                                 <button class="btn btn-sm btn-danger">Remove</button>
