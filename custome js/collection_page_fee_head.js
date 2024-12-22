@@ -173,20 +173,7 @@ function addToFeeCollection(month, feeType, amount) {
   // Update total amount
     totalAmount += parseFloat(amount); // Add the new amount to the total
     document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the input field
-
-     // Add delete event listener to the new button
-  const deleteButton = newRow.querySelector('.deleteButton');
-  deleteButton.addEventListener('click', function () {
-    // Subtract the amount from total
-    const rowAmount = parseFloat(newRow.cells[2].textContent); // Get the amount in the row
-    totalAmount -= rowAmount; // Subtract the amount from the total
-
-    // Update the payable amount input
-    document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the total
-
-    // Remove the row from the table
-    newRow.remove();
-  });
+    
 }
 
 // Helper function to display alerts
