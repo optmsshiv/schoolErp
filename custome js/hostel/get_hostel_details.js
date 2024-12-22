@@ -1,24 +1,32 @@
 document.addEventListener('DOMContentLoaded', function () {
   const userId = new URLSearchParams(window.location.search).get('user_id'); // Extract user_id from the URL
 
-    // Fetch hostel details when the page loads
-    fetch('/php/hostel/fetch_hostel_detail.php',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-       body: JSON.stringify({ userId }),
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                const tableBody = document.querySelector('#hostelTable tbody');
-                tableBody.innerHTML = ''; // Clear any existing rows
+  // Fetch hostel details when the page loads
+  fetch('/php/hostel/fetch_hostel_detail.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userId }),
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        const tableBody = document.querySelector('#hostelTable tbody');
+        tableBody.innerHTML = ''; // Clear any existing rows
 
-                // Loop through the data and insert rows
-                data.data.forEach((row) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
+        function formatDate(dateString) {
+          if (!dateString) return ''; // Handle null or empty dates
+          const date = new Date(dateString);
+          const day = String(date.getDate()).padStart(2, '0');
+          const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+          const year = date.getFullYear();
+          return `${day}-${month}-${year}`;
+        }
+        // When populating the table rows:
+        data.data.forEach((row) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
                         <tr>
                             <td>${row.student_id || 'N/A'}</td>
                             <td>${row.student_name || 'N/A'}</td>
@@ -31,15 +39,15 @@ document.addEventListener('DOMContentLoaded', function () {
                             </td>
                         </tr>
                     `;
-                    tableBody.appendChild(tr);
-                });
-            } else {
-                alert(data.message); // Show error message
-
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while fetching hostel details.');
+          tableBody.appendChild(tr);
         });
+      } else {
+        alert(data.message); // Show error message
+
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while fetching hostel details.');
+    });
 });
