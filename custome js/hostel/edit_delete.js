@@ -8,19 +8,19 @@ document.addEventListener('click', function (event) {
             title: 'Edit Hostel Details',
             html: `
                 <label for="editHostelName">Hostel Name:</label>
-              <input id="editHostelName" class="swal2-input" value="${hostelDetails.hostel_name || ''}">
+              <input id="editHostelName" class="swal2-input" value="${hostels.hostel_name || ''}">
 
               <label for="editHostelType">Hostel Type:</label>
-              <input id="editHostelType" class="swal2-input" value="${hostelDetails.hostel_type || ''}">
+              <input id="editHostelType" class="swal2-input" value="${hostels.hostel_type || ''}">
 
               <label for="editHostelFee">Hostel Fee:</label>
-              <input id="editHostelFee" class="swal2-input" type="number" value="${hostelDetails.hostel_fee || ''}">
+              <input id="editHostelFee" class="swal2-input" type="number" value="${hostels.hostel_fee || ''}">
 
               <label for="editStartDate">Start Date:</label>
-              <input id="editStartDate" class="swal2-input" type="date" value="${hostelDetails.start_date || ''}">
+              <input id="editStartDate" class="swal2-input" type="date" value="${hostels.start_date || ''}">
 
               <label for="editLeaveDate">Leave Date:</label>
-              <input id="editLeaveDate" class="swal2-input" type="date" value="${hostelDetails.leave_date || ''}">
+              <input id="editLeaveDate" class="swal2-input" type="date" value="${hostels.leave_date || ''}">
             `,
             showCancelButton: true,
             confirmButtonText: 'Save Changes',
