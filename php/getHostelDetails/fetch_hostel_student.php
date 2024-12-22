@@ -21,6 +21,16 @@ try {
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Count the total number of students
+    $total_students = count($result);
+
+    // Respond with JSON data, including the total student count
+    echo json_encode([
+        "status" => "success",
+        "data" => $result,
+        "total_students" => $total_students
+    ]);
+
      // Add serial number to each result
     $serial_number = 1;
     foreach ($result as &$row) {
