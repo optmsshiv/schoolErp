@@ -15,6 +15,7 @@ try {
                 students.user_id AS student_id,
                 CONCAT(students.first_name, ' ', students.last_name) AS student_name,
                 hostels.hostel_name,
+                hostels.hostel_type,
                 hostels.hostel_fee,
                 hostels.start_date,
                 hostels.leave_date

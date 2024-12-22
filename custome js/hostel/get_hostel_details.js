@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <td>${row.student_id || 'N/A'}</td>
                             <td>${row.student_name || 'N/A'}</td>
                             <td>${row.hostel_name || 'N/A'}</td>
+                            <td>${row.hostel_type || 'N/A'}</td>
                             <td>${row.hostel_fee || 'N/A'}</td>
                             <td>${row.start_date || 'N/A'}</td>
                             <td>${row.leave_date || 'N/A'}</td>
