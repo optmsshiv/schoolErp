@@ -54,15 +54,20 @@ document.addEventListener('submit', function (event) {
                         icon: 'success',
                         title: 'Success',
                         text: data.message
-                    });
-                    // Close the offcanvas
-                    const offcanvasElement = bootstrap.Offcanvas.getInstance(document.getElementById('hostelCanvas'));
-                    offcanvasElement.hide();
+                    }).then((result) => {
+        // Check if the user clicked the "OK" button
+        if (result.isConfirmed) {
+            // Close the offcanvas
+            const offcanvasElement = bootstrap.Offcanvas.getInstance(document.getElementById('hostelCanvas'));
+            offcanvasElement.hide();
 
-                    // Clear the form
-                    document.getElementById('hostelForm').reset();
-                     // Refresh the page or update content (preferably update the content rather than reload the page)
-                    window.location.reload();
+            // Clear the form
+            document.getElementById('hostelForm').reset();
+
+            // Reload the page after clicking OK
+            window.location.reload();
+        }
+    });
                 } else {
                     Swal.fire({
                         icon: 'error',
