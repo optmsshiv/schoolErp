@@ -905,3 +905,31 @@ const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
     </script>
 </body>
 </html>*/
+
+
+/*
+Fee table selection fee design
+
+function addToFeeCollection(month, feeType, amount) {
+  const tableBody = document.querySelector('#FeeCollection tbody');
+  const newRow = document.createElement('tr');
+
+  newRow.innerHTML = `
+    <td>${month}</td>
+    <td>${feeType}</td>
+    <td>${amount}</td>
+    <td class="text-center">
+      <button class="btn text-muted h-px-30" type="button" id="deleteButton">
+        <i class="btn-outline-danger bx bx-trash bx-sm"></i>
+      </button>
+    </td>
+  `;
+
+  tableBody.appendChild(newRow);
+
+  // Update total amount
+    totalAmount += parseFloat(amount); // Add the new amount to the total
+    document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the input field
+
+}
+*/
