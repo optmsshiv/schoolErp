@@ -18,7 +18,7 @@ async function fetchStudentData() {
 
   try {
     // Fetch student data from the server
-    const response = await fetch('/php/collectFeeStudentDetails/student_fee_details.php');
+    const response = await fetch('/php/collectFeeStudentDetails/student_fee_details.php');  // it will be use to get data in table for fee use students in stead of studnet
 
     // Check if the response is okay
     if (!response.ok) {
