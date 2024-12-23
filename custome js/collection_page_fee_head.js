@@ -162,7 +162,7 @@ function addToFeeCollection(month, feeType, amount) {
     <td>${feeType}</td>
     <td>${amount}</td>
     <td class="text-center">
-      <button class="btn text-muted h-px-30 delete-button" type="button">
+      <button class="btn text-muted h-px-30" type="button" id="deleteButton">
         <i class="btn-outline-danger bx bx-trash bx-sm"></i>
       </button>
     </td>
@@ -171,58 +171,9 @@ function addToFeeCollection(month, feeType, amount) {
   tableBody.appendChild(newRow);
 
   // Update total amount
-  totalAmount += parseFloat(amount); // Add the new amount to the total
-  document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the input field
+    totalAmount += parseFloat(amount); // Add the new amount to the total
+    document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the input field
 
-  // Recalculate and update the "plus button" row
-  updateTotalRow();
-
-  // Add event listener to the delete button
-  const deleteButton = newRow.querySelector('.delete-button');
-  deleteButton.addEventListener('click', function () {
-    // Subtract the row's amount from totalAmount
-    const rowAmount = parseFloat(newRow.cells[2].textContent);
-    totalAmount -= rowAmount;
-
-    // Update the total amount display
-    document.querySelector('#payableAmount').value = totalAmount.toFixed(2);
-
-    // Remove the row from the table
-    newRow.remove();
-
-    // Recalculate and update the "plus button" row
-    updateTotalRow();
-  });
-}
-
-// Function to update the total row with the plus button
-function updateTotalRow() {
-  const totalRow = document.querySelector('#totalRow'); // Assuming this is the ID for your total row
-  totalRow.innerHTML = ''; // Clear the current row content
-
-  // Add total amounts for each month dynamically
-  const totalAmounts = calculateMonthlyTotals(); // Implement this logic based on your data structure
-  totalAmounts.forEach(totalAmount => {
-    const totalAmountCell = document.createElement('td');
-    totalAmountCell.innerHTML = `
-      <div class="amount-button">
-        <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-        <button class="btn btn-outline-primary rounded-circle">
-          <i class="bx bx-plus"></i>
-        </button>
-      </div>
-    `;
-    totalRow.appendChild(totalAmountCell);
-  });
-
-  // Optionally, attach event listeners to the plus buttons
-  const plusButtons = totalRow.querySelectorAll('.btn-outline-primary');
-  plusButtons.forEach((button, index) => {
-    button.addEventListener('click', () => {
-      // Logic for when the plus button is clicked
-      handlePlusButtonClick(index);
-    });
-  });
 }
 
 // Helper function to display alerts
