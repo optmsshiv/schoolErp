@@ -38,27 +38,41 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Event listener for delete buttons in the Fee Collection table
-  document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
-    if (event.target.closest('#deleteButton')) {
-      const row = event.target.closest('tr');
-      const month = row.children[0].textContent; // Get the month from the row
-      row.remove(); // Remove the row from the table
+// Event listener for delete buttons in the Fee Collection table
+document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
+  if (event.target.closest('#deleteButton')) {
+    const row = event.target.closest('tr');
+    const amount = parseFloat(row.children[2].textContent); // Get the amount from the row
 
-      // Find the corresponding plus button in the Total row and show it
-      const monthIndex = Array.from(document.querySelectorAll('#student_fee_table thead th')).findIndex(
-        th => th.textContent === month
-      );
+    // Subtract the amount from totalAmount
+    if (!isNaN(amount)) {
+      totalAmount -= amount;
+      document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the total amount input field
+    }
 
-      if (monthIndex > 0) { // Ignore the "Fee Head" column
-        const totalRow = document.querySelector('#student_fee_table tbody tr:last-child');
-        const totalCell = totalRow.children[monthIndex];
-        const plusButton = totalCell.querySelector('.btn-outline-primary');
-        if (plusButton) {
-          plusButton.style.display = 'inline-block'; // Show the plus button again
-        }
+    const month = row.children[0].textContent; // Get the month from the row
+    row.remove(); // Remove the row from the table
+
+    // Find the corresponding plus button in the Total row and show it
+    const monthIndex = Array.from(document.querySelectorAll('#student_fee_table thead th')).findIndex(
+      th => th.textContent === month
+    );
+
+    if (monthIndex > 0) { // Ignore the "Fee Head" column
+      const totalRow = document.querySelector('#student_fee_table tbody tr:last-child');
+      const totalCell = totalRow.children[monthIndex];
+      const plusButton = totalCell.querySelector('.btn-outline-primary');
+      if (plusButton) {
+        plusButton.style.display = 'inline-block'; // Show the plus button again
       }
     }
-  });
+  }
+});
+
+
+
+
+
 });
 
 
