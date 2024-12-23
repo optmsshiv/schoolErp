@@ -14,6 +14,10 @@ try {
     // Set PDO attributes
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); // Fetch as associative arrays by default
+
+    // Optionally, you can check the connection is working
+    $pdo->query("SELECT 1");  // A simple test query
+
 } catch (PDOException $e) {
     // Log error to a file instead of exposing it publicly
     error_log('Database connection failed: ' . $e->getMessage(), 0);
@@ -23,6 +27,6 @@ try {
         'status' => 'error',
         'message' => 'Unable to connect to the database. Please try again later.'
     ]);
-    exit;
+    exit; // Stop further script execution in case of failure
 }
 ?>
