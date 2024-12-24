@@ -1,5 +1,5 @@
 (() => {
-  // Declare totalAmount in a shared scope (global within this function scope)
+  // Global totalAmount variable
   let totalAmount = 0;
 
   // Function to update the total amount input field
@@ -7,7 +7,7 @@
     document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Display the total with 2 decimal places
   }
 
-  // Function to update the totalAmount
+  // Function to update the totalAmount (add or subtract)
   function updateTotalAmount(amountChange) {
     totalAmount += amountChange; // Add or subtract the amount
     updatePayableAmount(); // Reflect changes in the input field
