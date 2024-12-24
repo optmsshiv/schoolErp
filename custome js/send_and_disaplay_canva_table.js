@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const addFeeCanvasEl = document.getElementById("addFeeCanvas");
   const payableAmountInput = document.getElementById("payableAmount");
   let isSaveButtonClicked = false;
-  let totalAmount = 0; // Initialize totalAmount
 
   // Initialize Offcanvas
   const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
@@ -133,9 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
 
     feeTableBody.appendChild(newRow);
-
-    // Update totalAmount
-    updateTotalAmount(parseFloat(feeAmount));
+    updateCombinedTotal(); // Recalculate combined total
 
     // Add Delete Button Event Listener
     const deleteButton = newRow.querySelector(".deleteFeeButton");
@@ -151,9 +148,8 @@ document.addEventListener("DOMContentLoaded", function () {
         cancelButtonText: "Cancel",
       }).then((result) => {
         if (result.isConfirmed) {
-          const feeAmount = parseFloat(newRow.children[2].textContent);
-          updateTotalAmount(-feeAmount); // Subtract the deleted fee from totalAmount
           newRow.remove();
+          updateCombinedTotal(); // Update combined total
           Swal.fire("Deleted!", "The fee record has been deleted.", "success");
         }
       });
@@ -164,10 +160,18 @@ document.addEventListener("DOMContentLoaded", function () {
     editButton.addEventListener("click", () => handleEditFee(newRow));
   };
 
-  // Update total amount
-  const updateTotalAmount = (amountChange) => {
-    totalAmount += amountChange;
-    payableAmountInput.value = totalAmount.toFixed(2);
+  // Update combined total amount
+  const updateCombinedTotal = () => {
+    let total = 0;
+
+    // Sum all fee amounts in the table
+    feeTableBody.querySelectorAll("tr").forEach((row) => {
+      const feeAmount = parseFloat(row.children[2].textContent);
+      if (!isNaN(feeAmount)) total += feeAmount;
+    });
+
+    // Update the total in the UI
+    payableAmountInput.value = total.toFixed(2);
   };
 
   // Handle Edit Fee
@@ -204,15 +208,13 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        const oldFeeAmount = parseFloat(feeAmountCell.textContent);
         const { editedFeeMonth, editedFeeType, editedFeeAmount } = result.value;
 
         feeMonthCell.textContent = editedFeeMonth;
         feeTypeCell.textContent = editedFeeType;
         feeAmountCell.textContent = editedFeeAmount.toFixed(2);
 
-        // Update totalAmount with the difference
-        updateTotalAmount(editedFeeAmount - oldFeeAmount);
+        updateCombinedTotal(); // Recalculate combined total after editing
 
         Swal.fire("Updated!", "Fee details have been updated successfully.", "success");
       }
