@@ -1,10 +1,19 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   const feeTypeDropdown = document.getElementById("feeType");
   const saveFeeButton = document.getElementById("saveFeeButton");
   const feeForm = document.getElementById("feeForm");
   const feeTableBody = document.querySelector("#FeeCollection tbody");
+  const addFeeCanvasEl = document.getElementById("addFeeCanvas");
   const payableAmountInput = document.getElementById("payableAmount");
+  let isSaveButtonClicked = false;
   let totalAmount = 0; // Initialize totalAmount
+
+  // Initialize Offcanvas
+  const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
+  if (!addFeeCanvas) {
+    console.error('Element with ID "addFeeCanvas" not found');
+    return;
+  }
 
   // Fetch fee heads and populate the dropdown
   const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
@@ -19,12 +28,15 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       // Populate dropdown
+      const feeheads = result.data;
       feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
-      result.data.forEach(({ fee_head_id, fee_head_name }) => {
-        const option = document.createElement("option");
-        option.value = fee_head_id;
-        option.textContent = fee_head_name;
-        feeTypeDropdown.appendChild(option);
+      feeheads.forEach(({ fee_head_id, fee_head_name }) => {
+        if (fee_head_id && fee_head_name) {
+          const option = document.createElement("option");
+          option.value = fee_head_id;
+          option.textContent = fee_head_name;
+          feeTypeDropdown.appendChild(option);
+        }
       });
     } catch (error) {
       console.error("Error fetching fee types:", error);
@@ -32,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (retryCount > 0) {
         console.warn(`Retrying... Attempts left: ${retryCount}`);
-        await new Promise(resolve => setTimeout(resolve, delayMs));
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
         await fetchFeeHeads(retryCount - 1, delayMs);
       } else {
         Swal.fire("Error", "Failed to load fee types after multiple attempts.", "error");
@@ -41,70 +53,177 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   // Utility function to capitalize the first letter of each word
-  const capitalize = (str) => str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
-
-  // Update totalAmount and payableAmount input
-  const updateAmount = (amountChange) => {
-    totalAmount += amountChange;
-    payableAmountInput.value = totalAmount.toFixed(2); // Update the payable amount input field
+  const capitalize = (str) => {
+    return str
+      .toLowerCase()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
-  // Add a new row to the FeeCollection table
-  const addRowToTable = ({ feeMonth, feeType, feeAmount }) => {
-    const newRow = document.createElement("tr");
-    newRow.innerHTML = `
-      <td>${feeMonth}</td>
-      <td>${feeType}</td>
-      <td>${feeAmount}</td>
-      <td class="text-center">
-        <button class="btn text-muted h-px-30" type="button" id="deleteButton">
-          <i class="btn-outline-danger bx bx-trash bx-sm"></i>
-        </button>
-      </td>
-    `;
-    feeTableBody.appendChild(newRow);
-
-    // Update the total amount by adding the fee amount
-    updateAmount(parseFloat(feeAmount));
-
-    // Add event listener for delete button
-    newRow.querySelector('#deleteButton').addEventListener('click', () => {
-      const amount = parseFloat(newRow.children[2].textContent);
-      updateAmount(-amount); // Subtract from total when row is deleted
-      newRow.remove(); // Remove the row from the table
-    });
-  };
-
-  // Handle Save Fee button click
-  const handleSaveFee = () => {
+  // Validate form fields
+  const validateForm = () => {
     const feeMonthElement = document.getElementById("feeMonth");
     const feeAmountElement = document.getElementById("feeAmount");
+
+    if (!feeMonthElement || !feeAmountElement) {
+      console.error("Required form elements are missing!");
+      return { isValid: false, message: "Form validation failed." };
+    }
 
     const feeMonth = capitalize(feeMonthElement.value.trim());
     const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
     const feeAmount = feeAmountElement.value.trim();
 
-    if (!feeMonth || !feeType || !feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0) {
-      Swal.fire("Error", "Please fill in all fields correctly.", "error");
-      return;
+    if (!feeMonth) {
+      return { isValid: false, message: "Please select a valid month." };
+    }
+    if (!feeType || feeTypeDropdown.value === "") {
+      return { isValid: false, message: "Please select a fee type." };
+    }
+    if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0) {
+      return { isValid: false, message: "Please enter a valid fee amount." };
     }
 
-    addRowToTable({ feeMonth, feeType, feeAmount });
+    return { isValid: true, feeMonth, feeType, feeAmount };
+  };
 
-    feeForm.reset();
+  // Handle Save Fee button click
+  const handleSaveFee = () => {
+    isSaveButtonClicked = true;
+
+    const { isValid, message, ...data } = validateForm();
+    if (isValid) {
+      addRowToTable(data);
+
+      feeForm.reset();
+      addFeeCanvas.hide();
+
+      Swal.fire({
+        title: "Success",
+        text: "Fee details added successfully.",
+        icon: "success",
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => Swal.showLoading(),
+      });
+    } else {
+      Swal.fire("Error", message, "error");
+    }
+
+    isSaveButtonClicked = false;
+  };
+
+  // Add a new row to the FeeCollection table
+  const addRowToTable = ({ feeMonth, feeType, feeAmount }) => {
+    const newRow = document.createElement("tr");
+
+    newRow.innerHTML = `
+      <td>${feeMonth}</td>
+      <td>${feeType}</td>
+      <td>${feeAmount}</td>
+      <td>
+        <div class="d-flex gap-1">
+          <button class="btn editFeeButton" style="margin: 0 -8px;">
+            <i class="btn-outline-warning bx bx-edit bx-sm"></i>
+          </button>
+          <button type="button" class="btn deleteFeeButton" style="margin: 0 -8px;">
+            <i class="btn-outline-danger bx bx-trash bx-sm"></i>
+          </button>
+        </div>
+      </td>
+    `;
+
+    feeTableBody.appendChild(newRow);
+
+    // Update totalAmount
+    updateTotalAmount(parseFloat(feeAmount));
+
+    // Add Delete Button Event Listener
+    const deleteButton = newRow.querySelector(".deleteFeeButton");
+    deleteButton.addEventListener("click", () => {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const feeAmount = parseFloat(newRow.children[2].textContent);
+          updateTotalAmount(-feeAmount); // Subtract the deleted fee from totalAmount
+          newRow.remove();
+          Swal.fire("Deleted!", "The fee record has been deleted.", "success");
+        }
+      });
+    });
+
+    // Add Edit Button Event Listener
+    const editButton = newRow.querySelector(".editFeeButton");
+    editButton.addEventListener("click", () => handleEditFee(newRow));
+  };
+
+  // Update total amount
+  const updateTotalAmount = (amountChange) => {
+    totalAmount += amountChange;
+    payableAmountInput.value = totalAmount.toFixed(2);
+  };
+
+  // Handle Edit Fee
+  const handleEditFee = (row) => {
+    const feeMonthCell = row.children[0];
+    const feeTypeCell = row.children[1];
+    const feeAmountCell = row.children[2];
+
     Swal.fire({
-      title: "Success",
-      text: "Fee details added successfully.",
-      icon: "success",
-      timer: 2000,
-      timerProgressBar: true,
-      didOpen: () => Swal.showLoading(),
+      title: "Edit Fee Details",
+      html: `
+        <label for="editFeeMonth" class="form-label">Fee Month</label>
+        <input id="editFeeMonth" class="swal2-input" value="${capitalize(feeMonthCell.textContent)}">
+
+        <label for="editFeeType" class="form-label">Fee Type</label>
+        <select id="editFeeType" class="swal2-select">${feeTypeDropdown.innerHTML}</select>
+
+        <label for="editFeeAmount" class="form-label">Fee Amount</label>
+        <input id="editFeeAmount" class="swal2-input" type="number" value="${feeAmountCell.textContent}">
+      `,
+      confirmButtonText: "Save",
+      showCancelButton: true,
+      preConfirm: () => {
+        const editedFeeMonth = capitalize(document.getElementById("editFeeMonth").value.trim());
+        const editedFeeType = document.getElementById("editFeeType").options[document.getElementById("editFeeType").selectedIndex].text;
+        const editedFeeAmount = parseFloat(document.getElementById("editFeeAmount").value.trim());
+
+        if (!editedFeeMonth || !editedFeeType || isNaN(editedFeeAmount) || editedFeeAmount <= 0) {
+          Swal.showValidationMessage("Please fill out all fields correctly.");
+          return false;
+        }
+
+        return { editedFeeMonth, editedFeeType, editedFeeAmount };
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const oldFeeAmount = parseFloat(feeAmountCell.textContent);
+        const { editedFeeMonth, editedFeeType, editedFeeAmount } = result.value;
+
+        feeMonthCell.textContent = editedFeeMonth;
+        feeTypeCell.textContent = editedFeeType;
+        feeAmountCell.textContent = editedFeeAmount;
+
+        // Update totalAmount with the difference
+        updateTotalAmount(editedFeeAmount - oldFeeAmount);
+
+        Swal.fire("Updated!", "Fee details have been updated successfully.", "success");
+      }
     });
   };
 
-  // Handle Offcanvas Hide Event (reset form if not saved)
-  document.getElementById("addFeeCanvas").addEventListener("hide.bs.offcanvas", () => {
-    feeForm.reset();
+  // Handle Offcanvas Hide Event
+  addFeeCanvasEl.addEventListener("hide.bs.offcanvas", (event) => {
+    if (!isSaveButtonClicked) {
+      feeForm.reset();
+    }
   });
 
   // Initialize event listeners
@@ -115,49 +234,3 @@ document.addEventListener('DOMContentLoaded', function () {
 
   initialize();
 });
-
-(() => {
-  // Consolidate logic for adding fee collection rows and updating amounts globally
-  let totalAmount = 0;
-
-  // Function to update total amount in payableAmount field
-  const updatePayableAmount = () => {
-    document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Display the total with 2 decimal places
-  };
-
-  // Function to update the totalAmount
-  const updateTotalAmount = (amountChange) => {
-    totalAmount += amountChange; // Add or subtract the amount
-    updatePayableAmount(); // Reflect changes in the input field
-  };
-
-  // Generalized function for adding a row to the Fee Collection table
-  function addToFeeCollection(month, feeType, amount) {
-    const tableBody = document.querySelector('#FeeCollection tbody');
-    const newRow = document.createElement('tr');
-    newRow.innerHTML = `
-      <td>${month}</td>
-      <td>${feeType}</td>
-      <td>${amount}</td>
-      <td class="text-center">
-        <button class="btn text-muted h-px-30" type="button" id="deleteButton">
-          <i class="btn-outline-danger bx bx-trash bx-sm"></i>
-        </button>
-      </td>
-    `;
-    tableBody.appendChild(newRow);
-
-    // Update the total amount by adding the fee amount
-    updateTotalAmount(parseFloat(amount));
-
-    // Add event listener for delete button
-    newRow.querySelector('#deleteButton').addEventListener('click', () => {
-      const amount = parseFloat(newRow.children[2].textContent); // Get amount from the row
-      updateTotalAmount(-amount); // Subtract from total when row is deleted
-      newRow.remove(); // Remove the row from the table
-    });
-  }
-
-  // Expose the functions globally for testing or calling outside this scope
-  window.addToFeeCollection = addToFeeCollection;
-})();
