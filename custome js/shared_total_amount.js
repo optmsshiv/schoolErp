@@ -105,7 +105,4 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   };
-
-  // Event listener for Save button in the off-canvas form
-  document.getElementById("saveFeeButton").addEventListener("click", handleSaveFee);
 });
