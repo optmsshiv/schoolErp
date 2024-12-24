@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
     newRow.innerHTML = `
       <td>${feeMonth}</td>
       <td>${feeType}</td>
-      <td>${parseFloat(feeAmount)}</td>
+      <td>${feeAmount}</td>
       <td>
         <div class="d-flex gap-1">
           <button class="btn editFeeButton" style="margin: 0 -8px;">
