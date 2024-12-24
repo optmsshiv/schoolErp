@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // Event listener for delete buttons in the Fee Collection table
 // Event listener for delete buttons in the Fee Collection table
 document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
   if (event.target.closest('#deleteButton')) {
@@ -68,11 +67,6 @@ document.querySelector('#FeeCollection tbody').addEventListener('click', functio
     }
   }
 });
-
-
-
-
-
 });
 
 
