@@ -3,26 +3,38 @@ let totalAmount = 0;
 
 // Function to update the total amount input field
 function updatePayableAmount() {
-  document.querySelector('#payableAmount').value = totalAmount.toFixed(2);
+  const payableAmountInput = document.querySelector('#payableAmount');
+  if (payableAmountInput) {
+    payableAmountInput.value = totalAmount.toFixed(2);
+  }
 }
 
 // Function to update the totalAmount
 function updateTotalAmount(amountChange) {
-  totalAmount += amountChange; // Update the global total
-  updatePayableAmount(); // Reflect changes in the UI
+  const parsedAmount = parseFloat(amountChange);
+  if (!isNaN(parsedAmount)) {
+    totalAmount += parsedAmount; // Update the global total
+    updatePayableAmount(); // Reflect changes in the UI
+  } else {
+    console.error(`Invalid amount change: ${amountChange}`);
+  }
 }
 
-// Modified `addToFeeCollection` function
+// Function to add a row to the Fee Collection table
 function addToFeeCollection(month, feeType, amount) {
   const tableBody = document.querySelector('#FeeCollection tbody');
-  const newRow = document.createElement('tr');
+  if (!tableBody) {
+    console.error("Fee Collection table body not found.");
+    return;
+  }
 
+  const newRow = document.createElement('tr');
   newRow.innerHTML = `
     <td>${month}</td>
     <td>${feeType}</td>
-    <td>${amount}</td>
+    <td>${parseFloat(amount).toFixed(2)}</td>
     <td class="text-center">
-      <button class="btn text-muted h-px-30" type="button" id="deleteButton">
+      <button class="btn text-muted h-px-30 deleteButton" type="button">
         <i class="btn-outline-danger bx bx-trash bx-sm"></i>
       </button>
     </td>
@@ -31,24 +43,29 @@ function addToFeeCollection(month, feeType, amount) {
   tableBody.appendChild(newRow);
 
   // Update the total
-  updateTotalAmount(parseFloat(amount));
+  updateTotalAmount(amount);
 
-  // Add event listener for delete button
-  newRow.querySelector('#deleteButton').addEventListener('click', () => {
-    const amount = parseFloat(newRow.children[2].textContent); // Get amount
+  // Add event listener for delete button using event delegation
+  newRow.querySelector('.deleteButton').addEventListener('click', () => {
+    const amount = parseFloat(newRow.children[2].textContent);
     updateTotalAmount(-amount); // Subtract from total
     newRow.remove(); // Remove the row
   });
 }
 
-// Modified `addRowToTable` function from Offcanvas
+// Function to add a row to the table from the offcanvas component
 function addRowToTable({ feeMonth, feeType, feeAmount }) {
-  const newRow = document.createElement('tr');
+  const feeTableBody = document.querySelector('#FeeCollection tbody');
+  if (!feeTableBody) {
+    console.error("Fee table body not found.");
+    return;
+  }
 
+  const newRow = document.createElement('tr');
   newRow.innerHTML = `
     <td>${feeMonth}</td>
     <td>${feeType}</td>
-    <td>${feeAmount}</td>
+    <td>${parseFloat(feeAmount).toFixed(2)}</td>
     <td>
       <div class="d-flex gap-1">
         <button class="btn editFeeButton" style="margin: 0 -8px;">
@@ -64,10 +81,10 @@ function addRowToTable({ feeMonth, feeType, feeAmount }) {
   feeTableBody.appendChild(newRow);
 
   // Update the total
-  updateTotalAmount(parseFloat(feeAmount));
+  updateTotalAmount(feeAmount);
 
   // Add Delete Button Event Listener
-  newRow.querySelector(".deleteFeeButton").addEventListener("click", () => {
+  newRow.querySelector('.deleteFeeButton').addEventListener('click', () => {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
