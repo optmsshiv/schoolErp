@@ -1,16 +1,16 @@
 (() => {
-  // Declare totalAmount in a shared scope
+  // Declare totalAmount in a shared scope (global within this function scope)
   let totalAmount = 0;
 
   // Function to update the total amount input field
   function updatePayableAmount() {
-    document.querySelector('#payableAmount').value = totalAmount.toFixed(2);
+    document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Display the total with 2 decimal places
   }
 
   // Function to update the totalAmount
   function updateTotalAmount(amountChange) {
-    totalAmount += amountChange; // Update the global total
-    updatePayableAmount(); // Reflect changes in the UI
+    totalAmount += amountChange; // Add or subtract the amount
+    updatePayableAmount(); // Reflect changes in the input field
   }
 
   // Modified addToFeeCollection function
@@ -31,20 +31,20 @@
 
     tableBody.appendChild(newRow);
 
-    // Update the total (add amount from this source)
+    // Update the total amount by adding the fee amount
     updateTotalAmount(parseFloat(amount));
 
     // Add event listener for delete button
     newRow.querySelector('#deleteButton').addEventListener('click', () => {
-      const amount = parseFloat(newRow.children[2].textContent); // Get amount
-      updateTotalAmount(-amount); // Subtract from total
-      newRow.remove(); // Remove the row
+      const amount = parseFloat(newRow.children[2].textContent); // Get amount from the row
+      updateTotalAmount(-amount); // Subtract from total when row is deleted
+      newRow.remove(); // Remove the row from the table
     });
   }
 
-  // Modified addRowToTable function from Offcanvas
+  // Modified addRowToTable function (from Offcanvas or other source)
   function addRowToTable({ feeMonth, feeType, feeAmount }) {
-    const feeTableBody = document.querySelector('#FeeCollection tbody'); // Ensure selector matches
+    const feeTableBody = document.querySelector('#FeeCollection tbody'); // Ensure this selector matches the actual table body
     const newRow = document.createElement('tr');
 
     newRow.innerHTML = `
@@ -65,7 +65,7 @@
 
     feeTableBody.appendChild(newRow);
 
-    // Update the total (add amount from this source)
+    // Update the total amount by adding the fee amount from this source
     updateTotalAmount(parseFloat(feeAmount));
 
     // Add Delete Button Event Listener
@@ -81,16 +81,16 @@
         cancelButtonText: 'Cancel',
       }).then((result) => {
         if (result.isConfirmed) {
-          const feeAmount = parseFloat(newRow.children[2].textContent);
-          updateTotalAmount(-feeAmount); // Subtract from total
-          newRow.remove(); // Remove the row
+          const feeAmount = parseFloat(newRow.children[2].textContent); // Get feeAmount from row
+          updateTotalAmount(-feeAmount); // Subtract the fee amount from the total
+          newRow.remove(); // Remove the row from the table
           Swal.fire('Deleted!', 'The fee record has been deleted.', 'success');
         }
       });
     });
   }
 
-  // Expose functions if needed globally
+  // Expose the functions globally for testing or calling outside this scope
   window.addToFeeCollection = addToFeeCollection;
   window.addRowToTable = addRowToTable;
 })();
