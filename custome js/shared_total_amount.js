@@ -105,11 +105,4 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   };
-
-  // Event listener for Save button in the off-canvas form
-  document.getElementById("saveFeeButton").addEventListener("click", handleSaveFee);
-
-  // Example: Adding data from another source (Source 1)
-  addToFeeCollection("January", "Tuition Fee", 500);
-  addToFeeCollection("February", "Lab Fee", 300);
 });
