@@ -31,7 +31,7 @@
 
     tableBody.appendChild(newRow);
 
-    // Update the total
+    // Update the total (add amount from this source)
     updateTotalAmount(parseFloat(amount));
 
     // Add event listener for delete button
@@ -65,7 +65,7 @@
 
     feeTableBody.appendChild(newRow);
 
-    // Update the total
+    // Update the total (add amount from this source)
     updateTotalAmount(parseFloat(feeAmount));
 
     // Add Delete Button Event Listener
