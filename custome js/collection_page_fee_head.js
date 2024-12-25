@@ -184,6 +184,24 @@ function addToFeeCollection(month, feeType, amount) {
 
 }
 
+// Function to update the total amount
+function updateTotalAmount() {
+  totalAmount = 0; // Reset the totalAmount to recalculate
+  const rows = document.querySelectorAll("#FeeCollection tbody tr");
+
+  // Iterate through all rows in the table to calculate the total
+  rows.forEach(row => {
+    const totalCell = row.querySelector("td:nth-child(3)"); // Select the 'Total' column
+    if (totalCell) {
+      const amount = parseFloat(totalCell.textContent) || 0; // Parse the value or default to 0
+      totalAmount += amount;
+    }
+  });
+
+  // Update the payableAmount field
+  document.getElementById("payableAmount").value = totalAmount.toFixed(2);
+}
+
 // Helper function to display alerts
 function showAlert(message, type) {
   Swal.fire({
