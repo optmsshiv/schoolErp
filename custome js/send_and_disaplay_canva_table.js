@@ -132,10 +132,11 @@ document.addEventListener("DOMContentLoaded", function () {
       </td>
     `;
 
-    feeTableBody.appendChild(newRow);
+       feeTableBody.appendChild(newRow);
 
-    // Update totalAmount
-    updateTotalAmount(parseFloat(feeAmount));
+      // Update totalAmount
+      totalAmount += parseFloat(feeAmount);  // Add the new amount to the total
+      updateTotalAmount(); // Update the payableAmount field
 
     // Add Delete Button Event Listener
     const deleteButton = newRow.querySelector(".deleteFeeButton");
