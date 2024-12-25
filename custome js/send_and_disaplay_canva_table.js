@@ -172,6 +172,7 @@ function updateTotalAmount() {
           const feeAmount = parseFloat(newRow.children[2].textContent);
           updateTotalAmount(-feeAmount); // Subtract the deleted fee from totalAmount
           newRow.remove();
+          updateTotalAmount(); // Recalculate and update the total
           Swal.fire("Deleted!", "The fee record has been deleted.", "success");
         }
       });
