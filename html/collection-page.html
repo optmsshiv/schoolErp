@@ -843,7 +843,7 @@
                             <!-- Payment Status -->
                             <div class="col-md-3">
                               <label for="paymentStatus">Payment Status</label>
-                              <select id="paymentStatus" name="paymentStatus" class="form-select">
+                              <select id="paymentStatus" name="paymentStatus" class="form-select" onchange="togglePaymentFields()">
                                 <option value="paid">Paid</option>
                                 <option value="pending">Pending</option>
                               </select>
@@ -851,7 +851,7 @@
                           </div>
 
                           <!-- Payment Type Dropdown -->
-                          <div class="row mt-3">
+                          <div id="paymentDetails" class="row mt-3 d-none">
                             <div class="col-md-4">
                               <!-- Payment Type Dropdown -->
                               <label for="paymentType">Payment Type</label>

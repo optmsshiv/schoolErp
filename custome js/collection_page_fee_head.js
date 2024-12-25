@@ -236,3 +236,28 @@ function toggleBankDropdown() {
   }
 }
 
+// Toggle visibility of payment-related fields based on Payment Status
+  function togglePaymentFields() {
+    const paymentStatus = document.getElementById('paymentStatus').value;
+    const paymentDetails = document.getElementById('paymentDetails');
+
+    if (paymentStatus === 'paid') {
+      paymentDetails.classList.remove('d-none');
+    } else {
+      paymentDetails.classList.add('d-none');
+      document.getElementById('bankDropdown').classList.add('d-none'); // Hide Bank Dropdown if shown
+    }
+  }
+
+  // Toggle visibility of Bank Dropdown based on Payment Type
+  function toggleBankDropdown() {
+    const paymentType = document.getElementById('paymentType').value;
+    const bankDropdown = document.getElementById('bankDropdown');
+
+    if (paymentType === 'bank') {
+      bankDropdown.classList.remove('d-none');
+    } else {
+      bankDropdown.classList.add('d-none');
+    }
+  }
+
