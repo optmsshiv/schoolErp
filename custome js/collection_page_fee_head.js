@@ -180,8 +180,7 @@ function addToFeeCollection(month, feeType, amount) {
 
   // Update total amount
     totalAmount += parseFloat(amount); // Add the new amount to the total
-    document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the input field
-
+    updateTotalAmount(); // Call to update the total and the payableAmount input field
 }
 
 // Function to update the total amount
