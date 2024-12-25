@@ -74,12 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  
-
-
-
 });
-
 
 function fetchFeePlansData(studentData) {
   const months = [
