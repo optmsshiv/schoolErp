@@ -103,7 +103,7 @@ document.querySelector('#FeeCollection tbody').addEventListener('click', functio
     // Subtract the amount from totalAmount
     if (!isNaN(amount)) {
       totalAmount -= amount;  // Update totalAmount by subtracting the deleted amount
-    //  document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the payableAmount input field
+      document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the payableAmount input field
     }
 
     row.remove();  // Remove the row from the table
