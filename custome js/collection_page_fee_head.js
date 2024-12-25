@@ -74,22 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // Function to update the total amount (to be called after deletion or editing)
-function updateTotalAmount() {
-  totalAmount = 0;  // Reset totalAmount to recalculate
-
-  // Get all rows in the FeeCollection table
-  const rows = document.querySelectorAll("#FeeCollection tbody tr");
-
-  // Loop through the rows and add the amounts to totalAmount
-  rows.forEach(row => {
-    const amount = parseFloat(row.children[2].textContent) || 0;  // Get the amount from the row
-    totalAmount += amount;  // Add the amount to totalAmount
-  });
-
-  // Update the payableAmount input field with the new total
-  document.querySelector('#payableAmount').value = totalAmount.toFixed(2);
-}
+  
 
 
 
