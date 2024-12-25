@@ -185,8 +185,8 @@ function addToFeeCollection(month, feeType, amount) {
 
 // Function to update the total amount
 function updateTotalAmount() {
-  totalAmount = 0; // Reset the totalAmount to recalculate
   const rows = document.querySelectorAll("#FeeCollection tbody tr");
+  totalAmount = 0; // Reset the totalAmount to recalculate
 
   // Iterate through all rows in the table to calculate the total
   rows.forEach(row => {
