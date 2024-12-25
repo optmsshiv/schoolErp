@@ -39,34 +39,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Event listener for delete buttons in the Fee Collection table
   document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
-    if (event.target.closest('#deleteFeeButton')) {
-      const row = event.target.closest('tr');
-      const amount = parseFloat(row.children[2].textContent); // Get the amount from the row
+  // Check if the clicked element is a delete button
+  const deleteButton = event.target.closest('.deleteFeeButton');  // Make sure the target is the button or a child of it
 
-      // Subtract the amount from totalAmount
-      if (!isNaN(amount)) {
-        totalAmount -= amount;
-        document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the total amount input field
-      }
+  if (deleteButton) {
+    const row = deleteButton.closest('tr');  // Find the row the button belongs to
+    const amount = parseFloat(row.children[2].textContent); // Get the amount from the row
 
-      const month = row.children[0].textContent; // Get the month from the row
-      row.remove(); // Remove the row from the table
+    // Subtract the amount from totalAmount
+    if (!isNaN(amount)) {
+      totalAmount -= amount;  // Update totalAmount
+      document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the total input field
+    }
 
-      // Find the corresponding plus button in the Total row and show it
-      const monthIndex = Array.from(document.querySelectorAll('#student_fee_table thead th')).findIndex(
-        th => th.textContent === month
-      );
+    row.remove();  // Remove the row from the table
 
-      if (monthIndex > 0) { // Ignore the "Fee Head" column
-        const totalRow = document.querySelector('#student_fee_table tbody tr:last-child');
-        const totalCell = totalRow.children[monthIndex];
-        const plusButton = totalCell.querySelector('.btn-outline-primary');
-        if (plusButton) {
-          plusButton.style.display = 'inline-block'; // Show the plus button again
-        }
+    // Optionally: handle the plus button logic for a related table (e.g., #student_fee_table)
+    const month = row.children[0].textContent; // Get the month from the row
+    const monthIndex = Array.from(document.querySelectorAll('#student_fee_table thead th')).findIndex(
+      th => th.textContent === month
+    );
+
+    if (monthIndex > 0) { // Ignore the "Fee Head" column
+      const totalRow = document.querySelector('#student_fee_table tbody tr:last-child');
+      const totalCell = totalRow.children[monthIndex];
+      const plusButton = totalCell.querySelector('.btn-outline-primary');
+      if (plusButton) {
+        plusButton.style.display = 'inline-block'; // Show the plus button again
       }
     }
-  });
+  }
+});
+
+
+
 });
 
 
