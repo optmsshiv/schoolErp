@@ -196,33 +196,6 @@ function addToFeeCollection(month, feeType, amount) {
   });
 }
 
-document.querySelector('#student_fee_table').addEventListener('click', function (event) {
-  if (event.target.closest('.btn-outline-primary')) {
-    const button = event.target.closest('.btn-outline-primary');
-    const cell = button.closest('td'); // Get the cell containing the button
-    const row = cell.closest('tr'); // Get the parent row
-    const monthIndex = Array.from(row.children).indexOf(cell); // Find the month index
-    const feeHead = row.children[0].textContent; // Get the Fee Head from the first column
-    const amount = cell.querySelector('.amount').textContent; // Get the amount from the clicked cell
-
-    // Get the month name from the header
-    const month = document.querySelector(`#student_fee_table thead tr th:nth-child(${monthIndex + 1})`).textContent;
-
-    // If the clicked row is the "Total" row, use the first Fee Head ("Monthly Fee")
-    if (feeHead === 'Total') {
-      const monthlyFeeType = 'Monthly Fee'; // The fee type from the first fee head
-      addToFeeCollection(month, monthlyFeeType, amount); // Add to Fee Collection table
-
-      // Update combined total
-      combinedTotal += parseFloat(amount);
-      updatePayableAmount();
-
-      // Hide the plus button
-      button.style.display = 'none';
-    }
-  }
-});
-
 // Helper function to display alerts
 function showAlert(message, type) {
   Swal.fire({
