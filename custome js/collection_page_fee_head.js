@@ -202,6 +202,13 @@ function updateTotalAmount() {
   document.getElementById("payableAmount").value = totalAmount.toFixed(2);
 }
 
+// Event listener to detect changes in the Total column
+document.querySelector('#FeeCollection').addEventListener('input', function(event) {
+  if (event.target.classList.contains('totalAmountCell')) {
+    updateTotalAmount(); // Update the total when the Total column is modified
+  }
+});
+
 // Helper function to display alerts
 function showAlert(message, type) {
   Swal.fire({
