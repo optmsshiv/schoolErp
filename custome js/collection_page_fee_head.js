@@ -158,9 +158,14 @@ function fetchFeePlansData(studentData) {
 }
 
 // Variable to keep track of the total
-  let totalAmount = 0;
+let combinedTotal = 0; // To keep track of the combined total
 
-// Function to add data to the Fee Collection table
+// Function to update the #payableAmount input field
+const updatePayableAmount = () => {
+  document.querySelector('#payableAmount').value = combinedTotal.toFixed(2);
+};
+
+// Function to add data to Fee Collection and update total
 function addToFeeCollection(month, feeType, amount) {
   const tableBody = document.querySelector('#FeeCollection tbody');
   const newRow = document.createElement('tr');
@@ -178,11 +183,45 @@ function addToFeeCollection(month, feeType, amount) {
 
   tableBody.appendChild(newRow);
 
-  // Update total amount
-    totalAmount += parseFloat(amount); // Add the new amount to the total
-    document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the input field
+  // Update combined total
+  combinedTotal += parseFloat(amount);
+  updatePayableAmount();
 
+  // Add delete functionality to the row
+  const deleteButton = newRow.querySelector('#deleteButton');
+  deleteButton.addEventListener('click', () => {
+    combinedTotal -= parseFloat(amount);
+    updatePayableAmount();
+    newRow.remove();
+  });
 }
+
+document.querySelector('#student_fee_table').addEventListener('click', function (event) {
+  if (event.target.closest('.btn-outline-primary')) {
+    const button = event.target.closest('.btn-outline-primary');
+    const cell = button.closest('td'); // Get the cell containing the button
+    const row = cell.closest('tr'); // Get the parent row
+    const monthIndex = Array.from(row.children).indexOf(cell); // Find the month index
+    const feeHead = row.children[0].textContent; // Get the Fee Head from the first column
+    const amount = cell.querySelector('.amount').textContent; // Get the amount from the clicked cell
+
+    // Get the month name from the header
+    const month = document.querySelector(`#student_fee_table thead tr th:nth-child(${monthIndex + 1})`).textContent;
+
+    // If the clicked row is the "Total" row, use the first Fee Head ("Monthly Fee")
+    if (feeHead === 'Total') {
+      const monthlyFeeType = 'Monthly Fee'; // The fee type from the first fee head
+      addToFeeCollection(month, monthlyFeeType, amount); // Add to Fee Collection table
+
+      // Update combined total
+      combinedTotal += parseFloat(amount);
+      updatePayableAmount();
+
+      // Hide the plus button
+      button.style.display = 'none';
+    }
+  }
+});
 
 // Helper function to display alerts
 function showAlert(message, type) {
