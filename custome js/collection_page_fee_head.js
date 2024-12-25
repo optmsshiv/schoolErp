@@ -91,6 +91,28 @@ function updateTotalAmount() {
   document.querySelector('#payableAmount').value = totalAmount.toFixed(2);
 }
 
+// Add event listener for deleting rows
+document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
+  // Check if the clicked element is a delete button
+  const deleteButton = event.target.closest('.deleteFeeButton');  // Make sure the target is the button or a child of it
+
+  if (deleteButton) {
+    const row = deleteButton.closest('tr');  // Find the row the button belongs to
+    const amount = parseFloat(row.children[2].textContent); // Get the amount from the row
+
+    // Subtract the amount from totalAmount
+    if (!isNaN(amount)) {
+      totalAmount -= amount;  // Update totalAmount by subtracting the deleted amount
+      document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the payableAmount input field
+    }
+
+    row.remove();  // Remove the row from the table
+
+    // Recalculate the total after deleting the row
+    updateTotalAmount(); // Recalculate the total based on remaining rows
+  }
+});
+
 
 
 });
