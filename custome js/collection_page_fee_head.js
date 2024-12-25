@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#student_fee_table').addEventListener('click', function (event) {
     if (event.target.closest('.btn-outline-primary')) {
       const button = event.target.closest('.btn-outline-primary');
-      const deleteButton = newRow.querySelector('.deleteFeeButton');
       const cell = button.closest('td'); // Get the cell containing the button
       const row = cell.closest('tr'); // Get the parent row
       const monthIndex = Array.from(row.children).indexOf(cell); // Find the month index
@@ -40,15 +39,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Event listener for delete buttons in the Fee Collection table
   document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
-    // Check if the clicked element is a delete button
-    const deleteButton = event.target.closest('.deleteFeeButton');  // Make sure the target is the button or a child of it
-    if (deleteButton) {
-      const row = deleteButton.closest('tr');  // Find the row the button belongs to
+    if (event.target.closest('#deleteButton')) {
+      const row = event.target.closest('tr');
       const amount = parseFloat(row.children[2].textContent); // Get the amount from the row
-      /*
-        if (event.target.closest('.deleteButton')) {
-          const row = event.target.closest('tr');
-          const amount = parseFloat(row.children[2].textContent); // Get the amount from the row  */
 
       // Subtract the amount from totalAmount
       if (!isNaN(amount)) {
