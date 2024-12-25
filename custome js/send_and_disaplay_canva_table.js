@@ -136,7 +136,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Update totalAmount
       totalAmount += parseFloat(feeAmount);  // Add the new amount to the total
-      updateTotalAmount(); // Update the payableAmount field
+      updateTotalAmount();                   // Update the payableAmount field
+
+      // Function to update the total amount
+function updateTotalAmount() {
+    const rows = document.querySelectorAll("#FeeCollection tbody tr");
+    totalAmount = 0; // Reset the totalAmount to recalculate
+
+    rows.forEach(row => {
+        const totalCell = row.querySelector("td:nth-child(3)"); // Select the 'Total' column
+        if (totalCell) {
+            const amount = parseFloat(totalCell.textContent) || 0; // Parse the value or default to 0
+            totalAmount += amount; // Add to the totalAmount
+        }
+    });
+
+    // Update the payableAmount field
+    document.getElementById("payableAmount").value = totalAmount.toFixed(2);
+}
 
     // Add Delete Button Event Listener
     const deleteButton = newRow.querySelector(".deleteFeeButton");
