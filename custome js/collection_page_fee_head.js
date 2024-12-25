@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Event listener for delete buttons in the Fee Collection table
 document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
-  if (event.target.closest('#deleteButton')) {
+  if (event.target.closest('.deleteButton')) {
     const row = event.target.closest('tr');
     const amount = parseFloat(row.children[2].textContent); // Get the amount from the row
 
