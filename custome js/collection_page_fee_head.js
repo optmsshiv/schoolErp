@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#student_fee_table').addEventListener('click', function (event) {
     if (event.target.closest('.btn-outline-primary')) {
       const button = event.target.closest('.btn-outline-primary');
+      const deleteButton = newRow.querySelector('.deleteFeeButton');
       const cell = button.closest('td'); // Get the cell containing the button
       const row = cell.closest('tr'); // Get the parent row
       const monthIndex = Array.from(row.children).indexOf(cell); // Find the month index
@@ -37,36 +38,42 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-// Event listener for delete buttons in the Fee Collection table
-document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
-  if (event.target.closest('.deleteButton')) {
-    const row = event.target.closest('tr');
-    const amount = parseFloat(row.children[2].textContent); // Get the amount from the row
+  // Event listener for delete buttons in the Fee Collection table
+  document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
+    // Check if the clicked element is a delete button
+    const deleteButton = event.target.closest('.deleteFeeButton');  // Make sure the target is the button or a child of it
+    if (deleteButton) {
+      const row = deleteButton.closest('tr');  // Find the row the button belongs to
+      const amount = parseFloat(row.children[2].textContent); // Get the amount from the row
+      /*
+        if (event.target.closest('.deleteButton')) {
+          const row = event.target.closest('tr');
+          const amount = parseFloat(row.children[2].textContent); // Get the amount from the row  */
 
-    // Subtract the amount from totalAmount
-    if (!isNaN(amount)) {
-      totalAmount -= amount;
-      document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the total amount input field
-    }
+      // Subtract the amount from totalAmount
+      if (!isNaN(amount)) {
+        totalAmount -= amount;
+        document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the total amount input field
+      }
 
-    const month = row.children[0].textContent; // Get the month from the row
-    row.remove(); // Remove the row from the table
+      const month = row.children[0].textContent; // Get the month from the row
+      row.remove(); // Remove the row from the table
 
-    // Find the corresponding plus button in the Total row and show it
-    const monthIndex = Array.from(document.querySelectorAll('#student_fee_table thead th')).findIndex(
-      th => th.textContent === month
-    );
+      // Find the corresponding plus button in the Total row and show it
+      const monthIndex = Array.from(document.querySelectorAll('#student_fee_table thead th')).findIndex(
+        th => th.textContent === month
+      );
 
-    if (monthIndex > 0) { // Ignore the "Fee Head" column
-      const totalRow = document.querySelector('#student_fee_table tbody tr:last-child');
-      const totalCell = totalRow.children[monthIndex];
-      const plusButton = totalCell.querySelector('.btn-outline-primary');
-      if (plusButton) {
-        plusButton.style.display = 'inline-block'; // Show the plus button again
+      if (monthIndex > 0) { // Ignore the "Fee Head" column
+        const totalRow = document.querySelector('#student_fee_table tbody tr:last-child');
+        const totalCell = totalRow.children[monthIndex];
+        const plusButton = totalCell.querySelector('.btn-outline-primary');
+        if (plusButton) {
+          plusButton.style.display = 'inline-block'; // Show the plus button again
+        }
       }
     }
-  }
-});
+  });
 });
 
 
@@ -158,7 +165,7 @@ function fetchFeePlansData(studentData) {
 }
 
 // Variable to keep track of the total
-  let totalAmount = 0;
+let totalAmount = 0;
 
 // Function to add data to the Fee Collection table
 function addToFeeCollection(month, feeType, amount) {
@@ -179,8 +186,8 @@ function addToFeeCollection(month, feeType, amount) {
   tableBody.appendChild(newRow);
 
   // Update total amount
-    totalAmount += parseFloat(amount); // Add the new amount to the total
-    updateTotalAmount(); // Call to update the total and the payableAmount input field
+  totalAmount += parseFloat(amount); // Add the new amount to the total
+  updateTotalAmount(); // Call to update the total and the payableAmount input field
 }
 
 // Function to update the total amount
@@ -202,7 +209,7 @@ function updateTotalAmount() {
 }
 
 // Event listener to detect changes in the Total column
-document.querySelector('#FeeCollection').addEventListener('input', function(event) {
+document.querySelector('#FeeCollection').addEventListener('input', function (event) {
   if (event.target.classList.contains('totalAmountCell')) {
     updateTotalAmount(); // Update the total when the Total column is modified
   }
