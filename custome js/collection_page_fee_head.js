@@ -224,18 +224,6 @@ function showAlert(message, type) {
   });
 }
 
-// Helper function to toggle bank dropdown visibility
-function toggleBankDropdown() {
-  const paymentType = document.getElementById("paymentType").value;
-  const bankDropdown = document.getElementById("bankDropdown");
-
-  if (paymentType === "bank") {
-    bankDropdown.classList.remove("d-none");
-  } else {
-    bankDropdown.classList.add("d-none");
-  }
-}
-
 // Toggle visibility of payment-related fields based on Payment Status
   function togglePaymentFields() {
     const paymentStatus = document.getElementById('paymentStatus').value;
@@ -250,6 +238,7 @@ function toggleBankDropdown() {
   }
 
   // Toggle visibility of Bank Dropdown based on Payment Type
+  // Helper function to toggle bank dropdown visibility
   function toggleBankDropdown() {
     const paymentType = document.getElementById('paymentType').value;
     const bankDropdown = document.getElementById('bankDropdown');
