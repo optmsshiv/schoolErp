@@ -255,7 +255,7 @@ const initialPayableAmount = parseFloat(document.getElementById('payableAmount')
 const payableAmountField = document.getElementById('payableAmount');
 
 // Store the concession fee value globally to track if it was changed
-let concessionFee = 0;
+let payableAmount = 0;
 
  // Update payable amount based on concession fee
   document.getElementById('concessionFee').addEventListener('input', function () {
