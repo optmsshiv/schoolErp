@@ -69,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }
 
-       // Recalculate the total after deleting the row
-          updateTotalAmount();
+      // Recalculate the total after deleting the row
+      updateTotalAmount();
     }
   });
 
@@ -225,75 +225,74 @@ function showAlert(message, type) {
 }
 
 // Toggle visibility of payment-related fields based on Payment Status
-  function togglePaymentFields() {
-    const paymentStatus = document.getElementById('paymentStatus').value;
-    const paymentDetails = document.getElementById('paymentDetails');
+function togglePaymentFields() {
+  const paymentStatus = document.getElementById('paymentStatus').value;
+  const paymentDetails = document.getElementById('paymentDetails');
 
-    if (paymentStatus === 'paid') {
-      paymentDetails.classList.remove('d-none');
-    } else {
-      paymentDetails.classList.add('d-none');
-      document.getElementById('bankDropdown').classList.add('d-none'); // Hide Bank Dropdown if shown
-    }
+  if (paymentStatus === 'paid') {
+    paymentDetails.classList.remove('d-none');
+  } else {
+    paymentDetails.classList.add('d-none');
+    document.getElementById('bankDropdown').classList.add('d-none'); // Hide Bank Dropdown if shown
   }
+}
 
-  // Toggle visibility of Bank Dropdown based on Payment Type
-  // Helper function to toggle bank dropdown visibility
-  function toggleBankDropdown() {
-    const paymentType = document.getElementById('paymentType').value;
-    const bankDropdown = document.getElementById('bankDropdown');
+// Toggle visibility of Bank Dropdown based on Payment Type
+// Helper function to toggle bank dropdown visibility
+function toggleBankDropdown() {
+  const paymentType = document.getElementById('paymentType').value;
+  const bankDropdown = document.getElementById('bankDropdown');
 
-    if (paymentType === 'bank') {
-      bankDropdown.classList.remove('d-none');
-    } else {
-      bankDropdown.classList.add('d-none');
-    }
+  if (paymentType === 'bank') {
+    bankDropdown.classList.remove('d-none');
+  } else {
+    bankDropdown.classList.add('d-none');
   }
+}
 
-// Retrieve the auto-generated initial payable amount from the hidden field
-const payableAmountField = document.getElementById('payableAmount');
-const concessionFeeField = document.getElementById('concessionFee');
+ const payableAmountField = document.getElementById('payableAmount');
+            const concessionFeeField = document.getElementById('concessionFee');
 
-// Store the initial payable amount
-const initialPayableAmount = parseFloat(payableAmountField.value) || 0;
+            // Store the initial payable amount
+            const initialPayableAmount = parseFloat(payableAmountField.value) || 0;
 
-// Update payable amount based on concession fee
-concessionFeeField.addEventListener('input', function () {
-   
-    // Get the concession fee
-    const concessionFee = parseFloat(this.value) || 0;
+            // Update payable amount based on concession fee
+            concessionFeeField.addEventListener('input', function () {
+                // Get the concession fee
+                const concessionFee = parseFloat(this.value) || 0;
 
-    // Calculate the updated payable amount
-    const updatedPayableAmount = initialPayableAmount - concessionFee;
+                // Calculate the updated payable amount
+                const updatedPayableAmount = initialPayableAmount - concessionFee;
 
-    // Update payableAmount and ensure it doesn't go below zero
-    payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Ensure it doesn't go below zero
-});
+                // Update payableAmount and ensure it doesn't go below zero
+                payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Ensure it doesn't go below zero
+            });
 
-// Optional: If you want to reset the payable amount when the concession fee is cleared
-concessionFeeField.addEventListener('blur', function () {
-    if (this.value === '') {
-        payableAmountField.value = initialPayableAmount.toFixed(2);
-    }
+            // Optional: Reset the payable amount when the concession fee is cleared
+            concessionFeeField.addEventListener('blur', function () {
+                if (this.value === '') {
+                    payableAmountField.value = initialPayableAmount.toFixed(2);
+                }
+            
   // Recalculate due and advanced amounts
-      calculateDueAndAdvanced();
+  calculateDueAndAdvanced();
 });
 
-  // Update due and advanced amounts based on received fee
-  document.getElementById('recievedFee').addEventListener('input', calculateDueAndAdvanced);
+// Update due and advanced amounts based on received fee
+document.getElementById('recievedFee').addEventListener('input', calculateDueAndAdvanced);
 
-  function calculateDueAndAdvanced() {
-    const payableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
-    const receivedFee = parseFloat(document.getElementById('recievedFee').value) || 0;
+function calculateDueAndAdvanced() {
+  const payableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
+  const receivedFee = parseFloat(document.getElementById('recievedFee').value) || 0;
 
-    if (receivedFee < payableAmount) {
-      document.getElementById('dueAmount').value = (payableAmount - receivedFee).toFixed(2);
-      document.getElementById('advancedFee').value = 0;
-    } else {
-      document.getElementById('dueAmount').value = 0;
-      document.getElementById('advancedFee').value = (receivedFee - payableAmount).toFixed(2);
-    }
+  if (receivedFee < payableAmount) {
+    document.getElementById('dueAmount').value = (payableAmount - receivedFee).toFixed(2);
+    document.getElementById('advancedFee').value = 0;
+  } else {
+    document.getElementById('dueAmount').value = 0;
+    document.getElementById('advancedFee').value = (receivedFee - payableAmount).toFixed(2);
   }
+}
 
 
 
