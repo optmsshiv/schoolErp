@@ -260,9 +260,6 @@ function showAlert(message, type) {
   // Update payable amount based on concession fee
   document.getElementById('concessionFee').addEventListener('input', function () {
     const concessionFee = parseFloat(this.value) || 0;
-    
-  // Calculate the new payable amount based on the original initial amount
-  const currentPayableAmount = parseFloat(document.getElementById('payableAmount').value) || initialPayableAmount;
 
   // Update the payable amount dynamically
   const newPayableAmount = Math.max(initialPayableAmount - concessionFee, 0);
@@ -287,3 +284,4 @@ function showAlert(message, type) {
       document.getElementById('advancedFee').value = (receivedFee - payableAmount).toFixed(2);
     }
   }
+
