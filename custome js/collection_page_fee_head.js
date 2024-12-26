@@ -252,12 +252,12 @@ function showAlert(message, type) {
 
   // Event listener for Payment Status change
 // Retrieve the auto-generated initial payable amount from the hidden field
-  const initialPayableAmount = parseFloat(document.getElementById('initialPayableAmount').value) || 0;
+  let initialPayableAmount = parseFloat(document.getElementById('payableAmount').textContent) || 0;
 
   // Set it as the default value for the payableAmount input
   document.getElementById('payableAmount').value = initialPayableAmount;
 
-  // Event listeners and calculations remain unchanged
+  // Update payable amount based on concession fee
   document.getElementById('concessionFee').addEventListener('input', function () {
     const concessionFee = parseFloat(this.value) || 0;
     const newPayableAmount = initialPayableAmount - concessionFee;
@@ -265,6 +265,7 @@ function showAlert(message, type) {
     calculateDueAndAdvanced();
   });
 
+  // Update due and advanced amounts based on received fee
   document.getElementById('recievedFee').addEventListener('input', calculateDueAndAdvanced);
 
   function calculateDueAndAdvanced() {
