@@ -254,22 +254,36 @@ function showAlert(message, type) {
 const initialPayableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
 const payableAmountField = document.getElementById('payableAmount');
 
+// Store the concession fee value globally to track if it was changed
+let concessionFee = 0;
+
  // Update payable amount based on concession fee
   document.getElementById('concessionFee').addEventListener('input', function () {
     // Get the updated total amount from the payableAmount input field
-    let totalAmountFromTable = parseFloat(payableAmountField.value).toFixed(2) || initialPayableAmount;
+  //  let totalAmountFromTable = parseFloat(payableAmountField.value).toFixed(2) || 0;
 
     // Get the concession fee
-    const concessionFee = parseFloat(this.value) || 0;
+     concessionFee = parseFloat(this.value) || 0;
 
     // Calculate the updated payable amount
-    const updatedPayableAmount = totalAmountFromTable - concessionFee;
+    const updatedPayableAmount = Math.max(initialPayableAmount - concessionFee, 0);
 
     // Update payableAmount and ensure it doesn't go below zero
-       payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Ensure it doesn't go below zero
+     //  payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Ensure it doesn't go below zero
+     payableAmountField.value = updatedPayableAmount.toFixed(2);
 
   // Recalculate due and advanced amounts
       calculateDueAndAdvanced();
+});
+// Reset the concession fee and restore the original payable amount when the concession fee is cleared
+document.getElementById('concessionFee').addEventListener('blur', function () {
+    if (this.value === "") {
+        // If the concession fee is cleared, restore the original payable amount
+        payableAmountField.value = initialPayableAmount.toFixed(2);
+
+        // Recalculate due and advanced amounts with the restored value
+        calculateDueAndAdvanced();
+    }
 });
 
   // Update due and advanced amounts based on received fee
