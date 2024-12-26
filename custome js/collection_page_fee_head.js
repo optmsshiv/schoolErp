@@ -252,11 +252,15 @@ function showAlert(message, type) {
 
 // Retrieve the auto-generated initial payable amount from the hidden field
   let payableAmountField = document.getElementById('payableAmount');
+  let originalPayableAmount = parseFloat(payableAmountField.value) || 0; // Store the original payable amount
+
 
  // Update payable amount based on concession fee
   document.getElementById('concessionFee').addEventListener('input', function () {
+
     // Get the updated total amount from the payableAmount input field
-    let totalAmountFromTable = parseFloat(payableAmountField.value) || 0;
+     let totalAmountFromTable = originalPayableAmount; // Always use the original amount for calculation
+
 
     // Get the concession fee
     const concessionFee = parseFloat(this.value) || 0;
@@ -269,6 +273,12 @@ function showAlert(message, type) {
 
     // Round to 2 decimal places and update the payableAmount field
   payableAmountField.value = updatedPayableAmount.toFixed(2);
+
+  // Restore the payable amount if concession fee is cleared
+document.getElementById('concessionFee').addEventListener('blur', function () {
+  if (this.value === '' || this.value === '0') {
+    payableAmountField.value = originalPayableAmount.toFixed(2); // Restore the original payable amount
+  }
 
   // Recalculate due and advanced amounts
   calculateDueAndAdvanced();
