@@ -257,7 +257,7 @@ const payableAmountField = document.getElementById('payableAmount');
  // Update payable amount based on concession fee
   document.getElementById('concessionFee').addEventListener('input', function () {
     // Get the updated total amount from the payableAmount input field
-    const totalAmountFromTable = initialPayableAmount;
+    let totalAmountFromTable = parseFloat(payableAmountField.value).toFixed(2) || 0;
 
     // Get the concession fee
     const concessionFee = parseFloat(this.value) || 0;
