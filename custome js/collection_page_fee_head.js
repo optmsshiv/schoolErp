@@ -253,7 +253,7 @@ function showAlert(message, type) {
   // Event listener for Payment Status change
 // Retrieve the auto-generated initial payable amount from the hidden field
   let payableAmountField = document.getElementById('payableAmount');
-let totalAmountFromTable = parseFloat(payableAmountField.value) || parseFloat(payableAmountField.value);  // Initialize with current payable amount
+let totalAmountFromTable = parseFloat(payableAmountField.value) || parseFloat(payableAmount.value);  // Initialize with current payable amount
 
  // Update payable amount based on concession fee
   document.getElementById('concessionFee').addEventListener('input', function () {
