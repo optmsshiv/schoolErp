@@ -252,15 +252,11 @@ function showAlert(message, type) {
 
 // Retrieve the auto-generated initial payable amount from the hidden field
   let payableAmountField = document.getElementById('payableAmount');
-  let originalPayableAmount = parseFloat(payableAmountField.value) || 0; // Store the original payable amount
-
 
  // Update payable amount based on concession fee
   document.getElementById('concessionFee').addEventListener('input', function () {
-
     // Get the updated total amount from the payableAmount input field
-     let totalAmountFromTable = originalPayableAmount; // Always use the original amount for calculation
-
+    let totalAmountFromTable = parseFloat(payableAmountField.value) || 0;
 
     // Get the concession fee
     const concessionFee = parseFloat(this.value) || 0;
