@@ -251,13 +251,13 @@ function showAlert(message, type) {
   }
 
 // Retrieve the auto-generated initial payable amount from the hidden field
-let initialPayableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
-const payableAmountField = document.getElementById('payableAmount');
+ let initialPayableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
+ const payableAmountField = document.getElementById('payableAmount');
 
  // Update payable amount based on concession fee
   document.getElementById('concessionFee').addEventListener('input', function () {
     // Get the updated total amount from the payableAmount input field
-  //  let totalAmountFromTable = parseFloat(payableAmountField.value).toFixed(2) || 0;
+   // let totalAmountFromTable = parseFloat(payableAmountField.value) || 0;
 
     // Get the concession fee
     const concessionFee = parseFloat(this.value) || 0;
