@@ -251,23 +251,32 @@ function showAlert(message, type) {
   }
 
 // Retrieve the auto-generated initial payable amount from the hidden field
-const initialPayableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
 const payableAmountField = document.getElementById('payableAmount');
+const concessionFeeField = document.getElementById('concessionFee');
 
- // Update payable amount based on concession fee
-  document.getElementById('concessionFee').addEventListener('input', function () {
+// Store the initial payable amount
+const initialPayableAmount = parseFloat(payableAmountField.value) || 0;
+
+// Update payable amount based on concession fee
+concessionFeeField.addEventListener('input', function () {
     // Get the updated total amount from the payableAmount input field
-    let totalAmountFromTable = parseFloat(payableAmountField.value).toFixed(2) || 0;
+    let totalAmountFromTable = parseFloat(payableAmountField.value) || 0;
 
     // Get the concession fee
     const concessionFee = parseFloat(this.value) || 0;
 
     // Calculate the updated payable amount
-    const updatedPayableAmount = totalAmountFromTable - concessionFee;
+    const updatedPayableAmount = initialPayableAmount - concessionFee;
 
     // Update payableAmount and ensure it doesn't go below zero
-       payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Ensure it doesn't go below zero
+    payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Ensure it doesn't go below zero
+});
 
+// Optional: If you want to reset the payable amount when the concession fee is cleared
+concessionFeeField.addEventListener('blur', function () {
+    if (this.value === '') {
+        payableAmountField.value = initialPayableAmount.toFixed(2);
+    }
   // Recalculate due and advanced amounts
       calculateDueAndAdvanced();
 });
