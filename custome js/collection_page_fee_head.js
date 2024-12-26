@@ -265,7 +265,7 @@ function showAlert(message, type) {
   const updatedPayableAmount = initialPayableAmount - concessionFee;
 
   // Ensure payable amount doesn't go below zero
-  document.getElementById('payableAmount').value = Math.max(currentPayableAmount, 0)
+  document.getElementById('payableAmount').value = Math.max(updatedPayableAmount, 0)
 
   // Recalculate due and advanced amounts
   calculateDueAndAdvanced();
