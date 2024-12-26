@@ -268,7 +268,7 @@ function showAlert(message, type) {
     updatedPayableAmount = Math.max(updatedPayableAmount, 0); // Ensure it doesn't go below zero
 
     // Round to 2 decimal places and update the payableAmount field
-  payableAmountField.value = updatedPayableAmount.toFixed(2);
+  payableAmountField.value = updatedPayableAmount;
 
   // Recalculate due and advanced amounts
   calculateDueAndAdvanced();
