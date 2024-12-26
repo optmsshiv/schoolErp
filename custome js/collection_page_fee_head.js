@@ -262,13 +262,13 @@ function showAlert(message, type) {
     const concessionFee = parseFloat(this.value) || 0;
 
     // Calculate the updated payable amount
-    let updatedPayableAmount = (totalAmountFromTable - concessionFee).toFixed(2);
+    const updatedPayableAmount = totalAmountFromTable - concessionFee;
 
     // Update payableAmount and ensure it doesn't go below zero
     updatedPayableAmount = Math.max(updatedPayableAmount, 0); // Ensure it doesn't go below zero
 
     // Round to 2 decimal places and update the payableAmount field
-  payableAmountField.value = updatedPayableAmount;
+    // payableAmountField.value = updatedPayableAmount;
 
   // Recalculate due and advanced amounts
   calculateDueAndAdvanced();
