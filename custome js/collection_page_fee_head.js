@@ -251,35 +251,32 @@ function showAlert(message, type) {
   }
 
 // Retrieve the auto-generated initial payable amount from the hidden field
-let payableAmountField = document.getElementById('payableAmount');
-let originalPayableAmount = parseFloat(payableAmountField.value) || 0; // Store the original payable amount
+  let payableAmountField = document.getElementById('payableAmount');
+  let originalPayableAmount = parseFloat(payableAmountField.value) || 0; // Store the original payable amount
 
-// Update payable amount based on concession fee
-document.getElementById('concessionFee').addEventListener('input', function () {
 
-    // Get the updated total amount from the original payableAmount (the value before any deduction)
-    let totalAmountFromTable = originalPayableAmount;
+ // Update payable amount based on concession fee
+  document.getElementById('concessionFee').addEventListener('input', function () {
 
-    // Get the concession fee (parse it as a number)
+    // Get the updated total amount from the payableAmount input field
+     let totalAmountFromTable = originalPayableAmount; // Always use the original amount for calculation
+
+
+    // Get the concession fee
     const concessionFee = parseFloat(this.value) || 0;
 
-    // Calculate the updated payable amount after applying the concession fee
+    // Calculate the updated payable amount
     let updatedPayableAmount = totalAmountFromTable - concessionFee;
 
-    // Ensure that the updated payable amount doesn't go below zero
-    updatedPayableAmount = Math.max(updatedPayableAmount, 0); // Prevents negative payable amount
+    // Update payableAmount and ensure it doesn't go below zero
+    updatedPayableAmount = Math.max(updatedPayableAmount, 0); // Ensure it doesn't go below zero
 
     // Round to 2 decimal places and update the payableAmount field
-    payableAmountField.value = updatedPayableAmount.toFixed(2);
-});
+  payableAmountField.value = updatedPayableAmount.toFixed(2);
 
-// Optional: Restore the payableAmount if concessionFee is removed
-document.getElementById('concessionFee').addEventListener('blur', function () {
-    if (this.value === '' || this.value === '0') {
-        payableAmountField.value = originalPayableAmount.toFixed(2); // Restore the original payable amount
-    }
+  // Recalculate due and advanced amounts
+  calculateDueAndAdvanced();
 });
-
 
   // Update due and advanced amounts based on received fee
   document.getElementById('recievedFee').addEventListener('input', calculateDueAndAdvanced);
