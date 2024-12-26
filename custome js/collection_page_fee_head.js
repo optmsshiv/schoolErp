@@ -187,6 +187,17 @@ function addToFeeCollection(month, feeType, amount) {
   // Update total amount
   totalAmount += parseFloat(amount); // Add the new amount to the total
   updateTotalAmount(); // Call to update the total and the payableAmount input field
+
+  // Highlight the corresponding row in the #student_fee_table
+  const monthIndex = Array.from(document.querySelectorAll('#student_fee_table thead th')).findIndex(
+    th => th.textContent === month
+  );
+
+  if (monthIndex > 0) {
+    const totalRow = document.querySelector('#student_fee_table tbody tr:last-child');
+    const targetCell = totalRow.children[monthIndex];
+    highlightRow(targetCell); // Highlight the cell in the Total row
+  }
 }
 
 // Function to update the total amount
@@ -250,10 +261,7 @@ function showAlert(message, type) {
     }
   }
 
-  function highlightRow(row) {
-  row.classList.add('highlight');
-  setTimeout(() => row.classList.remove('highlight'), 1500);
-}
+
 
 
 // Retrieve the auto-generated initial payable amount from the hidden field
