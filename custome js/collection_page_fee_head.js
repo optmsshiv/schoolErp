@@ -259,6 +259,8 @@ function showAlert(message, type) {
   document.getElementById('concessionFee').addEventListener('input', function () {
     const concessionFee = parseFloat(this.value) || 0;
     const updatedPayableAmount = totalAmountFromTable - concessionFee;
+
+    // Update payableAmount and ensure it doesn't go below zero
     payableAmountField.value = Math.max(updatedPayableAmount, 0); // Ensure it doesn't go below zero
 
   // Recalculate due and advanced amounts
@@ -280,4 +282,9 @@ function showAlert(message, type) {
       document.getElementById('advancedFee').value = (receivedFee - payableAmount).toFixed(2);
     }
   }
+
+  // Whenever the total amount from the table changes, update totalAmountFromTable
+document.querySelector('#FeeCollection').addEventListener('input', function () {
+  totalAmountFromTable = parseFloat(payableAmountField.value) || 0;
+});
 
