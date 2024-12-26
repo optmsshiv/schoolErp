@@ -250,9 +250,6 @@ function showAlert(message, type) {
     }
   }
 
-
-
-
 // Retrieve the auto-generated initial payable amount from the hidden field
 const initialPayableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
 const payableAmountField = document.getElementById('payableAmount');
@@ -266,7 +263,7 @@ const payableAmountField = document.getElementById('payableAmount');
     const concessionFee = parseFloat(this.value) || 0;
 
     // Calculate the updated payable amount
-    const updatedPayableAmount = initialPayableAmount - concessionFee;
+    const updatedPayableAmount = totalAmountFromTable - concessionFee;
 
     // Update payableAmount and ensure it doesn't go below zero
        payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Ensure it doesn't go below zero
