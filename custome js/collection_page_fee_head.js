@@ -251,7 +251,7 @@ function showAlert(message, type) {
   }
 
 // Retrieve the auto-generated initial payable amount from the hidden field
- let initialPayableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
+ const initialPayableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
  const payableAmountField = document.getElementById('payableAmount');
 
  // Update payable amount based on concession fee
