@@ -252,7 +252,7 @@ function showAlert(message, type) {
 
   // Event listener for Payment Status change
 // Retrieve the auto-generated initial payable amount from the hidden field
-  let initialPayableAmount = parseFloat(document.getElementById('payableAmount').textContent) || 0;
+  const initialPayableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
 
   // Set it as the default value for the payableAmount input
   document.getElementById('payableAmount').value = initialPayableAmount;
