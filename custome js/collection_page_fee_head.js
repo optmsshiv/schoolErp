@@ -261,8 +261,8 @@ function showAlert(message, type) {
   document.getElementById('concessionFee').addEventListener('input', function () {
     const concessionFee = parseFloat(this.value) || 0;
 
-  // Recalculate the payable amount dynamically based on the concession
-  let currentPayableAmount = initialPayableAmount - concessionFee;
+  // Calculate the new payable amount dynamically
+  const updatedPayableAmount = initialPayableAmount - concessionFee;
 
   // Ensure payable amount doesn't go below zero
   document.getElementById('payableAmount').value = Math.max(currentPayableAmount, 0)
