@@ -279,6 +279,7 @@ function toggleBankDropdown() {
   // Recalculate due and advanced amounts
   calculateDueAndAdvanced();
 });
+});
 
 // Update due and advanced amounts based on received fee
 document.getElementById('recievedFee').addEventListener('input', calculateDueAndAdvanced);
@@ -295,6 +296,6 @@ function calculateDueAndAdvanced() {
     document.getElementById('advancedFee').value = (receivedFee - payableAmount).toFixed(2);
   }
 }
-  });
+
 
 
