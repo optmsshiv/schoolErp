@@ -250,6 +250,8 @@ function toggleBankDropdown() {
   }
 }
 
+
+ document.addEventListener('DOMContentLoaded', function () {
  const payableAmountField = document.getElementById('payableAmount');
             const concessionFeeField = document.getElementById('concessionFee');
 
@@ -273,7 +275,7 @@ function toggleBankDropdown() {
                 if (this.value === '') {
                     payableAmountField.value = initialPayableAmount.toFixed(2);
                 }
-            
+
   // Recalculate due and advanced amounts
   calculateDueAndAdvanced();
 });
@@ -293,6 +295,6 @@ function calculateDueAndAdvanced() {
     document.getElementById('advancedFee').value = (receivedFee - payableAmount).toFixed(2);
   }
 }
-
+  });
 
 
