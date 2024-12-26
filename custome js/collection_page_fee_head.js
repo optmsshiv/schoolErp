@@ -250,3 +250,32 @@ function showAlert(message, type) {
     }
   }
 
+  // Event listener for Payment Status change
+// Retrieve the auto-generated initial payable amount from the hidden field
+  const initialPayableAmount = parseFloat(document.getElementById('initialPayableAmount').value) || 0;
+
+  // Set it as the default value for the payableAmount input
+  document.getElementById('payableAmount').value = initialPayableAmount;
+
+  // Event listeners and calculations remain unchanged
+  document.getElementById('concessionFee').addEventListener('input', function () {
+    const concessionFee = parseFloat(this.value) || 0;
+    const newPayableAmount = initialPayableAmount - concessionFee;
+    document.getElementById('payableAmount').value = Math.max(newPayableAmount, 0);
+    calculateDueAndAdvanced();
+  });
+
+  document.getElementById('recievedFee').addEventListener('input', calculateDueAndAdvanced);
+
+  function calculateDueAndAdvanced() {
+    const payableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
+    const receivedFee = parseFloat(document.getElementById('recievedFee').value) || 0;
+
+    if (receivedFee < payableAmount) {
+      document.getElementById('dueAmount').value = (payableAmount - receivedFee).toFixed(2);
+      document.getElementById('advancedFee').value = 0;
+    } else {
+      document.getElementById('dueAmount').value = 0;
+      document.getElementById('advancedFee').value = (receivedFee - payableAmount).toFixed(2);
+    }
+  }
