@@ -250,23 +250,49 @@ function showAlert(message, type) {
     }
   }
 
-// Retrieve the auto-generated initial payable amount from the hidden field
- const initialPayableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
- const payableAmountField = document.getElementById('payableAmount');
+// Function to calculate the total amount from the Fee Collection Table
+function getTotalFromTable() {
+  let total = 0;
+  const rows = document.querySelectorAll("#FeeCollection tbody tr"); // Select all rows in the table
 
- // Update payable amount based on concession fee
-  document.getElementById('concessionFee').addEventListener('input', function () {
-    // Get the updated total amount from the payableAmount input field
-   // let totalAmountFromTable = parseFloat(payableAmountField.value) || 0;
+  // Loop through each row and sum the amounts in the "Amount" column (3rd column)
+  rows.forEach(row => {
+    const amountCell = row.querySelector("td:nth-child(3)"); // 3rd column for amount
+    if (amountCell) {
+      const amount = parseFloat(amountCell.textContent) || 0;
+      total += amount;
+    }
+  });
 
-    // Get the concession fee
-    const concessionFee = parseFloat(this.value) || 0;
+  return total;
+}
 
-    // Calculate the updated payable amount
-    const updatedPayableAmount = initialPayableAmount - concessionFee;
+// Get the payableAmount field
+const payableAmountField = document.getElementById('payableAmount');
 
-    // Update payableAmount and ensure it doesn't go below zero
-       payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Ensure it doesn't go below zero
+// Set the initial payableAmount based on the table
+let initialPayableAmount = getTotalFromTable();
+
+// Update payable amount based on concession fee
+document.getElementById('concessionFee').addEventListener('input', function () {
+  // Get the concession fee entered by the user (parse float or use 0 if invalid)
+  const concessionFee = parseFloat(this.value) || 0;
+
+  // Calculate the updated payable amount by subtracting the concession fee from the initial payable amount
+  const updatedPayableAmount = initialPayableAmount - concessionFee;
+
+  // Ensure the updated payable amount is not negative
+  payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2);  // Ensure it doesn't go below zero
+});
+
+// If the table changes (e.g., rows added or deleted), recalculate the total amount
+document.querySelector('#FeeCollection tbody').addEventListener('DOMSubtreeModified', function() {
+  // Recalculate the initial payable amount based on the table data
+  initialPayableAmount = getTotalFromTable();
+
+  // Update the payableAmount field to reflect the new total from the table
+  const updatedPayableAmount = initialPayableAmount - (parseFloat(document.getElementById('concessionFee').value) || 0);
+  payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2);
 
   // Recalculate due and advanced amounts
       calculateDueAndAdvanced();
