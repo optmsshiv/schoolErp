@@ -250,6 +250,12 @@ function showAlert(message, type) {
     }
   }
 
+  function highlightRow(row) {
+  row.classList.add('highlight');
+  setTimeout(() => row.classList.remove('highlight'), 1500);
+}
+
+
 // Retrieve the auto-generated initial payable amount from the hidden field
 const initialPayableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
 const payableAmountField = document.getElementById('payableAmount');
@@ -257,13 +263,13 @@ const payableAmountField = document.getElementById('payableAmount');
  // Update payable amount based on concession fee
   document.getElementById('concessionFee').addEventListener('input', function () {
     // Get the updated total amount from the payableAmount input field
-    let totalAmountFromTable = parseFloat(payableAmountField.value).toFixed(2) || initialPayableAmount;
+   // let totalAmountFromTable = parseFloat(payableAmountField.value).toFixed(2) || initialPayableAmount;
 
     // Get the concession fee
     const concessionFee = parseFloat(this.value) || 0;
 
     // Calculate the updated payable amount
-    const updatedPayableAmount = totalAmountFromTable - concessionFee;
+    const updatedPayableAmount = initialPayableAmount - concessionFee;
 
     // Update payableAmount and ensure it doesn't go below zero
        payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Ensure it doesn't go below zero
