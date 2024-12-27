@@ -156,34 +156,39 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Add Delete Button Event Listener
-    const deleteButton = newRow.querySelector(".deleteFeeButton");
-    deleteButton.addEventListener("click", () => {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "Cancel",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const feeAmount = parseFloat(newRow.children[2].textContent);
+const deleteButton = newRow.querySelector(".deleteFeeButton");
+if (deleteButton) {
+  deleteButton.addEventListener("click", () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const feeAmount = parseFloat(newRow.children[2].textContent);
 
+        if (!isNaN(feeAmount)) {
           // Update the total amount by subtracting the fee
           updateTotalAmount(-feeAmount);
-
-          // Remove the row after confirmation
-          newRow.remove();
-
-          Swal.fire("Deleted!", "The fee record has been deleted.", "success");
-        } else {
-          // If canceled, no action is taken
-          Swal.fire("Cancelled", "The fee record is safe!", "info");
         }
-      });
+
+        // Remove the row after confirmation
+        newRow.remove();
+
+        Swal.fire("Deleted!", "The fee record has been deleted.", "success");
+      } else {
+        // If canceled, show this message
+        Swal.fire("Cancelled", "The fee record is safe!", "info");
+      }
     });
+  });
+}
+
 
 
 
