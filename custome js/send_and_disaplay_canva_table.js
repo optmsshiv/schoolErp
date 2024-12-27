@@ -132,28 +132,28 @@ document.addEventListener("DOMContentLoaded", function () {
       </td>
     `;
 
-       feeTableBody.appendChild(newRow);
+    feeTableBody.appendChild(newRow);
 
-      // Update totalAmount
-      totalAmount += parseFloat(feeAmount);  // Add the new amount to the total
-      updateTotalAmount();                   // Update the payableAmount field
+    // Update totalAmount
+    totalAmount += parseFloat(feeAmount);  // Add the new amount to the total
+    updateTotalAmount();                   // Update the payableAmount field
 
-      // Function to update the total amount
-function updateTotalAmount() {
-    const rows = document.querySelectorAll("#FeeCollection tbody tr");
-    totalAmount = 0; // Reset the totalAmount to recalculate
+    // Function to update the total amount
+    function updateTotalAmount() {
+      const rows = document.querySelectorAll("#FeeCollection tbody tr");
+      totalAmount = 0; // Reset the totalAmount to recalculate
 
-    rows.forEach(row => {
+      rows.forEach(row => {
         const totalCell = row.querySelector("td:nth-child(3)"); // Select the 'Total' column
         if (totalCell) {
-            const amount = parseFloat(totalCell.textContent) || 0; // Parse the value or default to 0
-            totalAmount += amount; // Add to the totalAmount
+          const amount = parseFloat(totalCell.textContent) || 0; // Parse the value or default to 0
+          totalAmount += amount; // Add to the totalAmount
         }
-    });
+      });
 
-    // Update the payableAmount field
-    document.getElementById("payableAmount").value = totalAmount.toFixed(2);
-}
+      // Update the payableAmount field
+      document.getElementById("payableAmount").value = totalAmount.toFixed(2);
+    }
 
     // Add Delete Button Event Listener
     const deleteButton = newRow.querySelector(".deleteFeeButton");
@@ -170,13 +170,21 @@ function updateTotalAmount() {
       }).then((result) => {
         if (result.isConfirmed) {
           const feeAmount = parseFloat(newRow.children[2].textContent);
-          updateTotalAmount(-feeAmount); // Subtract the deleted fee from totalAmount
+
+          // Update the total amount by subtracting the fee
+          updateTotalAmount(-feeAmount);
+
+          // Remove the row after confirmation
           newRow.remove();
-          updateTotalAmount(); // Recalculate and update the total
+
           Swal.fire("Deleted!", "The fee record has been deleted.", "success");
+        } else {
+          // If canceled, show a message (optional)
+          Swal.fire("Cancelled", "The fee record is safe!", "info");
         }
       });
     });
+
 
     // Add Edit Button Event Listener
     const editButton = newRow.querySelector(".editFeeButton");
