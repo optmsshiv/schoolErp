@@ -169,6 +169,7 @@ if (deleteButton) {
       confirmButtonText: "Yes, delete it!",
       cancelButtonText: "Cancel",
     }).then((result) => {
+      console.log("Swal Result:", result); // Debugging line to check the result
       if (result.isConfirmed) {
         const feeAmount = parseFloat(newRow.children[2].textContent);
 
@@ -181,10 +182,11 @@ if (deleteButton) {
         newRow.remove();
 
         Swal.fire("Deleted!", "The fee record has been deleted.", "success");
-      } else {
-        // If canceled, show this message
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal.fire("Cancelled", "The fee record is safe!", "info");
       }
+    }).catch((error) => {
+      console.error("Swal Error:", error);
     });
   });
 }
