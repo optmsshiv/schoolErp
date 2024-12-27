@@ -179,11 +179,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
           Swal.fire("Deleted!", "The fee record has been deleted.", "success");
         } else {
-          // If canceled, show a message (optional)
+          // If canceled, no action is taken
           Swal.fire("Cancelled", "The fee record is safe!", "info");
         }
       });
     });
+
 
 
     // Add Edit Button Event Listener
