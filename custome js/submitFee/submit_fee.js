@@ -15,7 +15,7 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
   };
 
   // Send data to the PHP script
-  fetch("/php/submitFee/submit_fee.php", {
+  fetch("/php/submitFee/submit_fee_details.php", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
