@@ -203,53 +203,70 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // Handle Edit Fee
-  const handleEditFee = (row) => {
-    const feeMonthCell = row.children[0];
-    const feeTypeCell = row.children[1];
-    const feeAmountCell = row.children[2];
 
-    Swal.fire({
-      title: "Edit Fee Details",
-      html: `
-        <label for="editFeeMonth" class="form-label">Fee Month</label>
-        <input id="editFeeMonth" class="swal2-input" value="${capitalize(feeMonthCell.textContent)}">
+ // <label for="editFeeType" class="form-label">Fee Type</label>
+  // <select id="editFeeType" class="swal2-select">${feeTypeDropdown.innerHTML}</select>
+const handleEditFee = (row) => {
+  const feeMonthCell = row.children[0];
+  const feeTypeCell = row.children[1];
+  const feeAmountCell = row.children[2];
 
-        <label for="editFeeType" class="form-label">Fee Type</label>
-        <select id="editFeeType" class="swal2-select">${feeTypeDropdown.innerHTML}</select>
+  Swal.fire({
+    title: "Edit Fee Details",
+    html: `
+      <label for="editFeeMonth" class="form-label">Fee Month</label>
+      <input id="editFeeMonth" class="swal2-input" value="${capitalize(feeMonthCell.textContent)}">
 
-        <label for="editFeeAmount" class="form-label">Fee Amount</label>
-        <input id="editFeeAmount" class="swal2-input" type="number" value="${feeAmountCell.textContent}">
-      `,
-      confirmButtonText: "Save",
-      showCancelButton: true,
-      preConfirm: () => {
-        const editedFeeMonth = capitalize(document.getElementById("editFeeMonth").value.trim());
-        const editedFeeType = document.getElementById("editFeeType").options[document.getElementById("editFeeType").selectedIndex].text;
-        const editedFeeAmount = parseFloat(document.getElementById("editFeeAmount").value.trim());
+      <label for="editFeeType" class="form-label">Fee Type</label>
+      <select id="editFeeType" class="swal2-select">
+        ${Array.from(feeTypeDropdown.options)
+          .map(
+            (option) => `
+              <option value="${option.value}" ${
+              option.textContent.trim() === feeTypeCell.textContent.trim() ? "selected" : ""
+            }>
+                ${option.textContent}
+              </option>
+            `
+          )
+          .join("")}
+      </select>
 
-        if (!editedFeeMonth || !editedFeeType || isNaN(editedFeeAmount) || editedFeeAmount <= 0) {
-          Swal.showValidationMessage("Please fill out all fields correctly.");
-          return false;
-        }
+      <label for="editFeeAmount" class="form-label">Fee Amount</label>
+      <input id="editFeeAmount" class="swal2-input" type="number" value="${feeAmountCell.textContent}">
+    `,
+    confirmButtonText: "Save",
+    showCancelButton: true,
+    preConfirm: () => {
+      const editedFeeMonth = capitalize(document.getElementById("editFeeMonth").value.trim());
+      const editFeeTypeSelect = document.getElementById("editFeeType");
+      const editedFeeType = editFeeTypeSelect.options[editFeeTypeSelect.selectedIndex].text;
+      const editedFeeAmount = parseFloat(document.getElementById("editFeeAmount").value.trim());
 
-        return { editedFeeMonth, editedFeeType, editedFeeAmount };
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const oldFeeAmount = parseFloat(feeAmountCell.textContent);
-        const { editedFeeMonth, editedFeeType, editedFeeAmount } = result.value;
-
-        feeMonthCell.textContent = editedFeeMonth;
-        feeTypeCell.textContent = editedFeeType;
-        feeAmountCell.textContent = editedFeeAmount;
-
-        // Update totalAmount with the difference
-        updateTotalAmount(editedFeeAmount - oldFeeAmount);
-
-        Swal.fire("Updated!", "Fee details have been updated successfully.", "success");
+      if (!editedFeeMonth || !editedFeeType || isNaN(editedFeeAmount) || editedFeeAmount <= 0) {
+        Swal.showValidationMessage("Please fill out all fields correctly.");
+        return false;
       }
-    });
-  };
+
+      return { editedFeeMonth, editedFeeType, editedFeeAmount };
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const oldFeeAmount = parseFloat(feeAmountCell.textContent);
+      const { editedFeeMonth, editedFeeType, editedFeeAmount } = result.value;
+
+      feeMonthCell.textContent = editedFeeMonth;
+      feeTypeCell.textContent = editedFeeType;
+      feeAmountCell.textContent = editedFeeAmount;
+
+      // Update totalAmount with the difference
+      updateTotalAmount(editedFeeAmount - oldFeeAmount);
+
+      Swal.fire("Updated!", "Fee details have been updated successfully.", "success");
+    }
+  });
+};
+
 
   // Handle Offcanvas Hide Event
   addFeeCanvasEl.addEventListener("hide.bs.offcanvas", (event) => {
