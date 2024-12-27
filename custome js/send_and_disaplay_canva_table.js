@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Add Delete Button Event Listener
-    const deleteButton = newRow.querySelector(".deleteFeeButton");
+   // const deleteButton = newRow.querySelector(".deleteFeeButton");
     deleteButton.addEventListener("click", () => {
       Swal.fire({
         title: "Are you sure?",
