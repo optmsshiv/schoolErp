@@ -269,14 +269,18 @@ function getTotalFromTable() {
 
 // Get the payableAmount field
 const payableAmountField = document.getElementById('payableAmount');
+const concessionFeeField = document.getElementById('concessionFee');
 
-// Set the initial payableAmount based on the table
-let initialPayableAmount = getTotalFromTable();
+// Initialize the total amount from the table (dynamic calculation)
+let totalAmountFromTable = getTotalFromTable();
 
-// Update payable amount based on concession fee
-document.getElementById('concessionFee').addEventListener('input', function () {
+// Update payableAmount on concession fee change
+concessionFeeField.addEventListener('input', function () {
   // Get the concession fee entered by the user (parse float or use 0 if invalid)
   const concessionFee = parseFloat(this.value) || 0;
+
+  // Recalculate the total amount from the table dynamically
+  totalAmountFromTable = getTotalFromTable();
 
   // Calculate the updated payable amount by subtracting the concession fee from the initial payable amount
   const updatedPayableAmount = initialPayableAmount - concessionFee;
@@ -287,11 +291,14 @@ document.getElementById('concessionFee').addEventListener('input', function () {
 
 // If the table changes (e.g., rows added or deleted), recalculate the total amount
 document.querySelector('#FeeCollection tbody').addEventListener('DOMSubtreeModified', function() {
-  // Recalculate the initial payable amount based on the table data
-  initialPayableAmount = getTotalFromTable();
+  // Recalculate the total amount from the table
+  totalAmountFromTable = getTotalFromTable();
 
-  // Update the payableAmount field to reflect the new total from the table
-  const updatedPayableAmount = initialPayableAmount - (parseFloat(document.getElementById('concessionFee').value) || 0);
+  // Get the current concession fee (if any)
+  const concessionFee = parseFloat(concessionFeeField.value) || 0;
+
+  // Update the payable amount based on the updated table total and concession fee
+  const updatedPayableAmount = totalAmountFromTable - concessionFee;
   payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2);
 
   // Recalculate due and advanced amounts
