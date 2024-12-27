@@ -253,21 +253,21 @@ function showAlert(message, type) {
 // Function to calculate the total amount from the Fee Collection Table
 function getTotalFromTable() {
   let total = 0;
-  const rows = document.querySelectorAll("#FeeCollection tbody tr"); // Select all rows in the table
+  const rows = document.querySelectorAll("#FeeCollection tbody tr");
 
-  // Loop through each row and sum the amounts in the "Amount" column (3rd column)
+  // Loop through each row to calculate the sum of the 3rd column (amount)
   rows.forEach(row => {
-    const amountCell = row.querySelector("td:nth-child(3)"); // 3rd column for amount
+    const amountCell = row.querySelector("td:nth-child(3)"); // Assuming 3rd column contains the amounts
     if (amountCell) {
       const amount = parseFloat(amountCell.textContent) || 0;
       total += amount;
     }
   });
 
-  return total;
+  return total; // Return the total amount from the table
 }
 
-// Get the payableAmount field
+// Get references to important elements
 const payableAmountField = document.getElementById('payableAmount');
 const concessionFeeField = document.getElementById('concessionFee');
 
@@ -276,21 +276,21 @@ let totalAmountFromTable = getTotalFromTable();
 
 // Update payableAmount on concession fee change
 concessionFeeField.addEventListener('input', function () {
-  // Get the concession fee entered by the user (parse float or use 0 if invalid)
+  // Get the current concession fee entered by the user
   const concessionFee = parseFloat(this.value) || 0;
 
   // Recalculate the total amount from the table dynamically
   totalAmountFromTable = getTotalFromTable();
 
-  // Calculate the updated payable amount by subtracting the concession fee from the initial payable amount
-  const updatedPayableAmount = initialPayableAmount - concessionFee;
+  // Calculate the updated payable amount
+  const updatedPayableAmount = totalAmountFromTable - concessionFee;
 
-  // Ensure the updated payable amount is not negative
-  payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2);  // Ensure it doesn't go below zero
+  // Update the payableAmount field and ensure it doesn't go below zero
+  payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2);
 });
 
-// If the table changes (e.g., rows added or deleted), recalculate the total amount
-document.querySelector('#FeeCollection tbody').addEventListener('DOMSubtreeModified', function() {
+// Recalculate the payableAmount whenever the table data changes (e.g., row addition/removal)
+document.querySelector('#FeeCollection tbody').addEventListener('DOMSubtreeModified', function () {
   // Recalculate the total amount from the table
   totalAmountFromTable = getTotalFromTable();
 
