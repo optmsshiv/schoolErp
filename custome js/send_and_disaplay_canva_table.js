@@ -156,43 +156,40 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Add Delete Button Event Listener
-const deleteButton = newRow.querySelector(".deleteFeeButton");
-if (deleteButton) {
-  deleteButton.addEventListener("click", () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      console.log("Swal Result:", result); // Debugging line to check the result
-      if (result.isConfirmed) {
-        const feeAmount = parseFloat(newRow.children[2].textContent);
+    const deleteButton = newRow.querySelector(".deleteFeeButton");
+    if (deleteButton) {
+      deleteButton.addEventListener("click", () => {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "Cancel",
+        }).then((result) => {
+          console.log("Swal Result:", result); // Debugging line to check the result
+          if (result.isConfirmed) {
+            const feeAmount = parseFloat(newRow.children[2].textContent);
 
-        if (!isNaN(feeAmount)) {
-          // Update the total amount by subtracting the fee
-          updateTotalAmount(-feeAmount);
-        }
+            if (!isNaN(feeAmount)) {
+              // Update the total amount by subtracting the fee
+              updateTotalAmount(-feeAmount);
+            }
 
-        // Remove the row after confirmation
-        newRow.remove();
+            // Remove the row after confirmation
+            newRow.remove();
 
-        Swal.fire("Deleted!", "The fee record has been deleted.", "success");
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire("Cancelled", "The fee record is safe!", "info");
-      }
-    }).catch((error) => {
-      console.error("Swal Error:", error);
-    });
-  });
-}
-
-
-
+            Swal.fire("Deleted!", "The fee record has been deleted.", "success");
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire("Cancelled", "The fee record is safe!", "info");
+          }
+        }).catch((error) => {
+          console.error("Swal Error:", error);
+        });
+      });
+    }
 
     // Add Edit Button Event Listener
     const editButton = newRow.querySelector(".editFeeButton");
