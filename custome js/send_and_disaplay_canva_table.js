@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Add Delete Button Event Listener
-   // const deleteButton = newRow.querySelector(".deleteFeeButton");
+    const deleteButton = newRow.querySelector(".deleteFeeButton");
     deleteButton.addEventListener("click", () => {
       Swal.fire({
         title: "Are you sure?",
@@ -170,6 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }).then((result) => {
         if (result.isConfirmed) {
           const feeAmount = parseFloat(newRow.children[2].textContent);
+           console.log("Confirmed delete for amount:", feeAmount); // Debugging
 
           // Update the total amount by subtracting the fee
           updateTotalAmount(-feeAmount);
