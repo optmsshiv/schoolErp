@@ -82,13 +82,12 @@ document.querySelector('#FeeCollection tbody').addEventListener('click', functio
           }
         }
 
-      // Recalculate the total after deleting the row
-      updateTotalAmount();
-    }else{
-      // If the user cancels, do nothing
-      Swal.fire("Cancelled", "The fee record is safe!", "info");
-    }
-  });
+        // Recalculate the total after deleting the row
+        updateTotalAmount();
+      } else {
+        Swal.fire("Cancelled", "The fee record is safe!", "info");
+      }
+    });
   }
 });
 
