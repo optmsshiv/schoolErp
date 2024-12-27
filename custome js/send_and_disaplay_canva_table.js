@@ -158,6 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add Delete Button Event Listener
     const deleteButton = newRow.querySelector(".deleteFeeButton");
     deleteButton.addEventListener("click", () => {
+      const feeAmount = parseFloat(newRow.children[2].textContent);
       Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -169,8 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
         cancelButtonText: "Cancel",
       }).then((result) => {
         if (result.isConfirmed) {
-          const feeAmount = parseFloat(newRow.children[2].textContent);
-           console.log("Confirmed delete for amount:", feeAmount); // Debugging
+        //  const feeAmount = parseFloat(newRow.children[2].textContent);
 
           // Update the total amount by subtracting the fee
           updateTotalAmount(-feeAmount);
