@@ -38,57 +38,42 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Event listener for delete buttons in the Fee Collection table
-document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
-  // Check if the clicked element is a delete button
-  const deleteButton = event.target.closest('.deleteFeeButton');  // Make sure the target is the button or a child of it
+  document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
+    // Check if the clicked element is a delete button
+    const deleteButton = event.target.closest('.deleteFeeButton');  // Make sure the target is the button or a child of it
 
-  if (deleteButton) {
-    const row = deleteButton.closest('tr');  // Find the row the button belongs to
-    const amount = parseFloat(row.children[2].textContent); // Get the amount from the row
+    if (deleteButton) {
+      const row = deleteButton.closest('tr');  // Find the row the button belongs to
+      const amount = parseFloat(row.children[2].textContent); // Get the amount from the row
 
-    // Ask for confirmation using SweetAlert
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Subtract the amount from totalAmount
-        if (!isNaN(amount)) {
-          totalAmount -= amount;  // Update totalAmount
-          document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the total input field
-        }
-
-        // Remove the row from the table
-        row.remove();
-
-        // Optionally: handle the plus button logic for a related table (e.g., #student_fee_table)
-        const month = row.children[0].textContent; // Get the month from the row
-        const monthIndex = Array.from(document.querySelectorAll('#student_fee_table thead th')).findIndex(
-          th => th.textContent === month
-        );
-
-        if (monthIndex > 0) { // Ignore the "Fee Head" column
-          const totalRow = document.querySelector('#student_fee_table tbody tr:last-child');
-          const totalCell = totalRow.children[monthIndex];
-          const plusButton = totalCell.querySelector('.btn-outline-primary');
-          if (plusButton) {
-            plusButton.style.display = 'inline-block'; // Show the plus button again
-          }
-        }
-
-        // Recalculate the total after deleting the row
-        updateTotalAmount();
-      } else {
-        Swal.fire("Cancelled", "The fee record is safe!", "info");
+      // Subtract the amount from totalAmount
+      if (!isNaN(amount)) {
+        totalAmount -= amount;  // Update totalAmount
+        document.querySelector('#payableAmount').value = totalAmount.toFixed(2); // Update the total input field
       }
-    });
-  }
+
+      row.remove();  // Remove the row from the table
+
+      // Optionally: handle the plus button logic for a related table (e.g., #student_fee_table)
+      const month = row.children[0].textContent; // Get the month from the row
+      const monthIndex = Array.from(document.querySelectorAll('#student_fee_table thead th')).findIndex(
+        th => th.textContent === month
+      );
+
+      if (monthIndex > 0) { // Ignore the "Fee Head" column
+        const totalRow = document.querySelector('#student_fee_table tbody tr:last-child');
+        const totalCell = totalRow.children[monthIndex];
+        const plusButton = totalCell.querySelector('.btn-outline-primary');
+        if (plusButton) {
+          plusButton.style.display = 'inline-block'; // Show the plus button again
+        }
+      }
+
+      // Recalculate the total after deleting the row
+      updateTotalAmount();
+    }
+  });
+
 });
 
 function fetchFeePlansData(studentData) {
