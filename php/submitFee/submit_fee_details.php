@@ -58,6 +58,6 @@ try {
     error_log("Database insertion error: " . $e->getMessage(), 0);
 
     // Return an error response
-    echo json_encode(["success" => false, "error" => "An error occurred while saving the data."]);
+    echo json_encode(["success" => false, "error" => $e->getMessage(),]);
 }
 ?>
