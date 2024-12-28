@@ -15,12 +15,12 @@ $data = json_decode(file_get_contents("php://input"), true);
 $sql = "INSERT INTO feeDetails (
             student_id, student_name, receipt_no, month, fee_type, hostel_fee, transport_fee,
             additional_amount, concession_amount, received_amount, due_amount, advanced_amount,
-            total_amount, payment_status, payment_type, bank_name, payment_date
+            total_amount, payment_status, payment_type, bank_name, payment_date, remark
         )
         VALUES (
             :student_id, :student_name, :receipt_no, :month, :fee_type, :hostel_fee, :transport_fee,
             :additional_amount, :concession_amount, :received_amount, :due_amount, :advanced_amount,
-            :total_amount, :payment_status, :payment_type, :bank_name, :payment_date
+            :total_amount, :payment_status, :payment_type, :bank_name, :payment_date, :remark
         )";
 
 try {
@@ -45,6 +45,7 @@ try {
     $stmt->bindParam(':payment_type', $data['payment_type'], PDO::PARAM_STR);
     $stmt->bindParam(':bank_name', $data['bank_name'], PDO::PARAM_STR);
     $stmt->bindParam(':payment_date', $data['payment_date'], PDO::PARAM_STR);
+    $stmt->bindParam(':remark', $data['remark'], PDO::PARAM_STR);
 
     // Execute the statement
     $stmt->execute();
