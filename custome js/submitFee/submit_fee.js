@@ -1,7 +1,7 @@
 document.getElementById("submitFeeDetails").addEventListener("click", function () {
   // Gather form data
   const formData = {
-    student_id: document.getElementById("studentId")?.value || 0, // Assuming you have a field for student ID
+    user_id: document.getElementById("userId").value || 0, // Assuming you have a field for student ID
     student_name: document.getElementById("studentName")?.value || "", // Assuming a field for student name
     receipt_no: generateReceiptNumber(), // Call a function to generate a unique receipt number
     month: document.getElementById("feeMonth").value, // Assuming you have a field for the month

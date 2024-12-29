@@ -5,6 +5,11 @@ include('../db_connection.php'); // Assuming this is saved in a file called db_c
 // Get JSON input from the request body
 $data = json_decode(file_get_contents("php://input"), true);
 
+// Validate user_id
+$checkUserSql = "SELECT COUNT(*) FROM students WHERE user_id = :user_id";
+$checkStmt = $pdo->prepare($checkUserSql);
+$checkStmt->bindParam(':user_id', $data['user_id'], PDO::PARAM_INT);
+$checkStmt->execute();
 // Ensure all required fields are present in the data
 //if (empty($data['student_id']) || empty($data['student_name']) || empty($data['receipt_no']) || empty($data['month']) || empty($data['fee_type'])) {
 //    echo json_encode(["success" => false, "error" => "Missing required fields"]);
@@ -13,12 +18,12 @@ $data = json_decode(file_get_contents("php://input"), true);
 
 // Prepare SQL statement to insert data into feeDetails table
 $sql = "INSERT INTO feeDetails (
-            student_id, student_name, receipt_no, month, fee_type, hostel_fee, transport_fee,
+            user_id, student_name, receipt_no, month, fee_type, hostel_fee, transport_fee,
             additional_amount, concession_amount, received_amount, due_amount, advanced_amount,
             total_amount, payment_status, payment_type, bank_name, payment_date, remark
         )
         VALUES (
-            :student_id, :student_name, :receipt_no, :month, :fee_type, :hostel_fee, :transport_fee,
+            :user_id, :student_name, :receipt_no, :month, :fee_type, :hostel_fee, :transport_fee,
             :additional_amount, :concession_amount, :received_amount, :due_amount, :advanced_amount,
             :total_amount, :payment_status, :payment_type, :bank_name, :payment_date, :remark
         )";
@@ -28,7 +33,7 @@ try {
     $stmt = $pdo->prepare($sql);
 
     // Bind parameters
-    $stmt->bindParam(':student_id', $data['student_id'], PDO::PARAM_INT);
+    $stmt->bindParam(':user_id', $data['user_id'], PDO::PARAM_INT);
     $stmt->bindParam(':student_name', $data['student_name'], PDO::PARAM_STR);
     $stmt->bindParam(':receipt_no', $data['receipt_no'], PDO::PARAM_STR);
     $stmt->bindParam(':month', $data['month'], PDO::PARAM_STR);
