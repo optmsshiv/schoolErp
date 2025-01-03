@@ -793,7 +793,7 @@
                       <div class=" border-end pe-3">
                         <div class="row ms-1">
                           <!-- Additional Amount Column -->
-                           
+
 
                           <div class="col-sm-4 col-md-4">
                             <label for="additionalAmount">Additional Amount</label>
@@ -859,9 +859,10 @@
                               <label for="paymentType">Payment Type</label>
                               <select id="paymentType" name="paymentType" class="form-select"
                                 onchange="toggleBankDropdown()">
+                                <option value="" selected>Select Payment Type</option>
                                 <option value="cash">Cash</option>
                                 <option value="upi">UPI (GPay, PhonePe, Paytm)</option>
-                                <option value="bank">Bank Account</option>
+                                <option value="bank">Account</option>
                               </select>
                             </div>
 
@@ -869,7 +870,7 @@
                             <div id="bankDropdown" class="col-md-4 d-none">
                               <label for="bankName">Bank Name</label>
                               <select id="bankName" name="bankName" class="form-select">
-                                <option>Select Bank</option>
+                                <option value="" selected>Select Bank</option>
                                 <option value="sbi">State Bank of India (SBI)</option>
                                 <option value="cbi">Central Bank of India (CBI)</option>
                                 <option value="axis">Axis Bank</option>
