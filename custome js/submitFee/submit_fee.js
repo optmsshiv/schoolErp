@@ -2,12 +2,14 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
   // Retrieve the student data from session storage
   const studentData = JSON.parse(sessionStorage.getItem("studentData"));
 
-  if (!studentData || studentData.length === 0) {
-    // If student data is missing or invalid, show an error message
-    console.error("No valid student data found in session storage.");
-    alert("Student data is missing or invalid.");
-    return;
+    if (studentData && studentData.length > 0) {
+    const selectedStudent = studentData[0]; // Assuming you're working with one student at a time
+    sessionStorage.setItem("selectedUserId", selectedStudent.user_id); // Save the `user_id` for submission
+    console.log("User ID set to:", selectedStudent.user_id);
+  } else {
+    console.error("No student data found in session storage.");
   }
+});
 
    // Assume the first object in studentData contains the required fields
   const { user_id, full_name: student_name } = studentData[0];
