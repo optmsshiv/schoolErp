@@ -19,21 +19,28 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
 
   // Extract Month and Fee Type from the FeeCollection table
   const feeTable = document.querySelector("#FeeCollection tbody");
-  const firstRow = feeTable.querySelector("tr"); // Get the first row
-  const month = firstRow ? firstRow.cells[0].textContent.trim() : '';  // Get Month from the first cell
-  const feeType = firstRow ? firstRow.cells[1].textContent.trim() : ''; // Get Fee Type from the second cell
+  const rows = feeTable.querySelectorAll("tr"); // Get all rows in the table
+  const feeData = [];
+
+  rows.forEach(row => {
+    const month = row.cells[0] ? row.cells[0].textContent.trim() : '';  // Get Month from the first cell
+    const feeType = row.cells[1] ? row.cells[1].textContent.trim() : ''; // Get Fee Type from the second cell
+    const amount = row.cells[2] ? row.cells[2].textContent.trim() : ''; // Get Amount from the third cell
+
+    if (month && feeType && amount) { // Only push non-empty values
+      feeData.push({ month, feeType, amount });
+    }
+  });
 
   // Log the extracted values (for debugging purposes)
-  console.log("Month:", month);
-  console.log("Fee Type:", feeType);
+  console.log("Fee Data:", feeData);
 
   // Gather form data & Create the form data with the extracted values
   const formData = {
     user_id, // From session storage
     student_name, // From session storage
     receipt_no: generateReceiptNumber(), // Call a function to generate a unique receipt number
-    month: month,  // Add extracted month
-    fee_type: feeType,  // Add extracted fee type
+    fee_data: feeData,  // Add extracted fee data (array of months and fee types)
     hostel_fee: parseFloat(document.getElementById("hostelFee")?.value || 0.0), // Add if you handle hostel fees
     transport_fee: parseFloat(document.getElementById("transportFee")?.value || 0.0), // Add if you handle transport fees
     additional_amount: parseFloat(document.getElementById("additionalAmount").value || 0.0),
@@ -54,8 +61,9 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
   //  alert("Please fill all required fields.");
   //  return;
   //}
-console.log("Submitting User ID:", formData.user_id);
 
+  console.log("Form Data:", formData);// Log the form data for debugging
+  // Call the submit function with the form data
   // Send data to the PHP script
   fetch("/php/submitFee/submit_fee_details.php", {
     method: "POST",
