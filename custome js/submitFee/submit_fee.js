@@ -16,13 +16,24 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
     alert("User ID is missing. Please ensure a student is selected.");
     return;
   }
-  // Gather form data
+
+  // Extract Month and Fee Type from the FeeCollection table
+  const feeTable = document.querySelector("#FeeCollection tbody");
+  const firstRow = feeTable.querySelector("tr"); // Get the first row
+  const month = firstRow ? firstRow.cells[0].textContent.trim() : '';  // Get Month from the first cell
+  const feeType = firstRow ? firstRow.cells[1].textContent.trim() : ''; // Get Fee Type from the second cell
+
+  // Log the extracted values (for debugging purposes)
+  console.log("Month:", month);
+  console.log("Fee Type:", feeType);
+
+  // Gather form data & Create the form data with the extracted values
   const formData = {
     user_id, // From session storage
     student_name, // From session storage
     receipt_no: generateReceiptNumber(), // Call a function to generate a unique receipt number
-    month: document.getElementById("feeMonth").value, // Assuming you have a field for the month
-    fee_type: document.getElementById("feeType").value, // Assuming a field for fee type
+    month: month,  // Add extracted month
+    fee_type: feeType,  // Add extracted fee type
     hostel_fee: parseFloat(document.getElementById("hostelFee")?.value || 0.0), // Add if you handle hostel fees
     transport_fee: parseFloat(document.getElementById("transportFee")?.value || 0.0), // Add if you handle transport fees
     additional_amount: parseFloat(document.getElementById("additionalAmount").value || 0.0),
