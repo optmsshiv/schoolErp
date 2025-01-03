@@ -75,9 +75,18 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
     .then((response) => response.json())
     .then((data) => {
       if (data.success) {
-        alert("Fee details submitted successfully!");
-        // Optionally, clear the form or reload the page
-        document.querySelector("form").reset();
+        // Show SweetAlert on success
+        Swal.fire({
+          title: 'Payment Submitted!',
+          text: `Payment has been submitted for student: ${student_name}`,
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Redirect to collect_fee.html when user clicks OK
+            window.location.href = '/html/collect_fee.html';
+          }
+        });
       } else {
         alert("Error submitting fee details: " + data.error);
       }
