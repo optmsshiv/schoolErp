@@ -92,7 +92,7 @@ try {
     ]);
 
     // Return success response
-    echo json_encode(["success" => true]);
+   // echo json_encode(["success" => true]);
 
 } catch (PDOException $e) {
     // Log the error
