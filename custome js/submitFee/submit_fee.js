@@ -76,17 +76,33 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
     .then((data) => {
       if (data.success) {
         // Show SweetAlert on success
-        Swal.fire({
-          title: 'Payment Submitted!',
-          text: `Payment has been submitted for student: ${student_name}`,
-          icon: 'success',
-          confirmButtonText: 'OK'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // Redirect to collect_fee.html when user clicks OK
-            window.location.href = '/html/collect_fee.html';
-          }
-        });
+       if (formData.payment_status === "pending") {
+          // Show SweetAlert for pending payment status
+          Swal.fire({
+            title: 'Dues Created!',
+            text: `Dues have been created for Student: ${student_name}`,
+            icon: 'info',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Redirect to collect_fee.html when user clicks OK
+              window.location.href = '/html/collect_fee.html';
+            }
+          });
+        } else {
+          // Show SweetAlert for successful payment
+          Swal.fire({
+            title: 'Payment Submitted!',
+            text: `Payment has been submitted for Student: ${student_name}`,
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Redirect to collect_fee.html when user clicks OK
+              window.location.href = '/html/collect_fee.html';
+            }
+          });
+        }
       } else {
         alert("Error submitting fee details: " + data.error);
       }
