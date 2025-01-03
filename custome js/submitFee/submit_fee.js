@@ -12,7 +12,7 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
    // Assume the first object in studentData contains the required fields
   const { user_id, full_name: student_name } = studentData[0];
 
-  if (!formData.user_id) {
+  if (!user_id) {
     alert("User ID is missing. Please ensure a student is selected.");
     return;
   }
