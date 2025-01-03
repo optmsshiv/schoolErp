@@ -51,6 +51,8 @@ function populateFeeTable(data) {
           <td>${student.hostel_fee}</td>
           <td class="fw-bold">Transport Fee:</td>
           <td>${student.transport_fee}</td>
+          <td class="fw-bold">User ID:</td>
+          <td>${student.user_id}</td>
       </tr>`;
 
     feeTable.insertAdjacentHTML('beforeend', row1 + row2 + row3 + row4);
