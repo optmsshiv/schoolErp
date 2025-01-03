@@ -258,7 +258,7 @@ function toggleBankDropdown() {
   const paymentType = document.getElementById('paymentType').value;
   const bankDropdown = document.getElementById('bankDropdown');
 
-  if (paymentType === 'bank') {
+  if (paymentType === 'Account') {
     bankDropdown.classList.remove('d-none');
   } else {
     bankDropdown.classList.add('d-none');
