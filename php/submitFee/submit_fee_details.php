@@ -27,12 +27,12 @@ if (empty($data['fee_data']) || !is_array($data['fee_data'])) {
 try {
     // Prepare SQL statement to insert data into feeDetails table
     $sql = "INSERT INTO feeDetails (
-                user_id, student_name, receipt_no, month, fee_type, hostel_fee, transport_fee,
+                user_id, student_name, receipt_no, month, fee_type, amount, hostel_fee, transport_fee,
                 additional_amount, concession_amount, received_amount, due_amount, advanced_amount,
                 total_amount, payment_status, payment_type, bank_name, payment_date, remark
             )
             VALUES (
-                :user_id, :student_name, :receipt_no, :month, :fee_type, :hostel_fee, :transport_fee,
+                :user_id, :student_name, :receipt_no, :month, :fee_type, :amount, :hostel_fee, :transport_fee,
                 :additional_amount, :concession_amount, :received_amount, :due_amount, :advanced_amount,
                 :total_amount, :payment_status, :payment_type, :bank_name, :payment_date, :remark
             )";
@@ -48,6 +48,7 @@ try {
         $stmt->bindParam(':receipt_no', $data['receipt_no'], PDO::PARAM_STR);
         $stmt->bindParam(':month', $fee['month'], PDO::PARAM_STR);
         $stmt->bindParam(':fee_type', $fee['feeType'], PDO::PARAM_STR); // Bind Fee Type
+        $stmt->bindParam(':amount', $fee['amount'], PDO::PARAM_STR);
         $stmt->bindParam(':hostel_fee', $data['hostel_fee'], PDO::PARAM_STR);
         $stmt->bindParam(':transport_fee', $data['transport_fee'], PDO::PARAM_STR);
         $stmt->bindParam(':additional_amount', $data['additional_amount'], PDO::PARAM_STR);
