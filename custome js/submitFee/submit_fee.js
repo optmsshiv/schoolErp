@@ -44,8 +44,6 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
   //  return;
   //}
 console.log("Submitting User ID:", formData.user_id);
-console.log(sessionStorage.getItem('user_id')); // For debugging
-
 
   // Send data to the PHP script
   fetch("/php/submitFee/submit_fee_details.php", {
