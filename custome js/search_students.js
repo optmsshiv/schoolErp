@@ -56,6 +56,8 @@ function populateStudentTable(student) {
           <td>${student.hostel_fee || ''}</td>
           <td class="fw-bold">Transport Fee:</td>
           <td>${student.transport_fee || ''}</td>
+          <td class="fw-bold">User ID:</td>
+          <td>${student.user_id || ''}</td>
       </tr>
   `;
 }

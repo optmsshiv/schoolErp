@@ -19,6 +19,7 @@ try {
                 s.mother_name,
                 s.phone,
                 s.gender,
+                s.user_id,
                 s.day_hosteler AS type,
                 f.amount AS monthly_fee,
                 COALESCE(h.hostel_fee, 'Not Available') AS hostel_fee,
