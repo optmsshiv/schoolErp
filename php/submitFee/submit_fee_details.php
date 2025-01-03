@@ -61,6 +61,8 @@ try {
 } catch (PDOException $e) {
     // Log the error
     error_log("Database insertion error: " . $e->getMessage(), 0);
+    error_log("Received User ID: " . $data['user_id']);
+
 
     // Return an error response
     echo json_encode(["success" => false, "error" => $e->getMessage(),]);

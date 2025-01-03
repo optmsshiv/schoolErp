@@ -12,7 +12,7 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
    // Assume the first object in studentData contains the required fields
   const { user_id, full_name: student_name } = studentData[0];
 
-  if (!user_id) {
+  if (!formData.user_id) {
     alert("User ID is missing. Please ensure a student is selected.");
     return;
   }
@@ -43,6 +43,7 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
   //  alert("Please fill all required fields.");
   //  return;
   //}
+console.log("Submitting User ID:", formData.user_id);
 
   // Send data to the PHP script
   fetch("/php/submitFee/submit_fee_details.php", {
