@@ -1,6 +1,10 @@
 <?php
 // Include the database connection
 include('../db_connection.php'); // Assuming this is saved in a file called db_connection.php
+error_log('user_id: ' . $user_id);
+error_log($sqlQuery);
+
+
 
 // Get JSON input from the request body
 $data = json_decode(file_get_contents("php://input"), true);
@@ -61,8 +65,6 @@ try {
 } catch (PDOException $e) {
     // Log the error
     error_log("Database insertion error: " . $e->getMessage(), 0);
-    error_log("Received User ID: " . $data['user_id']);
-
 
     // Return an error response
     echo json_encode(["success" => false, "error" => $e->getMessage(),]);
