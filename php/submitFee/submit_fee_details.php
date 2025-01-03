@@ -37,8 +37,20 @@ try {
                 :total_amount, :payment_status, :payment_type, :bank_name, :payment_date, :remark
             )";
 
+            // Initialize empty strings for month and fee_type concatenation
+             $months = [];
+             $feeTypes = [];
+             $amounts = [];
+
     // Loop through the fee_data array and insert each record
     foreach ($data['fee_data'] as $fee) {
+        // Prepare the SQL statement for each fee data entry
+
+        // Concatenate month, fee_type and amount into a single string
+        $months[] = $fee['month'];
+        $feeTypes[] = $fee['feeType'];
+        $amounts[] = $fee['amount'];
+
         // Prepare the statement for each fee data entry
         $stmt = $pdo->prepare($sql);
 
@@ -66,6 +78,18 @@ try {
         // Execute the statement for each fee entry
         $stmt->execute();
     }
+    // Concatenate months, feeTypes and amounts into a single string
+    $months = implode(',', $months);
+    $feeTypes = implode(',', $feeTypes);
+    $amounts = implode(',', $amounts);
+
+    // Output the comma-separated month and fee type
+    echo json_encode([
+        "success" => true,
+        "months" => $commaSeparatedMonths,
+        "fee_types" => $commaSeparatedFeeTypes,
+        "amounts" => $commaSeparatedAmounts
+    ]);
 
     // Return success response
     echo json_encode(["success" => true]);
