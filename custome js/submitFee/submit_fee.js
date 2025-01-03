@@ -1,8 +1,25 @@
 document.getElementById("submitFeeDetails").addEventListener("click", function () {
+  // Retrieve the student data from session storage
+  const studentData = JSON.parse(sessionStorage.getItem("studentData"));
+
+  if (!studentData || studentData.length === 0) {
+    // If student data is missing or invalid, show an error message
+    console.error("No valid student data found in session storage.");
+    alert("Student data is missing or invalid.");
+    return;
+  }
+
+   // Assume the first object in studentData contains the required fields
+  const { user_id, full_name: student_name } = studentData[0];
+
+  if (!user_id) {
+    alert("User ID is missing. Please ensure a student is selected.");
+    return;
+  }
   // Gather form data
   const formData = {
-    user_id: document.getElementById("userId").value, // Assuming you have a field for student ID
-    student_name: document.getElementById("studentName")?.value || "", // Assuming a field for student name
+    user_id, // From session storage
+    student_name, // From session storage
     receipt_no: generateReceiptNumber(), // Call a function to generate a unique receipt number
     month: document.getElementById("feeMonth").value, // Assuming you have a field for the month
     fee_type: document.getElementById("feeType").value, // Assuming a field for fee type
