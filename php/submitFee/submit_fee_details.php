@@ -44,7 +44,7 @@ try {
 
     // Loop through the fee_data array and insert each record
     foreach ($data['fee_data'] as $fee) {
-        // Prepare the SQL statement for each fee data entry
+
 
         // Concatenate month, fee_type and amount into a single string
         $months[] = $fee['month'];
@@ -79,9 +79,9 @@ try {
         $stmt->execute();
     }
     // Concatenate months, feeTypes and amounts into a single string
-    $months = implode(',', $months);
-    $feeTypes = implode(',', $feeTypes);
-    $amounts = implode(',', $amounts);
+    $commaSeparatedMonths = implode(", ", $months);
+    $commaSeparatedFeeTypes = implode(", ", $feeTypes);
+    $commaSeparatedAmounts = implode(", ", $amounts);
 
     // Output the comma-separated month and fee type
     echo json_encode([
