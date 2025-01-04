@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
             FROM
                 students s
             JOIN
-                user_auth a ON s.user_id = a.user_id
+                userAuth a ON s.user_id = a.user_id
             WHERE
                 s.user_id = :user_id
         ");
