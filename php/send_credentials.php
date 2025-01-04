@@ -6,8 +6,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Meta API credentials
-$accessToken = 'EAAX3BfPtyaEBOwuESstw9uXdsJS48kJXRMgdzUBSh9XZAgItVvk1xpZCaZCZA04dDeug7ETn9B1brxAgZAEZCi7IDKwEzCZCdd9H1xZCkEVn4yZC4CvAS0q23SJt7d5TLZCUGOvnHXufRdzmxYJOV4dj8ZA2uUPhCQcGd1rOeUK6vlREuOAd15eGiYA1Ptuy6AFunEunAZDZD'; // Replace with your access token
-$phoneNumberId = '122104086452709639'; // Replace with your phone number ID
+$accessToken = 'EAAX3BfPtyaEBOyEDiIOjtTttaaFZA0ZCd5NSVaRIeZCAvVUedTEjZAEd61ZC1gZAzPzHE9ape8ai4ngel2f2h0nUTT3HWkPHJMWyPsz8dQwaFf3TVVawGFaL6tCabPxlPoK58ZCNQDqLBH4m2VzN1mDd5gMKJeW4G0SiCJZBEicwDU8WuWrnTQYNt8F0NOhrp6MZBxQZDZD'; // Replace with your access token
+$phoneNumberId = '363449376861068'; // Replace with your phone number ID
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     $user_id = $_POST['user_id'];
