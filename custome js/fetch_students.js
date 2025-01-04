@@ -202,7 +202,6 @@ $(function () {
   // Send student credentials via WhatsApp
   $studentCredentialsBtn.on('click', function () {
     const selectedCheckboxes = $tableBody.find('input[type="checkbox"]:checked');
-    const phoneNumber = document.getElementById('selected-phone-number').value; // Fetch selected user's phone number
 
     if (selectedCheckboxes.length === 0) {
         alert('Please select a student first.');
@@ -218,10 +217,7 @@ $(function () {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: new URLSearchParams({
-              user_id: userId,
-              phone_number: phoneNumber  // Include the phone number in the request
-            }),
+            body: new URLSearchParams({ user_id: userId }),
         })
         .then((response) => response.json())
         .then((data) => {
