@@ -99,7 +99,7 @@ try {
         "success" => true,
         "months" => $commaSeparatedMonths,
         "fee_types" => $commaSeparatedFeeTypes,
-        "amounts" => $commaSeparatedAmounts
+        "total_amount" => $totalAmount
     ]);
 
     // Return success response
