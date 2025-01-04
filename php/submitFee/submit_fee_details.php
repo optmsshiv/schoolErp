@@ -59,31 +59,32 @@ try {
       // Concatenate months, feeTypes, and amounts into strings
          $commaSeparatedMonths = implode(', ', $months);
          $commaSeparatedFeeTypes = implode(', ', $feeTypes);
-         $totalAmount = array_sum($amounts);
+         $commaSeparatedAmounts = implode(', ', $amounts);
+
 
 
         // Prepare the statement for each fee data entry
         $stmt = $pdo->prepare($sql);
 
         // Bind parameters
-        $stmt->bindParam(':user_id', $data['user_id'], PDO::PARAM_STR);
-        $stmt->bindParam(':student_name', $data['student_name'], PDO::PARAM_STR);
-        $stmt->bindParam(':receipt_no', $data['receipt_no'], PDO::PARAM_STR);
-        $stmt->bindParam(':month', $commaSeparatedMonths, PDO::PARAM_STR);
-        $stmt->bindParam(':fee_type', $commaSeparatedFeeTypes, PDO::PARAM_STR); //bind fee type
-        $stmt->bindParam(':amount', $totalAmount, PDO::PARAM_STR);
-        $stmt->bindParam(':hostel_fee', $data['hostel_fee'], PDO::PARAM_STR);
-        $stmt->bindParam(':transport_fee', $data['transport_fee'], PDO::PARAM_STR);
+        $stmt->bindParam(':user_id', $data['user_id'], PDO::PARAM_STR); // Make sure the user_id is passed as a string
+        $stmt->bindParam(':student_name', $data['student_name'], PDO::PARAM_STR); // Make sure the student_name is passed as a string
+        $stmt->bindParam(':receipt_no', $data['receipt_no'], PDO::PARAM_STR); // Make sure the receipt_no is passed as a string
+        $stmt->bindParam(':month', $commaSeparatedMonths, PDO::PARAM_STR); // Store months as comma-separated
+        $stmt->bindParam(':fee_type', $commaSeparatedFeeTypes, PDO::PARAM_STR); // Store fee types as comma-separated
+        $stmt->bindParam(':amount', $commaSeparatedAmounts, PDO::PARAM_STR); // Store amounts as comma-separated
+        $stmt->bindParam(':hostel_fee', $data['hostel_fee'], PDO::PARAM_STR); // Make sure the hostel_fee is passed as a string
+        $stmt->bindParam(':transport_fee', $data['transport_fee'], PDO::PARAM_STR); // Make sure the transport_fee is passed as a string
         $stmt->bindParam(':additional_amount', $data['additional_amount'], PDO::PARAM_STR);
-        $stmt->bindParam(':concession_amount', $data['concession_amount'], PDO::PARAM_STR);
+        $stmt->bindParam(':concession_amount', $data['concession_amount'], PDO::PARAM_STR); // Make sure the concession_amount is passed as a string
         $stmt->bindParam(':received_amount', $data['received_amount'], PDO::PARAM_STR);
         $stmt->bindParam(':due_amount', $data['due_amount'], PDO::PARAM_STR);
         $stmt->bindParam(':advanced_amount', $data['advanced_amount'], PDO::PARAM_STR);
         $stmt->bindParam(':total_amount', $data['total_amount'], PDO::PARAM_STR);
-        $stmt->bindParam(':payment_status', $data['payment_status'], PDO::PARAM_STR);
-        $stmt->bindParam(':payment_type', $data['payment_type'], PDO::PARAM_STR);
-        $stmt->bindParam(':bank_name', $data['bank_name'], PDO::PARAM_STR);
-        $stmt->bindParam(':payment_date', $data['payment_date'], PDO::PARAM_STR);
+        $stmt->bindParam(':payment_status', $data['payment_status'], PDO::PARAM_STR); // Make sure the payment_status is passed as a string
+        $stmt->bindParam(':payment_type', $data['payment_type'], PDO::PARAM_STR); // Make sure the payment_type is passed as a string
+        $stmt->bindParam(':bank_name', $data['bank_name'], PDO::PARAM_STR); // Make sure the bank_name is passed as a string
+        $stmt->bindParam(':payment_date', $data['payment_date'], PDO::PARAM_STR); // Make sure the payment_date is passed as a string
         $stmt->bindParam(':remark', $data['remark'], PDO::PARAM_STR);
 
         // Execute the statement for each fee entry
@@ -99,7 +100,7 @@ try {
         "success" => true,
         "months" => $commaSeparatedMonths,
         "fee_types" => $commaSeparatedFeeTypes,
-        "total_amount" => $totalAmount
+        "amounts" => $commaSeparatedAmounts
     ]);
 
     // Return success response
