@@ -37,20 +37,7 @@ try {
                 :total_amount, :payment_status, :payment_type, :bank_name, :payment_date, :remark
             )";
 
-            // Initialize empty strings for month and fee_type concatenation
-           // $months = [];
-           // $feeTypes = [];
-           // $amounts = [];
-
-    // Loop through the fee_data array and insert each record
-    //foreach ($data['fee_data'] as $fee) {
-
-
-        // Concatenate month, fee_type and amount into a single string
-     //  $months[] = $fee['month'];
-     //  $feeTypes[] = $fee['feeType'];
-     //  $amounts[] = $fee['amount'];
-
+            
      // Extract months, fee types, and amounts
         $months = array_column($data['fee_data'], 'month');
         $feeTypes = array_column($data['fee_data'], 'feeType');
@@ -89,11 +76,6 @@ try {
 
         // Execute the statement for each fee entry
         $stmt->execute();
-   // }
-    // Concatenate months, feeTypes and amounts into a single string
-   // $commaSeparatedMonths = implode(", ", $months);
-   // $commaSeparatedFeeTypes = implode(", ", $feeTypes);
-   // $commaSeparatedAmounts = implode(", ", $amounts);
 
     // Output the comma-separated month and fee type
     echo json_encode([
