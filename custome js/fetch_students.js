@@ -19,6 +19,7 @@ $(function () {
   const $lastPage = $('#last-page');
   const $selectAll = $('#select-all');
   const $pageNumbers = $('#page-numbers');
+  const $studentCredentialsBtn = $('#student-credentials'); // Button to send credentials
 
   // Fetch available class names for the dropdown
   function fetchClasses() {
@@ -91,7 +92,7 @@ $(function () {
       let sr_no = (currentPage - 1) * recordsPerPage + 1;
       students.forEach(student => {
         $tableBody.append(`<tr>
-          <td><input type='checkbox' class='row-checkbox'></td>
+          <td><input type='checkbox' class='row-checkbox' data-user-id='${student.user_id}'></td>
           <td>${sr_no++}</td>
           <td>${student.first_name} ${student.last_name}</td>
           <td>${student.father_name}</td>
@@ -113,7 +114,6 @@ $(function () {
           </td>
         </tr>
       `);
-
     }
   }
 
@@ -168,7 +168,7 @@ $(function () {
     window.location.href = `studentInfo.html?user_id=${userId}`;
   }
 
-  // Event listeners
+  // Event listeners for fetching and filtering data
   $searchBar.on('input', () => fetchStudents($searchBar.val(), $classSelect.val()));
   $classSelect.on('change', () => fetchStudents($searchBar.val(), $classSelect.val()));
   $recordsPerPage.on('change', () => {
@@ -198,6 +198,41 @@ $(function () {
     currentPage = page;
     fetchStudents($searchBar.val(), $classSelect.val());
   }
+
+  // Send student credentials via WhatsApp
+  $studentCredentialsBtn.on('click', function () {
+    const selectedCheckboxes = $tableBody.find('input[type="checkbox"]:checked');
+
+    if (selectedCheckboxes.length === 0) {
+        alert('Please select a student first.');
+        return;
+    }
+
+    selectedCheckboxes.each(function () {
+        const userId = $(this).data('user-id');
+
+        // Send AJAX request
+        fetch('/php/send_credentials.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({ user_id: userId }),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                alert('WhatsApp message sent successfully!');
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('An unexpected error occurred.');
+        });
+    });
+  });
 
   // Initial fetch
   fetchClasses(); // First, fetch and populate classes, then fetch students
