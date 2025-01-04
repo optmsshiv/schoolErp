@@ -38,12 +38,12 @@ try {
             )";
 
             // Initialize empty strings for month and fee_type concatenation
-             $months = [];
-             $feeTypes = [];
-             $amounts = [];
+           // $months = [];
+           // $feeTypes = [];
+           // $amounts = [];
 
     // Loop through the fee_data array and insert each record
-    foreach ($data['fee_data'] as $fee) {
+    //foreach ($data['fee_data'] as $fee) {
 
 
         // Concatenate month, fee_type and amount into a single string
@@ -51,10 +51,16 @@ try {
      //  $feeTypes[] = $fee['feeType'];
      //  $amounts[] = $fee['amount'];
 
-     // Combine fee types and months for the same student
-        $months = implode(', ', array_column($data['fees'], 'month'));
-        $feeTypes = implode(', ', array_column($data['fees'], 'feeType'));
-        $amounts = implode(', ', array_column($data['fees'], 'amount'));
+     // Extract months, fee types, and amounts
+        $months = array_column($data['fee_data'], 'month');
+        $feeTypes = array_column($data['fee_data'], 'feeType');
+        $amounts = array_column($data['fee_data'], 'amount');
+
+      // Concatenate months, feeTypes, and amounts into strings
+         $commaSeparatedMonths = implode(', ', $months);
+         $commaSeparatedFeeTypes = implode(', ', $feeTypes);
+         $totalAmount = array_sum($amounts);
+
 
         // Prepare the statement for each fee data entry
         $stmt = $pdo->prepare($sql);
@@ -63,9 +69,9 @@ try {
         $stmt->bindParam(':user_id', $data['user_id'], PDO::PARAM_STR);
         $stmt->bindParam(':student_name', $data['student_name'], PDO::PARAM_STR);
         $stmt->bindParam(':receipt_no', $data['receipt_no'], PDO::PARAM_STR);
-        $stmt->bindParam(':month', $months, PDO::PARAM_STR);
-        $stmt->bindParam(':fee_type', $feeTypes, PDO::PARAM_STR); // Bind Fee Type
-        $stmt->bindParam(':amount', $amounts, PDO::PARAM_STR);
+        $stmt->bindParam(':month', $commaSeparatedMonths, PDO::PARAM_STR);
+        $stmt->bindParam(':fee_type', $commaSeparatedFeeTypes, PDO::PARAM_STR); //bind fee type
+        $stmt->bindParam(':amount', $totalAmount, PDO::PARAM_STR);
         $stmt->bindParam(':hostel_fee', $data['hostel_fee'], PDO::PARAM_STR);
         $stmt->bindParam(':transport_fee', $data['transport_fee'], PDO::PARAM_STR);
         $stmt->bindParam(':additional_amount', $data['additional_amount'], PDO::PARAM_STR);
@@ -82,11 +88,11 @@ try {
 
         // Execute the statement for each fee entry
         $stmt->execute();
-    }
+   // }
     // Concatenate months, feeTypes and amounts into a single string
-    $commaSeparatedMonths = implode(", ", $months);
-    $commaSeparatedFeeTypes = implode(", ", $feeTypes);
-    $commaSeparatedAmounts = implode(", ", $amounts);
+   // $commaSeparatedMonths = implode(", ", $months);
+   // $commaSeparatedFeeTypes = implode(", ", $feeTypes);
+   // $commaSeparatedAmounts = implode(", ", $amounts);
 
     // Output the comma-separated month and fee type
     echo json_encode([
