@@ -11,7 +11,10 @@ try {
         $data = json_decode($_POST['tableData'], true);
 
         if (is_array($data) && !empty($data)) {
-            $stmt = $pdo->prepare("
+            // Begin the transaction
+            $pdo->beginTransaction();
+
+            $stmtStudents = $pdo->prepare("
                 INSERT INTO students (
                     serial_number, first_name, last_name, phone, email, date_of_birth, gender, class_name, category, religion, guardian, handicapped,
                     father_name, mother_name, roll_no, sr_no, pen_no, aadhar_no, admission_no, admission_date, day_hosteler, user_id
@@ -21,11 +24,21 @@ try {
                 )
             ");
 
+            $stmtAuth = $pdo->prepare("
+                INSERT INTO userAuth (user_id, default_password)
+                VALUES (:user_id, :default_password)
+            ");
+
             foreach ($data as $row) {
                 // Generate user ID with first four letters of first_name + random 4-digit number
                 $user_id = strtoupper(substr($row['first_name'], 0, 4)) . str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
 
-                $stmt->execute([
+                // Generate a random password
+                $default_password = generateRandomPassword(6);
+                $hashedPassword = password_hash($default_password, PASSWORD_DEFAULT);
+
+                // Insert into students table
+                $stmtStudents->execute([
                     ':serial_number' => $row['serial_number'],
                     ':first_name' => $row['first_name'],
                     ':last_name' => $row['last_name'],
@@ -49,9 +62,18 @@ try {
                     ':day_hosteler' => $row['day_hosteler'],
                     ':user_id' => $user_id
                 ]);
+
+                // Insert into user_auth table
+                $stmtAuth->execute([
+                    ':user_id' => $user_id,
+                    ':default_password' => $hashedPassword
+                ]);
             }
 
-            echo json_encode(['success' => true, 'message' => 'Data uploaded successfully!']);
+            // Commit the transaction
+            $pdo->commit();
+
+            echo json_encode(['success' => true, 'message' => 'Data uploaded successfully with user authentication!', 'generated_passwords' => $default_password]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Invalid data format.']);
         }
@@ -59,6 +81,24 @@ try {
         echo json_encode(['success' => false, 'message' => 'No data received.']);
     }
 } catch (PDOException $e) {
+    // Rollback the transaction on error
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+}
+
+// Function to generate a random password
+function generateRandomPassword($length = 6) {
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $password = '';
+    $maxIndex = strlen($characters) - 1;
+
+    for ($i = 0; $i < $length; $i++) {
+        $password .= $characters[random_int(0, $maxIndex)];
+    }
+
+    return $password;
 }
 ?>

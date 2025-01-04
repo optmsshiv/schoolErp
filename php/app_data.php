@@ -2,27 +2,54 @@
 // Include the database connection
 require_once '/php/db_connection.php'; // Path to your db_connection.php file
 
-try {
-    // Query to fetch data
-    $sql = "SELECT id, name, email FROM users"; // Replace with your table and fields
-    $stmt = $pdo->query($sql);
+// Get POST data
+$username = $_POST['username'] ?? null;
+$password = $_POST['password'] ?? null;
 
-    // Fetch data
-    $data = $stmt->fetchAll();
-    if (!empty($data)) {
-        // Return JSON response
-        echo json_encode($data);
+// Validate input
+if (empty($username) || empty($password)) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Username or password cannot be empty'
+    ]);
+    exit;
+}
+
+try {
+    // Prepare a statement to query the database for the user
+    $stmt = $pdo->prepare("SELECT id, password FROM users WHERE username = :username");
+    $stmt->execute(['username' => $username]);
+
+    // Fetch the user record
+    $user = $stmt->fetch();
+
+    if ($user) {
+        // Assuming the password in the database is hashed, use password_verify()
+        if (password_verify($password, $user['password'])) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Login successful',
+                'user_id' => $user['id']
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Invalid password'
+            ]);
+        }
     } else {
-        echo json_encode(["message" => "No records found"]);
+        echo json_encode([
+            'success' => false,
+            'message' => 'User not found'
+        ]);
     }
 } catch (PDOException $e) {
-    // Log query error
-    error_log('Database query failed: ' . $e->getMessage(), 0);
+    // Log error and return a generic error message
+    error_log('Database query error: ' . $e->getMessage(), 0);
 
-    // Respond with a generic error
     echo json_encode([
-        'status' => 'error',
-        'message' => 'Unable to fetch data. Please try again later.'
+        'success' => false,
+        'message' => 'An error occurred. Please try again later.'
     ]);
 }
 ?>

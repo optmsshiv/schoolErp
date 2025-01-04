@@ -727,10 +727,17 @@
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                       <h5 class="card-title fw-bold">Active Students</h5>
-                      <div class="d-flex">
+                      <div class="d-flex ">
+                        <!--Credentials-->
+                        <div class="me-2">
+                          <button type="button" class="btn btn-primary me-2">
+                            <span class="tf-icons bx bxs-key bx-18px me-2"></span> Send
+                          </button>
+                        </div>
+
                         <!-- Dropdown for class selection -->
                         <select id="class-select" class="form-select me-2">
-                          <option selected>Select Class</option>
+                          <option value="" selected>Select Class</option>
                           <option value="All">All</option>
                           <!-- Classes populated here by JavaScript -->
                         </select>
