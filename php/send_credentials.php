@@ -33,10 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
         }
 
         $userPhoneNumber = $student['phone']; // User's phone number
-        $message = "Hello " . $student['first_name'] . ",\n\nYour account credentials:\n" .
-                   "User ID: " . $user_id . "\n" .
-                   "Password: " . $student['default_password'] . "\n\n" .
-                   "Please change your password after logging in.";
+        //$message = "Hello " . $student['first_name'] . ",\n\nYour account credentials:\n" .
+        //           "User ID: " . $user_id . "\n" .
+        //           "Password: " . $student['default_password'] . "\n\n" .
+        //           "Please change your password after logging in.";
 
 
 
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
             "to" => $userPhoneNumber,
             "type" => "template",
             "template" => [
-                "name" => "welcome_message",
+                "name" => "erp_credentials",
                 "language" => [
                     "code" => "en_US"
                 ]
