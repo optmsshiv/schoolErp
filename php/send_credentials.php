@@ -33,14 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
             exit;
         }
 
-        $userPhoneNumber = $student['phone']; // User's phone number
-        //$message = "Hello " . $student['first_name'] . ",\n\nYour account credentials:\n" .
-        //           "User ID: " . $user_id . "\n" .
-        //           "Password: " . $student['default_password'] . "\n\n" .
-        //           "Please change your password after logging in.";
+        // Prepare dynamic data
+        $userPhoneNumber = $student['phone'];
+        $userName = $student['first_name'];
+        $defaultPassword = $student['default_password'];
 
-
-
+       
         // Send WhatsApp message
         $url = "https://graph.facebook.com/v21.0/$phoneNumberId/messages";
 
@@ -49,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
             "to" => $userPhoneNumber,
             "type" => "template",
             "template" => [
-                "name" => "erp_credentials",
+                "name" => "credentials", // Approved template name
                 "language" => [
                     "code" => "en_US"
                 ],
@@ -57,22 +55,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
                     [
                         "type" => "body",
                         "parameters" => [
-                            [
-                                "type" => "text",
-                                "text" => "Hello " . $student['first_name'] . ",\n\nYour account credentials:\n" .
-                                    "User ID: " . $user_id . "\n" .
-                                    "Password: " . $student['default_password'] . "\n\n" .
-                                    "Please change your password after logging in."
-                            ]
+                            ["type" => "text", "text" => $userName],        // Placeholder {{1}}
+                            ["type" => "text", "text" => $user_id],        // Placeholder {{2}}
+                            ["type" => "text", "text" => $defaultPassword] // Placeholder {{3}}
                         ]
                     ]
                 ]
             ]
         ];
 
+         // HTTP request options
         $options = [
             'http' => [
-                'header' => "Content-Type: application/json\r\nAuthorization: Bearer $accessToken\r\n",
+                'header' => "Content-Type: application/json\r\n" .
+                            "Authorization: Bearer $accessToken\r\n",
                 'method' => 'POST',
                 'content' => json_encode($data),
             ],
@@ -86,9 +82,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
             exit;
         }
 
+       // Decode and handle response
+        $responseJson = json_decode($response, true);
+        if (isset($responseJson['error'])) {
+            echo json_encode(['success' => false, 'message' => 'WhatsApp API Error: ' . $responseJson['error']['message']]);
+            exit;
+        }
+
         echo json_encode(['success' => true, 'message' => 'Message sent successfully!']);
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request.']);
