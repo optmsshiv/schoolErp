@@ -8,6 +8,9 @@ ini_set('display_errors', 1);
 // Meta API credentials
 $accessToken = 'EAAX3BfPtyaEBO0Ki3JFRrZCzhHKUlyLZCZAmJOCgZBum08O6gpC5RgOO3PTFpNtFnx3f3vQR8QuGdde2JZALKFBEEpBRCDDMIfRrQYe1Dk6mbZASi4gup8yjZBZBptNrITSlOkYz1ZAP551j169PD89r6v3ZCydZBxZCZAJnMqpD9U5X2JijZCTp5FMoydpJc3gDPmwBizSCUYvHL9nuy1AKFNiaz1l3EsE9YDJcnHpayPumQZA7HoZD'; // Replace with your access token
 $phoneNumberId = '363449376861068'; // Replace with your phone number ID
+$name = 'Admin';
+$userId = '1234567890'; // Replace with your user ID
+$password = '1234567890'; // Replace with your password
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     $user_id = $_POST['user_id'];
@@ -51,6 +54,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
                 "name" => "erp_credentials",
                 "language" => [
                     "code" => "en_US"
+                ],
+                "components" => [
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => "Hello " . $student['first_name'] . ",\n\nYour account credentials:\n" .
+                                    "User ID: " . $user_id . "\n" .
+                                    "Password: " . $student['default_password'] . "\n\n" .
+                                    "Please change your password after logging in."
+                            ]
+                        ]
+                    ]
                 ]
             ]
         ];
