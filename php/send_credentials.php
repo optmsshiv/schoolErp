@@ -6,8 +6,8 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Meta API credentials
-$accessToken = 'EAAX3BfPtyaEBOwuESstw9uXdsJS48kJXRMgdzUBSh9XZAgItVvk1xpZCaZCZA04dDeug7ETn9B1brxAgZAEZCi7IDKwEzCZCdd9H1xZCkEVn4yZC4CvAS0q23SJt7d5TLZCUGOvnHXufRdzmxYJOV4dj8ZA2uUPhCQcGd1rOeUK6vlREuOAd15eGiYA1Ptuy6AFunEunAZDZD'; // Replace with your access token
-$phoneNumberId = '122104086452709639'; // Replace with your phone number ID
+$accessToken = 'EAAX3BfPtyaEBO0Ki3JFRrZCzhHKUlyLZCZAmJOCgZBum08O6gpC5RgOO3PTFpNtFnx3f3vQR8QuGdde2JZALKFBEEpBRCDDMIfRrQYe1Dk6mbZASi4gup8yjZBZBptNrITSlOkYz1ZAP551j169PD89r6v3ZCydZBxZCZAJnMqpD9U5X2JijZCTp5FMoydpJc3gDPmwBizSCUYvHL9nuy1AKFNiaz1l3EsE9YDJcnHpayPumQZA7HoZD'; // Replace with your access token
+$phoneNumberId = '363449376861068'; // Replace with your phone number ID
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     $user_id = $_POST['user_id'];
@@ -38,14 +38,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
                    "Password: " . $student['default_password'] . "\n\n" .
                    "Please change your password after logging in.";
 
+
+
         // Send WhatsApp message
-        $url = "https://graph.facebook.com/v17.0/$phoneNumberId/messages";
+        $url = "https://graph.facebook.com/v21.0/$phoneNumberId/messages";
 
         $data = [
             "messaging_product" => "whatsapp",
             "to" => $userPhoneNumber,
-            "type" => "text",
-            "text" => ["body" => $message]
+            "type" => "template",
+            "template" => [
+                "name" => "welcome_message",
+                "language" => [
+                    "code" => "en_US"
+                ]
+            ]
         ];
 
         $options = [
