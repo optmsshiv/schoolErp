@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userPhoneNumber = $student['phone'];
         $userName = $student['first_name'];
         $defaultPassword = $student['default_password'];
-        $fromName = 'Your Organization'; // Change this to your organization's name or dynamic value
+        $fromName = 'OPTMS Tech'; // Change this to your organization's name or dynamic value
 
         // Send WhatsApp message
         $url = "https://graph.facebook.com/v21.0/$phoneNumberId/messages";
