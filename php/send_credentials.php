@@ -3,20 +3,15 @@ require '../php/db_connection.php'; // Include your DB connection
 
 header('Content-Type: application/json');
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
-error_reporting(0); // Suppress all warnings and notices
+ini_set('display_errors', 1);
 
-// Meta API credentials (use environment variables for security)
-$accessToken = getenv('EAAX3BfPtyaEBO78sPtDJBFN5ohbw60KTdZAtyJoLparqkQ2yr6BZAi9hb9w6wxfkKRlZBKwpI1wj4pb8Vmno2byJTLOHsf1E8xZBbdE0j0TTsukko5xPlsPRnwL835qnpckTJq22zwYkQaaQeLfnJZCEmc2WEjZB9qMRZCDhNmlgQYeYxJRLiZCmlEaGsZC69oquImjAcQSkGE9fNZC4yqPKR17scF4wm6ZAKrvnSOrP8bYvjsZD'); // Set this in your environment
-$phoneNumberId = getenv('363449376861068'); // Set this in your environment
+// Meta API credentials
+$accessToken = 'EAAX3BfPtyaEBO78sPtDJBFN5ohbw60KTdZAtyJoLparqkQ2yr6BZAi9hb9w6wxfkKRlZBKwpI1wj4pb8Vmno2byJTLOHsf1E8xZBbdE0j0TTsukko5xPlsPRnwL835qnpckTJq22zwYkQaaQeLfnJZCEmc2WEjZB9qMRZCDhNmlgQYeYxJRLiZCmlEaGsZC69oquImjAcQSkGE9fNZC4yqPKR17scF4wm6ZAKrvnSOrP8bYvjsZD'; // Replace with your access token
+$phoneNumberId = '363449376861068'; // Replace with your phone number ID
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!isset($_POST['user_id']) || empty(trim($_POST['user_id']))) {
-        echo json_encode(['success' => false, 'message' => 'Missing or invalid user ID.']);
-        exit;
-    }
 
-    $user_id = trim($_POST['user_id']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
+    $user_id = $_POST['user_id'];
 
     try {
         // Fetch student details and credentials from the database
@@ -38,36 +33,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Prepare dynamic data
-        $userPhoneNumber = $student['phone'];
-        $userName = $student['first_name'];
-        $defaultPassword = $student['default_password'];
-        $fromName = 'OPTMS Tech'; // Change this to your organization's name or dynamic value
+         // Prepare dynamic data
+         $userPhoneNumber = $student['phone'];
+         $userName = $student['first_name'];
+         $defaultPassword = $student['default_password'];
+         $fromName = 'Your Organization'; // Change this to your organization's name or dynamic value
 
-        // Send WhatsApp message
-        $url = "https://graph.facebook.com/v21.0/$phoneNumberId/messages";
+         // Send WhatsApp message
+         $url = "https://graph.facebook.com/v21.0/$phoneNumberId/messages";
 
-        $data = [
-            "messaging_product" => "whatsapp",
-            "to" => $userPhoneNumber,
-            "type" => "template",
-            "template" => [
-                "name" => "message", // Approved template name
-                "language" => ["code" => "en_US"],
-                "components" => [
-                    [
-                        "type" => "body",
-                        "parameters" => [
-                            ["type" => "text", "text" => $userName],        // Placeholder {{1}}
-                            ["type" => "text", "text" => $user_id],        // Placeholder {{2}}
-                            ["type" => "text", "text" => $defaultPassword], // Placeholder {{3}}
-                            ["type" => "text", "text" => $fromName]        // Placeholder {{4}}
-                        ]
-                    ]
-                ]
-            ]
-        ];
+         $data = [
+             "messaging_product" => "whatsapp",
+             "to" => $userPhoneNumber,
+             "type" => "template",
+             "template" => [
+                 "name" => "message", // Approved template name
+                 "language" => ["code" => "en_US"],
+                 "components" => [
+                     [
+                         "type" => "body",
+                         "parameters" => [
+                             ["type" => "text", "text" => $userName],        // Placeholder {{1}}
+                             ["type" => "text", "text" => $user_id],        // Placeholder {{2}}
+                             ["type" => "text", "text" => $defaultPassword], // Placeholder {{3}}
+                             ["type" => "text", "text" => $fromName]        // Placeholder {{4}}
+                         ]
+                     ]
+                 ]
+             ]
+         ];
 
+         // HTTP request options
         $options = [
             'http' => [
                 'header' => "Content-Type: application/json\r\n" .
@@ -85,23 +81,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Decode and handle response
+       // Decode and handle response
         $responseJson = json_decode($response, true);
         if (isset($responseJson['error'])) {
-            error_log("WhatsApp API Error: " . json_encode($responseJson['error']));
             echo json_encode(['success' => false, 'message' => 'WhatsApp API Error: ' . $responseJson['error']['message']]);
             exit;
         }
 
         echo json_encode(['success' => true, 'message' => 'Message sent successfully!']);
     } catch (PDOException $e) {
-        error_log("Database error: " . $e->getMessage());
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
     } catch (Exception $e) {
-        error_log("General error: " . $e->getMessage());
         echo json_encode(['success' => false, 'message' => 'An error occurred: ' . $e->getMessage()]);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
+    echo json_encode(['success' => false, 'message' => 'Invalid request.']);
 }
 ?>
