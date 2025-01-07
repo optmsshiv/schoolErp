@@ -3,7 +3,8 @@ require '../php/db_connection.php'; // Include your DB connection
 
 header('Content-Type: application/json');
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
+error_reporting(0); // Suppress all warnings and notices
 
 // Meta API credentials (use environment variables for security)
 $accessToken = getenv('EAAX3BfPtyaEBO78sPtDJBFN5ohbw60KTdZAtyJoLparqkQ2yr6BZAi9hb9w6wxfkKRlZBKwpI1wj4pb8Vmno2byJTLOHsf1E8xZBbdE0j0TTsukko5xPlsPRnwL835qnpckTJq22zwYkQaaQeLfnJZCEmc2WEjZB9qMRZCDhNmlgQYeYxJRLiZCmlEaGsZC69oquImjAcQSkGE9fNZC4yqPKR17scF4wm6ZAKrvnSOrP8bYvjsZD'); // Set this in your environment
