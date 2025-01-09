@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let totalAmount = 0; // Initialize totalAmount
 
   // Initialize Offcanvas
-  const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
-  if (!addFeeCanvas) {
+//  const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
+  if (!addFeeCanvasEl) {
     console.error('Element with ID "addFeeCanvas" not found');
     return;
   }
