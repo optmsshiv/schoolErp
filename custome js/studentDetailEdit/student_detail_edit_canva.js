@@ -1,5 +1,13 @@
+
 // Handle the "Edit" button click
 document.getElementById('editButton').addEventListener('click', function() {
+   // Ensure that data is available
+  if (!studentData) {
+    console.error('Student data is not available');
+    return;
+  }
+
+  const data = studentData;
   // Dynamically load the off-canvas content from the provided path
   fetch('/html/profielOffcanvaEdit/profileEditOffcanve.html')
     .then(response => response.text())

@@ -1,3 +1,4 @@
+let studentData = null; // Declare a variable to hold student data
 document.addEventListener("DOMContentLoaded", () => {
   // Get the user_id from the URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -11,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch(`../php/studentInfo/getStudentDetails.php?user_id=${userId}`)
       .then(response => response.json())
       .then(data => {
+        studentData = data; // Store the student data globally
+
         if (data.error) {
           // Display error message
           document.querySelector("#student-info").innerHTML = `
