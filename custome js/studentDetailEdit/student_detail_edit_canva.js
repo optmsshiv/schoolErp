@@ -13,7 +13,7 @@ document.getElementById('editButton').addEventListener('click', function() {
     .then(response => response.text())
     .then(html => {
       // Check if off-canvas is already loaded in the DOM
-      if (!document.getElementById('editOffcanvas')) {
+      if (!document.getElementById('CustomEditOffcanvas')) {
         // Append the loaded HTML (off-canvas content) to the body
         document.body.insertAdjacentHTML('beforeend', html);
       }
