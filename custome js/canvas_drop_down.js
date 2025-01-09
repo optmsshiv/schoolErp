@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return { isValid: false, message: "Please enter a valid fee amount." };
     }
 
-    return { isValid: true, feeMonth, feeType, feeAmount };
+    return { isValid: true, feeType, feeMonth,  feeAmount };
   };
 
   // Add a new row to the FeeCollection table
