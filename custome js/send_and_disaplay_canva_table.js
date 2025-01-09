@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let totalAmount = 0; // Initialize totalAmount
 
   // Initialize Offcanvas
-//  const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
-  if (!addFeeCanvasEl) {
+  const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
+  if (!addFeeCanvas) {
     console.error('Element with ID "addFeeCanvas" not found');
     return;
   }
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
       addRowToTable(data);
 
       feeForm.reset();
-      addFeeCanvasEl.hide();
+      addFeeCanvas.hide();
 
       Swal.fire({
         title: "Success",
