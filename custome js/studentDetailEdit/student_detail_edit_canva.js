@@ -35,7 +35,7 @@ document.getElementById('editButton').addEventListener('click', function() {
       document.getElementById('editSrNo').value = data.sr_no || '';
 
       // Initialize and show the off-canvas
-      const offcanvas = new bootstrap.Offcanvas(document.getElementById('editOffcanvas'));
+      const offcanvas = new bootstrap.Offcanvas(document.getElementById('CustomEditOffcanvas'));
       offcanvas.show();
     })
     .catch(error => {
