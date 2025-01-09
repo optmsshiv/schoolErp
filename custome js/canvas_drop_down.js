@@ -560,7 +560,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Initialize Offcanvas
-  const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
+ // const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
 
 
   // Fetch fee heads and populate the dropdown
