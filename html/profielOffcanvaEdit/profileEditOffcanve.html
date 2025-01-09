@@ -1,0 +1,83 @@
+<!-- Off-canvas for editing the student profile -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="editOffcanvas" aria-labelledby="editOffcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 id="editOffcanvasLabel">Edit Student Profile</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- Edit form fields, pre-filled with current data -->
+    <form id="editStudentForm">
+      <div class="mb-3">
+        <label for="editFirstName" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="editFirstName">
+      </div>
+      <div class="mb-3">
+        <label for="editLastName" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="editLastName">
+      </div>
+      <div class="mb-3">
+        <label for="editEmail" class="form-label">Email</label>
+        <input type="email" class="form-control" id="editEmail">
+      </div>
+      <div class="mb-3">
+        <label for="editPhone" class="form-label">Phone</label>
+        <input type="tel" class="form-control" id="editPhone">
+      </div>
+      <div class="mb-3">
+        <label for="editAadhar" class="form-label">Aadhar</label>
+        <input type="text" class="form-control" id="editAadhar">
+      </div>
+      <div class="mb-3">
+        <label for="editCategory" class="form-label">Category</label>
+        <input type="text" class="form-control" id="editCategory">
+      </div>
+      <div class="mb-3">
+        <label for="editGender" class="form-label">Gender</label>
+        <select class="form-select" id="editGender"></select>
+      </div>
+
+      <div class="mb-3">
+        <label for="editClass" class="form-label">Class</label>
+        <select class="form-select" id="editClass"></select>
+      </div>
+
+      <div class="mb-3">
+        <label for="editRollNo" class="form-label">Roll No</label>
+        <input type="text" class="form-control" id="editRollNo">
+      </div>
+
+      <div class="mb-3">
+        <label for="editReligion" class="form-label">Religion</label>
+        <select class="form-select" id="editReligion"></select>
+      </div>
+
+      <div class="mb-3">
+        <label for="editHandicapped" class="form-label">Handicapped</label>
+        <select class="form-select" id="editHandicapped"></select>
+      </div>
+
+      <div class="mb-3">
+        <label for="editGuardianName" class="form-label">Guardian Name</label>
+        <input type="text" class="form-control" id="editGuardianName">
+      </div>
+
+      <div class="mb-3">
+        <label for="editGuardianDob" class="form-label">Guardian DOB</label>
+        <input type="date" class="form-control" id="editGuardianDob">
+      </div>
+
+
+      <div class="mb-3">
+        <label for="editAdmissionDate" class="form-label">Admission Date</label>
+        <input type="date" class="form-control" id="editAdmissionDate">
+      </div>
+
+      <div class="mb-3">
+        <label for="editSrNo" class="form-label">Sr No</label>
+        <input type="text" class="form-control" id="editSrNo">
+      </div>
+      <!-- Add other fields as needed -->
+      <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+  </div>
+</div>

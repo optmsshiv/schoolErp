@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="border p-3 mb-2 mt-3 position-relative">
                       <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Student Profile</h5>
                       <div class="d-flex justify-content-end mb-3">
-                        <button class="btn btn-primary btn-sm">Edit</button>
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#editOffcanvas" aria-controls="editOffcanvas">Edit</button>
                       </div>
                       <table class="table table-borderless">
                         <thead>
