@@ -1,25 +1,25 @@
-// Fetch Feeheads from the server
-fetch('../php/feeCanva/fetch_canva_feeHead.php')
-  .then(response => response.json())
-  .then(data => {
-    const feeTypeDropdown = document.getElementById('feeType');
-    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>'; // Clear default option
+ // Fetch Feeheads from the server
+ fetch('../php/feeCanva/fetch_canva_feeHead.php')
+ .then(response => response.json())
+ .then(data => {
+   const feeTypeDropdown = document.getElementById('feeType');
+   feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>'; // Clear default option
 
-    // Populate options dynamically
-    data.forEach(feehead => {
-      const option = document.createElement('option');
-      option.value = feehead.id;
-      option.textContent = feehead.fee_head_name;
-      feeTypeDropdown.appendChild(option);
-    });
-  })
-  .catch(error => {
-    console.error('Error fetching fee types:', error);
-    const feeTypeDropdown = document.getElementById('feeType');
-    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
-  });
+   // Populate options dynamically
+   data.forEach(feehead => {
+     const option = document.createElement('option');
+     option.value = feehead.id;
+     option.textContent = feehead.fee_head_name;
+     feeTypeDropdown.appendChild(option);
+   });
+ })
+ .catch(error => {
+   console.error('Error fetching fee types:', error);
+   const feeTypeDropdown = document.getElementById('feeType');
+   feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
+ });
 
-// send data to table
+ // send data to table
 document.addEventListener("DOMContentLoaded", function () {
   const saveFeeButton = document.getElementById("saveFeeButton");
 
@@ -72,55 +72,55 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-/*
+ /*
 // Handle Save Fee button click
 document.getElementById('saveFeeButton').addEventListener('click', function (e) {
- e.preventDefault();
+  e.preventDefault();
 
- // Get form values
- const feeTypeDropdown = document.getElementById('feeType');
- const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
- const feeAmount = document.getElementById('feeAmount').value;
- const feeMonth = document.getElementById('feeMonth').value;
+  // Get form values
+  const feeTypeDropdown = document.getElementById('feeType');
+  const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
+  const feeAmount = document.getElementById('feeAmount').value;
+  const feeMonth = document.getElementById('feeMonth').value;
 
- // Validate inputs
- if (!feeType || !feeAmount || !feeMonth) {
-   alert('Please fill out all required fields.');
-   return;
- }
+  // Validate inputs
+  if (!feeType || !feeAmount || !feeMonth) {
+    alert('Please fill out all required fields.');
+    return;
+  }
 
- // Get FeeCollection table body
- const feeTableBody = document.querySelector('#FeeCollection tbody');
+  // Get FeeCollection table body
+  const feeTableBody = document.querySelector('#FeeCollection tbody');
 
- // Create a new row
- const newRow = document.createElement('tr');
- newRow.innerHTML = `
-   <td>${feeMonth}</td>
-   <td>${feeType}</td>
-   <td>${feeAmount}</td>
-   <td>
-     <button type="button" class="btn btn-danger btn-sm deleteFeeButton">
-       <i class="bx bx-trash"></i>
-     </button>
-   </td>
- `;
+  // Create a new row
+  const newRow = document.createElement('tr');
+  newRow.innerHTML = `
+    <td>${feeMonth}</td>
+    <td>${feeType}</td>
+    <td>${feeAmount}</td>
+    <td>
+      <button type="button" class="btn btn-danger btn-sm deleteFeeButton">
+        <i class="bx bx-trash"></i>
+      </button>
+    </td>
+  `;
 
- // Append new row to the table
- feeTableBody.appendChild(newRow);
+  // Append new row to the table
+  feeTableBody.appendChild(newRow);
 
- // Add delete functionality
- newRow.querySelector('.deleteFeeButton').addEventListener('click', function () {
-   newRow.remove();
- });
+  // Add delete functionality
+  newRow.querySelector('.deleteFeeButton').addEventListener('click', function () {
+    newRow.remove();
+  });
 
- // Reset form
- document.getElementById('feeForm').reset();
+  // Reset form
+  document.getElementById('feeForm').reset();
 
- // Optionally close the offcanvas
- const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('addFeeCanvas'));
- if (offcanvasInstance) {
-   offcanvasInstance.hide();
- }
+  // Optionally close the offcanvas
+  const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('addFeeCanvas'));
+  if (offcanvasInstance) {
+    offcanvasInstance.hide();
+  }
 });
 */
 /******************************************************** */
@@ -159,23 +159,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Validate form fields
   const validateForm = () => {
-    const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
     const feeMonth = document.getElementById("feeMonth").value.trim();
+    const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
     const feeAmount = document.getElementById("feeAmount").value.trim();
-
-    if (!feeType || feeTypeDropdown.value === "") {
-      return { isValid: false, message: "Please select a fee type." };
-    }
 
     if (!feeMonth) {
       return { isValid: false, message: "Please select a valid month." };
+    }
+
+    if (!feeType || feeTypeDropdown.value === "") {
+      return { isValid: false, message: "Please select a fee type." };
     }
 
     if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0) {
       return { isValid: false, message: "Please enter a valid fee amount." };
     }
 
-    return { isValid: true, feeType, feeMonth,  feeAmount };
+    return { isValid: true, feeMonth, feeType, feeAmount };
   };
 
   // Add a new row to the FeeCollection table
@@ -296,37 +296,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /****************************************** */
 const fetchFeeHeads = async (retryCount = 3) => {
-  feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
-  try {
-    const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-    const data = await response.json();
+    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
+    try {
+      const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const data = await response.json();
 
-    if (!Array.isArray(data) || data.length === 0) {
-      throw new Error("No valid data received.");
+      if (!Array.isArray(data) || data.length === 0) {
+        throw new Error("No valid data received.");
+      }
+
+      feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
+      data.forEach((feehead) => {
+        const option = document.createElement("option");
+        option.value = feehead.id;
+        option.textContent = feehead.fee_head_name;
+        feeTypeDropdown.appendChild(option);
+      });
+    } catch (error) {
+      console.error("Error fetching fee types:", error);
+      feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
+      if (retryCount > 0) {
+        await fetchFeeHeads(retryCount - 1);
+      } else {
+        Swal.fire("Error", "Failed to load fee types. Please try again later.", "error");
+      }
     }
+  };
 
-    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
-    data.forEach((feehead) => {
-      const option = document.createElement("option");
-      option.value = feehead.id;
-      option.textContent = feehead.fee_head_name;
-      feeTypeDropdown.appendChild(option);
-    });
-  } catch (error) {
-    console.error("Error fetching fee types:", error);
-    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
-    if (retryCount > 0) {
-      await fetchFeeHeads(retryCount - 1);
-    } else {
-      Swal.fire("Error", "Failed to load fee types. Please try again later.", "error");
-    }
-  }
-};
+  /****************************************** */
 
-/****************************************** */
-
-document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
   const feeTypeDropdown = document.getElementById("feeType");
   const saveFeeButton = document.getElementById("saveFeeButton");
   const feeForm = document.getElementById("feeForm");
@@ -560,8 +560,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Initialize Offcanvas
- // const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
-
+  const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
 
   // Fetch fee heads and populate the dropdown
   const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
@@ -600,7 +599,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
-
   // Utility function to capitalize the first letter of each word
   const capitalize = (str) => {
     return str
@@ -610,29 +608,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Validate form fields
   const validateForm = () => {
-    const feeAmountElement = document.getElementById("feeAmount");
     const feeMonthElement = document.getElementById("feeMonth");
+    const feeAmountElement = document.getElementById("feeAmount");
 
-    if (!feeAmountElement || !feeMonthElement) {
+    if (!feeMonthElement || !feeAmountElement) {
       console.error("Required form elements are missing!");
       return { isValid: false, message: "Form validation failed." };
     }
 
+    const feeMonth = capitalize(feeMonthElement.value.trim());
     const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
     const feeAmount = feeAmountElement.value.trim();
-    const feeMonth = capitalize(feeMonthElement.value.trim());
 
-    if (!feeType || feeTypeDropdown.value === "") {
-      return { isValid: false, message: "Please select a fee type." };
-    }
-    if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0) {
-      return { isValid: false, message: "Please enter a valid fee amount." };
-    }
     if (!feeMonth) {
       return { isValid: false, message: "Please select a valid month." };
     }
+    if (!feeType || feeTypeDropdown.value === "") {
+      return { isValid: false, message: "Please select a fee type." };
+    }
+    if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0 ) {
+      return { isValid: false, message: "Please enter a valid fee amount." };
+    }
 
-    return { isValid: true, feeType, feeAmount, feeMonth };
+    return { isValid: true, feeMonth, feeType, feeAmount };
   };
 
   // Handle Save Fee button click
@@ -767,8 +765,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   initialize();
 });
-
-
 /*
 ```javascript
 const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {

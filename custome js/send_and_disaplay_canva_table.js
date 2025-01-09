@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
     feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
     try {
-      const response = await fetch("/php/feeCanva/fetch_canva_feeHead.php");
+      const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       const result = await response.json();
@@ -69,21 +69,21 @@ document.addEventListener("DOMContentLoaded", function () {
       return { isValid: false, message: "Form validation failed." };
     }
 
-    const feeMonth = capitalize(feeMonthElement.value.trim());
     const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
     const feeAmount = feeAmountElement.value.trim();
+    const feeMonth = capitalize(feeMonthElement.value.trim());
 
-    if (!feeMonth) {
-      return { isValid: false, message: "Please select a valid month." };
-    }
     if (!feeType || feeTypeDropdown.value === "") {
       return { isValid: false, message: "Please select a fee type." };
     }
     if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0) {
       return { isValid: false, message: "Please enter a valid fee amount." };
     }
+    if (!feeMonth) {
+      return { isValid: false, message: "Please select a valid month." };
+    }
 
-    return { isValid: true, feeMonth, feeType, feeAmount };
+    return { isValid: true, feeType, feeAmount, feeMonth };
   };
 
   // Handle Save Fee button click
