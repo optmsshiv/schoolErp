@@ -608,29 +608,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Validate form fields
   const validateForm = () => {
-    const feeMonthElement = document.getElementById("feeMonth");
     const feeAmountElement = document.getElementById("feeAmount");
+    const feeMonthElement = document.getElementById("feeMonth");
 
-    if (!feeMonthElement || !feeAmountElement) {
+    if (!feeAmountElement || !feeMonthElement) {
       console.error("Required form elements are missing!");
       return { isValid: false, message: "Form validation failed." };
     }
 
-    const feeMonth = capitalize(feeMonthElement.value.trim());
     const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
     const feeAmount = feeAmountElement.value.trim();
+    const feeMonth = capitalize(feeMonthElement.value.trim());
 
-    if (!feeMonth) {
-      return { isValid: false, message: "Please select a valid month." };
-    }
     if (!feeType || feeTypeDropdown.value === "") {
       return { isValid: false, message: "Please select a fee type." };
     }
     if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0 ) {
       return { isValid: false, message: "Please enter a valid fee amount." };
     }
+    if (!feeMonth) {
+      return { isValid: false, message: "Please select a valid month." };
+    }
 
-    return { isValid: true, feeMonth, feeType, feeAmount };
+    return { isValid: true, feeType, feeAmount, feeMonth };
   };
 
   // Handle Save Fee button click
