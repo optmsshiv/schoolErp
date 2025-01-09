@@ -282,6 +282,17 @@ document.addEventListener("DOMContentLoaded", () => {
                       </table>
                     </div>
                   </div>`;
+          // Dynamically load the editDetailCanva.js script after the "Edit" button is created
+          const script = document.createElement('script');
+          script.src = '../custome js/studentDetailEdit/student_detail_edit_canva.js';  // Use the correct path to your script
+          script.type = 'text/javascript';
+          document.body.appendChild(script);
+
+          // Add event listener for the edit button after the content is rendered
+          document.getElementById('editButton').addEventListener('click', () => {
+            // Call the function from editDetailCanva.js here if needed
+            console.log('Edit button clicked, and the script is loaded!');
+          });
         }
       })
       .catch(error => {

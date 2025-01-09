@@ -10,7 +10,7 @@ document.getElementById('editButton').addEventListener('click', function() {
         document.body.insertAdjacentHTML('beforeend', html);
       }
 
-      // Fill the form fields with existing student data
+      // Fill the form fields with existing student data (assuming `data` is defined)
       document.getElementById('editFirstName').value = data.first_name || '';
       document.getElementById('editLastName').value = data.last_name || '';
       document.getElementById('editEmail').value = data.email || '';
