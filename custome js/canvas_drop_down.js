@@ -159,16 +159,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Validate form fields
   const validateForm = () => {
-    const feeMonth = document.getElementById("feeMonth").value.trim();
     const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
+    const feeMonth = document.getElementById("feeMonth").value.trim();
     const feeAmount = document.getElementById("feeAmount").value.trim();
-
-    if (!feeMonth) {
-      return { isValid: false, message: "Please select a valid month." };
-    }
 
     if (!feeType || feeTypeDropdown.value === "") {
       return { isValid: false, message: "Please select a fee type." };
+    }
+
+    if (!feeMonth) {
+      return { isValid: false, message: "Please select a valid month." };
     }
 
     if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0) {
