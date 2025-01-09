@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
       addRowToTable(data);
 
       feeForm.reset();
-      addFeeCanvas.hide();
+      addFeeCanvasEl.hide();
 
       Swal.fire({
         title: "Success",
