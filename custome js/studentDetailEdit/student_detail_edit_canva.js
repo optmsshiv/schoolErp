@@ -30,7 +30,7 @@ document.getElementById('editButton').addEventListener('click', function() {
       document.getElementById('editReligion').value = data.religion || '';
       document.getElementById('editHandicapped').value = data.handicapped ? 'Yes' : 'No';
       document.getElementById('editGuardianName').value = data.guardian || '';
-      document.getElementById('editGuardianDob').value = data.guardian_dob || '';
+      document.getElementById('editDob').value = data.dob || '';
       document.getElementById('editAdmissionDate').value = data.admission_date || '';
       document.getElementById('editSrNo').value = data.sr_no || '';
 
@@ -61,7 +61,7 @@ document.addEventListener('submit', function(event) {
       religion: document.getElementById('editReligion').value,
       handicapped: document.getElementById('editHandicapped').value === 'Yes',
       guardian: document.getElementById('editGuardianName').value,
-      guardian_dob: document.getElementById('editGuardianDob').value,
+      dob: document.getElementById('editDob').value,
       admission_date: document.getElementById('editAdmissionDate').value,
       sr_no: document.getElementById('editSrNo').value,
     };

@@ -75,9 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             <td>${data.class_name}</td>
                           </tr>
                           <tr>
-                            <td><strong>Religion</strong></td>
+                            <td><strong>Roll No</strong></td>
                             <td>:</td>
-                            <td>${data.religion}</td>
+                            <td>${data.roll_no}</td>
                             <td><strong>Status</strong></td>
                             <td>:</td>
                             <td><span class="badge bg-label-success">${data.status || 'Active'}</span></td>
@@ -103,9 +103,9 @@ document.addEventListener("DOMContentLoaded", () => {
                             <td><strong>Sr No.</strong></td>
                             <td>:</td>
                             <td>${data.sr_no}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td><strong>Religion</strong></td>
+                            <td>:</td>
+                            <td>${data.religion}</td>
                           </tr>
                         </tbody>
                       </table>
