@@ -4,8 +4,11 @@ document.getElementById('editButton').addEventListener('click', function() {
   fetch('/html/profielOffcanvaEdit/profileEditOffcanve.html')
     .then(response => response.text())
     .then(html => {
-      // Append the loaded HTML (off-canvas content) to the body
-      document.body.insertAdjacentHTML('beforeend', html);
+      // Check if off-canvas is already loaded in the DOM
+      if (!document.getElementById('editOffcanvas')) {
+        // Append the loaded HTML (off-canvas content) to the body
+        document.body.insertAdjacentHTML('beforeend', html);
+      }
 
       // Fill the form fields with existing student data
       document.getElementById('editFirstName').value = data.first_name || '';
