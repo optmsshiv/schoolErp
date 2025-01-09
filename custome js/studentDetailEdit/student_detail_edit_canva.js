@@ -27,6 +27,7 @@ document.getElementById('editButton').addEventListener('click', function() {
       document.getElementById('editCategory').value = data.category || '';
       document.getElementById('editGender').value = data.gender || '';
       document.getElementById('editClass').value = data.class_name || '';
+      document.getElementById('editRollNo').value = data.roll_no || '';
       document.getElementById('editReligion').value = data.religion || '';
       document.getElementById('editHandicapped').value = data.handicapped ? 'Yes' : 'No';
       document.getElementById('editGuardianName').value = data.guardian || '';
@@ -58,6 +59,7 @@ document.addEventListener('submit', function(event) {
       category: document.getElementById('editCategory').value,
       gender: document.getElementById('editGender').value,
       class_name: document.getElementById('editClass').value,
+      roll_no: document.getElementById('editRollNo').value,
       religion: document.getElementById('editReligion').value,
       handicapped: document.getElementById('editHandicapped').value === 'Yes',
       guardian: document.getElementById('editGuardianName').value,
