@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div class="modal fade" id="editFatherModal" tabindex="-1" aria-labelledby="editFatherModalLabel" aria-hidden="true" data-bs-backdrop="static"
   data-bs-keyboard="false">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="editFatherModalLabel">Edit Father's Details</h5>
@@ -9,29 +9,35 @@
       </div>
       <div class="modal-body">
         <form id="editFatherForm">
-          <div class="mb-3">
-            <label for="fatherName" class="form-label">Father's Name</label>
-            <input type="text" class="form-control" id="fatherName" name="fatherName">
-          </div>
-          <div class="mb-3">
-            <label for="fatherPhone" class="form-label">Mobile</label>
-            <input type="text" class="form-control" id="fatherPhone" name="fatherPhone">
-          </div>
-          <div class="mb-3">
-            <label for="fatherEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="fatherEmail" name="fatherEmail">
-          </div>
-          <div class="mb-3">
-            <label for="fatherOccupation" class="form-label">Occupation</label>
-            <input type="text" class="form-control" id="fatherOccupation" name="fatherOccupation">
-          </div>
-          <div class="mb-3">
-            <label for="fatherAadhar" class="form-label">Father Aadhar</label>
-            <input type="text" class="form-control" id="fatherAadhar" name="fatherAadhar">
-          </div>
-          <div class="mb-3">
-            <label for="fatherIncome" class="form-label">Income</label>
-            <input type="text" class="form-control" id="fatherIncome" name="fatherIncome">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="fatherName" class="form-label">Father's Name</label>
+              <input type="text" class="form-control" id="fatherName" name="fatherName">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="fatherPhone" class="form-label">Mobile</label>
+              <input type="text" class="form-control" id="fatherPhone" name="fatherPhone">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="fatherEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="fatherEmail" name="fatherEmail">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="fatherOccupation" class="form-label">Occupation</label>
+              <input type="text" class="form-control" id="fatherOccupation" name="fatherOccupation">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="fatherAge" class="form-label">Age</label>
+              <input type="text" class="form-control" id="fatherAge" name="fatherAge">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="fatherAadhar" class="form-label">Father Aadhar</label>
+              <input type="text" class="form-control" id="fatherAadhar" name="fatherAadhar">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="fatherIncome" class="form-label">Income</label>
+              <input type="text" class="form-control" id="fatherIncome" name="fatherIncome">
+            </div>
           </div>
         </form>
       </div>
