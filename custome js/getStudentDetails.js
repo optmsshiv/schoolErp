@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // Function to handle the "Edit Father" button click
 function handleFatherEdit(data) {
   console.log("Edit Father clicked");
-  const modal = new bootstrap.Modal(document.getElementById("editFatherModal"));
+  const modal = new bootstrap.Modal(document.getElementById("/html/profielOffcanvaEdit/fatherDetailsModel.html"));
 
   // Populate modal fields
   document.getElementById("fatherName").value = data.father_name;
