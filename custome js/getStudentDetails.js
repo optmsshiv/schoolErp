@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       <div class="d-flex justify-content-end mb-3">
                         <button class="btn btn-primary btn-sm" id="editButton" aria-controls="editOffcanvas">Edit</button>
                       </div>
-                      <table class="table table-borderless">
+                      <table class="table table-borderless" width="100%"; table-layout="fixed">
                         <thead>
                           <tr class="table-info">
                             <th style="width: 3%;"></th>
