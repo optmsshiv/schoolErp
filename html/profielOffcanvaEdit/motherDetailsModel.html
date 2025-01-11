@@ -1,0 +1,52 @@
+<!-- Modal -->
+<div class="modal fade" id="editMotherModal" tabindex="-1" aria-labelledby="editMotherModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editMotherModalLabel">Edit Mother's Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editMotherForm">
+          <div class="row">
+            <!-- Column 1 -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="motherName" class="form-label">Mother's Name</label>
+                <input type="text" class="form-control" id="motherName" name="motherName">
+              </div>
+              <div class="mb-3">
+                <label for="motherPhone" class="form-label">Mobile</label>
+                <input type="text" class="form-control" id="motherPhone" name="motherPhone">
+              </div>
+              <div class="mb-3">
+                <label for="motherAadhar" class="form-label">Mother Aadhar</label>
+                <input type="text" class="form-control" id="motherAadhar" name="motherAadhar">
+              </div>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="motherEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="motherEmail" name="motherEmail">
+              </div>
+              <div class="mb-3">
+                <label for="motherOccupation" class="form-label">Occupation</label>
+                <input type="text" class="form-control" id="motherOccupation" name="motherOccupation">
+              </div>
+              <div class="mb-3">
+                <label for="motherIncome" class="form-label">Income</label>
+                <input type="text" class="form-control" id="motherIncome" name="motherIncome">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveChangesMother">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
