@@ -296,17 +296,15 @@ document.addEventListener("DOMContentLoaded", () => {
             // Call the function from editDetailCanva.js here if needed
             console.log('Edit button clicked, and the script is loaded!');
           });
-
-          // Dynamically load the editDetailCanva.js script after the "Edit" button is created
-        //  const script = document.createElement('script');
-          script.src = '../custome js/studentDetailEdit/faculty_detail_edit_canva.js';  // Use the correct path to your script
-          script.type = 'text/javascript';
-          document.body.appendChild(script);
-
-          // Add event listener for the edit button after the content is rendered
-          document.getElementById('editButtonFather').addEventListener('click', () => {
-            // Call the function from editDetailCanva.js here if needed
-            console.log('Edit button clicked, and the script is loaded!');
+          // Add global click listener for dynamic "Edit" buttons
+          document.addEventListener("click", (event) => {
+            if (event.target.id === "editButtonFather") {
+              handleFatherEdit(data);
+            } else if (event.target.id === "editButtonMother") {
+              handleMotherEdit(data);
+            } else if (event.target.id === "editButtonAddress") {
+              handleAddressEdit(data);
+            }
           });
         }
       })
@@ -321,3 +319,19 @@ document.addEventListener("DOMContentLoaded", () => {
         <p class="text-danger">No student selected. Please go back and select a student in Active Students.</p>`;
   }
 });
+// Function to handle the "Edit Father" button click
+function handleFatherEdit(data) {
+  console.log("Edit Father clicked");
+  const modal = new bootstrap.Modal(document.getElementById("editFatherModal"));
+
+  // Populate modal fields
+  document.getElementById("fatherName").value = data.father_name;
+  document.getElementById("fatherPhone").value = data.father_phone;
+  document.getElementById("fatherEmail").value = data.father_email;
+  document.getElementById("fatherOccupation").value = data.father_occupation;
+  document.getElementById("fatherAadhar").value = data.father_aadhar;
+  document.getElementById("fatherIncome").value = data.father_income;
+
+  // Show the modal
+  modal.show();
+}
