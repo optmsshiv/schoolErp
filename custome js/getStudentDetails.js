@@ -395,7 +395,7 @@ function handleMotherEdit(data) {
 }
 
 function handleAddressEdit(data) {
-  fetch("/html/profielOffcanvaEdit/addressModel.html")
+  fetch("/html/profielOffcanvaEdit/address_model.html")
     .then((response) => {
       if (!response.ok) {
         throw new Error("Failed to load the modal.");
