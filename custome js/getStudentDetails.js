@@ -115,8 +115,8 @@ document.addEventListener("DOMContentLoaded", () => {
                       <div class="border p-3 mb-2 mt-4 position-relative">
                          <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Father Details</h5>
                          <div class="d-flex justify-content-end mb-3">
-                           <button class="btn btn-primary btn-sm">Edit</button>
-                      </div>
+                           <button class="btn btn-primary btn-sm" id="editButtonFather">Edit</button>
+                          </div>
                          <table class="table table-borderless">
                         <thead>
                           <tr class="table-info">
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
                    <div class="border p-3 mb-3 position-relative mt-4">
                         <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Mother Info</h5>
                         <div class="d-flex justify-content-end mb-3">
-                          <button class="btn btn-primary btn-sm">Edit</button>
+                          <button class="btn btn-primary btn-sm" id="editButtonMother">Edit</button>
                     </div>
                         <table class="table table-borderless">
                         <thead>
@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="border p-3 mb-2 mt-4 position-relative">
                       <h5 class="border-section-header position-absolute bg-white px-2 badge bg-label-info">Address</h5>
                       <div class="d-flex justify-content-end mb-3">
-                        <button class="btn btn-primary btn-sm">Edit</button>
+                        <button class="btn btn-primary btn-sm" id="editButtonAddress">Edit</button>
                       </div>
                       <table class="table table-borderless">
                         <thead>
@@ -293,6 +293,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Add event listener for the edit button after the content is rendered
           document.getElementById('editButton').addEventListener('click', () => {
+            // Call the function from editDetailCanva.js here if needed
+            console.log('Edit button clicked, and the script is loaded!');
+          });
+
+          // Dynamically load the editDetailCanva.js script after the "Edit" button is created
+        //  const script = document.createElement('script');
+          script.src = '../custome js/studentDetailEdit/faculty_detail_edit_canva.js';  // Use the correct path to your script
+          script.type = 'text/javascript';
+          document.body.appendChild(script);
+
+          // Add event listener for the edit button after the content is rendered
+          document.getElementById('editButtonFather').addEventListener('click', () => {
             // Call the function from editDetailCanva.js here if needed
             console.log('Edit button clicked, and the script is loaded!');
           });
