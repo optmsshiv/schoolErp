@@ -1,39 +1,39 @@
-document.getElementById('editButtonFather').addEventListener('click', function () {
-  // Fetch data from the table
-  const fatherName = document.querySelector('td:nth-child(3)').textContent.trim();
-  const fatherPhone = document.querySelector('td:nth-child(6)').textContent.trim();
-  const fatherEmail = document.querySelector('td:nth-child(9)').textContent.trim();
-  const fatherOccupation = document.querySelector('tr:nth-child(2) td:nth-child(3)').textContent.trim();
-  const fatherAadhar = document.querySelector('tr:nth-child(2) td:nth-child(9)').textContent.trim();
-  const fatherIncome = document.querySelector('tr:nth-child(3) td:nth-child(3)').textContent.trim();
+/**
+ * Function to load and display the Father Details modal.
+ * @param {Object} data - The student data object containing father details.
+ */
+function handleFatherEdit(data) {
+  // Fetch the HTML content for the Father Details modal
+  fetch("/html/profielOffcanvaEdit/fatherDetailsModel.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to load the modal.");
+      }
+      return response.text();
+    })
+    .then((html) => {
+      // Append the modal HTML to the body
+      const modalContainer = document.createElement("div");
+      modalContainer.innerHTML = html;
+      document.body.appendChild(modalContainer);
 
-  // Populate modal fields
-  document.getElementById('fatherName').value = fatherName;
-  document.getElementById('fatherPhone').value = fatherPhone;
-  document.getElementById('fatherEmail').value = fatherEmail;
-  document.getElementById('fatherOccupation').value = fatherOccupation;
-  document.getElementById('fatherAadhar').value = fatherAadhar;
-  document.getElementById('fatherIncome').value = fatherIncome;
+      // Populate the modal with father details from the provided data
+      document.getElementById("fatherName").value = data.father_name;
+      document.getElementById("fatherPhone").value = data.father_phone;
+      document.getElementById("fatherEmail").value = data.father_email;
+      document.getElementById("fatherOccupation").value = data.father_occupation;
+      document.getElementById("fatherAadhar").value = data.father_aadhar;
+      document.getElementById("fatherIncome").value = data.father_income;
 
-  // Show the modal
-  const editModal = new bootstrap.Modal(document.getElementById('/html/profielOffcanvaEdit/father_details_edit_canva.html'));
-  editModal.show();
-});
+      // Initialize and show the modal using Bootstrap's Offcanvas
+      const modal = new bootstrap.Offcanvas(document.getElementById("editFatherModal"));
+      modal.show();
+    })
+    .catch((error) => {
+      console.error("Error loading the modal:", error);
+      alert("Failed to load the father details modal. Please try again later.");
+    });
+}
 
-document.getElementById('saveChanges').addEventListener('click', function () {
-  // Save changes (example)
-  const updatedData = {
-    fatherName: document.getElementById('fatherName').value,
-    fatherPhone: document.getElementById('fatherPhone').value,
-    fatherEmail: document.getElementById('fatherEmail').value,
-    fatherOccupation: document.getElementById('fatherOccupation').value,
-    fatherAadhar: document.getElementById('fatherAadhar').value,
-    fatherIncome: document.getElementById('fatherIncome').value,
-  };
-
-  console.log('Updated Data:', updatedData);
-
-  // Close the modal
-  const editModal = bootstrap.Modal.getInstance(document.getElementById('editFatherModal'));
-  editModal.hide();
-});
+// Export the function if using a module system
+// export { loadFatherDetailsModal };
