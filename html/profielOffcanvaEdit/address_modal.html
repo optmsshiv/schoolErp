@@ -1,0 +1,54 @@
+<!-- Modal -->
+<div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true" data-bs-backdrop="static"
+  data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editAddressModalLabel">Edit Address Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editAddressForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="currentAddress" class="form-label">Current Address</label>
+              <input type="text" class="form-control" id="currentAddress" name="currentAddress" value="${data.current_add}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="city" class="form-label">City</label>
+              <input type="text" class="form-control" id="city" name="city" value="${data.city_name}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="state" class="form-label">State</label>
+              <input type="text" class="form-control" id="state" name="state" value="${data.state}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="permanentAddress" class="form-label">Permanent Address</label>
+              <input type="text" class="form-control" id="permanentAddress" name="permanentAddress" value="${data.permanent_add}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="pincode" class="form-label">Pincode</label>
+              <input type="text" class="form-control" id="pincode" name="pincode" value="${data.pincode}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="country" class="form-label">Country</label>
+              <input type="text" class="form-control" id="country" name="country" value="${data.country}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="landmark" class="form-label">Landmark</label>
+              <input type="text" class="form-control" id="landmark" name="landmark" value="${data.landmark}">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="srNo" class="form-label">Sr No.</label>
+              <input type="text" class="form-control" id="srNo" name="srNo" value="${data.sr_no || ''}">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveAddressChanges">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

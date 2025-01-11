@@ -360,6 +360,7 @@ function handleFatherEdit(data) {
 
 // Export the function if using a module system
 // export { loadFatherDetailsModal };
+
 // Function to load the Mother Details modal
 function handleMotherEdit(data) {
   fetch("/html/profielOffcanvaEdit/motherDetailsModel.html")
@@ -390,5 +391,39 @@ function handleMotherEdit(data) {
     .catch((error) => {
       console.error("Error loading the modal:", error);
       alert("Failed to load the mother details modal. Please try again later.");
+    });
+}
+
+function handleAddressEdit(data) {
+  fetch("/html/profielOffcanvaEdit/addressModel.html")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to load the modal.");
+      }
+      return response.text();
+    })
+    .then((html) => {
+      // Append the modal HTML to the body
+      const modalContainer = document.createElement("div");
+      modalContainer.innerHTML = html;
+      document.body.appendChild(modalContainer);
+
+      // Populate the modal with data
+      document.getElementById("currentAddress").value = data.current_add;
+      document.getElementById("city").value = data.city_name;
+      document.getElementById("state").value = data.state;
+      document.getElementById("permanentAddress").value = data.permanent_add;
+      document.getElementById("pincode").value = data.pincode;
+      document.getElementById("country").value = data.country;
+      document.getElementById("landmark").value = data.landmark;
+      document.getElementById("srNo").value = data.sr_no || '';
+
+      // Show the modal
+      const modal = new bootstrap.Modal(document.getElementById("editAddressModal"));
+      modal.show();
+    })
+    .catch((error) => {
+      console.error("Error loading the modal:", error);
+      alert("Failed to load the address details modal. Please try again later.");
     });
 }
