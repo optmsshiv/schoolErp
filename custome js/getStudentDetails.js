@@ -349,7 +349,7 @@ function handleFatherEdit(data) {
       document.getElementById("fatherIncome").value = data.father_income;
 
       // Initialize and show the modal using Bootstrap's Offcanvas
-      const modal = new bootstrap.Offcanvas(document.getElementById("editFatherModal"));
+      const modal = new bootstrap.Modal(document.getElementById("editFatherModal"));
       modal.show();
     })
     .catch((error) => {
