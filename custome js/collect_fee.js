@@ -1,4 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
+
+   // Initially, ensure the loading bar is hidden by default
+  toggleLoadingBar(false);  // This will hide the loading bar on page load
+  
   const collectFeeButton = document.getElementById('collect_fee_btn');
   const tableBody = document.querySelector('#student_data tbody');
 
