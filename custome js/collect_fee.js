@@ -1,24 +1,25 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Fetch and populate student data on page load
-  fetchStudentData();
+  fetchFeeData();
 
   // Handle "Collect Fee" button click
   document.getElementById('collect_fee_btn').addEventListener('click', collectFeeData);
 });
 
 /**
- * Fetch student data from the server and populate the table.
+ * Fetch student and fee data from the server and populate the UI.
  */
-async function fetchStudentData() {
+async function fetchFeeData() {
   const loadingBar = document.getElementById('loading-bar'); // Loading bar element
-  const tableBody = document.querySelector('#student_data tbody'); // Table body
+  const tableBody = document.querySelector('#student_data tbody'); // Student data table body
+  const feeTableBody = document.querySelector('#optms tbody'); // Fee data table body
 
   // Show loading bar if present
   if (loadingBar) loadingBar.style.display = 'block';
 
   try {
-    // Fetch student data from the server
-    const response = await fetch('/php/collectFeeStudentDetails/student_fee_details.php');  // it will be use to get data in table for fee use students in stead of studnet
+    // Fetch student and fee data from the server
+    const response = await fetch('/php/collectFeeStudentDetails/students_fee_details.php');
 
     // Check if the response is okay
     if (!response.ok) {
@@ -28,20 +29,86 @@ async function fetchStudentData() {
     const data = await response.json();
 
     // Validate the data
-    if (!Array.isArray(data) || data.length === 0) {
-      renderNoDataMessage(tableBody);
+    if (!data || !data.student || !data.fee) {
+      renderNoDataMessage(tableBody, feeTableBody);
       return;
     }
 
-    // Clear table and populate rows
-    renderStudentData(tableBody, data);
+    // Render student data
+    renderStudentData(tableBody, data.student);
+
+    // Render fee data
+    renderFeeData(data.fee);
+
   } catch (error) {
-    console.error('Error fetching student data:', error);
+    console.error('Error fetching data:', error);
 
   } finally {
     // Hide loading bar
     if (loadingBar) loadingBar.style.display = 'none';
   }
+}
+
+/**
+ * Render fee details into the cards and fee table.
+ * @param {Object} feeData - Fee data object.
+ */
+function renderFeeData(feeData) {
+  // Update fee cards
+  document.getElementById('total_paid_amount').textContent = `₹ ${feeData.totalPaid || 0}`;
+  document.getElementById('pending_amount').textContent = `₹ ${feeData.pendingAmount || 0}`;
+  document.getElementById('hostel_amount').textContent = `₹ ${feeData.hostelAmount || 0}`;
+  document.getElementById('transport_amount').textContent = `₹ ${feeData.transportAmount || 0}`;
+
+  // Update fee table
+  const feeTableBody = document.querySelector('#optms tbody');
+  feeTableBody.innerHTML = ''; // Clear existing rows
+
+  if (Array.isArray(feeData.details) && feeData.details.length > 0) {
+    feeData.details.forEach(fee => {
+      const row = `
+        <tr>
+          <td>${fee.receiptId || 'N/A'}</td>
+          <td>${fee.month || 'N/A'}</td>
+          <td align="center">${fee.dueAmount || '0'}</td>
+          <td align="center">${fee.pendingAmount || '0'}</td>
+          <td align="center">${fee.receivedAmount || '0'}</td>
+          <td align="center">${fee.totalAmount || '0'}</td>
+          <td>
+            <span class="badge ${fee.status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'}">
+              ${fee.status || 'N/A'}
+            </span>
+          </td>
+          <td align="center">
+            <div class="dropdown">
+              <button class="btn text-muted p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bx bx-dots-vertical-rounded bx-sm"></i>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item border-bottom" href="#">View Fee Receipt</a></li>
+                <li><a class="dropdown-item border-bottom" href="#">Send Fee Receipt</a></li>
+                <li><a class="dropdown-item border-bottom" href="#">Send Fee Message</a></li>
+                <li><a class="dropdown-item" href="#">Delete</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      `;
+      feeTableBody.insertAdjacentHTML('beforeend', row);
+    });
+  } else {
+    feeTableBody.innerHTML = '<tr><td colspan="8">No fee data available</td></tr>';
+  }
+}
+
+/**
+ * Render a message when no data is available.
+ * @param {HTMLElement} studentTableBody - The student table body element.
+ * @param {HTMLElement} feeTableBody - The fee table body element.
+ */
+function renderNoDataMessage(studentTableBody, feeTableBody) {
+  studentTableBody.innerHTML = '<tr><td colspan="6">No student data available</td></tr>';
+  feeTableBody.innerHTML = '<tr><td colspan="8">No fee data available</td></tr>';
 }
 
 /**

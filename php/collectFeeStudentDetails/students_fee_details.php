@@ -1,41 +1,76 @@
 <?php
-// Database connection
-include '../db_connection.php';
-
-header('Content-Type: application/json');
+// Include database connection
+require_once '../db_connection.php';
 
 try {
-    // Query to fetch student data along with hostel fee
-    $sql = "SELECT
-                CONCAT(students.first_name, ' ', students.last_name) AS full_name,
-                students.class_name,
-                students.phone,
-                students.date_of_birth,
-                students.gender,
-                students.father_name,
-                students.mother_name,
-                students.roll_no,
-                students.day_hosteler,
-                students.admission_no,
-                students.hostel_id,
-                students.transport_id
-            FROM students";
+    // Fetch student details
+   // $studentQuery = $pdo->prepare("
+   //     SELECT
+   //         full_name, father_name, mother_name,
+   //         class_name, roll_no, phone, gender,
+   //         day_hosteler, user_id, monthly_fee,
+   //         hostel_fee, transport_fee
+   //     FROM students
+   //     WHERE active = 1
+   // ");
+   // $studentQuery->execute();
+   // $students = $studentQuery->fetchAll();
 
-    $stmt = $pdo->query($sql);  // PDO query execution
+    // Fetch fee details
+    $feeQuery = $pdo->prepare("
+        SELECT
+            receipt_no AS receiptId, month, due_amount AS dueAmount,
+            pending_amount AS pendingAmount, received_amount AS receivedAmount,
+            total_amount AS totalAmount,
+            CASE WHEN pending_amount = 0 THEN 'Paid' ELSE 'Pending' END AS status
+        FROM feeDetails
+        WHERE active = 1
+    ");
+    $feeQuery->execute();
+    $feeDetails = $feeQuery->fetchAll();
 
-    $data = [];
-    if ($stmt->rowCount() > 0) {
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $data[] = $row;
-        }
+    // Aggregate fee data for cards
+    $totalPaid = 0;
+    $pendingAmount = 0;
+
+    foreach ($feeDetails as $fee) {
+        $totalPaid += $fee['receivedAmount'] ?? 0;
+        $pendingAmount += $fee['pendingAmount'] ?? 0;
     }
 
-    echo json_encode($data);
-} catch (PDOException $e) {
-    // Log the error for debugging
-    error_log("Error fetching student data: " . $e->getMessage());
+    // Fetch additional aggregated data
+    $hostelQuery = $pdo->prepare("SELECT SUM(hostel_fee) AS hostelAmount FROM students WHERE active = 1");
+    $hostelQuery->execute();
+    $hostelAmount = $hostelQuery->fetchColumn() ?? 0;
 
-    // Return error message
-    echo json_encode(['status' => 'error', 'message' => 'Unable to fetch student data']);
+    $transportQuery = $pdo->prepare("SELECT SUM(transport_fee) AS transportAmount FROM students WHERE active = 1");
+    $transportQuery->execute();
+    $transportAmount = $transportQuery->fetchColumn() ?? 0;
+
+    // Response structure
+    $response = [
+        "students" => $students,
+        "fee" => [
+            "totalPaid" => $totalPaid,
+            "pendingAmount" => $pendingAmount,
+            "hostelAmount" => $hostelAmount,
+            "transportAmount" => $transportAmount,
+            "details" => $feeDetails
+        ]
+    ];
+
+    // Return JSON response
+    header('Content-Type: application/json');
+    echo json_encode($response);
+
+} catch (PDOException $e) {
+    // Handle errors gracefully
+    error_log('Database query failed: ' . $e->getMessage(), 0);
+
+    http_response_code(500);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Failed to fetch data. Please try again later.'
+    ]);
 }
 ?>
