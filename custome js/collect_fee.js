@@ -1,13 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
   const collectFeeButton = document.getElementById('collect_fee_btn');
   const tableBody = document.querySelector('#student_data tbody');
- // const errorMessage = document.getElementById('error-message');
 
   if (collectFeeButton) {
     collectFeeButton.addEventListener('click', function (event) {
       if (!isTableDataAvailable(tableBody)) {
         event.preventDefault(); // Prevent navigation
-        showError('No student data available!'); // Show error message
+        showErrorWithLoadingBar('No student data available!'); // Show error with loading bar
       } else {
         collectFeeData(); // Proceed with fee collection
       }
@@ -20,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
  * @param {boolean} show - Whether to show or hide the loading bar.
  */
 function toggleLoadingBar(show) {
-  const loadingBar = document.getElementById('loading-bar'); // Loading bar element
+  const loadingBar = document.getElementById('loading-bar');
   if (loadingBar) {
     loadingBar.style.display = show ? 'block' : 'none';
   }
@@ -36,56 +35,24 @@ function isTableDataAvailable(tableBody) {
 }
 
 /**
- * Render student data into the table.
- * @param {HTMLElement} tableBody - The table body element.
- * @param {Array} data - Array of student objects.
+ * Show an error message alongside the loading bar.
+ * @param {string} message - The error message to display.
  */
-function renderStudentData(tableBody, data) {
-  toggleLoadingBar(true); // Show loading bar while rendering
+function showErrorWithLoadingBar(message) {
+  toggleLoadingBar(true); // Show loading bar
+  const errorMessage = document.getElementById('error-message');
+  if (errorMessage) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+  }
 
+  // Hide both loading bar and error message after a delay
   setTimeout(() => {
-    tableBody.innerHTML = ''; // Clear existing rows
-
-    // Generate table rows for each student
-    data.forEach(student => {
-      const rows = `
-        <tr>
-          <td class="fw-bold">Student's Name:</td>
-          <td>${student.full_name || 'N/A'}</td>
-          <td class="fw-bold">Father's Name:</td>
-          <td>${student.father_name || 'N/A'}</td>
-          <td class="fw-bold">Monthly Fee:</td>
-          <td>${student.monthly_fee || 'N/A'}</td>
-        </tr>
-        <tr>
-          <td class="fw-bold">Class:</td>
-          <td>${student.class_name || 'N/A'}</td>
-          <td class="fw-bold">Mother's Name:</td>
-          <td>${student.mother_name || 'N/A'}</td>
-          <td class="fw-bold">Type:</td>
-          <td>${student.day_hosteler || 'N/A'}</td>
-        </tr>
-        <tr>
-          <td class="fw-bold">Roll Number:</td>
-          <td>${student.roll_no || 'N/A'}</td>
-          <td class="fw-bold">Mobile:</td>
-          <td>${student.phone || 'N/A'}</td>
-          <td class="fw-bold">Gender:</td>
-          <td>${student.gender || 'N/A'}</td>
-        </tr>
-        <tr>
-          <td class="fw-bold">Hostel Fee:</td>
-          <td>${student.hostel_fee || 'N/A'}</td>
-          <td class="fw-bold">Transport Fee:</td>
-          <td>${student.transport_fee || 'N/A'}</td>
-          <td class="fw-bold">User ID:</td>
-          <td>${student.user_id || 'N/A'}</td>
-        </tr>`;
-      tableBody.insertAdjacentHTML('beforeend', rows);
-    });
-
-    toggleLoadingBar(false); // Hide loading bar after rendering
-  }, 500); // Simulate rendering delay
+    toggleLoadingBar(false);
+    if (errorMessage) {
+      errorMessage.style.display = 'none';
+    }
+  }, 3000); // 3 seconds delay
 }
 
 /**
@@ -99,8 +66,7 @@ function collectFeeData() {
 
   // Validate if the table contains any data
   if (tableRows.length === 0) {
-    toggleLoadingBar(false); // Hide loading bar
-    showError('No student data available to collect!');
+    showErrorWithLoadingBar('No student data available to collect!');
     return;
   }
 
@@ -126,19 +92,6 @@ function collectFeeData() {
   // Store data in session storage
   sessionStorage.setItem('studentData', JSON.stringify(studentData));
   toggleLoadingBar(false); // Hide loading bar after data is collected
-}
-
-/**
- * Show an error message.
- * @param {string} message - The error message to display.
- */
-function showError(message) {
-  const errorMessage = document.getElementById('error-message');
-  if (errorMessage) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
-    setTimeout(() => (errorMessage.style.display = 'none'), 3000); // Hide after 3 seconds
-  }
 }
 
 /**
