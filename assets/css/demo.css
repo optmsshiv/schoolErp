@@ -1015,9 +1015,10 @@ td {
   /* Adjust the width to your desired size */
 }
 
-
-
-
+/* collect fee loader hidden */
+.hidden {
+  display: none;
+}
 
 
 

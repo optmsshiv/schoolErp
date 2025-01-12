@@ -15,17 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /**
- * Toggle the visibility of the loading bar.
- * @param {boolean} show - Whether to show or hide the loading bar.
- */
-function toggleLoadingBar(show) {
-  const loadingBar = document.getElementById('loading-bar');
-  if (loadingBar) {
-    loadingBar.style.display = show ? 'block' : 'none';
-  }
-}
-
-/**
  * Check if the table contains any data rows.
  * @param {HTMLElement} tableBody - The table body element.
  * @returns {boolean} - True if data is available, false otherwise.
@@ -43,16 +32,27 @@ function showErrorWithLoadingBar(message) {
   const errorMessage = document.getElementById('error-message');
   if (errorMessage) {
     errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
+    errorMessage.classList.remove('hidden'); // Show error message
   }
 
   // Hide both loading bar and error message after a delay
   setTimeout(() => {
     toggleLoadingBar(false);
     if (errorMessage) {
-      errorMessage.style.display = 'none';
+      errorMessage.classList.add('hidden'); // Hide error message
     }
   }, 3000); // 3 seconds delay
+}
+
+/**
+ * Toggle the visibility of the loading bar.
+ * @param {boolean} show - Whether to show or hide the loading bar.
+ */
+function toggleLoadingBar(show) {
+  const loadingBar = document.getElementById('loading-bar');
+  if (loadingBar) {
+    loadingBar.classList.toggle('hidden', !show); // Toggle loading bar visibility
+  }
 }
 
 /**

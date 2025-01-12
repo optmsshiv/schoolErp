@@ -734,15 +734,16 @@
                 <div class="card">
                   <div class="card-body">
                     <h4 class="card-title fw-bold d-flex mb-0 badge bg-label-info">Student Details :- </h4>
-
-                    <div id="error-message" style="color: red; display: none;">No student data available!</div>
                     <div class="d-flex justify-content-between align-items-center">
 
-                      <div id="loading-bar" style="display: none; text-align: center; margin: 10px;">
+                      <div id="error-message" class="hidden" style="color: red;">No student data available!</div>
+                      <div id="loading-bar" class="hidden d-flex justify-content-center align-items-center"
+                        style="margin: 10px;">
                         <div class="spinner-border text-primary" role="status">
                           <span class="visually-hidden">Loading...</span>
                         </div>
                       </div>
+
 
                       <table id="student_data" class="customs-table">
                         <tbody>
@@ -773,48 +774,48 @@
                   </div>
 
 
-                    <div class="row mt-3">
-                      <!-- Card 1: Total Paid Amount -->
-                      <div class="col-lg-3 col-md-6">
-                        <div class="border rounded p-4 d-flex justify-content-between align-items-center">
-                          <div>
-                            <h5 class="card-title fw-bold">Total Paid Amount</h5>
-                            <p class="card-text" id="total_paid_amount">&#8377; </p>
-                          </div>
-                          <i class="fas fa-wallet fa-2x ms-auto"></i>
+                  <div class="row mt-3">
+                    <!-- Card 1: Total Paid Amount -->
+                    <div class="col-lg-3 col-md-6">
+                      <div class="border rounded p-4 d-flex justify-content-between align-items-center">
+                        <div>
+                          <h5 class="card-title fw-bold">Total Paid Amount</h5>
+                          <p class="card-text" id="total_paid_amount">&#8377; </p>
                         </div>
-                      </div>
-                      <!-- Card 2: Pending Amount -->
-                      <div class="col-lg-3 col-md-6">
-                        <div class="border rounded p-4 d-flex justify-content-between align-items-center">
-                          <div>
-                            <h5 class="card-title fw-bold">Pending Amount</h5>
-                            <p class="card-text" id="pending_amount">&#8377; </p>
-                          </div>
-                          <i class="fas fa-exclamation-circle fa-2x ms-auto"></i>
-                        </div>
-                      </div>
-                      <!-- Card 3: Hostel Amount -->
-                      <div class="col-lg-3 col-md-6">
-                        <div class="border rounded p-4 d-flex justify-content-between align-items-center">
-                          <div>
-                            <h5 class="card-title fw-bold">Hostel Amount</h5>
-                            <p class="card-text" id="hostel_amount">&#8377; </p>
-                          </div>
-                          <i class="fas fa-bed fa-2x ms-auto"></i>
-                        </div>
-                      </div>
-                      <!-- Card 4: Transport Amount -->
-                      <div class="col-lg-3 col-md-6">
-                        <div class="border rounded p-4 d-flex justify-content-between align-items-center">
-                          <div>
-                            <h5 class="card-title fw-bold">Transport Amount</h5>
-                            <p class="card-text" id="transport_amount">&#8377; </p>
-                          </div>
-                          <i class="fas fa-bus fa-2x"></i>
-                        </div>
+                        <i class="fas fa-wallet fa-2x ms-auto"></i>
                       </div>
                     </div>
+                    <!-- Card 2: Pending Amount -->
+                    <div class="col-lg-3 col-md-6">
+                      <div class="border rounded p-4 d-flex justify-content-between align-items-center">
+                        <div>
+                          <h5 class="card-title fw-bold">Pending Amount</h5>
+                          <p class="card-text" id="pending_amount">&#8377; </p>
+                        </div>
+                        <i class="fas fa-exclamation-circle fa-2x ms-auto"></i>
+                      </div>
+                    </div>
+                    <!-- Card 3: Hostel Amount -->
+                    <div class="col-lg-3 col-md-6">
+                      <div class="border rounded p-4 d-flex justify-content-between align-items-center">
+                        <div>
+                          <h5 class="card-title fw-bold">Hostel Amount</h5>
+                          <p class="card-text" id="hostel_amount">&#8377; </p>
+                        </div>
+                        <i class="fas fa-bed fa-2x ms-auto"></i>
+                      </div>
+                    </div>
+                    <!-- Card 4: Transport Amount -->
+                    <div class="col-lg-3 col-md-6">
+                      <div class="border rounded p-4 d-flex justify-content-between align-items-center">
+                        <div>
+                          <h5 class="card-title fw-bold">Transport Amount</h5>
+                          <p class="card-text" id="transport_amount">&#8377; </p>
+                        </div>
+                        <i class="fas fa-bus fa-2x"></i>
+                      </div>
+                    </div>
+                  </div>
 
 
                   <div class="table-responsive mt-3 mb-3">
