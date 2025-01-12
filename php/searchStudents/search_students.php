@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include the database connection
-require_once '../../db_connection.php';  // Ensure this path matches your project structure
+require_once '../db_connection.php';  // Ensure this path matches your project structure
 
 if (isset($_GET['query'])) {
     // Handle the search query
