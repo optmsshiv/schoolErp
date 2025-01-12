@@ -1,6 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Handle "Collect Fee" button click
-  document.getElementById('collect_fee_btn').addEventListener('click', collectFeeData);
+  const collectFeeButton = document.getElementById('collect_fee_btn');
+  const tableBody = document.querySelector('#student_data tbody');
+ // const errorMessage = document.getElementById('error-message');
+
+  if (collectFeeButton) {
+    collectFeeButton.addEventListener('click', function (event) {
+      if (!isTableDataAvailable(tableBody)) {
+        event.preventDefault(); // Prevent navigation
+        showError('No student data available!'); // Show error message
+      } else {
+        collectFeeData(); // Proceed with fee collection
+      }
+    });
+  }
 });
 
 /**
@@ -12,6 +24,15 @@ function toggleLoadingBar(show) {
   if (loadingBar) {
     loadingBar.style.display = show ? 'block' : 'none';
   }
+}
+
+/**
+ * Check if the table contains any data rows.
+ * @param {HTMLElement} tableBody - The table body element.
+ * @returns {boolean} - True if data is available, false otherwise.
+ */
+function isTableDataAvailable(tableBody) {
+  return tableBody && tableBody.querySelectorAll('tr').length > 0;
 }
 
 /**
@@ -78,8 +99,8 @@ function collectFeeData() {
 
   // Validate if the table contains any data
   if (tableRows.length === 0) {
-    console.error('No student data available to collect.');
     toggleLoadingBar(false); // Hide loading bar
+    showError('No student data available to collect!');
     return;
   }
 
@@ -108,6 +129,19 @@ function collectFeeData() {
 }
 
 /**
+ * Show an error message.
+ * @param {string} message - The error message to display.
+ */
+function showError(message) {
+  const errorMessage = document.getElementById('error-message');
+  if (errorMessage) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+    setTimeout(() => (errorMessage.style.display = 'none'), 3000); // Hide after 3 seconds
+  }
+}
+
+/**
  * Helper function to get text content from a specific cell in a table row.
  * @param {HTMLElement} row - The table row element.
  * @param {number} cellIndex - The index of the cell.
@@ -116,20 +150,4 @@ function collectFeeData() {
 function getCellText(row, cellIndex) {
   const cell = row.querySelector(`td:nth-child(${cellIndex})`);
   return cell ? cell.textContent.trim() : 'N/A';
-}
-
-/**
- * Render a message when no data is available.
- * @param {HTMLElement} tableBody - The table body element.
- */
-function renderNoDataMessage(tableBody) {
-  tableBody.innerHTML = '<tr><td colspan="6">No student data available</td></tr>';
-}
-
-/**
- * Render an error message in the table body.
- * @param {HTMLElement} tableBody - The table body element.
- */
-function renderErrorMessage(tableBody) {
-  tableBody.innerHTML = '<tr><td colspan="6">Search Student by Name or Father Name to get Details.</td></tr>';
 }
