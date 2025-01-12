@@ -1,48 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Fetch and populate student data on page load
- // fetchStudentData();
-
   // Handle "Collect Fee" button click
   document.getElementById('collect_fee_btn').addEventListener('click', collectFeeData);
 });
 
 /**
- * Fetch student data from the server and populate the table.
-
-async function fetchStudentData() {
+ * Toggle the visibility of the loading bar.
+ * @param {boolean} show - Whether to show or hide the loading bar.
+ */
+function toggleLoadingBar(show) {
   const loadingBar = document.getElementById('loading-bar'); // Loading bar element
-  const tableBody = document.querySelector('#student_data tbody'); // Table body
-
-  // Show loading bar if present
-  if (loadingBar) loadingBar.style.display = 'block';
-
-  try {
-    // Fetch student data from the server
-    const response = await fetch('/php/collectFeeStudentDetails/student_fee_details.php');  // it will be use to get data in table for fee use students in stead of studnet
-
-    // Check if the response is okay
-    if (!response.ok) {
-      throw new Error(`Error fetching data: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    // Validate the data
-    if (!Array.isArray(data) || data.length === 0) {
-      renderNoDataMessage(tableBody);
-      return;
-    }
-
-    // Clear table and populate rows
-    renderStudentData(tableBody, data);
-  } catch (error) {
-    console.error('Error fetching student data:', error);
-
-  } finally {
-    // Hide loading bar
-    if (loadingBar) loadingBar.style.display = 'none';
+  if (loadingBar) {
+    loadingBar.style.display = show ? 'block' : 'none';
   }
-}*/
+}
 
 /**
  * Render student data into the table.
@@ -50,57 +20,66 @@ async function fetchStudentData() {
  * @param {Array} data - Array of student objects.
  */
 function renderStudentData(tableBody, data) {
-  tableBody.innerHTML = ''; // Clear existing rows
+  toggleLoadingBar(true); // Show loading bar while rendering
 
-  // Generate table rows for each student
-  data.forEach(student => {
-    const rows = `
-      <tr>
-        <td class="fw-bold">Student's Name:</td>
-        <td>${student.full_name || 'N/A'}</td>
-        <td class="fw-bold">Father's Name:</td>
-        <td>${student.father_name || 'N/A'}</td>
-        <td class="fw-bold">Monthly Fee:</td>
-        <td>${student.monthly_fee || 'N/A'}</td>
-      </tr>
-      <tr>
-        <td class="fw-bold">Class:</td>
-        <td>${student.class_name || 'N/A'}</td>
-        <td class="fw-bold">Mother's Name:</td>
-        <td>${student.mother_name || 'N/A'}</td>
-        <td class="fw-bold">Type:</td>
-        <td>${student.day_hosteler || 'N/A'}</td>
-      </tr>
-      <tr>
-        <td class="fw-bold">Roll Number:</td>
-        <td>${student.roll_no || 'N/A'}</td>
-        <td class="fw-bold">Mobile:</td>
-        <td>${student.phone || 'N/A'}</td>
-        <td class="fw-bold">Gender:</td>
-        <td>${student.gender || 'N/A'}</td>
-      </tr>
-      <tr>
-        <td class="fw-bold">Hostel Fee:</td>
-        <td>${student.hostel_fee || 'N/A'}</td>
-        <td class="fw-bold">Transport Fee:</td>
-        <td>${student.transport_fee || 'N/A'}</td>
-        <td class="fw-bold">User ID:</td>
-        <td>${student.user_id || 'N/A'}</td>
-      </tr>`;
-    tableBody.insertAdjacentHTML('beforeend', rows);
-  });
+  setTimeout(() => {
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    // Generate table rows for each student
+    data.forEach(student => {
+      const rows = `
+        <tr>
+          <td class="fw-bold">Student's Name:</td>
+          <td>${student.full_name || 'N/A'}</td>
+          <td class="fw-bold">Father's Name:</td>
+          <td>${student.father_name || 'N/A'}</td>
+          <td class="fw-bold">Monthly Fee:</td>
+          <td>${student.monthly_fee || 'N/A'}</td>
+        </tr>
+        <tr>
+          <td class="fw-bold">Class:</td>
+          <td>${student.class_name || 'N/A'}</td>
+          <td class="fw-bold">Mother's Name:</td>
+          <td>${student.mother_name || 'N/A'}</td>
+          <td class="fw-bold">Type:</td>
+          <td>${student.day_hosteler || 'N/A'}</td>
+        </tr>
+        <tr>
+          <td class="fw-bold">Roll Number:</td>
+          <td>${student.roll_no || 'N/A'}</td>
+          <td class="fw-bold">Mobile:</td>
+          <td>${student.phone || 'N/A'}</td>
+          <td class="fw-bold">Gender:</td>
+          <td>${student.gender || 'N/A'}</td>
+        </tr>
+        <tr>
+          <td class="fw-bold">Hostel Fee:</td>
+          <td>${student.hostel_fee || 'N/A'}</td>
+          <td class="fw-bold">Transport Fee:</td>
+          <td>${student.transport_fee || 'N/A'}</td>
+          <td class="fw-bold">User ID:</td>
+          <td>${student.user_id || 'N/A'}</td>
+        </tr>`;
+      tableBody.insertAdjacentHTML('beforeend', rows);
+    });
+
+    toggleLoadingBar(false); // Hide loading bar after rendering
+  }, 500); // Simulate rendering delay
 }
 
 /**
  * Collect student fee data from the table and save it in session storage.
  */
 function collectFeeData() {
+  toggleLoadingBar(true); // Show loading bar while collecting data
+
   const tableRows = document.querySelectorAll('#student_data tbody tr');
   const studentData = [];
 
   // Validate if the table contains any data
   if (tableRows.length === 0) {
     console.error('No student data available to collect.');
+    toggleLoadingBar(false); // Hide loading bar
     return;
   }
 
@@ -125,6 +104,7 @@ function collectFeeData() {
 
   // Store data in session storage
   sessionStorage.setItem('studentData', JSON.stringify(studentData));
+  toggleLoadingBar(false); // Hide loading bar after data is collected
 }
 
 /**
