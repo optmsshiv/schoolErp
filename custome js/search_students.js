@@ -68,6 +68,7 @@ function populateStudentTable(student) {
  * @param {HTMLElement} resultsContainer - The container for displaying search results.
  */
 async function searchStudents(searchInput, resultsContainer) {
+  //ccessing properties of searchInput and resultsContainer, ensure both are defined.
   if (!searchInput || !resultsContainer) {
     console.error('Required elements not found');
     return;
@@ -111,55 +112,10 @@ async function searchStudents(searchInput, resultsContainer) {
           <p>Roll No: ${student.roll_no}</p>
       `;
 
-      // Add click event to populate student table and fetch fee details
-      card.addEventListener('click', async () => {
+      // Add click event to populate student table with details
+      card.addEventListener('click', () => {
         populateStudentTable(student);
-        resultsContainer.style.display = 'none'; // Hide results
-
-        // Fetch fee details for the selected student
-        try {
-          const feeResponse = await fetch(`../php/searchStudents/search_students.php?user_id=${student.user_id}`);
-          if (!feeResponse.ok) {
-            throw new Error('Failed to fetch fee details');
-          }
-          const { fees, totals } = await feeResponse.json();
-
-          // Update cards
-          document.getElementById('total_paid_amount').innerHTML = `&#8377; ${totals.totalPaid || 0}`;
-          document.getElementById('pending_amount').innerHTML = `&#8377; ${totals.pendingAmount || 0}`;
-          document.getElementById('hostel_amount').innerHTML = `&#8377; ${student.hostel_fee || 0}`;
-          document.getElementById('transport_amount').innerHTML = `&#8377; ${student.transport_fee || 0}`;
-
-          // Populate fee table
-          const tableBody = document.getElementById('optms').querySelector('tbody');
-          tableBody.innerHTML = fees.map(fee => `
-              <tr>
-                  <td>${fee.receiptId}</td>
-                  <td>${fee.month}</td>
-                  <td align="center">${fee.dueAmount}</td>
-                  <td align="center">${fee.pendingAmount}</td>
-                  <td align="center">${fee.receivedAmount}</td>
-                  <td align="center">${fee.totalAmount}</td>
-                  <td><span class="badge bg-label-${fee.status === 'Paid' ? 'success' : 'danger'} me-1">${fee.status}</span></td>
-                  <td align="center">
-                      <div class="dropdown">
-                          <button class="btn text-muted p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="bx bx-dots-vertical-rounded bx-sm"></i>
-                          </button>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <li><a class="dropdown-item border-bottom" href="#">View Fee Receipt</a></li>
-                              <li><a class="dropdown-item border-bottom" href="#">Send Fee Receipt</a></li>
-                              <li><a class="dropdown-item border-bottom" href="#">Send Fee Message</a></li>
-                              <li><a class="dropdown-item" href="#">Delete</a></li>
-                          </ul>
-                      </div>
-                  </td>
-              </tr>
-          `).join('');
-        } catch (error) {
-          console.error('Error fetching fee details:', error);
-          alert('Failed to fetch fee details. Please try again.');
-        }
+        resultsContainer.style.display = 'none'; // Hide the card container
       });
 
       resultsContainer.appendChild(card);
