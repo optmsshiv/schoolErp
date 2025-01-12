@@ -727,7 +727,8 @@
                 <li class="breadcrumb-item active fw-bold" aria-current="page">Student Details</li>
               </ol>
             </nav>
-            <!-- / Breadcrumb -->
+            <!-- / Breadcrumb <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt
+                      class="rounded-circle" width="50" height="50"> -->
 
             <div class="row gy-1">
               <div class="xxl">
@@ -735,12 +736,10 @@
                   <div class="card-body">
                     <h4 class="card-title fw-bold d-flex mb-0 badge bg-label-info">Student Details :- </h4>
 
-                    <div class="d-flex justify-content-center align-items-center"
-                      style="flex-direction: column; text-align: center;">
+                    <div class="d-flex flex-column align-items-center text-center">
 
-
+                      <!-- Student Data Table -->
                       <table id="student_data" class="customs-table">
-                        <tbody>
                           <thead>
                             <tr>
                               <th style="width: 12%;"></th>
@@ -751,19 +750,21 @@
                               <th></th>
                             </tr>
                           </thead>
+                          <tbody>
+                             <!-- Dynamic rows will be added here -->
                         </tbody>
                       </table>
-
-                    <!-- Error Message -->
-                    <div id="error-message" class="invisible" style="color: red;">No student data available!</div>
-                    <!-- Loading Bar -->
-                    <div id="loading-bar" class="invisible d-flex justify-content-center align-items-center"
-                      style="margin: 10px;">
-                      <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                      <!-- Loading Bar -->
+                      <div id="loading-bar" class="d-flex justify-content-center align-items-center"
+                        >
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <!-- Error Message -->
+                        <div id="error-message" class="invisible ms-3" style="color: red;">No student data available!
+                        </div>
                       </div>
                     </div>
-                  </div>
                   </div>
                 </div>
               </div>
