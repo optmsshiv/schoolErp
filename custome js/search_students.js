@@ -130,6 +130,59 @@ async function searchStudents(searchInput, resultsContainer) {
 }
 
 /**
+ * Fetch fee details for a student and update the UI.
+ * @param {number} userId - The user ID of the student.
+ */
+async function fetchFeeDetails(userId) {
+  try {
+    const response = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${encodeURIComponent(userId)}`);
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+
+    // Update fee cards
+    document.getElementById('total_paid_amount').textContent = `₹ ${data.total_paid_amount || '0'}`;
+    document.getElementById('pending_amount').textContent = `₹ ${data.pending_amount || '0'}`;
+    document.getElementById('hostel_amount').textContent = `₹ ${data.hostel_amount || '0'}`;
+    document.getElementById('transport_amount').textContent = `₹ ${data.transport_amount || '0'}`;
+
+    // Update fee table
+    const feeTableBody = document.getElementById('optms').querySelector('tbody');
+    feeTableBody.innerHTML = data.feeDetails.map(detail => `
+      <tr>
+        <td>${detail.receipt_id}</td>
+        <td>${detail.month}</td>
+        <td align="center">${detail.due_amount}</td>
+        <td align="center">${detail.pending_amount}</td>
+        <td align="center">${detail.received_amount}</td>
+        <td align="center">${detail.total_amount}</td>
+        <td><span class="badge ${detail.status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'} me-1">${detail.status}</span></td>
+        <td align="center">
+          <div class="dropdown">
+            <button class="btn text-muted p-0" type="button" data-bs-toggle="dropdown">
+              <i class="bx bx-dots-vertical-rounded bx-sm"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item border-bottom" href="#">View Fee Receipt</a></li>
+              <li><a class="dropdown-item border-bottom" href="#">Send Fee Receipt</a></li>
+              <li><a class="dropdown-item border-bottom" href="#">Send Fee Message</a></li>
+              <li><a class="dropdown-item" href="#">Delete</a></li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+
+  } catch (error) {
+    console.error('Error fetching fee details:', error);
+    alert('Error fetching fee details. Please try again later.');
+  }
+}
+
+/**
  * Debounce function to limit API calls.
  * @param {Function} func - The function to debounce.
  * @param {number} delay - The delay in milliseconds.
