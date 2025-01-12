@@ -19,7 +19,7 @@ async function fetchFeeData() {
 
   try {
     // Fetch student and fee data from the server
-    const response = await fetch('/php/collectFeeStudentDetails/students_fee_details.php');
+    const response = await fetch('../php/collectFeeStudentDetails/students_fee_details.php');
 
     // Check if the response is okay
     if (!response.ok) {

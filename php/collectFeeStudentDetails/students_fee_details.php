@@ -3,18 +3,6 @@
 require_once '../db_connection.php';
 
 try {
-    // Fetch student details
-   // $studentQuery = $pdo->prepare("
-   //     SELECT
-   //         full_name, father_name, mother_name,
-   //         class_name, roll_no, phone, gender,
-   //         day_hosteler, user_id, monthly_fee,
-   //         hostel_fee, transport_fee
-   //     FROM students
-   //     WHERE active = 1
-   // ");
-   // $studentQuery->execute();
-   // $students = $studentQuery->fetchAll();
 
     // Fetch fee details
     $feeQuery = $pdo->prepare("
@@ -39,11 +27,11 @@ try {
     }
 
     // Fetch additional aggregated data
-    $hostelQuery = $pdo->prepare("SELECT SUM(hostel_fee) AS hostelAmount FROM students WHERE active = 1");
+    $hostelQuery = $pdo->prepare("SELECT SUM(hostel_fee) AS hostelAmount FROM hostels WHERE active = 1");
     $hostelQuery->execute();
     $hostelAmount = $hostelQuery->fetchColumn() ?? 0;
 
-    $transportQuery = $pdo->prepare("SELECT SUM(transport_fee) AS transportAmount FROM students WHERE active = 1");
+    $transportQuery = $pdo->prepare("SELECT SUM(transport_fee) AS transportAmount FROM transport WHERE active = 1");
     $transportQuery->execute();
     $transportAmount = $transportQuery->fetchColumn() ?? 0;
 
