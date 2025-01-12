@@ -1,93 +1,66 @@
 <?php
-// Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Include database connection
-require_once '../../db_connection.php'; // Ensure $pdo is properly configured
-
-header('Content-Type: application/json');
+// Include the database connection
+include '../db_connection.php';  // $pdo is now available from db_connection.php
 
 try {
-    // Check if the 'query' parameter is provided (searching for students)
-    if (isset($_GET['query'])) {
-        $query = trim($_GET['query']);
-        if (empty($query)) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Search query is required.']);
-            exit;
-        }
+    // Get the search query from the request
+    $search = $_GET['query'] ?? '';
 
-        // Fetch matching students
-        $studentQuery = $pdo->prepare("
-            SELECT
-                user_id, first_name, last_name, father_name, class_name,
-                roll_no, phone, gender, monthly_fee, hostel_fee, transport_fee
-            FROM students
-            WHERE active = 1 AND
-                  (first_name LIKE :query OR last_name LIKE :query OR roll_no LIKE :query)
-            LIMIT 15
-        ");
-        $studentQuery->execute(['query' => "%$query%"]);
-        $students = $studentQuery->fetchAll(PDO::FETCH_ASSOC);
+    // Prepare the SQL statement with JOINs
+    $sql = "SELECT
+                s.first_name,
+                s.last_name,
+                s.father_name,
+                s.class_name,
+                s.roll_no,
+                s.mother_name,
+                s.phone,
+                s.gender,
+                s.user_id,
+                s.day_hosteler AS type,
+                f.amount AS monthly_fee,
+                COALESCE(h.hostel_fee, 'Not Available') AS hostel_fee,
+                COALESCE(t.transport_fee, 'Not Available') AS transport_fee
+            FROM
+                students s
+            LEFT JOIN
+                FeePlans f
+            ON
+                s.class_name = f.class_name
+            LEFT JOIN
+                hostels h
+            ON
+                s.hostel_id = h.hostel_id
+            LEFT JOIN
+                transport t
+            ON
+                s.transport_id = t.transport_id
+            WHERE
+                s.first_name LIKE :search OR
+                s.father_name LIKE :search
+            LIMIT 15";
 
-        // Handle no results found
-        if (empty($students)) {
-            echo json_encode(['message' => 'No students found matching the query.']);
-            exit;
-        }
+    // Prepare the statement using the $pdo connection
+    $stmt = $pdo->prepare($sql);
 
-        // Return the student data
-        echo json_encode($students);
+    // Bind the parameter for the search term
+    $searchTerm = '%' . $search . '%';
+    $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
 
-    // Check if the 'user_id' parameter is provided (fetching fee details)
-    } elseif (isset($_GET['user_id'])) {
-        $userId = intval($_GET['user_id']);
-        if ($userId <= 0) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Valid user ID is required.']);
-            exit;
-        }
+    // Execute the prepared statement
+    $stmt->execute();
 
-        // Fetch fee details for the student
-        $feeQuery = $pdo->prepare("
-            SELECT
-                receipt_no AS receiptId, month, due_amount AS dueAmount,
-                pending_amount AS pendingAmount, received_amount AS receivedAmount,
-                total_amount AS totalAmount,
-                CASE WHEN pending_amount = 0 THEN 'Paid' ELSE 'Pending' END AS status
-            FROM fees
-            WHERE user_id = :user_id AND active = 1
-        ");
-        $feeQuery->execute(['user_id' => $userId]);
-        $fees = $feeQuery->fetchAll(PDO::FETCH_ASSOC);
+    // Fetch results as an associative array
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Calculate totals
-        $totalPaid = 0;
-        $pendingAmount = 0;
-        foreach ($fees as $fee) {
-            $totalPaid += $fee['receivedAmount'];
-            $pendingAmount += $fee['pendingAmount'];
-        }
-
-        // Return fee details along with totals
-        echo json_encode([
-            'fees' => $fees,
-            'totals' => [
-                'totalPaid' => $totalPaid,
-                'pendingAmount' => $pendingAmount
-            ]
-        ]);
-    } else {
-        // Invalid request if neither 'query' nor 'user_id' is provided
-        http_response_code(400);
-        echo json_encode(['error' => 'Invalid request. Either "query" or "user_id" parameter is required.']);
-    }
+    // Return the results as a JSON response
+    echo json_encode($data);
 
 } catch (PDOException $e) {
-    // Handle database errors
-    error_log('Database error: ' . $e->getMessage());
-    http_response_code(500);
-    echo json_encode(['error' => 'An internal server error occurred.']);
+    // In case of an error, output the error message in JSON format
+    echo json_encode(['error' => $e->getMessage()]);
 }
 ?>
