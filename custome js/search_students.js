@@ -115,6 +115,7 @@ async function searchStudents(searchInput, resultsContainer) {
       // Add click event to populate student table with details
       card.addEventListener('click', () => {
         populateStudentTable(student);
+        fetchFeeDetails(student.user_id); // Fetch fee details on click
         resultsContainer.style.display = 'none'; // Hide the card container
       });
 

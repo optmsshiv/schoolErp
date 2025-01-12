@@ -24,7 +24,7 @@ try {
             received_amount AS receivedAmount,
             total_amount AS totalAmount,
             CASE WHEN pending_amount = 0 THEN 'Paid' ELSE 'Pending' END AS status
-        FROM fees
+        FROM feeDetails
         WHERE user_id = :userId AND active = 1
     ");
     $feeQuery->bindParam(':userId', $userId, PDO::PARAM_INT);
