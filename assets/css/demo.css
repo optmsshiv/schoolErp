@@ -1017,7 +1017,8 @@ td {
 
 /* collect fee loader hidden */
 .hidden {
-  display: none;
+  display: none !important;
+  /* Use !important to override other potential styles */
 }
 
 
