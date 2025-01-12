@@ -1016,7 +1016,7 @@ td {
 }
 
 /* collect fee loader hidden */
-.hiddenLoading {
+.invisible {
   display: none ;
   /* Use !important to override other potential styles */
 }

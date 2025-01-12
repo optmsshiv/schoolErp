@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
    // Initially, ensure the loading bar is hidden by default
   toggleLoadingBar(false);  // This will hide the loading bar on page load
-  
+
   const collectFeeButton = document.getElementById('collect_fee_btn');
   const tableBody = document.querySelector('#student_data tbody');
 
@@ -36,14 +36,14 @@ function showErrorWithLoadingBar(message) {
   const errorMessage = document.getElementById('error-message');
   if (errorMessage) {
     errorMessage.textContent = message;
-    errorMessage.classList.remove('hidden'); // Show error message
+    errorMessage.classList.remove('invisible'); // Show error message
   }
 
   // Hide both loading bar and error message after a delay
   setTimeout(() => {
     toggleLoadingBar(false);
     if (errorMessage) {
-      errorMessage.classList.add('hidden'); // Hide error message
+      errorMessage.classList.add('invisible'); // Hide error message
     }
   }, 3000); // 3 seconds delay
 }
@@ -55,7 +55,7 @@ function showErrorWithLoadingBar(message) {
 function toggleLoadingBar(show) {
   const loadingBar = document.getElementById('loading-bar');
   if (loadingBar) {
-    loadingBar.classList.toggle('hidden', !show); // Toggle loading bar visibility
+    loadingBar.classList.toggle('invisible', !show); // Toggle loading bar visibility
   }
 }
 
