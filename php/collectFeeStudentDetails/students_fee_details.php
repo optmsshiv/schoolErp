@@ -7,10 +7,7 @@ include '../db_connection.php';  // Assumes $pdo is initialized in db_connection
 
 try {
     // Get the student ID (or other identifying parameter) from the request
-   // $user_id = $_GET['user_id'] ?? null;
-   // Temporarily hardcode the user_id for testing
-$user_id = 'ADIT7077';  // Hardcoded user_id for testing
-
+    $user_id = $_GET['user_id'] ?? null;
 
     if (!$user_id) {
         echo json_encode(['error' => 'User ID is required']);
@@ -35,6 +32,9 @@ $user_id = 'ADIT7077';  // Hardcoded user_id for testing
     WHERE
         s.user_id = :user_id
     ";
+
+    // Debugging: Log the user_id being passed
+      echo "User ID: " . $user_id . "<br>";
 
     $summaryStmt = $pdo->prepare($summaryQuery);
     $summaryStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
