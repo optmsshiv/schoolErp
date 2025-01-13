@@ -152,12 +152,16 @@ async function fetchFeeDetails(userId) {
 
     // Update fee table
     const feeTableBody = document.getElementById('optms').querySelector('tbody');
-    feeTableBody.innerHTML = data.feeDetails.map(detail => `
+    feeTableBody.innerHTML = data.feeDetails.map(detail => {
+      // Adjust the pending amount if status is "Pending"
+      const adjustedPendingAmount = detail.status === 'Pending' ? detail.received_amount : detail.pending_amount;
+
+      return `
       <tr>
         <td>${detail.receipt_id}</td>
         <td>${detail.month}</td>
         <td align="center">${detail.due_amount}</td>
-        <td align="center">${detail.pending_amount}</td>
+        <td align="center">${adjustedPendingAmount}</td>
         <td align="center">${detail.received_amount}</td>
         <td align="center">${detail.total_amount}</td>
         <td><span class="badge ${detail.status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'} me-1">${detail.status}</span></td>
@@ -175,7 +179,8 @@ async function fetchFeeDetails(userId) {
           </div>
         </td>
       </tr>
-    `).join('');
+    `;
+  }).join('');
 
   } catch (error) {
     console.error('Error fetching fee details:', error);
