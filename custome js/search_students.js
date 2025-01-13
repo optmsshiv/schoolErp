@@ -143,6 +143,9 @@ async function fetchFeeDetails(userId) {
 
     const data = await response.json();
     console.log('Fee Details:', data);
+    // Check the structure of details
+        // Split the months if there are multiple values (e.g., 'August, January')
+      const months = detail.month.split(',').map(month => month.trim()).join(', ');
 
     // Update fee cards
       document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
@@ -154,7 +157,7 @@ async function fetchFeeDetails(userId) {
     feeTableBody.innerHTML = data.details.map(detail => `
       <tr>
         <td>${detail.receipt_no}</td>
-        <td>${detail.month}</td>
+        <td>${months}</td>
         <td align="center">${detail.due_amount}</td>
         <td align="center">₹ ${(parseFloat(detail.total_amount) - parseFloat(detail.received_amount)).toFixed(2)}</td>
         <td align="center">${detail.received_amount}</td>
