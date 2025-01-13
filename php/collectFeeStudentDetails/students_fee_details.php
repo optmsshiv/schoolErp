@@ -13,7 +13,7 @@ try {
         echo json_encode(['error' => 'User ID is required']);
         exit;
     }
-    echo json_encode(['debug_user_id' => $user_id]); // This will show the user_id for debugging purposes
+    
     // Fetch aggregate fee details (total paid, hostel, transport)
     $summaryQuery = "
          SELECT
