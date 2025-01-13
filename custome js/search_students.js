@@ -68,17 +68,14 @@ function populateStudentTable(student) {
  * @param {HTMLElement} resultsContainer - The container for displaying search results.
  */
 async function searchStudents(searchInput, resultsContainer) {
-  //ccessing properties of searchInput and resultsContainer, ensure both are defined.
   if (!searchInput || !resultsContainer) {
     console.error('Required elements not found');
     return;
   }
   const query = searchInput.value.trim();
 
-  // Show a loading indicator while fetching data
   resultsContainer.innerHTML = '<p class="text-info text-center">Loading...</p>';
 
-  // Clear results if query is empty
   if (!query) {
     resultsContainer.innerHTML = '';
     return;
@@ -95,13 +92,11 @@ async function searchStudents(searchInput, resultsContainer) {
 
     resultsContainer.innerHTML = '';
 
-    // Handle no results found
     if (data.length === 0) {
       resultsContainer.innerHTML = '<p class="text-danger text-center">This student does not exist.</p>';
       return;
     }
 
-    // Display results as cards
     data.forEach(student => {
       const card = document.createElement('div');
       card.classList.add('student-card');
@@ -112,17 +107,15 @@ async function searchStudents(searchInput, resultsContainer) {
           <p>Roll No: ${student.roll_no}</p>
       `;
 
-      // Add click event to populate student table with details
       card.addEventListener('click', () => {
         populateStudentTable(student);
         fetchFeeDetails(student.user_id); // Fetch fee details on click
-        resultsContainer.style.display = 'none'; // Hide the card container
+        resultsContainer.style.display = 'none';
       });
 
       resultsContainer.appendChild(card);
     });
 
-    // Show the card container
     resultsContainer.style.display = 'block';
   } catch (error) {
     console.error('Error fetching students:', error);
@@ -146,22 +139,16 @@ async function fetchFeeDetails(userId) {
 
     // Update fee cards
     document.getElementById('total_paid_amount').textContent = `₹ ${data.total_paid_amount || '0'}`;
-    document.getElementById('pending_amount').textContent = `₹ ${data.pending_amount || '0'}`;
     document.getElementById('hostel_amount').textContent = `₹ ${data.hostel_amount || '0'}`;
     document.getElementById('transport_amount').textContent = `₹ ${data.transport_amount || '0'}`;
 
     // Update fee table
     const feeTableBody = document.getElementById('optms').querySelector('tbody');
-    feeTableBody.innerHTML = data.feeDetails.map(detail => {
-      // Adjust the pending amount if status is "Pending"
-      const adjustedPendingAmount = detail.status === 'Pending' ? detail.received_amount : detail.pending_amount;
-
-      return `
+    feeTableBody.innerHTML = data.feeDetails.map(detail => `
       <tr>
         <td>${detail.receipt_id}</td>
         <td>${detail.month}</td>
         <td align="center">${detail.due_amount}</td>
-        <td align="center">${adjustedPendingAmount}</td>
         <td align="center">${detail.received_amount}</td>
         <td align="center">${detail.total_amount}</td>
         <td><span class="badge ${detail.status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'} me-1">${detail.status}</span></td>
@@ -179,8 +166,7 @@ async function fetchFeeDetails(userId) {
           </div>
         </td>
       </tr>
-    `;
-  }).join('');
+    `).join('');
 
   } catch (error) {
     console.error('Error fetching fee details:', error);

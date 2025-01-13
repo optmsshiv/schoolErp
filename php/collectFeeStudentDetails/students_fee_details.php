@@ -3,85 +3,62 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include the database connection
-include '../db_connection.php'; // Ensure $pdo is available
-
-header('Content-Type: application/json');
+include '../db_connection.php';  // Assumes $pdo is initialized in db_connection.php
 
 try {
-    // Get the user ID from the request
-    $userId = $_GET['user_id'] ?? 0;
+    // Get the student ID (or other identifying parameter) from the request
+    $user_id = $_GET['user_id'] ?? null;
 
-    // Validate user ID
-    if (!filter_var($userId, FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]])) {
-        throw new Exception('Invalid user ID');
+    if (!$user_id) {
+        echo json_encode(['error' => 'User ID is required']);
+        exit;
     }
 
-    // Fetch fee details
-    $feeQuery = $pdo->prepare("
+    // Fetch aggregate fee details (total paid, hostel, transport)
+    $summaryQuery = "
         SELECT
-            receipt_no AS receipt_id,
-            month,
-            due_amount,
-            pending_amount,
-            received_amount,
-            total_amount,
-            CASE WHEN pending_amount = 0 THEN 'Paid' ELSE 'Pending' END AS status
-        FROM feeDetails
-        WHERE user_id = :userId AND active = 1
-    ");
-    $feeQuery->bindParam(':userId', $userId, PDO::PARAM_INT);
-    $feeQuery->execute();
-    $feeDetails = $feeQuery->fetchAll(PDO::FETCH_ASSOC);
+            COALESCE(SUM(CASE WHEN f.type = 'hostel' THEN f.amount ELSE 0 END), 0) AS hostel_amount,
+            COALESCE(SUM(CASE WHEN f.type = 'transport' THEN f.amount ELSE 0 END), 0) AS transport_amount,
+            COALESCE(SUM(f.amount), 0) AS total_paid_amount
+        FROM
+            feeDetails f
+        WHERE
+            f.user_id = :user_id
+    ";
+    $summaryStmt = $pdo->prepare($summaryQuery);
+    $summaryStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $summaryStmt->execute();
+    $summary = $summaryStmt->fetch(PDO::FETCH_ASSOC);
 
-    // Aggregate fee data
-    $totalPaid = 0;
-    $pendingAmount = 0;
-    $hostelAmount = 0; // Placeholder for hostel fee, replace with actual query if needed
-    $transportAmount = 0; // Placeholder for transport fee, replace with actual query if needed
+    // Fetch detailed fee records
+    $detailsQuery = "
+        SELECT
+            f.receipt_no,
+            f.month,
+            f.due_amount,
+            f.received_amount,
+            f.total_amount,
+            CASE WHEN f.received_amount >= f.total_amount THEN 'Paid' ELSE 'Pending' END AS status
+        FROM
+            feeDetails f
+        WHERE
+            f.user_id = :user_id
+    ";
+    $detailsStmt = $pdo->prepare($detailsQuery);
+    $detailsStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $detailsStmt->execute();
+    $details = $detailsStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($feeDetails as &$fee) {
-        $totalPaid += (float)$fee['received_amount'];
-        $pendingAmount += (float)$fee['pending_amount'];
+    // Combine summary and details into a response
+    $response = [
+        'summary' => $summary,
+        'details' => $details,
+    ];
 
-        // Adjust pending amount based on status
-        if ($fee['status'] === 'Pending') {
-            $fee['pending_amount'] = $fee['received_amount'];
-        }
-    }
-
-    // Example: Fetch hostel and transport fee amounts (if applicable)
-    $hostelQuery = $pdo->prepare("
-        SELECT SUM(hostel_fee) AS hostelAmount
-        FROM hostels
-        WHERE user_id = :userId
-    ");
-    $hostelQuery->bindParam(':userId', $userId, PDO::PARAM_INT);
-    $hostelQuery->execute();
-    $hostelAmount = $hostelQuery->fetchColumn() ?? 0;
-
-    $transportQuery = $pdo->prepare("
-        SELECT SUM(transport_fee) AS transportAmount
-        FROM transport
-        WHERE user_id = :userId
-    ");
-    $transportQuery->bindParam(':userId', $userId, PDO::PARAM_INT);
-    $transportQuery->execute();
-    $transportAmount = $transportQuery->fetchColumn() ?? 0;
-
-    // Send response
-    echo json_encode([
-        'total_paid_amount' => $totalPaid,
-        'pending_amount' => $pendingAmount,
-        'hostel_amount' => $hostelAmount,
-        'transport_amount' => $transportAmount,
-        'feeDetails' => $feeDetails,
-    ]);
-
-} catch (Exception $e) {
-    // Log the error to a file for debugging
-    error_log($e->getMessage(), 3, '../logs/errors.log');
-
-    // Send error response
-    echo json_encode(['error' => 'An unexpected error occurred. Please try again later.']);
+    // Return the response as JSON
+    echo json_encode($response);
+} catch (PDOException $e) {
+    // Return an error response
+    echo json_encode(['error' => $e->getMessage()]);
 }
 ?>
