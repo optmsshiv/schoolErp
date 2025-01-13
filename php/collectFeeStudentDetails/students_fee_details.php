@@ -17,13 +17,19 @@ try {
     // Fetch aggregate fee details (total paid, hostel, transport)
     $summaryQuery = "
         SELECT
-            COALESCE(SUM(CASE WHEN f.type = 'hostel' THEN f.amount ELSE 0 END), 0) AS hostel_amount,
-            COALESCE(SUM(CASE WHEN f.type = 'transport' THEN f.amount ELSE 0 END), 0) AS transport_amount,
-            COALESCE(SUM(f.amount), 0) AS total_paid_amount
+            COALESCE(SUM(fd.amount), 0) AS total_paid_amount,
+            COALESCE(h.hostel_fee, 0) AS hostel_amount,
+            COALESCE(t.transport_fee, 0) AS transport_amount
         FROM
-            feeDetails f
+            feeDetails fd
+        LEFT JOIN
+            students s ON fd.user_id = s.user_id
+        LEFT JOIN
+            hostels h ON s.hostel_id = h.hostel_id
+        LEFT JOIN
+            transport t ON s.transport_id = t.transport_id
         WHERE
-            f.user_id = :user_id
+            fd.user_id = :user_id
     ";
     $summaryStmt = $pdo->prepare($summaryQuery);
     $summaryStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -33,16 +39,16 @@ try {
     // Fetch detailed fee records
     $detailsQuery = "
         SELECT
-            f.receipt_no,
-            f.month,
-            f.due_amount,
-            f.received_amount,
-            f.total_amount,
-            CASE WHEN f.received_amount >= f.total_amount THEN 'Paid' ELSE 'Pending' END AS status
+            fd.receipt_no,
+            fd.month,
+            fd.due_amount,
+            fd.received_amount,
+            fd.total_amount,
+            CASE WHEN fd.received_amount >= fd.total_amount THEN 'Paid' ELSE 'Pending' END AS status
         FROM
-            feeDetails f
+            feeDetails fd
         WHERE
-            f.user_id = :user_id
+            fd.user_id = :user_id
     ";
     $detailsStmt = $pdo->prepare($detailsQuery);
     $detailsStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -61,4 +67,5 @@ try {
     // Return an error response
     echo json_encode(['error' => $e->getMessage()]);
 }
+
 ?>
