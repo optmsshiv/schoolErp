@@ -33,9 +33,6 @@ try {
         s.user_id = :user_id
     ";
 
-    // Debugging: Log the user_id being passed
-      echo "User ID: " . $user_id . "<br>";
-
     $summaryStmt = $pdo->prepare($summaryQuery);
     $summaryStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $summaryStmt->execute();
