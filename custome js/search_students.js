@@ -105,6 +105,7 @@ async function searchStudents(searchInput, resultsContainer) {
       return;
     }
 
+    // Loop through students and create cards
     data.forEach(student => {
       const card = document.createElement('div');
       card.classList.add('student-card');
@@ -116,8 +117,9 @@ async function searchStudents(searchInput, resultsContainer) {
           <p>User ID: ${student.user_id}</p>
       `;
 
+      // Add a click event listener to each card
       card.addEventListener('click', () => {
-        populateStudentTable(student);
+        populateStudentTable(student); // Populate student details
         fetchFeeDetails(student.user_id); // Fetch fee details on click
         resultsContainer.style.display = 'none';
       });
@@ -138,7 +140,7 @@ async function searchStudents(searchInput, resultsContainer) {
  */
 async function fetchFeeDetails(userId) {
   try {
-    const response = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${userId}`);
+    const response = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${encodeURIComponent(userId)}`);
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
