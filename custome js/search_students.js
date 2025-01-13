@@ -143,7 +143,7 @@ async function fetchFeeDetails(userId) {
     const url = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${encodeURIComponent(userId)}`);
 
 
-    onsole.log(url);  // Log URL to check if the user_id is correct
+    console.log(url);  // Log URL to check if the user_id is correct
     const response = await fetch(url);
 
 
