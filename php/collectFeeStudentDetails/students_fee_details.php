@@ -18,6 +18,7 @@ try {
     $summaryQuery = "
          SELECT
         COALESCE(SUM(fd.amount), 0) AS total_paid_amount,
+        COALESCE(SUM(fd.due_amount), 0) AS pending_amount,
         COALESCE(h.hostel_fee, 0) AS hostel_amount,
         COALESCE(t.transport_fee, 0) AS transport_amount
     FROM
@@ -40,6 +41,7 @@ try {
     if (!$summary) {
         $summary = [
             'total_paid_amount' => 0,
+            'pending_amount' => 0,
             'hostel_amount' => 0,
             'transport_amount' => 0,
         ];
