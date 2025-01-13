@@ -3,7 +3,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include the database connection
-include '../db_connection.php';  // Ensure $pdo is available
+include '../db_connection.php'; // Ensure $pdo is available
+
+header('Content-Type: application/json');
 
 try {
     // Get the user ID from the request
@@ -14,18 +16,16 @@ try {
         throw new Exception('Invalid user ID');
     }
 
-    // Fetch fee details, with status derived from the pending amount
+    // Fetch fee details
     $feeQuery = $pdo->prepare("
         SELECT
-            receipt_no AS receiptId,
+            receipt_no AS receipt_id,
             month,
-            due_amount AS dueAmount,
-            received_amount AS receivedAmount,
-            total_amount AS totalAmount,
-            CASE
-                WHEN received_amount = 0 THEN 'Paid'
-                ELSE 'Pending'
-            END AS status
+            due_amount,
+            pending_amount,
+            received_amount,
+            total_amount,
+            CASE WHEN pending_amount = 0 THEN 'Paid' ELSE 'Pending' END AS status
         FROM feeDetails
         WHERE user_id = :userId AND active = 1
     ");
@@ -36,19 +36,20 @@ try {
     // Aggregate fee data
     $totalPaid = 0;
     $pendingAmount = 0;
+    $hostelAmount = 0; // Placeholder for hostel fee, replace with actual query if needed
+    $transportAmount = 0; // Placeholder for transport fee, replace with actual query if needed
 
-    foreach ($feeDetails as $fee) {
-        $totalPaid += (float)($fee['receivedAmount'] ?? 0);
+    foreach ($feeDetails as &$fee) {
+        $totalPaid += (float)$fee['received_amount'];
+        $pendingAmount += (float)$fee['pending_amount'];
+
+        // Adjust pending amount based on status
         if ($fee['status'] === 'Pending') {
-            $pendingAmount += (float)($fee['receivedAmount'] ?? 0); // Add to pending if status is "Pending"
+            $fee['pending_amount'] = $fee['received_amount'];
         }
     }
 
-    // Example calculations for hostel and transport amounts
-    $hostelAmount = 0;
-    $transportAmount = 0;
-
-    // If needed, calculate hostel and transport amounts
+    // Example: Fetch hostel and transport fee amounts (if applicable)
     $hostelQuery = $pdo->prepare("
         SELECT SUM(hostel_fee) AS hostelAmount
         FROM hostels
@@ -67,20 +68,20 @@ try {
     $transportQuery->execute();
     $transportAmount = $transportQuery->fetchColumn() ?? 0;
 
-    // Response
+    // Send response
     echo json_encode([
-        'totalPaid' => $totalPaid,
-        'pendingAmount' => $pendingAmount,
-        'hostelAmount' => $hostelAmount,
-        'transportAmount' => $transportAmount,
-        'details' => $feeDetails,
+        'total_paid_amount' => $totalPaid,
+        'pending_amount' => $pendingAmount,
+        'hostel_amount' => $hostelAmount,
+        'transport_amount' => $transportAmount,
+        'feeDetails' => $feeDetails,
     ]);
 
 } catch (Exception $e) {
     // Log the error to a file for debugging
     error_log($e->getMessage(), 3, '../logs/errors.log');
 
-    // Respond with a generic error message to the client
+    // Send error response
     echo json_encode(['error' => 'An unexpected error occurred. Please try again later.']);
 }
 ?>
