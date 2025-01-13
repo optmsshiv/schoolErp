@@ -145,17 +145,19 @@ async function fetchFeeDetails(userId) {
     console.log('Fee Details:', data);
     // Check the structure of details
         // Split the months if there are multiple values (e.g., 'August, January')
-      const months = detail.month.split(',').map(month => month.trim()).join(', ');
 
-    // Update fee cards
-      document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
-      document.getElementById('hostel_amount').textContent = `₹ ${data.summary.hostel_amount || '0'}`;
-      document.getElementById('transport_amount').textContent = `₹ ${data.summary.transport_amount || '0'}`;
+        // Update fee cards
+        document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
+        document.getElementById('hostel_amount').textContent = `₹ ${data.summary.hostel_amount || '0'}`;
+        document.getElementById('transport_amount').textContent = `₹ ${data.summary.transport_amount || '0'}`;
 
-    // Update fee table
-    const feeTableBody = document.getElementById('optms').querySelector('tbody');
-    feeTableBody.innerHTML = data.details.map(detail => `
-      <tr>
+        // Update fee table
+        const feeTableBody = document.getElementById('optms').querySelector('tbody');
+        feeTableBody.innerHTML = data.details.map(detail => {
+          const months = detail.month.split(',').map(month => month.trim()).join(', ');
+
+          return `
+        <tr>
         <td>${detail.receipt_no}</td>
         <td>${months}</td>
         <td align="center">${detail.due_amount}</td>
@@ -177,7 +179,8 @@ async function fetchFeeDetails(userId) {
           </div>
         </td>
       </tr>
-    `).join('');
+    `;
+     }).join('');
 
   } catch (error) {
     console.error('Error fetching fee details:', error);
