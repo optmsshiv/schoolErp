@@ -148,7 +148,7 @@ async function fetchFeeDetails(userId) {
 
         // Update fee cards
         document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
-        document.getElementById('total_due_amount').textContent = `₹ ${data.summary.total_due_amount || '0'}`;
+        document.getElementById('pending_amount').textContent = `₹ ${data.summary.total_due_amount || '0'}`;
         document.getElementById('hostel_amount').textContent = `₹ ${data.summary.hostel_amount || '0'}`;
         document.getElementById('transport_amount').textContent = `₹ ${data.summary.transport_amount || '0'}`;
 
