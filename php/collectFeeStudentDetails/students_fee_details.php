@@ -61,7 +61,7 @@ try {
         WHERE
             fd.user_id = :user_id
     ";
-    error_log("Executing query with user_id: " . $user_id);
+    
     $detailsStmt = $pdo->prepare($detailsQuery);
     $detailsStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $detailsStmt->execute();
