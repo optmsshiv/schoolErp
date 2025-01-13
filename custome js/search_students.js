@@ -138,7 +138,7 @@ async function searchStudents(searchInput, resultsContainer) {
  */
 async function fetchFeeDetails(userId) {
   try {
-    const response = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${student.user_id}`);
+    const response = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${userId}`);
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
