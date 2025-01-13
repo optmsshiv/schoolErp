@@ -146,7 +146,7 @@ async function fetchFeeDetails(userId) {
     const feeTableBody = document.getElementById('optms').querySelector('tbody');
     feeTableBody.innerHTML = data.details.map(detail => `
       <tr>
-        <td>${detail.receipt_id}</td>
+        <td>${detail.receipt_no}</td>
         <td>${detail.month}</td>
         <td align="center">${detail.due_amount}</td>
         <td align="center">₹ ${(parseFloat(detail.total_amount) - parseFloat(detail.received_amount)).toFixed(2)}</td>

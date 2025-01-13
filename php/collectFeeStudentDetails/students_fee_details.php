@@ -16,20 +16,20 @@ try {
 
     // Fetch aggregate fee details (total paid, hostel, transport)
     $summaryQuery = "
-        SELECT
-            COALESCE(SUM(fd.amount), 0) AS total_paid_amount,
-            COALESCE(h.hostel_fee, 0) AS hostel_amount,
-            COALESCE(t.transport_fee, 0) AS transport_amount
-        FROM
-            feeDetails fd
-        LEFT JOIN
-            students s ON fd.user_id = s.user_id
-        LEFT JOIN
-            hostels h ON s.hostel_id = h.hostel_id
-        LEFT JOIN
-            transport t ON s.transport_id = t.transport_id
-        WHERE
-            fd.user_id = :user_id
+         SELECT
+        COALESCE(SUM(fd.amount), 0) AS total_paid_amount,
+        COALESCE(h.hostel_fee, 0) AS hostel_amount,
+        COALESCE(t.transport_fee, 0) AS transport_amount
+    FROM
+        students s
+    LEFT JOIN
+        feeDetails fd ON fd.user_id = s.user_id
+    LEFT JOIN
+        hostels h ON s.hostel_id = h.hostel_id
+    LEFT JOIN
+        transport t ON s.transport_id = t.transport_id
+    WHERE
+        s.user_id = :user_id
     ";
     $summaryStmt = $pdo->prepare($summaryQuery);
     $summaryStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
