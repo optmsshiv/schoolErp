@@ -153,7 +153,7 @@ async function fetchFeeDetails(userId) {
 
     // Update fee table
 
-    const selectedStudentId = student.user_id; // The user ID of the selected student
+    const selectedStudentId = students.user_id; // The user ID of the selected student
     const filteredDetails = data.details.filter(detail => detail.user_id === selectedStudentId);
 
     // Now populate the table with only the filtered details
