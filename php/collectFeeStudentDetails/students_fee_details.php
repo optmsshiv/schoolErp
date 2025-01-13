@@ -36,6 +36,15 @@ try {
     $summaryStmt->execute();
     $summary = $summaryStmt->fetch(PDO::FETCH_ASSOC);
 
+      // Handle case where no summary is found
+    if (!$summary) {
+        $summary = [
+            'total_paid_amount' => 0,
+            'hostel_amount' => 0,
+            'transport_amount' => 0,
+        ];
+    }
+
     // Fetch detailed fee records
     $detailsQuery = "
         SELECT
@@ -55,6 +64,11 @@ try {
     $detailsStmt->execute();
     $details = $detailsStmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Handle case where no fee details are found
+    if (empty($details)) {
+        $details = [];
+    }
+
     // Combine summary and details into a response
     $response = [
         'summary' => $summary,
@@ -65,7 +79,7 @@ try {
     echo json_encode($response);
 } catch (PDOException $e) {
     // Return an error response
-    echo json_encode(['error' => $e->getMessage()]);
+    echo json_encode(['error' => 'An unexpected error occurred: ' . $e->getMessage()]);
 }
 
 ?>
