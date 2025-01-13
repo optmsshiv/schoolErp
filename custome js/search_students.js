@@ -140,7 +140,12 @@ async function searchStudents(searchInput, resultsContainer) {
  */
 async function fetchFeeDetails(userId) {
   try {
-    const response = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${encodeURIComponent(userId)}`);
+    const url = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${encodeURIComponent(userId)}`);
+
+
+    onsole.log(url);  // Log URL to check if the user_id is correct
+    const response = await fetch(url);
+
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
