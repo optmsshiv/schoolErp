@@ -81,6 +81,12 @@ async function searchStudents(searchInput, resultsContainer) {
     return;
   }
 
+  // Clear previous fee details (if any)
+  document.getElementById('total_paid_amount').textContent = '₹ 0';
+  document.getElementById('hostel_amount').textContent = '₹ 0';
+  document.getElementById('transport_amount').textContent = '₹ 0';
+  document.getElementById('optms').querySelector('tbody').innerHTML = '';
+
   try {
     const response = await fetch(`../php/searchStudents/search_students.php?query=${encodeURIComponent(query)}`);
 
