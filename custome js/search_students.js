@@ -142,6 +142,7 @@ async function fetchFeeDetails(userId) {
     }
 
     const data = await response.json();
+    console.log('Fee Details:', data);
 
     // Update fee cards
       document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
