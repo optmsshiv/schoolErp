@@ -144,19 +144,23 @@ async function fetchFeeDetails(userId) {
     const data = await response.json();
     console.log('Fee Details:', data);
     // Check the structure of details
-        // Split the months if there are multiple values (e.g., 'August, January')
 
-        // Update fee cards
-        document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
-        document.getElementById('pending_amount').textContent = `₹ ${data.summary.total_due_amount || '0'}`;
-        document.getElementById('hostel_amount').textContent = `₹ ${data.summary.hostel_amount || '0'}`;
-        document.getElementById('transport_amount').textContent = `₹ ${data.summary.transport_amount || '0'}`;
+    // Update fee cards
+    document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
+    document.getElementById('pending_amount').textContent = `₹ ${data.summary.total_due_amount || '0'}`;
+    document.getElementById('hostel_amount').textContent = `₹ ${data.summary.hostel_amount || '0'}`;
+    document.getElementById('transport_amount').textContent = `₹ ${data.summary.transport_amount || '0'}`;
 
-        // Update fee table
-        const feeTableBody = document.getElementById('optms').querySelector('tbody');
-        feeTableBody.innerHTML = data.details.map(detail => {
-          const months = detail.month.split(',').map(month => month.trim()).join(', ');
+    // Update fee table
 
+    const selectedStudentId = student.user_id; // The user ID of the selected student
+    const filteredDetails = data.details.filter(detail => detail.user_id === selectedStudentId);
+
+    // Now populate the table with only the filtered details
+    const feeTableBody = document.getElementById('optms').querySelector('tbody');
+    feeTableBody.innerHTML = filteredDetails.map(detail => {
+            // Split the months if there are multiple values (e.g., 'August, January')
+          const months = detail.month.split(',').map(month => month.trim()).join(', ');// Trim and join the months
           return `
         <tr>
         <td>${detail.receipt_no}</td>
