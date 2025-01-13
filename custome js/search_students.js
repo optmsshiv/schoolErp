@@ -141,8 +141,7 @@ async function fetchFeeDetails(userId) {
       throw new Error('Network response was not ok');
     }
 
-    const data = await response.json();
-    console.log('Fee Details:', data);
+    
     // Check the structure of details
 
     // Update fee cards
