@@ -141,6 +141,7 @@ async function fetchFeeDetails(userId) {
       throw new Error('Network response was not ok');
     }
 
+    const data = await response.json();
     
     // Check the structure of details
 
