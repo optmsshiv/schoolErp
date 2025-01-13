@@ -13,7 +13,7 @@ try {
         echo json_encode(['error' => 'User ID is required']);
         exit;
     }
-    
+
     // Fetch aggregate fee details (total paid, hostel, transport)
     $summaryQuery = "
          SELECT
@@ -61,6 +61,7 @@ try {
         WHERE
             fd.user_id = :user_id
     ";
+    error_log("Executing query with user_id: " . $user_id);
     $detailsStmt = $pdo->prepare($detailsQuery);
     $detailsStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $detailsStmt->execute();
