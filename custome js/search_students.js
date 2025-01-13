@@ -113,6 +113,7 @@ async function searchStudents(searchInput, resultsContainer) {
           <p>Father's Name: ${student.father_name || 'N/A'}</p>
           <p>Class: ${student.class_name || 'N/A'}</p>
           <p>Roll No: ${student.roll_no || 'N/A'}</p>
+          <p>User ID: ${student.user_id}</p>
       `;
 
       card.addEventListener('click', () => {
