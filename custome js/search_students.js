@@ -144,7 +144,7 @@ async function fetchFeeDetails(userId) {
 
     // Update fee table
     const feeTableBody = document.getElementById('optms').querySelector('tbody');
-    feeTableBody.innerHTML = data.feeDetails.map(detail => `
+    feeTableBody.innerHTML = (data.feeDetails || []).map(detail => `
       <tr>
         <td>${detail.receipt_id}</td>
         <td>${detail.month}</td>
