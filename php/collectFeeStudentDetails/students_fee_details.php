@@ -18,7 +18,7 @@ try {
     $summaryQuery = "
          SELECT
         COALESCE(SUM(fd.received_amount), 0) AS total_paid_amount,
-        COALESCE(SUM(fd.due_amount), 0) AS pending_amount,
+        COALESCE(SUM(fd.pending_amount), 0) AS pending_amount,
         COALESCE(h.hostel_fee, 0) AS hostel_amount,
         COALESCE(t.transport_fee, 0) AS transport_amount
     FROM
