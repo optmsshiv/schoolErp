@@ -29,9 +29,9 @@ try {
     FROM
         students s
     LEFT JOIN
-        feeDetails fd1 ON fd.user_id = s.user_id
+        feeDetails fd1 ON fd1.user_id = s.user_id
     LEFT JOIN
-        feeDetails fd2 ON fd.user_id = s.user_id
+        feeDetails fd2 ON fd2.user_id = s.user_id
     WHERE
         s.user_id = :user_id
     GROUP BY
