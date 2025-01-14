@@ -36,8 +36,6 @@ LEFT JOIN
     transport t ON s.transport_id = t.transport_id
 WHERE
     s.user_id = :user_id
-GROUP BY
-    s.user_id;
 
     ";
 
