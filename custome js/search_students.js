@@ -248,5 +248,3 @@ function debounce(func, delay) {
   };
 }
 
-
-<script src="../custome js/fee_receipt_modal/paid_reiept.js"></script>
