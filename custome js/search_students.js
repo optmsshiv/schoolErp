@@ -154,12 +154,6 @@ async function fetchFeeDetails(userId) {
       return;
     }
 
-    // Update fee cards
-    document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
-    document.getElementById('pending_amount').textContent = `₹ ${totalPendingAmount.toFixed(2)}`;
-    document.getElementById('hostel_amount').textContent = `₹ ${data.summary.hostel_amount || '0'}`;
-    document.getElementById('transport_amount').textContent = `₹ ${data.summary.transport_amount || '0'}`;
-
     // Calculate total pending amount from table data
 const totalPendingAmount = data.details.reduce((sum, detail) => {
   if (detail.status === 'Paid') {
@@ -171,6 +165,13 @@ const totalPendingAmount = data.details.reduce((sum, detail) => {
   }
   return sum; // For any other status, do nothing
 }, 0);
+// Update the UI with the calculated total pending amount
+
+    // Update fee cards
+    document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
+    document.getElementById('pending_amount').textContent = `₹ ${totalPendingAmount.toFixed(2)}`;
+    document.getElementById('hostel_amount').textContent = `₹ ${data.summary.hostel_amount || '0'}`;
+    document.getElementById('transport_amount').textContent = `₹ ${data.summary.transport_amount || '0'}`;
 
     // Update fee table
     const feeTableBody = document.getElementById('optms').querySelector('tbody');
