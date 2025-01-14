@@ -249,14 +249,23 @@ function debounce(func, delay) {
 }
 
 
-// dynamically add event listener
-const script = document.createElement("script");
-script.src = "/custome js/fee_reciept_modal/paid_reciept.js";
-script.onload = () => {
-  // Call the setup function defined in modalLoader.js
-  if (typeof setupModalLoader === "function") {
-    setupModalLoader("/html/model/fee_reciept_paid.html");
-  }
-};
-document.head.appendChild(script);
 
+
+// Function to dynamically load a JavaScript file
+function loadScript(scriptPath, callback) {
+  const script = document.createElement("script");
+  script.src = scriptPath;
+  script.type = "text/javascript";
+  script.onload = callback;
+  document.head.appendChild(script); // Add the script to the document head
+}
+
+// Use the function to load modal.js
+loadScript("/custome js/fee_reciept_modal/paid_reciept.js", function () {
+  console.log("modal.js loaded successfully!");
+
+  // Optional: Call a function from modal.js if needed
+  if (typeof setupModalLoader === "function") {
+    setupModalLoader(); // Assuming modal.js exports this function
+  }
+});
