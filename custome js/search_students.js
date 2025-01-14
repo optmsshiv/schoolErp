@@ -217,8 +217,15 @@ async function fetchFeeDetails(userId) {
       `;
     }).join('');
 
-    // Dynamically load another script after populating the table
-    loadScript('/custome js/fee_reciept_modal/paid_reciept.js');
+     // Attach the click event listener for 'View Fee Receipt' link
+    document.querySelectorAll('#viewFeeReceiptLink').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        // Load and display the modal dynamically
+        loadFeeReceiptModal();
+      });
+    });
 
   } catch (error) {
     console.error('Error fetching fee details:', error);
@@ -260,4 +267,22 @@ function loadScript(src) {
 
   // Append the script to the body or head
   document.head.appendChild(script);
+}
+// Function to dynamically load and show the modal
+function loadFeeReceiptModal() {
+  // Fetch the modal HTML file and load it into the modalContainer
+  fetch('/html/model/fee_reciept_paid.html') // Replace with the correct path to your modal HTML file
+    .then(response => response.text())
+    .then(modalHTML => {
+      // Insert the modal content into the modalContainer
+      document.getElementById('modalContainer').innerHTML = modalHTML;
+
+      // Initialize and show the modal using Bootstrap
+      const modalElement = new bootstrap.Modal(document.getElementById('viewFeeReceiptModal'));
+      modalElement.show();
+    })
+    .catch(error => {
+      console.error('Error loading modal HTML:', error);
+      alert('There was an error loading the modal.');
+    });
 }
