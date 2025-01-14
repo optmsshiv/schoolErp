@@ -39,7 +39,17 @@
 
 <script>
   function printReceipt() {
-      // Trigger the print dialog for the current page
-      window.print();
+      // Ensure the modal is visible before printing
+      var modal = document.getElementById('viewFeeReceiptModal');
+      if (modal) {
+          // Show the modal if it's not already visible
+          var bootstrapModal = new bootstrap.Modal(modal);
+          bootstrapModal.show();
+
+          // Wait for the modal to be fully visible before printing
+          setTimeout(function() {
+              window.print();
+          }, 100); // Adjust the timeout as necessary
+      }
   }
 </script>
