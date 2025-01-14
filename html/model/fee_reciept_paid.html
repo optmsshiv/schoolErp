@@ -1,25 +1,21 @@
 <div class="modal fade" id="viewFeeReceiptModal" tabindex="-1" aria-labelledby="viewFeeReceiptModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header text-center">
+      <div class="modal-header d-flex justify-content-between align-items-center">
         <!-- School Logo and Name -->
-        <div class="d-flex justify-content-between align-items-center w-100">
-          <div class="d-flex align-items-center">
-            <img src="/assets/img/avatars/1.png" alt="School Logo" style="width: 60px; height: auto; margin-right: 15px;">
-            <h5 class="modal-title" id="viewFeeReceiptModalLabel" style="font-family: 'Cursive', sans-serif; font-size: 28px; color: #4e73df; font-weight: bold;">Greenwood International School</h5>
-          </div>
-          <!-- QR Code -->
-          <img src="qr-code.png" alt="QR Code" style="width: 120px; height: 120px;">
+        <div class="d-flex align-items-center">
+          <img src="/assets/img/avatars/1.png" alt="School Logo" style="width: 60px; height: auto; margin-right: 15px;">
+          <h5 class="modal-title" id="viewFeeReceiptModalLabel" style="font-family: 'Cursive', sans-serif; font-size: 28px; color: #4e73df; font-weight: bold;">Greenwood International School</h5>
         </div>
-        <p class="text-center">123 School Lane, Springfield, IL 62701</p>
-        <p class="text-center">Phone: +1 (123) 456-7890 | Email: contact@greenwoodschool.edu</p>
+        <!-- QR Code (top-right corner) -->
+        <img src="qr-code.png" alt="QR Code" style="width: 100px; height: 100px;">
       </div>
 
       <div class="modal-body">
-        <!-- Additional Info -->
+        <!-- Additional Info: Left and Right Columns -->
         <div class="row">
           <!-- Left Column (Student Info) -->
-          <div class="col-md-6" style="border: 2px solid #4e73df; padding: 10px; border-radius: 10px;">
+          <div class="col-md-6">
             <p><strong>Student Name:</strong> John Doe</p>
             <p><strong>Father's Name:</strong> Mr. Michael Doe</p>
             <p><strong>Class:</strong> 10th Grade</p>
@@ -27,17 +23,17 @@
             <p><strong>Receipt Date:</strong> January 10, 2025</p>
           </div>
           <!-- Right Column (Payment Info) -->
-          <div class="col-md-6" style="border: 2px solid #4e73df; padding: 10px; border-radius: 10px;">
-            <p style="text-align: right;"><strong>Receipt Number:</strong> #12345</p>
-            <p style="text-align: right;"><strong>Amount Paid:</strong> $500</p>
-            <p style="text-align: right;"><strong>Payment Date:</strong> January 10, 2025</p>
-            <p style="text-align: right;"><strong>Fee Description:</strong> Tuition Fee for Semester 1</p>
-            <p style="text-align: right;"><strong>Paid By:</strong> Credit Card</p>
+          <div class="col-md-6">
+            <p><strong>Receipt Number:</strong> #12345</p>
+            <p><strong>Amount Paid:</strong> $500</p>
+            <p><strong>Payment Date:</strong> January 10, 2025</p>
+            <p><strong>Fee Description:</strong> Tuition Fee for Semester 1</p>
+            <p><strong>Paid By:</strong> Credit Card</p>
           </div>
         </div>
 
-        <!-- Fee Details Table -->
-        <table class="table table-striped table-bordered mt-4" style="width: 100%; border-radius: 10px; overflow: hidden;">
+        <!-- Fee Details Table (Auto-fit) -->
+        <table class="table table-striped table-bordered table-hover mt-4" style="width: 100%; border-radius: 10px; overflow: hidden;">
           <thead class="table-light">
             <tr>
               <th scope="col">Fee Item</th>
