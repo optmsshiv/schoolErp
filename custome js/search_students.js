@@ -247,3 +247,6 @@ function debounce(func, delay) {
     debounceTimeout = setTimeout(() => func(...args), delay);
   };
 }
+
+
+<script src="../custome js/fee_receipt_modal/paid_reiept.js"></script>
