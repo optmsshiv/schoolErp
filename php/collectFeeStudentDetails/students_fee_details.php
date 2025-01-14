@@ -37,7 +37,7 @@ try {
     ";
 
     $summaryStmt = $pdo->prepare($summaryQuery);
-    $summaryStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $summaryStmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
     $summaryStmt->execute();
     $summary = $summaryStmt->fetch(PDO::FETCH_ASSOC);
 
