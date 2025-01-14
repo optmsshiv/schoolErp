@@ -28,6 +28,10 @@
 
 <script>
   function printReceipt() {
+    // Get the content of the receipt
+    var receiptContent = document.getElementById('receiptContent').innerHTML;
+
+    // Open a new window for printing
     var printWindow = window.open('', '', 'height=600,width=800');
     printWindow.document.write('<html><head><title>Print Fee Receipt</title>');
     printWindow.document.write('<style>');
@@ -39,14 +43,9 @@
     printWindow.document.write('.footer { text-align: center; margin-top: 40px; font-size: 14px; color: #777; }');
     printWindow.document.write('</style></head><body>');
 
+    // Write the receipt content into the print window
     printWindow.document.write('<div class="receipt-content">');
-    printWindow.document.write('<h4 class="receipt-title">Fee Payment Receipt</h4>');
-    printWindow.document.write('<p><strong>Student Name:</strong> John Doe</p>');
-    printWindow.document.write('<p><strong>Receipt Number:</strong> #12345</p>');
-    printWindow.document.write('<p><strong>Amount Paid:</strong> $500</p>');
-    printWindow.document.write('<p><strong>Payment Date:</strong> January 10, 2025</p>');
-    printWindow.document.write('<p><strong>Fee Description:</strong> Tuition Fee for Semester 1</p>');
-    printWindow.document.write('<p><strong>Paid By:</strong> Credit Card</p>');
+    printWindow.document.write(receiptContent);
     printWindow.document.write('</div>');
 
     printWindow.document.write('<div class="footer">Thank you for your payment!</div>');
