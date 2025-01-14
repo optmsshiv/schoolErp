@@ -248,8 +248,16 @@ function debounce(func, delay) {
   };
 }
 
-// Import search.js into fee.js (provide relative path)
-import '/custome js/fee_reciept_modal/paid_reciept.js';  // Adjust the path based on where search.js is located
+// Dynamically load another JS file
+function loadScript(src) {
+  const script = document.createElement('script');
+  script.src = src;
+  script.type = 'text/javascript';
+  script.async = true;
 
-// Your fee.js logic
-console.log('fee.js loaded');
+  // Append the script to the body or head
+  document.head.appendChild(script);
+}
+
+// Load another script
+loadScript('/custome js/fee_reciept_modal/paid_reciept.js'); // Replace with your actual path
