@@ -247,25 +247,3 @@ function debounce(func, delay) {
     debounceTimeout = setTimeout(() => func(...args), delay);
   };
 }
-
-
-
-
-// Function to dynamically load a JavaScript file
-function loadScript(scriptPath, callback) {
-  const script = document.createElement("script");
-  script.src = scriptPath;
-  script.type = "text/javascript";
-  script.onload = callback;
-  document.head.appendChild(script); // Add the script to the document head
-}
-
-// Use the function to load modal.js
-loadScript("/custome js/fee_reciept_modal/paid_reciept.js", function () {
-  console.log("modal.js loaded successfully!");
-
-  // Optional: Call a function from modal.js if needed
-  if (typeof setupModalLoader === "function") {
-    setupModalLoader(); // Assuming modal.js exports this function
-  }
-});
