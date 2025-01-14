@@ -156,9 +156,21 @@ async function fetchFeeDetails(userId) {
 
     // Update fee cards
     document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
-    document.getElementById('pending_amount').textContent = `₹ ${data.summary.pending_amount || '0'}`;
+    document.getElementById('pending_amount').textContent = `₹ ${totalPendingAmount.toFixed(2)}`;
     document.getElementById('hostel_amount').textContent = `₹ ${data.summary.hostel_amount || '0'}`;
     document.getElementById('transport_amount').textContent = `₹ ${data.summary.transport_amount || '0'}`;
+
+    // Calculate total pending amount from table data
+const totalPendingAmount = data.details.reduce((sum, detail) => {
+  if (detail.status === 'Paid') {
+    // Add 'due_amount' for Paid status
+    return sum + parseFloat(detail.due_amount || 0);
+  } else if (detail.status === 'Pending') {
+    // Add 'total_amount' for Pending status
+    return sum + parseFloat(detail.total_amount || 0);
+  }
+  return sum; // For any other status, do nothing
+}, 0);
 
     // Update fee table
     const feeTableBody = document.getElementById('optms').querySelector('tbody');
@@ -170,6 +182,7 @@ async function fetchFeeDetails(userId) {
           <td>${detail.receipt_no}</td>
           <td>${months}</td>
           <td align="center">₹ ${detail.due_amount || '0'}</td>
+
           <td align="center">
         ${
           detail.status === 'Pending'
@@ -177,6 +190,7 @@ async function fetchFeeDetails(userId) {
             : '—'
         }
       </td>
+
           <td align="center">₹ ${detail.received_amount || '0'}</td>
           <td align="center">₹ ${detail.total_amount || '0'}</td>
           <td><span class="badge ${detail.status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'}">${detail.status}</span></td>
