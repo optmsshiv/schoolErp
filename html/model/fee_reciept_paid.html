@@ -1,51 +1,74 @@
 <div class="modal fade" id="viewFeeReceiptModal" tabindex="-1" aria-labelledby="viewFeeReceiptModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <img src="/assets/img/avatars/1.png" alt="School Logo" style="width: 50px; height: auto; margin-right: 15px;">
-        <h5 class="modal-title" id="viewFeeReceiptModalLabel" style="flex-grow: 1; text-align: center;">School Fee Receipt</h5>
+        <div class="d-flex justify-content-between w-100">
+          <!-- School Logo and Name -->
+          <div class="d-flex align-items-center">
+            <img src="/assets/img/avatars/1.png" alt="School Logo" style="width: 50px; height: auto; margin-right: 15px;">
+            <h5 class="modal-title" id="viewFeeReceiptModalLabel" style="font-family: 'Cursive', sans-serif; font-size: 24px; color: #4e73df;">Greenwood International School</h5>
+          </div>
+          <!-- QR Code -->
+          <img src="qr-code.png" alt="QR Code" style="width: 100px; height: 100px;">
+        </div>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+
       <div class="modal-body">
-        <!-- Fee receipt details in a table -->
-        <table class="table table-bordered">
+        <!-- Additional Info -->
+        <div class="row">
+          <div class="col-6">
+            <p><strong>Student Name:</strong> John Doe</p>
+            <p><strong>Father's Name:</strong> Mr. Michael Doe</p>
+            <p><strong>Class:</strong> 10th Grade</p>
+            <p><strong>Roll Number:</strong> 1234</p>
+            <p><strong>Receipt Date:</strong> January 10, 2025</p>
+          </div>
+          <div class="col-6">
+            <p><strong>Receipt Number:</strong> #12345</p>
+            <p><strong>Amount Paid:</strong> $500</p>
+            <p><strong>Payment Date:</strong> January 10, 2025</p>
+            <p><strong>Fee Description:</strong> Tuition Fee for Semester 1</p>
+            <p><strong>Paid By:</strong> Credit Card</p>
+          </div>
+        </div>
+
+        <!-- Fee Details Table -->
+        <table class="table table-striped table-bordered mt-4">
+          <thead>
+            <tr>
+              <th scope="col">Fee Item</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Paid</th>
+            </tr>
+          </thead>
           <tbody>
             <tr>
-              <td><strong>Student Name:</strong></td>
-              <td>John Doe</td>
+              <td>Tuition Fee</td>
+              <td>$400</td>
+              <td>$400</td>
             </tr>
             <tr>
-              <td><strong>Receipt Number:</strong></td>
-              <td>#12345</td>
+              <td>Activity Fee</td>
+              <td>$50</td>
+              <td>$50</td>
             </tr>
             <tr>
-              <td><strong>Amount Paid:</strong></td>
-              <td>$500</td>
+              <td>Library Fee</td>
+              <td>$50</td>
+              <td>$50</td>
             </tr>
             <tr>
-              <td><strong>Payment Date:</strong></td>
-              <td>January 10, 2025</td>
-            </tr>
-            <tr>
-              <td><strong>Fee Description:</strong></td>
-              <td>Tuition Fee for Semester 1</td>
-            </tr>
-            <tr>
-              <td><strong>Paid By:</strong></td>
-              <td>Credit Card</td>
+              <td><strong>Total</strong></td>
+              <td><strong>$500</strong></td>
+              <td><strong>$500</strong></td>
             </tr>
           </tbody>
         </table>
-
-        <!-- QR Code -->
-        <div class="text-center">
-          <img src="qr-code.png" alt="QR Code" style="width: 150px; height: 150px;">
-          <p><small>Scan this QR code for payment verification.</small></p>
-        </div>
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <!-- Optional: add a print button -->
         <button type="button" class="btn btn-primary" onclick="window.print();">Print Receipt</button>
       </div>
     </div>
