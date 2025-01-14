@@ -72,6 +72,8 @@ function populateStudentTable(student) {
  * @param {HTMLInputElement} searchInput - The search input element.
  * @param {HTMLElement} resultsContainer - The container for displaying search results.
  */
+
+let currentUserId = null;
 async function searchStudents(searchInput, resultsContainer) {
   if (!searchInput || !resultsContainer) {
     console.error('Required elements not found');
@@ -121,7 +123,15 @@ async function searchStudents(searchInput, resultsContainer) {
       card.addEventListener('click', () => {
         console.log('Clicked student:', student); // Log the student to confirm
         populateStudentTable(student); // Populate student details
-        fetchFeeDetails(student.user_id); // Fetch fee details on click
+
+        // Check if the user_id is different from the current one being tracked
+        if (currentUserId !== student.user_id) {
+          resetFeeDetails(); // Reset previous fee details
+          fetchFeeDetails(student.user_id); // Fetch fee details for the selected student
+          currentUserId = student.user_id; // Set current user_id to the clicked student's id
+        }
+
+      //  fetchFeeDetails(student.user_id); // Fetch fee details on click
         resultsContainer.style.display = 'none';
       });
 
@@ -139,12 +149,9 @@ async function searchStudents(searchInput, resultsContainer) {
  * Fetch fee details for a student and update the UI.
  * @param {number} userId - The user ID of the student.
  */
-  let selectedUserId = null;
-async function fetchFeeDetails(userId) {
-  if (selectedUserId === userId) return; // Skip if the same user is selected again
 
-  selectedUserId = userId;
-  console.log('Fetching fee details for user_id:', userId);
+async function fetchFeeDetails(userId) {
+  console.log('Fetching fee details for user_id:', userId); //Debugging
   try {
     const response = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${encodeURIComponent(userId)}`);
 
