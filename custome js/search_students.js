@@ -119,6 +119,7 @@ async function searchStudents(searchInput, resultsContainer) {
 
       // Add a click event listener to each card
       card.addEventListener('click', () => {
+        console.log('Clicked student:', student); // Log the student to confirm
         populateStudentTable(student); // Populate student details
         fetchFeeDetails(student.user_id); // Fetch fee details on click
         resultsContainer.style.display = 'none';
@@ -138,8 +139,12 @@ async function searchStudents(searchInput, resultsContainer) {
  * Fetch fee details for a student and update the UI.
  * @param {number} userId - The user ID of the student.
  */
+  let selectedUserId = null;
 async function fetchFeeDetails(userId) {
-  console.log('Fetching fee details for user_id:', userId); // Debugging line
+  if (selectedUserId === userId) return; // Skip if the same user is selected again
+
+  selectedUserId = userId;
+  console.log('Fetching fee details for user_id:', userId);
   try {
     const response = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${encodeURIComponent(userId)}`);
 
