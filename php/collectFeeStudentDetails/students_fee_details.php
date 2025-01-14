@@ -16,10 +16,10 @@ try {
 
     // Fetch aggregate fee details (total paid, hostel, transport)
     // COALESCE(SUM(fd.total_amount), 0) + COALESCE(SUM(fd.due_amount), 0) AS pending_amount,
-    
+
     $summaryQuery = "
          SELECT
-        COALESCE(SUM(fd.received_amount), 0) AS total_paid_amount,
+        COALESCE(SUM(CASE WHEN fd.status = 'Paid' THEN fd.received_amount ELSE 0 END), 0) AS total_paid_amount,
         COALESCE(h.hostel_fee, 0) AS hostel_amount,
         COALESCE(t.transport_fee, 0) AS transport_amount
     FROM

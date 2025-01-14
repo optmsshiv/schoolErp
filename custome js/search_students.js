@@ -155,17 +155,17 @@ async function fetchFeeDetails(userId) {
     }
 
     // Calculate total pending amount from table data
-const totalPendingAmount = data.details.reduce((sum, detail) => {
-  if (detail.status === 'Paid') {
-    // Add 'due_amount' for Paid status
-    return sum + parseFloat(detail.due_amount || 0);
-  } else if (detail.status === 'Pending') {
-    // Add 'total_amount' for Pending status
-    return sum + parseFloat(detail.total_amount || 0);
-  }
-  return sum; // For any other status, do nothing
-}, 0);
-// Update the UI with the calculated total pending amount
+    const totalPendingAmount = data.details.reduce((sum, detail) => {
+      if (detail.status === 'Paid') {
+        // Add 'due_amount' for Paid status
+        return sum + parseFloat(detail.due_amount || 0);
+      } else if (detail.status === 'Pending') {
+        // Add 'total_amount' for Pending status
+        return sum + parseFloat(detail.total_amount || 0);
+      }
+      return sum; // For any other status, do nothing
+    }, 0);
+    // Update the UI with the calculated total pending amount
 
     // Update fee cards
     document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
@@ -185,10 +185,9 @@ const totalPendingAmount = data.details.reduce((sum, detail) => {
           <td align="center">₹ ${detail.due_amount || '0'}</td>
 
           <td align="center">
-        ${
-          detail.status === 'Pending'
-            ? `₹ ${(parseFloat(detail.total_amount || 0) - parseFloat(detail.received_amount || 0)).toFixed(2)}`
-            : '—'
+        ${detail.status === 'Pending'
+          ? `₹ ${(parseFloat(detail.total_amount || 0) - parseFloat(detail.received_amount || 0)).toFixed(2)}`
+          : '—'
         }
       </td>
 
