@@ -8,6 +8,8 @@ include '../db_connection.php';  // Assumes $pdo is initialized in db_connection
 try {
     // Get the student ID (or other identifying parameter) from the request
     $user_id = $_GET['user_id'] ?? null;
+    // Use this user_id to filter the database query
+    $sql = "SELECT ... WHERE s.user_id = '$user_id'";
 
     if (!$user_id) {
         echo json_encode(['error' => 'User ID is required']);
