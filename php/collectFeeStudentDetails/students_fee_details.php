@@ -6,42 +6,37 @@ ini_set('display_errors', 1);
 include '../db_connection.php';  // Assumes $pdo is initialized in db_connection.php
 
 try {
-    // Get the student ID (or other identifying parameter) from the request
+    // Get the user_id from the request
     $user_id = $_GET['user_id'] ?? null;
-    // Use this user_id to filter the database query
-    $sql = "SELECT ... WHERE s.user_id = '$user_id'";
 
     if (!$user_id) {
         echo json_encode(['error' => 'User ID is required']);
         exit;
     }
 
-    // Fetch aggregate fee details (total paid, hostel, transport)
-    // COALESCE(SUM(fd.total_amount), 0) + COALESCE(SUM(fd.due_amount), 0) AS pending_amount,
-    // LEFT JOIN
-    //     hostels h ON s.hostel_id = h.hostel_id
-
+    // Fetch aggregate fee details (summary)
     $summaryQuery = "
-         SELECT
-        COALESCE(SUM(CASE WHEN fd.payment_status = 'Paid' THEN fd.received_amount ELSE 0 END), 0) AS total_paid_amount,
-        COALESCE(fd.hostel_fee, 0) AS hostel_amount,
-        COALESCE(t.transport_fee, 0) AS transport_amount
-    FROM
-        students s
-    LEFT JOIN
-        feeDetails fd ON fd.user_id = s.user_id
-    LEFT JOIN
-        transport t ON s.transport_id = t.transport_id
-    WHERE
-        s.user_id = :user_id
+        SELECT
+            COALESCE(SUM(CASE WHEN fd.payment_status = 'Paid' THEN fd.received_amount ELSE 0 END), 0) AS total_paid_amount,
+            COALESCE(SUM(fd.due_amount), 0) AS pending_amount,
+            COALESCE(fd.hostel_fee, 0) AS hostel_amount,
+            COALESCE(t.transport_fee, 0) AS transport_amount
+        FROM
+            students s
+        LEFT JOIN
+            feeDetails fd ON fd.user_id = s.user_id
+        LEFT JOIN
+            transport t ON s.transport_id = t.transport_id
+        WHERE
+            s.user_id = :user_id
     ";
 
     $summaryStmt = $pdo->prepare($summaryQuery);
-    $summaryStmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+    $summaryStmt->bindParam(':user_id', $user_id, PDO::PARAM_STR); // Bind user_id
     $summaryStmt->execute();
     $summary = $summaryStmt->fetch(PDO::FETCH_ASSOC);
 
-      // Handle case where no summary is found
+    // Handle case where no summary is found
     if (!$summary) {
         $summary = [
             'total_paid_amount' => 0,
@@ -54,31 +49,23 @@ try {
     // Fetch detailed fee records
     $detailsQuery = "
         SELECT
-    fd.receipt_no,
-    fd.month,
-    fd.due_amount,
-    CASE
-        WHEN fd.received_amount >= fd.total_amount THEN 0
-        ELSE fd.received_amount
-    END AS received_amount,
-    CASE
-        WHEN fd.received_amount >= fd.total_amount THEN fd.total_amount
-        ELSE fd.total_amount - fd.received_amount
-    END AS pending_amount,
-    fd.total_amount,
-    CASE
-        WHEN fd.received_amount >= fd.total_amount THEN 'Pending'
-        ELSE 'Paid'
-    END AS status
-FROM
-    feeDetails fd
-WHERE
-    fd.user_id = :user_id;
-
+            fd.receipt_no,
+            fd.month,
+            fd.due_amount,
+            fd.received_amount,
+            fd.total_amount,
+            CASE
+                WHEN fd.received_amount >= fd.total_amount THEN 'Paid'
+                ELSE 'Pending'
+            END AS status
+        FROM
+            feeDetails fd
+        WHERE
+            fd.user_id = :user_id
     ";
 
     $detailsStmt = $pdo->prepare($detailsQuery);
-    $detailsStmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $detailsStmt->bindParam(':user_id', $user_id, PDO::PARAM_STR); // Bind user_id
     $detailsStmt->execute();
     $details = $detailsStmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -94,10 +81,11 @@ WHERE
     ];
 
     // Return the response as JSON
+    header('Content-Type: application/json');
     echo json_encode($response);
+
 } catch (PDOException $e) {
     // Return an error response
     echo json_encode(['error' => 'An unexpected error occurred: ' . $e->getMessage()]);
 }
-
 ?>
