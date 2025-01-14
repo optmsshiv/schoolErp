@@ -23,19 +23,22 @@ try {
 
     $summaryQuery = "
          SELECT
-        COALESCE(SUM(CASE WHEN fd.payment_status = 'Paid' THEN fd.received_amount ELSE 0 END), 0) AS total_paid_amount,
-        COALESCE(SUM(fd.hostel_fee), 0) AS hostel_amount,
-        COALESCE(t.transport_fee, 0) AS transport_amount
-    FROM
-        students s
-    LEFT JOIN
-        feeDetails fd ON fd.user_id = s.user_id
-    LEFT JOIN
-        feeDetails fd ON fd.user_id = s.user_id
-    WHERE
-        s.user_id = :user_id
-        GROUP BY
-           s.user_id;
+    COALESCE(SUM(CASE WHEN fd_paid.payment_status = 'Paid' THEN fd_paid.received_amount ELSE 0 END), 0) AS total_paid_amount,
+    COALESCE(SUM(fd_hostel.hostel_fee), 0) AS hostel_amount,  -- Sum all hostel fees for the user
+    COALESCE(SUM(t.transport_fee), 0) AS transport_amount
+FROM
+    students s
+LEFT JOIN
+    feeDetails fd_paid ON fd_paid.user_id = s.user_id  -- For total paid amount
+LEFT JOIN
+    feeDetails fd_hostel ON fd_hostel.user_id = s.user_id  -- For hostel fees
+LEFT JOIN
+    transport t ON s.transport_id = t.transport_id
+WHERE
+    s.user_id = :user_id
+GROUP BY
+    s.user_id;
+
     ";
 
     $summaryStmt = $pdo->prepare($summaryQuery);
