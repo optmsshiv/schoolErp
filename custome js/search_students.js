@@ -139,6 +139,7 @@ async function searchStudents(searchInput, resultsContainer) {
  * @param {number} userId - The user ID of the student.
  */
 async function fetchFeeDetails(userId) {
+  console.log('Fetching fee details for user_id:', userId); // Debugging line
   try {
     const response = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${encodeURIComponent(userId)}`);
 
@@ -153,6 +154,9 @@ async function fetchFeeDetails(userId) {
       alert('No fee details found for the selected student.');
       return;
     }
+
+    // Use the fetched data here
+    console.log(data); // For debugging
 
     // Calculate total pending amount from table data
     const totalPendingAmount = data.details.reduce((sum, detail) => {
