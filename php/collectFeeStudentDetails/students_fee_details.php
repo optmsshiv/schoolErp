@@ -16,18 +16,18 @@ try {
 
     // Fetch aggregate fee details (total paid, hostel, transport)
     // COALESCE(SUM(fd.total_amount), 0) + COALESCE(SUM(fd.due_amount), 0) AS pending_amount,
+    // LEFT JOIN
+    //     hostels h ON s.hostel_id = h.hostel_id
 
     $summaryQuery = "
          SELECT
         COALESCE(SUM(CASE WHEN fd.payment_status = 'Paid' THEN fd.received_amount ELSE 0 END), 0) AS total_paid_amount,
-        COALESCE(h.hostel_fee, 0) AS hostel_amount,
+        COALESCE(fd.hostel_fee, 0) AS hostel_amount,
         COALESCE(t.transport_fee, 0) AS transport_amount
     FROM
         students s
     LEFT JOIN
         feeDetails fd ON fd.user_id = s.user_id
-    LEFT JOIN
-        hostels h ON s.hostel_id = h.hostel_id
     LEFT JOIN
         transport t ON s.transport_id = t.transport_id
     WHERE
