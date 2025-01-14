@@ -1,18 +1,29 @@
-<div class="modal fade" id="viewFeeReceiptModal" tabindex="-1" aria-labelledby="viewFeeReceiptModalLabel" aria-hidden="true">
+<div class="modal fade" id="viewFeeReceiptModal" tabindex="-1" aria-labelledby="viewFeeReceiptModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header d-flex justify-content-between align-items-center">
+      <div class="modal-header text-center">
         <!-- School Logo and Name -->
-        <div class="d-flex align-items-center">
-          <img src="/assets/img/avatars/1.png" alt="School Logo" style="width: 60px; height: auto; margin-right: 15px;">
-          <h5 class="modal-title" id="viewFeeReceiptModalLabel" style="font-family: 'Cursive', sans-serif; font-size: 28px; color: #4e73df; font-weight: bold;">Greenwood International School</h5>
+        <div class="modal-header d-flex justify-content-between align-items-center">
+          <div class="d-flex align-items-center">
+            <img src="/assets/img/avatars/1.png" alt="School Logo"
+              style="width: 60px; height: auto; margin-right: 15px;">
+            <h5 class="modal-title" id="viewFeeReceiptModalLabel"
+              style="font-family: 'Cursive', sans-serif; font-size: 28px; color: #4e73df; font-weight: bold;">Greenwood
+              International School</h5>
+            <p>123 School Lane, Springfield, IL 62701</p>
+            <p>Phone: +1 (123) 456-7890 | Email: contact@greenwoodschool.edu</p>
+          </div>
+          <!-- QR Code -->
+          <div class="text-center mt-3">
+            <img src="qr-code.png" alt="QR Code" style="width: 120px; height: 120px;">
+            <p><small>Scan this QR code for payment verification.</small></p>
+          </div>
         </div>
-        <!-- QR Code (top-right corner) -->
-        <img src="qr-code.png" alt="QR Code" style="width: 100px; height: 100px;">
       </div>
 
       <div class="modal-body">
-        <!-- Additional Info: Left and Right Columns -->
+        <!-- Additional Info -->
         <div class="row">
           <!-- Left Column (Student Info) -->
           <div class="col-md-6">
@@ -32,39 +43,45 @@
           </div>
         </div>
 
-        <!-- Fee Details Table (Auto-fit) -->
-        <div class="table-responsive mt-4">
-          <table class="table table-striped table-bordered table-hover" style="border-radius: 10px; overflow: hidden;">
-            <thead class="table-light">
-              <tr>
-                <th scope="col">Fee Item</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Paid</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Tuition Fee</td>
-                <td>$400</td>
-                <td>$400</td>
-              </tr>
-              <tr>
-                <td>Activity Fee</td>
-                <td>$50</td>
-                <td>$50</td>
-              </tr>
-              <tr>
-                <td>Library Fee</td>
-                <td>$50</td>
-                <td>$50</td>
-              </tr>
-              <tr>
-                <td><strong>Total</strong></td>
-                <td><strong>$500</strong></td>
-                <td><strong>$500</strong></td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Fee Details Table -->
+        <table class="table table-striped table-bordered mt-4"
+          style="width: 100%; border-radius: 10px; overflow: hidden;">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Fee Item</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Paid</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Tuition Fee</td>
+              <td>$400</td>
+              <td>$400</td>
+            </tr>
+            <tr>
+              <td>Activity Fee</td>
+              <td>$50</td>
+              <td>$50</td>
+            </tr>
+            <tr>
+              <td>Library Fee</td>
+              <td>$50</td>
+              <td>$50</td>
+            </tr>
+            <tr>
+              <td><strong>Total</strong></td>
+              <td><strong>$500</strong></td>
+              <td><strong>$500</strong></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- School Address -->
+        <div class="text-center mt-4">
+          <p><strong>Greenwood International School</strong></p>
+          <p>123 School Lane, Springfield, IL 62701</p>
+          <p>Phone: +1 (123) 456-7890 | Email: contact@greenwoodschool.edu</p>
         </div>
       </div>
 
