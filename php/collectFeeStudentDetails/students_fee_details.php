@@ -17,7 +17,7 @@ try {
     // Fetch aggregate fee details (total paid, hostel, transport)
     $summaryQuery = "
          SELECT
-        COALESCE(SUM(fd.amount), 0) AS total_paid_amount,
+        COALESCE(SUM(fd.total_amount), 0) AS total_paid_amount,
         COALESCE(SUM(fd.due_amount), 0) AS pending_amount,
         COALESCE(h.hostel_fee, 0) AS hostel_amount,
         COALESCE(t.transport_fee, 0) AS transport_amount
@@ -51,16 +51,27 @@ try {
     // Fetch detailed fee records
     $detailsQuery = "
         SELECT
-            fd.receipt_no,
-            fd.month,
-            fd.due_amount,
-            fd.received_amount,
-            fd.total_amount,
-            CASE WHEN fd.received_amount >= fd.total_amount THEN 'Paid' ELSE 'Pending' END AS status
-        FROM
-            feeDetails fd
-        WHERE
-            fd.user_id = :user_id
+    fd.receipt_no,
+    fd.month,
+    fd.due_amount,
+    CASE
+        WHEN fd.received_amount >= fd.total_amount THEN 0
+        ELSE fd.received_amount
+    END AS received_amount,
+    CASE
+        WHEN fd.received_amount >= fd.total_amount THEN fd.total_amount
+        ELSE fd.total_amount - fd.received_amount
+    END AS pending_amount,
+    fd.total_amount,
+    CASE
+        WHEN fd.received_amount >= fd.total_amount THEN 'Pending'
+        ELSE 'Paid'
+    END AS status
+FROM
+    feeDetails fd
+WHERE
+    fd.user_id = :user_id;
+
     ";
 
     $detailsStmt = $pdo->prepare($detailsQuery);
