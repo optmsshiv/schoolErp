@@ -204,7 +204,7 @@ async function fetchFeeDetails(userId) {
                 <i class="bx bx-dots-vertical-rounded bx-sm"></i>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item border-bottom" id="viewFeeReceiptLink">View Fee Receipt</a></li>
+                <li><a class="dropdown-item border-bottom" href="#" id="viewFeeReceiptLink">View Fee Receipt</a></li>
                 <li><a class="dropdown-item border-bottom" href="#">Send Fee Receipt</a></li>
                 <li><a class="dropdown-item border-bottom" href="#">Send Fee Message</a></li>
                 <li><a class="dropdown-item" href="#">Delete</a></li>
