@@ -23,15 +23,15 @@ try {
 
     $summaryQuery = "
          SELECT
-        COALESCE(SUM(CASE WHEN fd.payment_status = 'Paid' THEN fd.received_amount ELSE 0 END), 0) AS total_paid_amount,
-        COALESCE(SUM(fd.hostel_fee), 0) AS hostel_amount,
-        COALESCE(SUM(fd.transport_fee), 0) AS transport_amount
+        COALESCE(SUM(CASE WHEN fd1.payment_status = 'Paid' THEN fd1.received_amount ELSE 0 END), 0) AS total_paid_amount,
+        COALESCE(SUM(fd2.hostel_fee), 0) AS hostel_amount,
+        COALESCE(SUM(fd2.transport_fee), 0) AS transport_amount
     FROM
         students s
     LEFT JOIN
-        feeDetails fd ON fd.user_id = s.user_id
+        feeDetails fd2 ON fd2.user_id = s.user_id
     LEFT JOIN
-        feeDetails fd ON fd.user_id = s.user_id
+        feeDetails fd2 ON fd2.user_id = s.user_id
     WHERE
         s.user_id = :user_id
     GROUP BY
