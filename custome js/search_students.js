@@ -170,7 +170,13 @@ async function fetchFeeDetails(userId) {
           <td>${detail.receipt_no}</td>
           <td>${months}</td>
           <td align="center">₹ ${detail.due_amount || '0'}</td>
-          <td align="center">₹ ${(parseFloat(detail.total_amount || 0) - parseFloat(detail.received_amount || 0)).toFixed(2)}</td>
+          <td align="center">
+        ${
+          detail.status === 'Pending'
+            ? `₹ ${(parseFloat(detail.total_amount || 0) - parseFloat(detail.received_amount || 0)).toFixed(2)}`
+            : '—'
+        }
+      </td>
           <td align="center">₹ ${detail.received_amount || '0'}</td>
           <td align="center">₹ ${detail.total_amount || '0'}</td>
           <td><span class="badge ${detail.status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'}">${detail.status}</span></td>
