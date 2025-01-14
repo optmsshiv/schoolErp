@@ -119,7 +119,7 @@ async function searchStudents(searchInput, resultsContainer) {
 
       // Add a click event listener to each card
       card.addEventListener('click', () => {
-       // console.log('Clicked student:', student); // Log the student to confirm
+        // console.log('Clicked student:', student); // Log the student to confirm
         populateStudentTable(student); // Populate student details
         fetchFeeDetails(student.user_id); // Fetch fee details on click
         resultsContainer.style.display = 'none';
@@ -195,7 +195,6 @@ async function fetchFeeDetails(userId) {
           : '—'
         }
       </td>
-
           <td align="center">₹ ${detail.received_amount || '0'}</td>
           <td align="center">₹ ${detail.total_amount || '0'}</td>
           <td><span class="badge ${detail.status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'}">${detail.status}</span></td>
@@ -205,11 +204,13 @@ async function fetchFeeDetails(userId) {
                 <i class="bx bx-dots-vertical-rounded bx-sm"></i>
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item border-bottom" href="#">View Fee Receipt</a></li>
+                <li><a class="dropdown-item border-bottom" id="viewFeeReceiptLink">View Fee Receipt</a></li>
                 <li><a class="dropdown-item border-bottom" href="#">Send Fee Receipt</a></li>
                 <li><a class="dropdown-item border-bottom" href="#">Send Fee Message</a></li>
                 <li><a class="dropdown-item" href="#">Delete</a></li>
               </ul>
+              <!-- Placeholder for Modal -->
+               <div id="modalContainer"></div>
             </div>
           </td>
         </tr>
@@ -246,3 +247,16 @@ function debounce(func, delay) {
     debounceTimeout = setTimeout(() => func(...args), delay);
   };
 }
+
+
+// dynamically add event listener
+const script = document.createElement("script");
+script.src = "/custome js/fee_reciept_modal/paid_reciept.js";
+script.onload = () => {
+  // Call the setup function defined in modalLoader.js
+  if (typeof setupModalLoader === "function") {
+    setupModalLoader("/html/model/fee_reciept_paid.html");
+  }
+};
+document.head.appendChild(script);
+
