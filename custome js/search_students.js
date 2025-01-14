@@ -217,6 +217,9 @@ async function fetchFeeDetails(userId) {
       `;
     }).join('');
 
+    // Dynamically load another script after populating the table
+    loadScript('/custome js/fee_reciept_modal/paid_reciept.js');
+
   } catch (error) {
     console.error('Error fetching fee details:', error);
     alert('Error fetching fee details. Please try again later.');
@@ -258,6 +261,3 @@ function loadScript(src) {
   // Append the script to the body or head
   document.head.appendChild(script);
 }
-
-// Load another script
-loadScript('/custome js/fee_reciept_modal/paid_reciept.js'); // Replace with your actual path
