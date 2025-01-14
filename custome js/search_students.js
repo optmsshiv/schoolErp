@@ -119,7 +119,7 @@ async function searchStudents(searchInput, resultsContainer) {
 
       // Add a click event listener to each card
       card.addEventListener('click', () => {
-        console.log('Clicked student:', student); // Log the student to confirm
+       // console.log('Clicked student:', student); // Log the student to confirm
         populateStudentTable(student); // Populate student details
         fetchFeeDetails(student.user_id); // Fetch fee details on click
         resultsContainer.style.display = 'none';
