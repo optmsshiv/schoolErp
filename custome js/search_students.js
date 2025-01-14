@@ -258,16 +258,7 @@ function debounce(func, delay) {
   };
 }
 
-// Dynamically load another JS file
-function loadScript(src) {
-  const script = document.createElement('script');
-  script.src = src;
-  script.type = 'text/javascript';
-  script.async = true;
 
-  // Append the script to the body or head
-  document.head.appendChild(script);
-}
 // Function to dynamically load and show the modal
 function loadFeeReceiptModal() {
   // Fetch the modal HTML file and load it into the modalContainer
