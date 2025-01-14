@@ -9,33 +9,20 @@
 </head>
 <body>
 
-  <!-- Modal -->
-  <div class="modal fade" id="viewFeeReceiptModal" tabindex="-1" aria-labelledby="viewFeeReceiptModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="viewFeeReceiptModalLabel">School Fee Receipt</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <!-- Fee receipt details go here -->
-          <div id="receiptContent">
-            <h4 class="receipt-title">Fee Payment Receipt</h4>
-            <p><strong>Student Name:</strong> John Doe</p>
-            <p><strong>Receipt Number:</strong> #12345</p>
-            <p><strong>Amount Paid:</strong> $500</p>
-            <p><strong>Payment Date:</strong> January 10, 2025</p>
-            <p><strong>Fee Description:</strong> Tuition Fee for Semester 1</p>
-            <p><strong>Paid By:</strong> Credit Card</p>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <!-- Print button -->
-          <button type="button" class="btn btn-primary" id="printBtn">Print Receipt</button>
-        </div>
-      </div>
+  <div class="container mt-5">
+    <!-- Fee receipt details -->
+    <div id="receiptContent" class="receipt-content">
+      <h4 class="receipt-title">Fee Payment Receipt</h4>
+      <p><strong>Student Name:</strong> John Doe</p>
+      <p><strong>Receipt Number:</strong> #12345</p>
+      <p><strong>Amount Paid:</strong> $500</p>
+      <p><strong>Payment Date:</strong> January 10, 2025</p>
+      <p><strong>Fee Description:</strong> Tuition Fee for Semester 1</p>
+      <p><strong>Paid By:</strong> Credit Card</p>
     </div>
+
+    <!-- Print button -->
+    <button type="button" class="btn btn-primary mt-3" id="printBtn">Print Receipt</button>
   </div>
 
   <!-- Include Bootstrap JS (requires Popper) -->
