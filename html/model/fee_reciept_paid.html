@@ -170,38 +170,39 @@
     }
 
     @media print {
-       body * {
-            visibility: hidden; /* Hide everything by default */
+       /* Hide everything else on the page */
+        body * {
+            visibility: hidden;
         }
         #viewFeeReceiptModal, #viewFeeReceiptModal * {
             visibility: visible; /* Make the modal visible for printing */
         }
 
-        /* Ensure the modal content fits A4 size and starts at the top */
+        /* Ensure the modal content fits A4 size */
         #viewFeeReceiptModal {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%; /* Use full width of the A4 page */
+            width: 100%;
             max-width: 210mm; /* A4 page width */
             height: auto;
-            padding: 10mm; /* Padding for spacing */
+            padding: 10mm;
             box-sizing: border-box;
-            overflow: visible; /* Allow modal content to overflow properly */
+            overflow: visible;
         }
 
-        /* Ensure modal content does not center and fits on the page */
+        /* Modal content should not center, should take full page width */
         .modal-content {
             width: 100%;
-            max-width: 100%; /* Ensure the content is responsive */
-            margin: 0; /* Remove margins to prevent centering */
-            padding: 0; /* Reset padding */
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         /* Hide modal header and footer in print */
         .modal-header, .modal-footer {
-            display: none; /* Hide header and footer */
+            display: none;
         }
 
         .modal-body {
@@ -209,13 +210,12 @@
         }
 
         .container {
-            width: 100%; /* Ensure container takes full width */
+            width: 100%;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Add some space at the bottom for the footer */
         .footer {
             margin-top: 20px;
             font-size: 12px;
@@ -313,8 +313,27 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="window.print()">Print Receipt</button>
+        <button type="button" class="btn btn-primary" onclick="printReceipt()">Print Receipt</button>
       </div>
     </div>
   </div>
 </div>
+<script>
+  function printReceipt() {
+    // Hide everything except the modal content
+    var bodyElements = document.body.children;
+    for (var i = 0; i < bodyElements.length; i++) {
+      if (bodyElements[i].id !== "viewFeeReceiptModal") {
+        bodyElements[i].style.visibility = 'hidden'; // Hide non-modal content
+      }
+    }
+
+    // Trigger the print dialog
+    window.print();
+
+    // Restore the visibility of all content after printing
+    for (var i = 0; i < bodyElements.length; i++) {
+      bodyElements[i].style.visibility = 'visible'; // Show all content
+    }
+  }
+</script>
