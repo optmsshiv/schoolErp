@@ -1,207 +1,226 @@
 <head>
   <style>
     :root {
-        --primary-color: #4e73df;
-        --secondary-color: #f8f9fc;
-        --font-family: 'Arial', sans-serif;
-        --highlight-color: #ff6b6b;
-        --success-color: #28a745;
+      --primary-color: #4e73df;
+      --secondary-color: #f8f9fc;
+      --font-family: 'Arial', sans-serif;
+      --highlight-color: #ff6b6b;
+      --success-color: #28a745;
     }
 
     body {
-        font-family: var(--font-family);
+      font-family: var(--font-family);
     }
 
     .modal-content {
-        border-radius: 10px;
-        border: none;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      border: none;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .modal-header {
-        background-color: var(--primary-color);
-        color: white;
-        padding: 15px 20px;
-        border-bottom: none;
-        border-radius: 10px 10px 0 0;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 20px;
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
     }
 
     .modal-header h5 {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin: 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0;
     }
 
     .modal-header img {
-        border-radius: 5px;
+      border-radius: 5px;
     }
 
     .modal-body {
-        background-color: var(--secondary-color);
-        padding: 20px;
-        border-radius: 0 0 10px 10px;
+      background-color: var(--secondary-color);
+      padding: 20px;
+      border-radius: 0 0 10px 10px;
     }
 
     .container {
-        padding: 15px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      width: auto;
+      margin: 0 auto;
+      border: 1px solid var(--primary-color);
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .header {
-        text-align: center;
-        position: relative;
+      text-align: center;
+      position: relative;
     }
 
     .header img.logo {
-        width: 60px;
-        height: auto;
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
+      width: 60px;
+      height: auto;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .header img.qr {
-        width: 80px;
-        height: auto;
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
+      width: 80px;
+      height: auto;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .header h1 {
-        margin: 0;
-        font-size: 22px;
-        color: var(--primary-color);
-        font-weight: bold;
+      margin: 0;
+      font-size: 22px;
+      color: var(--primary-color);
+      font-weight: bold;
     }
 
     .header p {
-        margin: 3px 0;
-        font-size: 12px;
-        color: #666;
+      margin: 3px 0;
+      font-size: 12px;
+      color: #666;
     }
 
     table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
     }
 
-    table.details td, table.fees th, table.fees td {
-        border: 1px solid #ddd;
-        padding: 5px;
-        font-size: 12px;
+    table.details td,
+    table.fees th,
+    table.fees td {
+      border: 1px solid #ddd;
+      padding: 5px;
+      font-size: 12px;
     }
 
     table.details td {
-        background-color: var(--secondary-color);
-        font-weight: normal;
-        color: #333;
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      background-color: var(--secondary-color);
+      font-weight: normal;
+      color: #333;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     }
+
     /* Specific CSS for modal fee receipt table headers */
     #viewFeeReceiptModal table.fees th {
-        color: white !important;
-        background-color: var(--primary-color);
-        font-size: 14px;
-        text-align: center;
-        font-weight: bold;
+      color: white !important;
+      background-color: var(--primary-color);
+      font-size: 14px;
+      text-align: center;
+      font-weight: bold;
     }
 
     table.fees th {
-        background-color: var(--primary-color);
-        color: white;
-        font-size: 14px;
+      background-color: var(--primary-color);
+      color: white;
+      font-size: 14px;
     }
 
     table.fees td {
-        text-align: center;
+      text-align: center;
     }
 
     .due-amount {
-        color: var(--highlight-color);
-        font-weight: bold;
+      color: var(--highlight-color);
+      font-weight: bold;
     }
 
     .adv-amount {
-        color: var(--success-color);
-        font-weight: bold;
+      color: var(--success-color);
+      font-weight: bold;
     }
 
     .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      text-align: left;
+      color: #666;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f1f1f1;
+      padding: 15px;
+      border-top: 1px solid #ddd;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      border: none;
+      transition: 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #375a7f;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      border: none;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #viewFeeReceiptModal,
+      #viewFeeReceiptModal * {
+        visibility: visible;
+      }
+
+      #viewFeeReceiptModal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        max-width: 210mm;
+        /* A4 width */
+        padding: 10mm;
+        /* Add some padding for neatness */
+        box-sizing: border-box;
+        /* Ensure padding does not overflow */
+      }
+
+      .modal-content {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .modal-header,
+      .modal-footer {
+        display: none;
+        /* Hide the header and footer on print */
+      }
+
+      .modal-body {
+        margin-top: 20px;
+        /* Adjust to ensure top margin is correct */
+      }
+
+      .footer {
         margin-top: 20px;
         font-size: 12px;
         text-align: left;
         color: #666;
+      }
     }
-
-    .modal-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #f1f1f1;
-        padding: 15px;
-        border-top: 1px solid #ddd;
-    }
-
-    .btn-primary {
-        background-color: var(--primary-color);
-        border: none;
-        transition: 0.3s ease;
-    }
-
-    .btn-primary:hover {
-        background-color: #375a7f;
-    }
-
-    .btn-secondary {
-        background-color: #6c757d;
-        border: none;
-    }
-
-    @media print {
-       body * {
-            visibility: hidden;
-        }
-        #viewFeeReceiptModal, #viewFeeReceiptModal * {
-            visibility: visible;
-        }
-        #viewFeeReceiptModal {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            max-width: 210mm; /* A4 width */
-            padding: 10mm; /* Add some padding for neatness */
-            box-sizing: border-box; /* Ensure padding does not overflow */
-        }
-        .modal-content {
-            width: 100%;
-            max-width: 100%;
-        }
-        .modal-header, .modal-footer {
-            display: none; /* Hide the header and footer on print */
-        }
-        .modal-body {
-            margin-top: 20px; /* Adjust to ensure top margin is correct */
-        }
-        .footer {
-            margin-top: 20px;
-            font-size: 12px;
-            text-align: left;
-            color: #666;
-        }
-    }
-    
-</style>
+  </style>
 
 </head>
 
-<div class="modal fade" id="viewFeeReceiptModal" tabindex="-1" aria-labelledby="viewFeeReceiptModalLabel" aria-hidden="true">
+<div class="modal fade" id="viewFeeReceiptModal" tabindex="-1" aria-labelledby="viewFeeReceiptModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
@@ -217,7 +236,7 @@
             <tr>
               <td><strong>Student Name:</strong> Sumati Kumari</td>
               <td><strong>Receipt Id:</strong> Sum1256</td>
-              <td ><strong>Payment Date:</strong> 11/01/2025</td>
+              <td><strong>Payment Date:</strong> 11/01/2025</td>
             </tr>
             <tr>
               <td colspan="2"><strong>Father's Name:</strong> Amit Kumar</td>
