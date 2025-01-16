@@ -37,19 +37,18 @@
     }
 
     .modal-body {
-      background-color: var(--secondary-color);
-      padding: 20px;
-      border-radius: 0 0 10px 10px;
+      padding: 10px;
+      border-radius: 0 0 2px 1px;
     }
 
     .container {
       width: auto;
       margin: 0 auto;
       border: 1px solid var(--primary-color);
-      padding: 15px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      background-color: rgb(255, 255, 255);
+      border-radius: 4px;
+      box-shadow: 0px 2px 5px rgba(217, 217, 217, 0.1);
     }
 
     .header {
@@ -179,28 +178,6 @@
             visibility: visible;
         }
 
-        /* Ensure the modal content fits A4 size */
-        #viewFeeReceiptModal {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            max-width: 210mm; /* A4 page width */
-            height: auto;
-            padding: 10mm;
-            box-sizing: border-box;
-            overflow: visible;
-        }
-
-        /* Modal content should not center, should take full page width */
-        .modal-content {
-            width: 100%;
-            max-width: 100%;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         /* Hide modal header and footer in print */
         .modal-header, .modal-footer {
             display: none;
@@ -209,14 +186,6 @@
         .modal-body {
             margin-top: 0;
         }
-
-        .container {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         .footer {
             margin-top: 20px;
             font-size: 12px;
