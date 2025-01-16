@@ -175,16 +175,28 @@
             left: 0;
             top: 0;
             width: 100%;
+            max-width: 210mm; /* A4 width */
+            padding: 10mm; /* Add some padding for neatness */
+            box-sizing: border-box; /* Ensure padding does not overflow */
         }
-        .modal-footer {
-            display: none;
-        }
-
         .modal-content {
-            box-shadow: none;
-            border: none;
+            width: 100%;
+            max-width: 100%;
+        }
+        .modal-header, .modal-footer {
+            display: none; /* Hide the header and footer on print */
+        }
+        .modal-body {
+            margin-top: 20px; /* Adjust to ensure top margin is correct */
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: left;
+            color: #666;
         }
     }
+    
 </style>
 
 </head>
