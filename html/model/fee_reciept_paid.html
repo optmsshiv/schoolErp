@@ -1,173 +1,167 @@
 <head>
   <style>
     :root {
-        --primary-color: #4e73df;
-        --secondary-color: #f8f9fc;
-        --font-family: 'Arial', sans-serif;
-        --highlight-color: #ff6b6b;
-        --success-color: #28a745;
+      --primary-color: #4e73df;
+      --secondary-color: #f8f9fc;
+      --font-family: 'Arial', sans-serif;
+      --highlight-color: #ff6b6b;
+      --success-color: #28a745;
     }
 
     body {
-        font-family: var(--font-family);
+      font-family: var(--font-family);
     }
 
     .modal-content {
-        border-radius: 10px;
-        border: none;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      border: none;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .modal-header {
-        background-color: var(--primary-color);
-        color: white;
-        padding: 15px 20px;
-        border-bottom: none;
-        border-radius: 10px 10px 0 0;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 15px 20px;
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
     }
 
     .modal-header h5 {
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin: 0;
-    }
-
-    .modal-header img {
-        border-radius: 5px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0;
     }
 
     .modal-body {
-        background-color: var(--secondary-color);
-        padding: 20px;
-        border-radius: 0 0 10px 10px;
+      background-color: var(--secondary-color);
+      padding: 20px;
+      border-radius: 0 0 10px 10px;
     }
 
     .container {
-        padding: 15px;
-        background-color: white;
-        border-radius: 8px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .header {
-        text-align: center;
-        position: relative;
+      text-align: center;
+      position: relative;
     }
 
     .header img.logo {
-        width: 60px;
-        height: auto;
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
+      width: 60px;
+      height: auto;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .header img.qr {
-        width: 80px;
-        height: auto;
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
+      width: 80px;
+      height: auto;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .header h1 {
-        margin: 0;
-        font-size: 22px;
-        color: var(--primary-color);
-        font-weight: bold;
+      margin: 0;
+      font-size: 22px;
+      color: var(--primary-color);
+      font-weight: bold;
     }
 
     .header p {
-        margin: 3px 0;
-        font-size: 14px;
-        color: #666;
+      margin: 3px 0;
+      font-size: 14px;
+      color: #666;
     }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
     }
 
-    table.details td, table.fees th, table.fees td {
-        border: 1px solid #ddd;
-        padding: 10px;
-        font-size: 14px;
+    .custom-table th,
+    .custom-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      font-size: 14px;
+      text-align: left;
     }
 
-    table.details td {
-        background-color: var(--secondary-color);
-        font-weight: bold;
+    .custom-table th {
+      background-color: var(--primary-color);
+      color: white;
     }
 
-    table.fees th {
-        background-color: var(--primary-color);
-        color: white;
-        font-size: 14px;
-    }
-
-    table.fees td {
-        text-align: center;
+    .custom-table td {
+      background-color: var(--secondary-color);
     }
 
     .due-amount {
-        color: var(--highlight-color);
-        font-weight: bold;
+      color: var(--highlight-color);
+      font-weight: bold;
     }
 
     .adv-amount {
-        color: var(--success-color);
-        font-weight: bold;
+      color: var(--success-color);
+      font-weight: bold;
     }
 
     .footer {
-        margin-top: 20px;
-        font-size: 12px;
-        text-align: left;
-        color: #666;
+      margin-top: 20px;
+      font-size: 12px;
+      text-align: left;
+      color: #666;
     }
 
     .modal-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #f1f1f1;
-        padding: 15px;
-        border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f1f1f1;
+      padding: 15px;
+      border-top: 1px solid #ddd;
     }
 
     .btn-primary {
-        background-color: var(--primary-color);
-        border: none;
-        transition: 0.3s ease;
+      background-color: var(--primary-color);
+      border: none;
+      transition: 0.3s ease;
     }
 
     .btn-primary:hover {
-        background-color: #375a7f;
+      background-color: #375a7f;
     }
 
     .btn-secondary {
-        background-color: #6c757d;
-        border: none;
+      background-color: #6c757d;
+      border: none;
     }
 
     @media print {
-        .modal-footer {
-            display: none;
-        }
+      .modal-footer {
+        display: none;
+      }
 
-        .modal-content {
-            box-shadow: none;
-            border: none;
-        }
+      .modal-content {
+        box-shadow: none;
+        border: none;
+      }
     }
-</style>
+  </style>
+
 
 </head>
 
-<div class="modal fade" id="viewFeeReceiptModal" tabindex="-1" aria-labelledby="viewFeeReceiptModalLabel" aria-hidden="true">
+<div class="modal fade" id="viewFeeReceiptModal" tabindex="-1" aria-labelledby="viewFeeReceiptModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-body">
@@ -179,7 +173,7 @@
             <p>Phone: +1 (123) 456-7890 | Email: contact@greenwoodschool.edu</p>
             <img src="/assets/img/avatars/1.png" alt="QR Code" class="qr">
           </header>
-          <table class="details">
+          <table class="custom-table">
             <tr>
               <td><strong>Student Name:</strong> Sumati Kumari</td>
               <td><strong>Receipt Id:</strong> Sum1256</td>
@@ -203,7 +197,8 @@
               <td colspan="3"><strong>Admission No.:</strong> RRGIS125</td>
             </tr>
           </table>
-          <table class="fees">
+
+          <table class="custom-table">
             <tr>
               <th colspan="2">Description</th>
               <th>Amount</th>
