@@ -164,6 +164,18 @@
     }
 
     @media print {
+       body * {
+            visibility: hidden;
+        }
+        #viewFeeReceiptModal, #viewFeeReceiptModal * {
+            visibility: visible;
+        }
+        #viewFeeReceiptModal {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+        }
         .modal-footer {
             display: none;
         }
@@ -211,7 +223,7 @@
             </tr>
             <tr>
               <td colspan="2"><strong>Admission No.:</strong> RRGIS125</td>
-              <td><strong>Billed By:</strong> Name</td>
+              <td><strong>Collected By:</strong> Name</td>
             </tr>
           </table>
           <table class="fees">
