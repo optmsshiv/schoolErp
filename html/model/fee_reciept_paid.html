@@ -294,24 +294,28 @@
     </div>
   </div>
 </div>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  function printReceipt() {
-    // Hide everything except the modal content
-    var bodyElements = document.body.children;
-    for (var i = 0; i < bodyElements.length; i++) {
-      if (bodyElements[i].id !== "viewFeeReceiptModal") {
-        bodyElements[i].style.visibility = 'hidden'; // Hide non-modal content
+  // Print Function
+    function printReceipt() {
+      // Hide everything except the modal content
+      const modal = document.getElementById('viewFeeReceiptModal');
+      const bodyChildren = document.body.children;
+
+      for (let i = 0; i < bodyChildren.length; i++) {
+        if (bodyChildren[i] !== modal) {
+          bodyChildren[i].style.display = 'none';
+        }
+      }
+
+      // Trigger the print dialog
+      window.print();
+
+      // Restore visibility after printing
+      for (let i = 0; i < bodyChildren.length; i++) {
+        bodyChildren[i].style.display = '';
       }
     }
-
-    // Trigger the print dialog
-    window.print();
-
-    // Restore the visibility of all content after printing
-    for (var i = 0; i < bodyElements.length; i++) {
-      bodyElements[i].style.visibility = 'visible'; // Show all content
-    }
-  }
 
   document.getElementById('printReceiptButton').addEventListener('click', printReceipt);
 
