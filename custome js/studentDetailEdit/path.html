@@ -1,1 +1,340 @@
 <script src=""></script>
+<!--Recipet Design-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: auto;
+            max-width: 210mm; /* A4 paper width */
+            height: 155.5mm; /* Half of A4 paper height */
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            position: relative;
+        }
+        .header img.logo {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .header img.qr {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .header p {
+            margin: 5px 0;
+        }
+        .details, .fees {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .details td, .fees td, .fees th {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+        .details td {
+            width: 33.33%;
+        }
+        .fees th {
+            background-color: #f2f2f2;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: left;
+        }
+        .due-amount {
+            color: red;
+        }
+        .print-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .print-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        @media print {
+            .print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="logo.png" alt="School Logo" class="logo">
+            <h1>Greenwood International School</h1>
+            <p>123 School Lane, Springfield, IL 62701</p>
+            <p>Phone: +1 (123) 456-7890 | Email: contact@greenwoodschool.edu</p>
+            <img src="qr.png" alt="QR Code" class="qr">
+        </div>
+        <table class="details">
+            <tr>
+                <td><strong>Student name:</strong> Sumati Kumari </td>
+                <td>Receipt Id: Sum1256</td>
+                <td>Father’s name: Amit Kumar</td>
+            </tr>
+            <tr>
+                <td colspan="2">Payment Date: 11/01/2025</td>
+                <td>Month: January</td>
+            </tr>
+            <tr>
+                <td>Mother’s name: Nidhi Kumari</td>
+                <td>Class: 3A</td>
+                <td>Status: Paid</td>
+            </tr>
+            <tr>
+                <td>Roll No.: 10</td>
+                <td>Paid By: Cash</td>
+                <td>Receipt Date: 14/01/2025</td>
+            </tr>
+            <tr>
+                <td colspan="3">Admission No.: RRGIS125</td>
+            </tr>
+        </table>
+        <table class="fees">
+            <tr>
+                <th colspan="2">Description</th>
+                <th>Amount</th>
+            </tr>
+            <tr>
+                <td>Tuition Fee</td>
+                <td>January</td>
+                <td>2500.00</td>
+            </tr>
+            <tr>
+                <td colspan="2">Previous Dues</td>
+                <td>1200.00</td>
+            </tr>
+            <tr>
+                <td>Hostel Fee</td>
+                <td>January</td>
+                <td>2500.00</td>
+            </tr>
+            <tr>
+                <td>Transport Fee</td>
+                <td>N/A</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <td colspan="2">Total Amount</td>
+                <td>6200.00</td>
+            </tr>
+            <tr>
+                <td colspan="2">Paid Amount</td>
+                <td>6000.00</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="due-amount">Due Amount</td>
+                <td class="due-amount">200.00</td>
+            </tr>
+        </table>
+        <div class="footer">
+            ** This is electrically generated hence no signature required
+        </div>
+        <div class="print-button">
+            <button onclick="window.print()">Print</button>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<!--Another-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Table</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: auto;
+            max-width: 210mm; /* A4 paper width */
+            height: 148.5mm; /* Half of A4 paper height */
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            position: relative;
+        }
+        .header img.logo {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .header img.qr {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .header p {
+            margin: 5px 0;
+        }
+        .details, .fees {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .details td, .fees td, .fees th {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+        .details td {
+            width: 33.33%;
+        }
+        .fees {
+            width: 80%; /* Custom width for the fees table */
+            margin: 0 auto; /* Center the fees table */
+        }
+        .fees th {
+            background-color: #f2f2f2;
+        }
+        .fees td.tuition-fee {
+            padding-left: 20px; /* Add left margin */
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: left;
+        }
+        .due-amount {
+            color: red;
+        }
+        .print-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .print-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        @media print {
+            .print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="logo.png" alt="School Logo" class="logo">
+            <h1>Greenwood International School</h1>
+            <p>123 School Lane, Springfield, IL 62701</p>
+            <p>Phone: +1 (123) 456-7890 | Email: contact@greenwoodschool.edu</p>
+            <img src="qr.png" alt="QR Code" class="qr">
+        </div>
+        <table class="details">
+            <tr>
+                <td><strong>Student name: Sumati Kumari</strong></td>
+                <td>Receipt Id: Sum1256</td>
+                <td>Father’s name: Amit Kumar</td>
+            </tr>
+            <tr>
+                <td colspan="2">Payment Date: 11/01/2025</td>
+                <td>Month: January</td>
+            </tr>
+            <tr>
+                <td>Mother’s name: Nidhi Kumari</td>
+                <td>Class: 3A</td>
+                <td>Status: Paid</td>
+            </tr>
+            <tr>
+                <td>Roll No.: 10</td>
+                <td>Paid By: Cash</td>
+                <td>Receipt Date: 14/01/2025</td>
+            </tr>
+            <tr>
+                <td colspan="3">Admission No.: RRGIS125</td>
+            </tr>
+        </table>
+        <table class="fees">
+            <tr>
+                <th colspan="2">Description</th>
+                <th>Amount</th>
+            </tr>
+            <tr>
+                <td class="tuition-fee">Tuition Fee</td>
+                <td>January</td>
+                <td>2500.00</td>
+            </tr>
+            <tr>
+                <td colspan="2">Previous Dues</td>
+                <td>1200.00</td>
+            </tr>
+            <tr>
+                <td>Hostel Fee</td>
+                <td>January</td>
+                <td>2500.00</td>
+            </tr>
+            <tr>
+                <td>Transport Fee</td>
+                <td>N/A</td>
+                <td>0.00</td>
+            </tr>
+            <tr>
+                <td colspan="2">Total Amount</td>
+                <td>6200.00</td>
+            </tr>
+            <tr>
+                <td colspan="2">Paid Amount</td>
+                <td>6000.00</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="due-amount">Due Amount</td>
+                <td class="due-amount">200.00</td>
+            </tr>
+        </table>
+        <div class="footer">
+            ** This is electrically generated hence no signature required
+        </div>
+        <div class="print-button">
+            <button onclick="window.print()">Print</button>
+        </div>
+    </div>
+</body>
+</html>
+

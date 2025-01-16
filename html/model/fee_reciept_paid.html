@@ -1,84 +1,85 @@
 <div class="modal fade" id="viewFeeReceiptModal" tabindex="-1" aria-labelledby="viewFeeReceiptModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <div class="d-flex flex-column align-items-start">
-          <div class="d-flex align-items-center mb-2">
-            <img src="/assets/img/avatars/1.png" alt="School Logo" style="width: 50px; height: 60px; margin-right: 15px;">
-            <div>
-              <h5 class="modal-title" id="viewFeeReceiptModalLabel" style="font-family: 'Cursive', sans-serif; font-size: 24px; color: #4e73df; font-weight: bold;">Greenwood International School</h5>
-              <p class="mb-0">123 School Lane, Springfield, IL 62701</p>
-              <p class="mb-0">Phone: +1 (123) 456-7890 | Email: contact@greenwoodschool.edu</p>
-            </div>
-          </div>
-        </div>
-        <img src="/assets/img/avatars/1.png" alt="QR Code" style="width: 80px; height: 80px;">
-      </div>
-
       <div class="modal-body">
-        <!-- Student and Receipt Information -->
-        <div class="row mb-4">
-          <!-- Left Column -->
-          <div class="col-md-6">
-            <p><strong>Student Name:</strong> Sumati Kumari</p>
-            <p><strong>Father's Name:</strong> Amit Kumar</p>
-            <p><strong>Mother's Name:</strong> Nidhi Kumari</p>
-            <p><strong>Class:</strong> 3A</p>
-            <p><strong>Roll No.:</strong> 10</p>
-            <p><strong>Receipt Date:</strong> 14/01/2025</p>
-          </div>
-          <!-- Right Column -->
-          <div class="col-md-6">
-            <p><strong>Receipt Id:</strong> Sum1256</p>
-            <p><strong>Payment Date:</strong> 11/01/2025</p>
-            <p><strong>Month:</strong> January</p>
-            <p><strong>Status:</strong> Paid</p>
-            <p><strong>Paid By:</strong> Cash</p>
-            <p><strong>Admission No.:</strong> RRGIS125</p>
-          </div>
-        </div>
-
-        <!-- Fee Details Table -->
-        <table class="table table-bordered">
-          <thead class="table-light">
+        <div class="container">
+          <header class="header">
+            <img src="/assets/img/avatars/1.png" alt="School Logo" class="logo">
+            <h1>Greenwood International School</h1>
+            <p>123 School Lane, Springfield, IL 62701</p>
+            <p>Phone: +1 (123) 456-7890 | Email: contact@greenwoodschool.edu</p>
+            <img src="/assets/img/avatars/1.png" alt="QR Code" class="qr">
+          </header>
+          <table class="details">
             <tr>
-              <th>Description</th>
+              <td><strong>Student Name:</strong> Sumati Kumari</td>
+              <td><strong>Receipt Id:</strong> Sum1256</td>
+              <td><strong>Father's Name:</strong> Amit Kumar</td>
+            </tr>
+            <tr>
+              <td colspan="2"><strong>Payment Date:</strong> 11/01/2025</td>
+              <td><strong>Month:</strong> January</td>
+            </tr>
+            <tr>
+              <td><strong>Mother's Name:</strong> Nidhi Kumari</td>
+              <td><strong>Class:</strong> 3A</td>
+              <td><strong>Status:</strong> Paid</td>
+            </tr>
+            <tr>
+              <td><strong>Roll No.:</strong> 10</td>
+              <td><strong>Paid By:</strong> Cash</td>
+              <td><strong>Receipt Date:</strong> 14/01/2025</td>
+            </tr>
+            <tr>
+              <td colspan="3"><strong>Admission No.:</strong> RRGIS125</td>
+            </tr>
+          </table>
+          <table class="fees">
+            <tr>
+              <th colspan="2">Description</th>
               <th>Amount</th>
             </tr>
-          </thead>
-          <tbody>
             <tr>
-              <td>Tuition Fee (January)</td>
+              <td>Tuition Fee</td>
+              <td>January</td>
               <td>2500.00</td>
             </tr>
             <tr>
-              <td>Previous Dues</td>
+              <td colspan="2">Previous Dues</td>
               <td>1200.00</td>
             </tr>
             <tr>
-              <td>Hostel Fee (January)</td>
+              <td>Hostel Fee</td>
+              <td>January</td>
               <td>2500.00</td>
             </tr>
             <tr>
               <td>Transport Fee</td>
+              <td>N/A</td>
               <td>0.00</td>
             </tr>
             <tr>
-              <td><strong>Total Amount</strong></td>
+              <td colspan="2"><strong>Total Amount</strong></td>
               <td><strong>6200.00</strong></td>
             </tr>
             <tr>
-              <td><strong>Paid Amount</strong></td>
+              <td colspan="2"><strong>Paid Amount</strong></td>
               <td><strong>6000.00</strong></td>
             </tr>
             <tr>
-              <td><strong>Due Amount</strong></td>
-              <td><strong style="color: red;">200.00</strong></td>
+              <td colspan="2" class="due-amount"><strong>Due Amount</strong></td>
+              <td class="due-amount"><strong>200.00</strong></td>
             </tr>
-          </tbody>
-        </table>
+            <tr>
+              <td colspan="2" class="adv-amount"><strong>Advanced Amount</strong></td>
+              <td class="adv-amount"><strong>2000.00</strong></td>
+            </tr>
+          </table>
+          <div class="footer mt-2">
+            ** This is electronically generated, hence no signature required
+          </div>
+        </div>
       </div>
-
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" onclick="window.print()">Print Receipt</button>
