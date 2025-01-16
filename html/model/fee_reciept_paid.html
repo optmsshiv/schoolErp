@@ -177,46 +177,45 @@
             visibility: visible; /* Make the modal visible for printing */
         }
 
-        /* Ensure the modal content fits A4 size */
+        /* Ensure the modal content fits A4 size and starts at the top */
         #viewFeeReceiptModal {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            max-width: 210mm; /* A4 width */
+            width: 100%; /* Use full width of the A4 page */
+            max-width: 210mm; /* A4 page width */
             height: auto;
             padding: 10mm; /* Padding for spacing */
             box-sizing: border-box;
-            overflow: hidden; /* Prevent overflow */
+            overflow: visible; /* Allow modal content to overflow properly */
         }
 
-        /* Ensure modal content is at the top of the page */
+        /* Ensure modal content does not center and fits on the page */
         .modal-content {
-            width: 100%; /* Ensure it fits the A4 page */
-            margin-top: 0;
-            max-width: 100%;
+            width: 100%;
+            max-width: 100%; /* Ensure the content is responsive */
+            margin: 0; /* Remove margins to prevent centering */
+            padding: 0; /* Reset padding */
+            box-sizing: border-box;
         }
 
-        /* Adjust the header and footer for print */
+        /* Hide modal header and footer in print */
         .modal-header, .modal-footer {
             display: none; /* Hide header and footer */
         }
 
-        /* Body content adjustments */
         .modal-body {
-            padding: 0;
             margin-top: 0;
         }
 
         .container {
-            width: 100%;
-            max-width: 100%; /* Ensure the container fits A4 width */
+            width: 100%; /* Ensure container takes full width */
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Add space at the bottom for the footer */
+        /* Add some space at the bottom for the footer */
         .footer {
             margin-top: 20px;
             font-size: 12px;
