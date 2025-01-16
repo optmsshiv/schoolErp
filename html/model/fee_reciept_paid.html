@@ -170,12 +170,13 @@
     }
 
     @media print {
-       /* Hide everything else on the page */
         body * {
-            visibility: hidden;
+            visibility: hidden; /* Hide everything by default */
         }
+
+        /* Make the modal visible for printing */
         #viewFeeReceiptModal, #viewFeeReceiptModal * {
-            visibility: visible; /* Make the modal visible for printing */
+            visibility: visible;
         }
 
         /* Ensure the modal content fits A4 size */
