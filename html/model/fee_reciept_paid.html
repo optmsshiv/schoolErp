@@ -170,53 +170,59 @@
     }
 
     @media print {
-      body * {
-        visibility: hidden;
-      }
+       body * {
+            visibility: hidden; /* Hide everything by default */
+        }
+        #viewFeeReceiptModal, #viewFeeReceiptModal * {
+            visibility: visible; /* Make the modal visible for printing */
+        }
 
-      #viewFeeReceiptModal,
-      #viewFeeReceiptModal * {
-        visibility: visible;
-      }
+        /* Ensure the modal content fits A4 size */
+        #viewFeeReceiptModal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            max-width: 210mm; /* A4 width */
+            height: auto;
+            padding: 10mm; /* Padding for spacing */
+            box-sizing: border-box;
+            overflow: hidden; /* Prevent overflow */
+        }
 
-      #viewFeeReceiptModal {
-        position: top;
-        left: 0;
-        top: 0;
-        width: 100%;
+        /* Ensure modal content is at the top of the page */
+        .modal-content {
+            width: 100%; /* Ensure it fits the A4 page */
+            margin-top: 0;
+            max-width: 100%;
+        }
 
-        /* A4 width */
-        padding: 10mm;
-        /* Add some padding for neatness */
-        box-sizing: border-box;
-        /* Ensure padding does not overflow */
-      }
+        /* Adjust the header and footer for print */
+        .modal-header, .modal-footer {
+            display: none; /* Hide header and footer */
+        }
 
-      .modal-content {
-        width: 100%;
-        max-width: 100%;
-      }
-      .container {
-        border: 1px solid var(--primary-color);
-         padding: 20px; }
+        /* Body content adjustments */
+        .modal-body {
+            padding: 0;
+            margin-top: 0;
+        }
 
-      .modal-header,
-      .modal-footer {
-        display: none;
-        /* Hide the header and footer on print */
-      }
+        .container {
+            width: 100%;
+            max-width: 100%; /* Ensure the container fits A4 width */
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-      .modal-body {
-        margin-top: 5px;
-        /* Adjust to ensure top margin is correct */
-      }
-
-      .footer {
-        margin-top: 20px;
-        font-size: 12px;
-        text-align: left;
-        color: #666;
-      }
+        /* Add space at the bottom for the footer */
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: left;
+            color: #666;
+        }
     }
   </style>
 
