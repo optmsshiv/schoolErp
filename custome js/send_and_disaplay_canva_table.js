@@ -113,94 +113,105 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // Add a new row to the FeeCollection table
-// Add a new row to the FeeCollection table
-const addRowToTable = ({ feeMonth, feeType, feeAmount }) => {
-  const newRow = document.createElement("tr");
+  const addRowToTable = ({ feeMonth, feeType, feeAmount }) => {
+    const newRow = document.createElement("tr");
 
-  newRow.innerHTML = `
-    <td>${feeMonth}</td>
-    <td>${feeType}</td>
-    <td class="totalAmountCell">${feeAmount}</td> <!-- Added class for easy selection -->
-    <td>
-      <div class="d-flex gap-1">
-        <button class="btn editFeeButton" style="margin: 0 -8px;">
-          <i class="btn-outline-warning bx bx-edit bx-sm"></i>
-        </button>
-        <button type="button" class="btn deleteFeeButton" style="margin: 0 -8px;">
-          <i class="btn-outline-danger bx bx-trash bx-sm"></i>
-        </button>
-      </div>
-    </td>
-  `;
+    newRow.innerHTML = `
+      <td>${feeMonth}</td>
+      <td>${feeType}</td>
+      <td class="totalAmountCell">${feeAmount}</td> <!-- Added class for easy selection -->
+      <td>
+        <div class="d-flex gap-1">
+          <button class="btn editFeeButton" style="margin: 0 -8px;">
+            <i class="btn-outline-warning bx bx-edit bx-sm"></i>
+          </button>
+          <button type="button" class="btn deleteFeeButton" style="margin: 0 -8px;">
+            <i class="btn-outline-danger bx bx-trash bx-sm"></i>
+          </button>
+        </div>
+      </td>
+    `;
 
-  feeTableBody.appendChild(newRow);
+    feeTableBody.appendChild(newRow);
 
-  // Update totalAmount by recalculating all row amounts
-  updateTotalAmount();
+    // Update totalAmount
+    totalAmount += parseFloat(feeAmount);  // Add the new amount to the total
+    updateTotalAmount();                   // Update the payableAmount field
 
-  // Add Delete Button Event Listener
-  const deleteButton = newRow.querySelector(".deleteFeeButton");
-  if (deleteButton) {
-    deleteButton.addEventListener("click", () => {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "Cancel",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const feeAmount = parseFloat(newRow.children[2].textContent);
+    // Function to update the total amount
+    function updateTotalAmount() {
+      const rows = document.querySelectorAll("#FeeCollection tbody tr");
+      totalAmount = 0; // Reset the totalAmount to recalculate
 
-          if (!isNaN(feeAmount)) {
-            // Update the total amount by subtracting the fee
-            updateTotalAmount(-feeAmount);
-          }
-
-          // Remove the row after confirmation
-          newRow.remove();
-
-          Swal.fire("Deleted!", "The fee record has been deleted.", "success");
+      rows.forEach(row => {
+        const totalCell = row.querySelector("td:nth-child(3)"); // Select the 'Total' column
+        if (totalCell) {
+          const amount = parseFloat(totalCell.textContent) || 0; // Parse the value or default to 0
+          totalAmount += amount; // Add to the totalAmount
         }
       });
-    });
-  }
 
-  // Add Edit Button Event Listener
-  const editButton = newRow.querySelector(".editFeeButton");
-  editButton.addEventListener("click", () => handleEditFee(newRow));
-};
-
-// Function to recalculate total amount
-const updateTotalAmount = () => {
-  totalAmount = 0;  // Reset totalAmount
-
-  // Sum all row amounts
-  const rows = document.querySelectorAll("#FeeCollection tbody tr");
-  rows.forEach((row) => {
-    const feeAmountCell = row.querySelector(".totalAmountCell");
-    if (feeAmountCell) {
-      const feeAmount = parseFloat(feeAmountCell.textContent) || 0;
-      totalAmount += feeAmount;
+      // Update the payableAmount field
+      document.getElementById("payableAmount").value = totalAmount.toFixed(2);
     }
-  });
 
-  // Update the payable amount input field
-  document.getElementById("payableAmount").value = totalAmount.toFixed(2);
-};
+    // Add Delete Button Event Listener
+    const deleteButton = newRow.querySelector(".deleteFeeButton");
+    if (deleteButton) {
+      deleteButton.addEventListener("click", () => {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "Cancel",
+        }).then((result) => {
+          console.log("Swal Result:", result); // Debugging line to check the result
+          if (result.isConfirmed) {
+            const feeAmount = parseFloat(newRow.children[2].textContent);
 
-// Handle Edit Fee
-const handleEditFee = (row) => {
-  const feeMonthCell = row.children[0];
-  const feeTypeCell = row.children[1];
-  const feeAmountCell = row.children[2];
+            if (!isNaN(feeAmount)) {
+              // Update the total amount by subtracting the fee
+              updateTotalAmount(-feeAmount);
+            }
 
-  Swal.fire({
-    title: "Edit Fee Details",
-    html: `
+            // Remove the row after confirmation
+            newRow.remove();
+
+            Swal.fire("Deleted!", "The fee record has been deleted.", "success");
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire("Cancelled", "The fee record is safe!", "info");
+          }
+        }).catch((error) => {
+          console.error("Swal Error:", error);
+        });
+      });
+    }
+
+    // Add Edit Button Event Listener
+    const editButton = newRow.querySelector(".editFeeButton");
+    editButton.addEventListener("click", () => handleEditFee(newRow));
+  };
+
+  // Update total amount
+  const updateTotalAmount = (amountChange) => {
+    totalAmount += amountChange;
+    payableAmountInput.value = totalAmount.toFixed(2);
+  };
+
+  // Handle Edit Fee
+
+  const handleEditFee = (row) => {
+    const feeMonthCell = row.children[0];
+    const feeTypeCell = row.children[1];
+    const feeAmountCell = row.children[2];
+
+    Swal.fire({
+      title: "Edit Fee Details",
+      html: `
       <label for="editFeeMonth" class="form-label">Fee Month</label>
       <input id="editFeeMonth" class="swal2-input" value="${capitalize(feeMonthCell.textContent)}">
 
@@ -209,7 +220,8 @@ const handleEditFee = (row) => {
         ${Array.from(feeTypeDropdown.options)
           .map(
             (option) => `
-              <option value="${option.value}" ${option.textContent.trim() === feeTypeCell.textContent.trim() ? "selected" : ""}>
+              <option value="${option.value}" ${option.textContent.trim() === feeTypeCell.textContent.trim() ? "selected" : ""
+              }>
                 ${option.textContent}
               </option>
             `
@@ -220,38 +232,37 @@ const handleEditFee = (row) => {
       <label for="editFeeAmount" class="form-label">Fee Amount</label>
       <input id="editFeeAmount" class="swal2-input" type="number" value="${feeAmountCell.textContent}">
     `,
-    confirmButtonText: "Save",
-    showCancelButton: true,
-    preConfirm: () => {
-      const editedFeeMonth = capitalize(document.getElementById("editFeeMonth").value.trim());
-      const editFeeTypeSelect = document.getElementById("editFeeType");
-      const editedFeeType = editFeeTypeSelect.options[editFeeTypeSelect.selectedIndex].text;
-      const editedFeeAmount = parseFloat(document.getElementById("editFeeAmount").value.trim());
+      confirmButtonText: "Save",
+      showCancelButton: true,
+      preConfirm: () => {
+        const editedFeeMonth = capitalize(document.getElementById("editFeeMonth").value.trim());
+        const editFeeTypeSelect = document.getElementById("editFeeType");
+        const editedFeeType = editFeeTypeSelect.options[editFeeTypeSelect.selectedIndex].text;
+        const editedFeeAmount = parseFloat(document.getElementById("editFeeAmount").value.trim());
 
-      if (!editedFeeMonth || !editedFeeType || isNaN(editedFeeAmount) || editedFeeAmount <= 0) {
-        Swal.showValidationMessage("Please fill out all fields correctly.");
-        return false;
+        if (!editedFeeMonth || !editedFeeType || isNaN(editedFeeAmount) || editedFeeAmount <= 0) {
+          Swal.showValidationMessage("Please fill out all fields correctly.");
+          return false;
+        }
+
+        return { editedFeeMonth, editedFeeType, editedFeeAmount };
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const oldFeeAmount = parseFloat(feeAmountCell.textContent);
+        const { editedFeeMonth, editedFeeType, editedFeeAmount } = result.value;
+
+        feeMonthCell.textContent = editedFeeMonth;
+        feeTypeCell.textContent = editedFeeType;
+        feeAmountCell.textContent = editedFeeAmount;
+
+        // Update totalAmount with the difference
+        updateTotalAmount(editedFeeAmount - oldFeeAmount);
+
+        Swal.fire("Updated!", "Fee details have been updated successfully.", "success");
       }
-
-      return { editedFeeMonth, editedFeeType, editedFeeAmount };
-    },
-  }).then((result) => {
-    if (result.isConfirmed) {
-      const oldFeeAmount = parseFloat(feeAmountCell.textContent);
-      const { editedFeeMonth, editedFeeType, editedFeeAmount } = result.value;
-
-      feeMonthCell.textContent = editedFeeMonth;
-      feeTypeCell.textContent = editedFeeType;
-      feeAmountCell.textContent = editedFeeAmount;
-
-      // Recalculate total amount after editing
-      updateTotalAmount();
-
-      Swal.fire("Updated!", "Fee details have been updated successfully.", "success");
-    }
-  });
-};
-
+    });
+  };
 
 
   // Handle Offcanvas Hide Event

@@ -230,15 +230,6 @@ document.querySelector('#FeeCollection').addEventListener('input', function (eve
   }
 });
 
-// Event listener for delete button
-document.querySelector('#FeeCollection').addEventListener('click', function(event) {
-  if (event.target.closest('#deleteButton')) {
-    const row = event.target.closest('tr');
-    row.remove(); // Remove the row
-    updateTotalAmount(); // Recalculate the total amount after deleting a row
-  }
-});
-
 // Helper function to display alerts
 function showAlert(message, type) {
   Swal.fire({
