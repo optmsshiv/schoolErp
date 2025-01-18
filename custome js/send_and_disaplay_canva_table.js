@@ -190,11 +190,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
     }
-  };
+
     // Add Edit Button Event Listener
     const editButton = newRow.querySelector(".editFeeButton");
     editButton.addEventListener("click", () => handleEditFee(newRow));
-
+  };
 
   // Update total amount
   const updateTotalAmount = (amountChange) => {
