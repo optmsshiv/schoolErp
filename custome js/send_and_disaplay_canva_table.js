@@ -9,14 +9,14 @@ document.addEventListener("DOMContentLoaded", function () {
   let totalAmount = 0; // Initialize totalAmount
 
   // Initialize Offcanvas
-  // const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
-  if (!addFeeCanvasEl) {
+   const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
+  if (!addFeeCanvas) {
     console.error('Element with ID "addFeeCanvas" not found');
     return;
   }
 
   // Initialize Offcanvas
-  const addFeeCanvas = new bootstrap.Offcanvas(addFeeCanvasEl);
+ // const addFeeCanvas = new bootstrap.Offcanvas(addFeeCanvasEl);
 
 
   // Fetch fee heads and populate the dropdown
