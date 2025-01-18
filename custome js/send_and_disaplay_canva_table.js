@@ -235,11 +235,11 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // Handle Offcanvas Hide Event
-  addFeeCanvasEl.addEventListener("hide.bs.offcanvas", () => {
-    if (!isSaveButtonClicked) {
-      feeForm.reset();
-    }
-  });
+  //addFeeCanvasEl.addEventListener("hide.bs.offcanvas", () => {
+  //  if (!isSaveButtonClicked) {
+ //    feeForm.reset();
+  //  }
+  //});
 
   // Initialize event listeners
   const initialize = () => {
