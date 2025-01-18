@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
     } catch (error) {
-      console.error("Error fetching fee types:", error);
+      console.error("Error fetching fee types:", error.message, error.stack);
       feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
 
       if (retryCount > 0) {
