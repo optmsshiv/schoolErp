@@ -9,15 +9,11 @@ document.addEventListener("DOMContentLoaded", function () {
   let totalAmount = 0; // Initialize totalAmount
 
   // Initialize Offcanvas
-   const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
+  const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
   if (!addFeeCanvas) {
     console.error('Element with ID "addFeeCanvas" not found');
     return;
   }
-
-  // Initialize Offcanvas
- // const addFeeCanvas = new bootstrap.Offcanvas(addFeeCanvasEl);
-
 
   // Fetch fee heads and populate the dropdown
   const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
@@ -43,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
     } catch (error) {
-      console.error("Error fetching fee types:", error.message, error.stack);
+      console.error("Error fetching fee types:", error);
       feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
 
       if (retryCount > 0) {
