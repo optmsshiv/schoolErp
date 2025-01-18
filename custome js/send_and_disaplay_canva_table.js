@@ -8,12 +8,13 @@ document.addEventListener("DOMContentLoaded", function () {
   let isSaveButtonClicked = false;
   let totalAmount = 0;
 
-  // Initialize Offcanvas
-  const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
+
   if (!addFeeCanvas) {
     console.error('Element with ID "addFeeCanvas" not found');
     return;
   }
+  // Initialize Offcanvas
+  const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
 
   // Fetch fee heads and populate the dropdown
   const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
