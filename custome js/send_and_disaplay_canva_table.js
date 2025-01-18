@@ -8,113 +8,91 @@ document.addEventListener("DOMContentLoaded", function () {
   let isSaveButtonClicked = false;
   let totalAmount = 0; // Initialize totalAmount
 
-  // Initialize Offcanvas
-   const addFeeCanvas = bootstrap.Offcanvas.getInstance(addFeeCanvasEl) || new bootstrap.Offcanvas(addFeeCanvasEl);
-  if (!addFeeCanvas) {
-    console.error('Element with ID "addFeeCanvas" not found');
-    return;
-  }
-
-  // Initialize Offcanvas
- // const addFeeCanvas = new bootstrap.Offcanvas(addFeeCanvasEl);
-
-
-  // Fetch fee heads and populate the dropdown
-  const fetchFeeHeads = async (retryCount = 3, delayMs = 1000) => {
-    feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
-    try {
-      const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-      const result = await response.json();
-      if (result.status !== 'success' || !Array.isArray(result.data)) {
-        throw new Error("Invalid response structure or no data.");
+ // Ensure Offcanvas element exists
+      if (!addFeeCanvasEl) {
+        console.error('Element with ID "addFeeCanvas" not found');
+        return;
       }
 
-      // Populate dropdown
-      const feeheads = result.data;
-      feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
-      feeheads.forEach(({ fee_head_id, fee_head_name }) => {
-        if (fee_head_id && fee_head_name) {
-          const option = document.createElement("option");
-          option.value = fee_head_id;
-          option.textContent = fee_head_name;
-          feeTypeDropdown.appendChild(option);
+      const addFeeCanvas = new bootstrap.Offcanvas(addFeeCanvasEl);
+
+      const fetchFeeHeads = async () => {
+        feeTypeDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
+        try {
+          const response = await fetch("../php/feeCanva/fetch_canva_feeHead.php");
+          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+          const result = await response.json();
+          if (result.status !== 'success' || !Array.isArray(result.data)) {
+            throw new Error("Invalid response structure.");
+          }
+
+          // Populate dropdown
+          feeTypeDropdown.innerHTML = '<option value="" disabled selected>Select Fee Type</option>';
+          result.data.forEach(({ fee_head_id, fee_head_name }) => {
+            const option = document.createElement("option");
+            option.value = fee_head_id;
+            option.textContent = fee_head_name;
+            feeTypeDropdown.appendChild(option);
+          });
+        } catch (error) {
+          console.error("Error fetching fee types:", error);
+          feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
         }
+      };
+
+      const validateForm = () => {
+        const feeMonthElement = document.getElementById("feeMonth");
+        const feeAmountElement = document.getElementById("feeAmount");
+
+        const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
+        const feeAmount = feeAmountElement.value.trim();
+        const feeMonth = feeMonthElement.value.trim();
+
+        if (!feeType || feeTypeDropdown.value === "") {
+          return { isValid: false, message: "Please select a fee type." };
+        }
+        if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0) {
+          return { isValid: false, message: "Please enter a valid fee amount." };
+        }
+        if (!feeMonth) {
+          return { isValid: false, message: "Please select a valid month." };
+        }
+
+        return { isValid: true, feeType, feeAmount, feeMonth };
+      };
+
+      const handleSaveFee = () => {
+        const { isValid, message, ...data } = validateForm();
+        if (isValid) {
+          const newRow = document.createElement("tr");
+          newRow.innerHTML = `
+            <td>${data.feeMonth}</td>
+            <td>${data.feeType}</td>
+            <td>${data.feeAmount}</td>
+            <td>
+              <button class="btn btn-warning btn-sm">Edit</button>
+              <button class="btn btn-danger btn-sm">Delete</button>
+            </td>
+          `;
+          feeTableBody.appendChild(newRow);
+
+          totalAmount += parseFloat(data.feeAmount);
+          payableAmountInput.value = totalAmount.toFixed(2);
+
+          feeForm.reset();
+          addFeeCanvas.hide();
+
+          Swal.fire("Success", "Fee details added successfully.", "success");
+        } else {
+          Swal.fire("Error", message, "error");
+        }
+      };
+
+      saveFeeButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        handleSaveFee();
       });
-    } catch (error) {
-      console.error("Error fetching fee types:", error.message, error.stack);
-      feeTypeDropdown.innerHTML = '<option value="" disabled selected>Error loading fee types</option>';
 
-      if (retryCount > 0) {
-        console.warn(`Retrying... Attempts left: ${retryCount}`);
-        await new Promise((resolve) => setTimeout(resolve, delayMs));
-        await fetchFeeHeads(retryCount - 1, delayMs);
-      } else {
-        Swal.fire("Error", "Failed to load fee types after multiple attempts.", "error");
-      }
-    }
-  };
-
-  // Utility function to capitalize the first letter of each word
-  const capitalize = (str) => {
-    return str
-      .toLowerCase()
-      .replace(/\b\w/g, (char) => char.toUpperCase());
-  };
-
-  // Validate form fields
-  const validateForm = () => {
-    const feeMonthElement = document.getElementById("feeMonth");
-    const feeAmountElement = document.getElementById("feeAmount");
-
-    if (!feeMonthElement || !feeAmountElement) {
-      console.error("Required form elements are missing!");
-      return { isValid: false, message: "Form validation failed." };
-    }
-
-    const feeType = feeTypeDropdown.options[feeTypeDropdown.selectedIndex]?.text || '';
-    const feeAmount = feeAmountElement.value.trim();
-    const feeMonth = capitalize(feeMonthElement.value.trim());
-
-    if (!feeType || feeTypeDropdown.value === "") {
-      return { isValid: false, message: "Please select a fee type." };
-    }
-    if (!feeAmount || isNaN(feeAmount) || Number(feeAmount) <= 0) {
-      return { isValid: false, message: "Please enter a valid fee amount." };
-    }
-    if (!feeMonth) {
-      return { isValid: false, message: "Please select a valid month." };
-    }
-
-    return { isValid: true, feeType, feeAmount, feeMonth };
-  };
-
-  // Handle Save Fee button click
-  const handleSaveFee = () => {
-    isSaveButtonClicked = true;
-
-    const { isValid, message, ...data } = validateForm();
-    if (isValid) {
-      addRowToTable(data);
-
-      feeForm.reset();
-      addFeeCanvas.hide();
-
-      Swal.fire({
-        title: "Success",
-        text: "Fee details added successfully.",
-        icon: "success",
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: () => Swal.showLoading(),
-      });
-    } else {
-      Swal.fire("Error", message, "error");
-    }
-
-    isSaveButtonClicked = false;
-  };
 
   // Add a new row to the FeeCollection table
   const addRowToTable = ({ feeMonth, feeType, feeAmount }) => {
