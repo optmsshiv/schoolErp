@@ -469,7 +469,7 @@
           <li class="menu-item active open">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
               <i class="menu-icon tf-icons bx bx-car"></i>
-              <div data-i18n="Time Table Mangement">Transport</div>
+              <div data-i18n="Transport Mangement">Transport</div>
             </a>
             <ul class="menu-sub">
               <li class="menu-item active">
@@ -479,7 +479,7 @@
               </li>
               <li class="menu-item ">
                 <a href="transport_report.html" class="menu-link">
-                  <div data-i18n="Report">Report</div>
+                  <div data-i18n="Transport Report">Report</div>
                 </a>
               </li>
             </ul>
@@ -759,9 +759,9 @@
         <div class="content-wrapper">
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
-            <h4 class="fw-bold py-3 mb-4">Dashboard</h4>
+            <h4 class="fw-bold py-2 mb-2">Dashboard</h4>
             <div class="row">
-              <div class="col-md-3 col-lg-4 col-xl-3 mb-2">
+              <div class="col-md-3 col-lg-4 col-xl-3 mb-3">
                 <div class="card">
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
@@ -806,8 +806,8 @@
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="d-flex flex-column align-items-start">
-                        <h6 class="fw-semibold mb-1">Total Routes</h6>
-                        <small class="text-muted">Total Routes</small>
+                        <h6 class="fw-semibold mb-1">Total Transport Students</h6>
+                        <small class="text-muted">Total Students</small>
                       </div>
                       <div class="d-flex align-items-center">
                         <span class="badge bg-label-danger rounded p-2">
@@ -847,26 +847,32 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
-                    <button class="btn btn-primary btn-md me-2 float-end mb-3">
-                      <span class="tf-icons bx bx-user-plus bx-sm me-2 data-bs-toggle=" tooltip"
-                        data-bs-offset="0,4"></span> Add Driver</button>
+                    <button class="btn btn-primary btn-md me-2 float-end mb-3"
+                      data-bs-toggle="offcanvas"
+                      data-bs-target="#addDriverOffcanvas"
+                      aria-controls="addDriverOffcanvas">
+                      <span class="tf-icons bx bx-user-plus bx-sm me-2"></span> Add Driver
+                    </button>
+
                     <table class="table table-bordered table-sm align-middle mt-3 ">
                       <thead class="table-secondary">
                         <tr>
-                          <th>Driver ID</th>
-                          <th>Driver Name</th>
-                          <th>Driver Mobile</th>
-                          <th>Driver Email</th>
-                          <th>Driver Address</th>
-                          <th>Driver Status</th>
-                          <th>Driver Action</th>
+                          <th class="fw-bold">Driver Id</th>
+                          <th class="fw-bold">Driver Name</th>
+                          <th class="fw-bold">Driver Mobile</th>
+                          <th class="fw-bold">Vehical Name</th>
+                          <th class="fw-bold">Vehicle Number</th>
+                          <th class="fw-bold">Driver Address</th>
+                          <th class="fw-bold">Driver Status</th>
+                          <th class="fw-bold">Driver Action</th>
                         </tr>
                       </thead>
                       <tr>
-                        <td>1</td>
+                        <td>1356-8956-2356</td>
                         <td>John Doe</td>
                         <td>(+91) 1234567890</td>
-                        <td>5X0tE@example.com</td>
+                        <td>Bus</td>
+                        <td>KA-01-1234</td>
                         <td>123 Main St, Anytown, USA</td>
                         <td>Active</td>
                         <td>
@@ -876,46 +882,44 @@
                           <button class="btn btn-primary btn-sm me-2 float-end">
                             <span class="tf-icons bx bx-edit bx-sm me-2 data-bs-toggle=" tooltip"
                               data-bs-offset="0,4"></span></button>
+                          <button class="btn btn-primary btn-sm me-2 float-end">
+                            <span class="tf-icons bx bx-show bx-sm me-2 data-bs-toggle=" tooltip"
+                              data-bs-offset="0,4"></span></button>
                         </td>
                       </tr>
-
                     </table>
-
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <!-- / Content wrapper -->
+        <!-- / Content wrapper -->
 
-  <!-- Footer -->
-  <footer class="content-footer footer bg-footer-theme">
-    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-      <div class="mb-2 mb-md-0">
-        ©
-        <script>
-          document.write(new Date().getFullYear());
-        </script>
-        , made with ❤️ by
-        <a href="https://optms.co.in" target="_blank" class="footer-link fw-medium">OPTMS Tech</a>
-      </div>
-      <div class="d-none d-lg-inline-block">
-        <a href="https://www.optms.co.in/" target="_blank" class="footer-link me-4">Connect</a>
-        <a href="https://www.optms.co.in/issues" target="_blank" class="footer-link">Support</a>
-      </div>
-    </div>
-  </footer>
-  <!-- / Footer -->
+        <!-- Footer -->
+        <footer class="content-footer footer bg-footer-theme">
+          <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+            <div class="mb-2 mb-md-0">
+              ©
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              , made with ❤️ by
+              <a href="https://optms.co.in" target="_blank" class="footer-link fw-medium">OPTMS Tech</a>
+            </div>
+            <div class="d-none d-lg-inline-block">
+              <a href="https://www.optms.co.in/" target="_blank" class="footer-link me-4">Connect</a>
+              <a href="https://www.optms.co.in/issues" target="_blank" class="footer-link">Support</a>
+            </div>
+          </div>
+        </footer>
+        <!-- / Footer -->
 
-  <div class="content-backdrop fade"></div>
-  </div>
-  <!-- Content wrapper -->
-  </div>
-  <!-- / Layout page -->
+        <div class="content-backdrop fade"></div>
+      </div>
+      <!-- Content wrapper -->
+    </div>
+    <!-- / Layout page -->
   </div>
 
   <!-- Overlay -->
@@ -935,6 +939,9 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
   <!-- endbuild-->
+
+  <!--Transport Driver js-->
+  <script src="../custome js/transport_driver/driver_offcanva.js"></script>
 
   <!-- Main JS -->
   <script src="../assets/js/main.js"></script>

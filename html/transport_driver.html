@@ -1,0 +1,58 @@
+<div class="offcanvas offcanvas-end" tabindex="-1" id="addDriverOffcanvas" aria-labelledby="addDriverOffcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="addDriverOffcanvasLabel">Add Driver</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- Add your driver form here -->
+    <form id="addDriverForm">
+        <!-- Driver Aadhar -->
+        <div class="mb-3">
+          <label for="driverAadhar" class="form-label">Driver Aadhar</label>
+          <input type="text" class="form-control" id="driverAadhar" name="driver_aadhar" placeholder="Enter Aadhar Number" required>
+        </div>
+
+        <!-- Driver Name -->
+        <div class="mb-3">
+          <label for="driverName" class="form-label">Driver Name</label>
+          <input type="text" class="form-control" id="driverName" name="driver_name" placeholder="Enter Driver Name" required>
+        </div>
+
+        <!-- Driver Mobile -->
+        <div class="mb-3">
+          <label for="driverMobile" class="form-label">Driver Mobile</label>
+          <input type="text" class="form-control" id="driverMobile" name="driver_mobile" placeholder="Enter Mobile Number" required>
+        </div>
+
+        <!-- Vehicle Name -->
+        <div class="mb-3">
+          <label for="vehicleName" class="form-label">Vehicle Name</label>
+          <input type="text" class="form-control" id="vehicleName" name="vehicle_name" placeholder="Enter Vehicle Name" required>
+        </div>
+
+        <!-- Vehicle Number -->
+        <div class="mb-3">
+          <label for="vehicleNumber" class="form-label">Vehicle Number</label>
+          <input type="text" class="form-control" id="vehicleNumber" name="vehicle_number" placeholder="Enter Vehicle Number" required>
+        </div>
+
+        <!-- Driver Address -->
+        <div class="mb-3">
+          <label for="driverAddress" class="form-label">Driver Address</label>
+          <textarea class="form-control" id="driverAddress" name="driver_address" rows="3" placeholder="Enter Driver Address" required></textarea>
+        </div>
+
+        <!-- Driver Status -->
+        <div class="mb-3">
+          <label for="driverStatus" class="form-label">Driver Status</label>
+          <select class="form-select" id="driverStatus" name="driver_status" required>
+            <option value="active" selected>Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-success w-100">Add Driver</button>
+      </form>
+  </div>
+</div>
