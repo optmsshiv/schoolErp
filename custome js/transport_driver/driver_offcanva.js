@@ -4,7 +4,7 @@
 
     // Function to load the offcanvas content
     function loadOffcanvas() {
-      fetch('/html/transport_html/transport_canva.html')  // Path to the external HTML
+      fetch('/html/transport_html/transport_driver.html')  // Path to the external HTML
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
