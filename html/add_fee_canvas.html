@@ -6,6 +6,47 @@
   </div>
   <div class="offcanvas-body">
     <!-- Add Fee Form -->
+    <form id="feeForm">
+      <div class="mb-3">
+        <label for="feeType">Fee Type</label>
+        <select id="feeType" name="feeType" class="form-select" required>
+          <option value="" disabled selected>Loading...</option>
+        </select>
+      </div>
 
+      <div class="mb-3">
+        <label for="feeAmount">Fee Amount</label>
+        <input type="number" id="feeAmount" name="feeAmount" class="form-control" placeholder="Enter amount" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="feeMonth">Month</label>
+        <select id="feeMonth" name="feeMonth" class="form-select" required>
+          <option value="" disabled selected>Select Month</option>
+          <option value="january">January</option>
+          <option value="february">February</option>
+          <option value="march">March</option>
+          <option value="april">April</option>
+          <option value="may">May</option>
+          <option value="june">June</option>
+          <option value="july">July</option>
+          <option value="august">August</option>
+          <option value="september">September</option>
+          <option value="october">October</option>
+          <option value="november">November</option>
+          <option value="december">December</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="remarks">Remarks</label>
+        <textarea id="remarks" name="remarks" class="form-control" rows="3" placeholder="Optional"></textarea>
+      </div>
+
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-success" id="saveFeeButton">Save Fee</button>
+        <button type="reset" class="btn btn-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+      </div>
+    </form>
   </div>
 </div>
