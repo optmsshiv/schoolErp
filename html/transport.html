@@ -847,21 +847,20 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
-                    <button class="btn btn-primary btn-md me-2 float-end mb-3"
+                    <button class="btn btn-primary me-2 float-end mb-3"
                       data-bs-toggle="offcanvas"
                       data-bs-target="#addDriverOffcanvas"
                       data-bs-toggle="tooltip"
                       data-bs-placement="top"
                       title="Click to add a new driver"
                       aria-controls="addDriverOffcanvas">
-                      <span class="tf-icons bx bx-user-plus bx-sm me-2"></span> Add Driver
+                      <span class="tf-icons bx bx-user-plus me-2"></span> Add Driver
                     </button>
 
-                    <button id="addUserBtn" class="btn btn-primary me-0" data-bs-toggle="offcanvas"
-                          data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd">
-                          <span class="tf-icons fas fa-plus me-2"></span> Add New
-                          User</button>
+                    <!-- off-canvas -->
+                       <div id="offcanvasDriver"></div>
 
+                    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Transport /</span> Drivers</h4>
                     <table class="table table-bordered table-sm align-middle mt-3 ">
                       <thead class="table-secondary">
                         <tr>
