@@ -230,23 +230,27 @@ function updateTotalAmount() {
 //  }
 //});
 
+// Handle cell edit event
+function handleCellEdit(event) {
+  const cell = event.target;
+  const newValue = parseFloat(cell.textContent) || 0; // Get the new value or default to 0
+  cell.textContent = newValue.toFixed(2); // Ensure the value is formatted correctly
+  updateTotalAmount(); // Recalculate the total amount
+}
 
-// Add event listeners to detect edits in the 'Total' column
-document.querySelectorAll("#FeeCollection tbody tr td:nth-child(3)").forEach(cell => {
-  cell.addEventListener("input", () => {
-    updateTotalAmount(); // Recalculate the total amount whenever a cell is edited
-  });
-});
-
-// Add a mutation observer to dynamically track edits if rows are added dynamically
+// Add a MutationObserver to track row additions or deletions
 const observer = new MutationObserver(() => {
-  document.querySelectorAll("#FeeCollection tbody tr td:nth-child(3)").forEach(cell => {
-    cell.removeEventListener("input", updateTotalAmount); // Prevent duplicate listeners
-    cell.addEventListener("input", () => {
-      updateTotalAmount();
-    });
-  });
+  attachEditListeners(); // Attach listeners to any new rows or cells
+  updateTotalAmount(); // Ensure the total is recalculated
 });
+
+// Start observing the table body for added or removed rows
+observer.observe(document.querySelector("#FeeCollection tbody"), { childList: true, subtree: true });
+
+// Initial setup
+attachEditListeners(); // Attach listeners to existing cells
+updateTotalAmount(); // Calculate the initial total amount
+
 
 // Start observing the table body for added rows
 observer.observe(document.querySelector("#FeeCollection tbody"), { childList: true, subtree: true });
