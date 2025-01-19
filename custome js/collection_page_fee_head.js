@@ -229,7 +229,14 @@ function updateTotalAmount() {
 //    updateTotalAmount(); // Update the total when the Total column is modified
 //  }
 //});
-
+// Function to attach event listeners to "Total" column cells
+function attachEditListeners() {
+  const totalCells = document.querySelectorAll("#FeeCollection tbody tr td:nth-child(3)");
+  totalCells.forEach(cell => {
+    cell.removeEventListener("input", handleCellEdit); // Prevent duplicate listeners
+    cell.addEventListener("input", handleCellEdit); // Attach a new listener
+  });
+}
 // Handle cell edit event
 function handleCellEdit(event) {
   const cell = event.target;
