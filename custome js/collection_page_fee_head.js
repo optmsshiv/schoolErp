@@ -224,11 +224,32 @@ function updateTotalAmount() {
 }
 
 // Event listener to detect changes in the Total column
-document.querySelector('#FeeCollection').addEventListener('input', function (event) {
-  if (event.target.classList.contains('totalAmountCell')) {
-    updateTotalAmount(); // Update the total when the Total column is modified
-  }
+//document.querySelector('#FeeCollection').addEventListener('input', function (event) {
+//  if (event.target.classList.contains('totalAmountCell')) {
+//    updateTotalAmount(); // Update the total when the Total column is modified
+//  }
+//});
+
+
+// Add event listeners to detect edits in the 'Total' column
+document.querySelectorAll("#FeeCollection tbody tr td:nth-child(3)").forEach(cell => {
+  cell.addEventListener("input", () => {
+    updateTotalAmount(); // Recalculate the total amount whenever a cell is edited
+  });
 });
+
+// Add a mutation observer to dynamically track edits if rows are added dynamically
+const observer = new MutationObserver(() => {
+  document.querySelectorAll("#FeeCollection tbody tr td:nth-child(3)").forEach(cell => {
+    cell.removeEventListener("input", updateTotalAmount); // Prevent duplicate listeners
+    cell.addEventListener("input", () => {
+      updateTotalAmount();
+    });
+  });
+});
+
+// Start observing the table body for added rows
+observer.observe(document.querySelector("#FeeCollection tbody"), { childList: true, subtree: true });
 
 // Helper function to display alerts
 function showAlert(message, type) {
