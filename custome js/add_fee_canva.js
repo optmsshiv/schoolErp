@@ -1,5 +1,6 @@
+
 document.addEventListener("DOMContentLoaded", function() {
-  fetch("../html/add_fee_canvas.html")
+  fetch("/html/add_fee_canvas.html")
       .then(response => response.text())
       .then(data => {
           document.getElementById('canvas-container').innerHTML = data;
@@ -9,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 /*
 document.addEventListener("DOMContentLoaded", function() {
-  fetch("../html/add_fee_canvas.html")
+  fetch("/html/add_fee_canvas.html")
       .then(response => {
           if (!response.ok) throw new Error('HTML Load Failed');
           return response.text();
@@ -22,5 +23,5 @@ document.addEventListener("DOMContentLoaded", function() {
           Swal.fire('Error', 'Failed to load the fee canvas. Please try again.', 'error');
       });
 });
-
 */
+
