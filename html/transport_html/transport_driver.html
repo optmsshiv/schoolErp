@@ -3,57 +3,82 @@
     <h5 class="offcanvas-title" id="addDriverOffcanvasLabel">Add Driver</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body">
+  <div class="offcanvas-body flex-grow-1">
     <!-- Add your driver form here -->
     <form id="addDriverForm">
-        <!-- Driver Aadhar -->
-        <div class="mb-3">
-          <label for="driverAadhar" class="form-label">Driver Aadhar</label>
-          <input type="text" class="form-control" id="driverAadhar" name="driver_aadhar" placeholder="Enter Aadhar Number" required>
+      <!-- Driver Aadhar -->
+      <div class="col-sm-12">
+        <label for="driverAadhar" class="form-label">Driver Aadhar</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+          <input type="text" class="form-control" id="driverAadhar" name="driver_aadhar"
+            placeholder="Enter Aadhar Number" required>
         </div>
+      </div>
 
-        <!-- Driver Name -->
-        <div class="mb-3">
-          <label for="driverName" class="form-label">Driver Name</label>
-          <input type="text" class="form-control" id="driverName" name="driver_name" placeholder="Enter Driver Name" required>
+      <!-- Driver Name -->
+      <div class="mb-3">
+        <label for="driverName" class="form-label">Driver Name</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-user"></i></span>
+          <input type="text" class="form-control" id="driverName" name="driver_name" placeholder="Enter Driver Name"
+            required>
         </div>
+      </div>
 
-        <!-- Driver Mobile -->
-        <div class="mb-3">
-          <label for="driverMobile" class="form-label">Driver Mobile</label>
-          <input type="text" class="form-control" id="driverMobile" name="driver_mobile" placeholder="Enter Mobile Number" required>
+      <!-- Driver Mobile -->
+      <div class="mb-3">
+        <label for="driverMobile" class="form-label">Driver Mobile</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-phone"></i></span>
+          <input type="text" class="form-control" id="driverMobile" name="driver_mobile"
+            placeholder="Enter Mobile Number" required>
         </div>
+      </div>
 
-        <!-- Vehicle Name -->
-        <div class="mb-3">
-          <label for="vehicleName" class="form-label">Vehicle Name</label>
-          <input type="text" class="form-control" id="vehicleName" name="vehicle_name" placeholder="Enter Vehicle Name" required>
+      <!-- Vehicle Name -->
+      <div class="mb-3">
+        <label for="vehicleName" class="form-label">Vehicle Name</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-bus"></i></span>
+          <input type="text" class="form-control" id="vehicleName" name="vehicle_name" placeholder="Enter Vehicle Name"
+            required>
         </div>
+      </div>
 
-        <!-- Vehicle Number -->
-        <div class="mb-3">
-          <label for="vehicleNumber" class="form-label">Vehicle Number</label>
-          <input type="text" class="form-control" id="vehicleNumber" name="vehicle_number" placeholder="Enter Vehicle Number" required>
+      <!-- Vehicle Number -->
+      <div class="mb-3">
+        <label for="vehicleNumber" class="form-label">Vehicle Number</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-list"></i></span>
+          <input type="text" class="form-control" id="vehicleNumber" name="vehicle_number"
+            placeholder="Enter Vehicle Number" required>
         </div>
+      </div>
 
-        <!-- Driver Address -->
-        <div class="mb-3">
-          <label for="driverAddress" class="form-label">Driver Address</label>
-          <textarea class="form-control" id="driverAddress" name="driver_address" rows="3" placeholder="Enter Driver Address" required></textarea>
+      <!-- Driver Address -->
+      <div class="mb-3">
+        <label for="driverAddress" class="form-label">Driver Address</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+          <textarea class="form-control" id="driverAddress" name="driver_address" rows="3"
+            placeholder="Enter Driver Address" required></textarea>
         </div>
+      </div>
 
-        <!-- Driver Status -->
-        <div class="mb-3">
-          <label for="driverStatus" class="form-label">Driver Status</label>
-          <select class="form-select" id="driverStatus" name="driver_status" required>
-            <option value="active" selected>Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-        </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-success w-100 mb-3">Add Driver</button>
-         <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="offcanvas">Cancel</button>
-      </form>
+      <!-- Driver Status -->
+      <div class="mb-3">
+        <label for="driverStatus" class="form-label">Driver Status</label>
+        <select class="form-select" id="driverStatus" name="driver_status" required>
+          <option value="active" selected>Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-success w-100 mb-3">Add Driver</button>
+      <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="offcanvas">Cancel</button>
+    </form>
   </div>
 </div>
