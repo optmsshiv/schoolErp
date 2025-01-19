@@ -115,9 +115,34 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
 
 // Event listener for the Cancel button
 document.querySelector(".btn-secondary").addEventListener("click", function () {
-  // Redirect to collect_fee.html
-  window.location.href = "/html/collect_fee.html";
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You will be redirected to the fee collection page in 5 seconds.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, proceed",
+    cancelButtonText: "No, stay here",
+    timer: 5000,
+    timerProgressBar: true,
+    didOpen: () => {
+      const b = Swal.getHtmlContainer().querySelector("b");
+      const interval = setInterval(() => {
+        if (b) {
+          b.textContent = Math.ceil(Swal.getTimerLeft() / 1000);
+        }
+      }, 1000);
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Redirect to collect_fee.html after confirmation
+      window.location.href = "/html/collect_fee.html";
+    } else if (result.dismiss === Swal.DismissReason.timer) {
+      // Redirect automatically after 5 seconds if no action is taken
+      window.location.href = "/html/collect_fee.html";
+    }
+  });
 });
+
 
 // Function to generate a unique receipt number
 function generateReceiptNumber() {
