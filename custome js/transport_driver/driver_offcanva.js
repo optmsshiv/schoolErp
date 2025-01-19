@@ -41,6 +41,13 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch(error => console.error('Error loading the offcanvas:', error));
   }
 
+  document.querySelectorAll('.btn[data-bs-toggle="offcanvas"]').forEach(button => {
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+      loadOffcanvas();
+    });
+  });
+
   // Add event listener to the "Add Driver" button(s)
   const addDriverButtons = document.querySelectorAll('.btn[data-bs-toggle="offcanvas"]');
   if (addDriverButtons.length > 0) {
