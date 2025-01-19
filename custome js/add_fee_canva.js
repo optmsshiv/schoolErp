@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('canvas-container').innerHTML = '<div class="text-center my-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
     // Fetch and load the offcanvas HTML
-    fetch("../html/add_fee_canvas.html")
+    fetch("/html/add_fee_canvas.html")
         .then(response => {
             if (!response.ok) throw new Error('HTML Load Failed');
             return response.text();
