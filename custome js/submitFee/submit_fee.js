@@ -113,6 +113,12 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
     });
 });
 
+// Event listener for the Cancel button
+document.querySelector(".btn-secondary").addEventListener("click", function () {
+  // Redirect to collect_fee.html
+  window.location.href = "/html/collect_fee.html";
+});
+
 // Function to generate a unique receipt number
 function generateReceiptNumber() {
   const now = new Date();
