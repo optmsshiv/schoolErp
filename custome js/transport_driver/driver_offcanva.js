@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         offcanvasContainer.insertAdjacentHTML('beforeend', data);
 
         // Initialize tooltips for the newly injected content
-        const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.forEach(tooltipTriggerEl => {
           new bootstrap.Tooltip(tooltipTriggerEl);
         });
@@ -24,16 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // Initialize and show the Bootstrap offcanvas
         const offcanvasElement = document.getElementById('addDriverOffcanvas');
         if (offcanvasElement) {
-          const offcanvasInstance = new bootstrap.Offcanvas(offcanvasElement);
-
-          // Listen for the offcanvas hidden event to clean up
-          offcanvasElement.addEventListener('hidden.bs.offcanvas', () => {
-            document.querySelectorAll('.offcanvas-backdrop').forEach(backdrop => backdrop.remove());
-            document.body.style.filter = ''; // Reset any filter
-          });
-
-          // Show the offcanvas
-          offcanvasInstance.show();
+          const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+          offcanvas.show();
         } else {
           console.error('Offcanvas element not found in the loaded HTML.');
         }
@@ -41,23 +33,11 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch(error => console.error('Error loading the offcanvas:', error));
   }
 
+  // Add event listener to the "Add Driver" button
   document.querySelectorAll('.btn[data-bs-toggle="offcanvas"]').forEach(button => {
     button.addEventListener('click', function (event) {
       event.preventDefault();
-      loadOffcanvas();
+      loadOffcanvas(); // Load the offcanvas content when the button is clicked
     });
   });
-
-  // Add event listener to the "Add Driver" button(s)
-  const addDriverButtons = document.querySelectorAll('.btn[data-bs-toggle="offcanvas"]');
-  if (addDriverButtons.length > 0) {
-    addDriverButtons.forEach(button => {
-      button.addEventListener('click', function (event) {
-        event.preventDefault();
-        loadOffcanvas(); // Load the offcanvas content when the button is clicked
-      });
-    });
-  } else {
-    console.error('No "Add Driver" buttons found with data-bs-toggle="offcanvas".');
-  }
 });
