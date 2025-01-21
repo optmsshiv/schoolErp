@@ -1,43 +1,29 @@
-$(document).ready(function () {
-            $("#driverForm").on("submit", function (e) {
-                e.preventDefault();
+document.getElementById("addDriverDetails").addEventListener("submit", function (event) {
+  event.preventDefault(); // Prevent default form submission behavior
 
-                // Gather form data
-                const formData = {
-                    driver_aadhar: $("#driver_aadhar").val(),
-                    driver_name: $("#driver_name").val(),
-                    driver_mobile: $("#driver_mobile").val(),
-                    vehicle_name: $("#vehicle_name").val(),
-                    vehicle_number: $("#vehicle_number").val(),
-                    driver_address: $("#driver_address").val(),
-                    driver_status: $("#driver_status").val()
-                };
+  // Collect form data
+  const formData = new FormData(this);
 
-                // Send AJAX request
-                $.ajax({
-                    url: "/php/driverAdd/add_driver.php",
-                    type: "POST",
-                    data: JSON.stringify(formData),
-                    contentType: "application/json",
-                    success: function (response) {
-                        if (response.status === "success") {
-                            $("#responseMessage").html(
-                                `<div class="alert alert-success">${response.message}</div>`
-                            );
-                            $("#driverForm")[0].reset();
-                        } else {
-                            $("#responseMessage").html(
-                                `<div class="alert alert-danger">${response.message}</div>`
-                            );
-                        }
-                    },
-                    error: function () {
-                        $("#responseMessage").html(
-                            `<div class="alert alert-danger">An error occurred. Please try again.</div>`
-                        );
-                    }
-                });
-            });
-        });
-
-
+  // Send data to the server
+  fetch("/php/driverAdd/add_driver.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        alert(data.message);
+        // Optionally reset the form or close the offcanvas
+        document.getElementById("addDriverDetails").reset();
+        const offcanvasElement = document.getElementById("addDriverOffcanvas");
+        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+        offcanvas.hide();
+      } else {
+        alert("Error: " + data.message);
+      }
+    })
+    .catch((error) => {
+      alert("An error occurred while saving driver details.");
+      console.error(error);
+    });
+});

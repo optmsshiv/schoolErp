@@ -1,22 +1,23 @@
 <?php
+// Send JSON response
+header('Content-Type: application/json');
+echo json_encode($response);
 // Include your database connection
 require_once '../db_connection.php'; // Replace with your actual connection file
 
 $response = array("status" => "error", "message" => "Something went wrong!");
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    try {
-        // Get JSON input data
-        $input = json_decode(file_get_contents("php://input"), true);
-
-        // Extract data from the request
-        $driver_aadhar = $input['driver_aadhar'] ?? null;
-        $driver_name = $input['driver_name'] ?? null;
-        $driver_mobile = $input['driver_mobile'] ?? null;
-        $vehicle_name = $input['vehicle_name'] ?? null;
-        $vehicle_number = $input['vehicle_number'] ?? null;
-        $driver_address = $input['driver_address'] ?? null;
-        $driver_status = $input['driver_status'] ?? 'active';
+try {
+    // Check if the request is a POST request
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Retrieve form data
+        $driver_aadhar = $_POST['driver_aadhar'];
+        $driver_name = $_POST['driver_name'];
+        $driver_mobile = $_POST['driver_mobile'];
+        $vehicle_name = $_POST['vehicle_name'];
+        $vehicle_number = $_POST['vehicle_number'];
+        $driver_address = $_POST['driver_address'];
+        $driver_status = $_POST['driver_status'];
 
         // Validate inputs
         if (
@@ -40,28 +41,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     :vehicle_name, :vehicle_number, :driver_address, :driver_status
                 )";
 
+        // Prepare the statement
         $stmt = $pdo->prepare($sql);
 
         // Bind parameters
-        $stmt->bindParam(':driver_aadhar', $driver_aadhar);
-        $stmt->bindParam(':driver_name', $driver_name);
-        $stmt->bindParam(':driver_mobile', $driver_mobile);
-        $stmt->bindParam(':vehicle_name', $vehicle_name);
-        $stmt->bindParam(':vehicle_number', $vehicle_number);
-        $stmt->bindParam(':driver_address', $driver_address);
-        $stmt->bindParam(':driver_status', $driver_status);
+        $stmt->bindParam(':driver_aadhar', $driver_aadhar, PDO::PARAM_STR);
+        $stmt->bindParam(':driver_name', $driver_name, PDO::PARAM_STR);
+        $stmt->bindParam(':driver_mobile', $driver_mobile, PDO::PARAM_STR);
+        $stmt->bindParam(':vehicle_name', $vehicle_name, PDO::PARAM_STR);
+        $stmt->bindParam(':vehicle_number', $vehicle_number, PDO::PARAM_STR);
+        $stmt->bindParam(':driver_address', $driver_address, PDO::PARAM_STR);
+        $stmt->bindParam(':driver_status', $driver_status, PDO::PARAM_STR);
 
-        // Execute statement
+        // Execute the query
         if ($stmt->execute()) {
-            $response = array("status" => "success", "message" => "Driver details saved successfully!");
+            echo json_encode(['status' => 'success', 'message' => 'Driver details saved successfully.']);
         } else {
-            throw new Exception("Failed to save driver details.");
+            echo json_encode(['status' => 'error', 'message' => 'Failed to save driver details.']);
         }
-    } catch (Exception $e) {
-        $response = array("status" => "error", "message" => $e->getMessage());
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
     }
+} catch (PDOException $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
 }
+?>
 
-// Send JSON response
-header('Content-Type: application/json');
-echo json_encode($response);
+
