@@ -1,46 +1,67 @@
 <?php
-// Include database connection
-include '../db_connection.php'; // Ensure this file establishes the $pdo connection
+// Include your database connection
+require_once '../db_connection.php'; // Replace with your actual connection file
 
-header('Content-Type: application/json');
+$response = array("status" => "error", "message" => "Something went wrong!");
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
-        // Capture form data
-        $driverAadhar = $_POST['driver_aadhar'];
-        $driverName = $_POST['driver_name'];
-        $driverMobile = $_POST['driver_mobile'];
-        $vehicleName = $_POST['vehicle_name'];
-        $vehicleNumber = $_POST['vehicle_number'];
-        $driverAddress = $_POST['driver_address'];
-        $driverStatus = $_POST['driver_status'];
+        // Get JSON input data
+        $input = json_decode(file_get_contents("php://input"), true);
 
-        // Prepare the SQL query
-        $sql = "INSERT INTO school_driver (driver_aadhar, driver_name, driver_mobile, vehicle_name, vehicle_number, driver_address, driver_status)
-                VALUES (:driver_aadhar, :driver_name, :driver_mobile, :vehicle_name, :vehicle_number, :driver_address, :driver_status)";
+        // Extract data from the request
+        $driver_aadhar = $input['driver_aadhar'] ?? null;
+        $driver_name = $input['driver_name'] ?? null;
+        $driver_mobile = $input['driver_mobile'] ?? null;
+        $vehicle_name = $input['vehicle_name'] ?? null;
+        $vehicle_number = $input['vehicle_number'] ?? null;
+        $driver_address = $input['driver_address'] ?? null;
+        $driver_status = $input['driver_status'] ?? 'active';
 
-        // Prepare statement
+        // Validate inputs
+        if (
+            empty($driver_aadhar) || !preg_match('/^\d{12,16}$/', $driver_aadhar) ||
+            empty($driver_name) ||
+            empty($driver_mobile) || !preg_match('/^\d{10}$/', $driver_mobile) ||
+            empty($vehicle_name) ||
+            empty($vehicle_number) ||
+            empty($driver_address) ||
+            !in_array($driver_status, ['active', 'inactive'])
+        ) {
+            throw new Exception("Invalid input data.");
+        }
+
+        // Prepare SQL statement using PDO
+        $sql = "INSERT INTO school_driver (
+                    driver_aadhar, driver_name, driver_mobile,
+                    vehicle_name, vehicle_number, driver_address, driver_status
+                ) VALUES (
+                    :driver_aadhar, :driver_name, :driver_mobile,
+                    :vehicle_name, :vehicle_number, :driver_address, :driver_status
+                )";
+
         $stmt = $pdo->prepare($sql);
 
         // Bind parameters
-        $stmt->bindParam(':driver_aadhar', $driverAadhar, PDO::PARAM_STR);
-        $stmt->bindParam(':driver_name', $driverName, PDO::PARAM_STR);
-        $stmt->bindParam(':driver_mobile', $driverMobile, PDO::PARAM_STR);
-        $stmt->bindParam(':vehicle_name', $vehicleName, PDO::PARAM_STR);
-        $stmt->bindParam(':vehicle_number', $vehicleNumber, PDO::PARAM_STR);
-        $stmt->bindParam(':driver_address', $driverAddress, PDO::PARAM_STR);
-        $stmt->bindParam(':driver_status', $driverStatus, PDO::PARAM_STR);
+        $stmt->bindParam(':driver_aadhar', $driver_aadhar);
+        $stmt->bindParam(':driver_name', $driver_name);
+        $stmt->bindParam(':driver_mobile', $driver_mobile);
+        $stmt->bindParam(':vehicle_name', $vehicle_name);
+        $stmt->bindParam(':vehicle_number', $vehicle_number);
+        $stmt->bindParam(':driver_address', $driver_address);
+        $stmt->bindParam(':driver_status', $driver_status);
 
-        // Execute the statement
+        // Execute statement
         if ($stmt->execute()) {
-            echo json_encode(["success" => true, "message" => "Driver details added successfully!"]);
+            $response = array("status" => "success", "message" => "Driver details saved successfully!");
         } else {
-            echo json_encode(["success" => false, "message" => "Failed to add driver details."]);
+            throw new Exception("Failed to save driver details.");
         }
-    } catch (PDOException $e) {
-        echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+    } catch (Exception $e) {
+        $response = array("status" => "error", "message" => $e->getMessage());
     }
-} else {
-    echo json_encode(["success" => false, "message" => "Invalid request method"]);
 }
-?>
+
+// Send JSON response
+header('Content-Type: application/json');
+echo json_encode($response);
