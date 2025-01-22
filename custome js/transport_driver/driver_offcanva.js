@@ -20,7 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
           })
             .then(response => response.json())
             .then(result => {
+              console.log(result);
               if (result.status === "success") {
+                //alert("Driver added successfully!");
                 // SweetAlert2 success modal with driver's name
                 Swal.fire({
                   title: "Driver Added!",
@@ -28,15 +30,13 @@ document.addEventListener("DOMContentLoaded", function () {
                   icon: "success",
                   confirmButtonText: "OK",
                 }).then(() => {
-                  // Optional: Reset the form and close the offcanvas
-                  form.reset();
-                  const offcanvas = bootstrap.Offcanvas.getInstance(
-                    document.getElementById("addDriverOffcanvas")
-                  );
-                  offcanvas.hide();
-                });
+                form.reset(); // Reset the form
+                const offcanvas = bootstrap.Offcanvas.getInstance(
+                  document.getElementById("addDriverOffcanvas")
+                );
+                offcanvas.hide(); // Close the offcanvas
+              });
               } else {
-                // SweetAlert2 error modal
                 Swal.fire({
                   title: "Error!",
                   text: result.message,
@@ -61,8 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 });
-
-
 
 
 
