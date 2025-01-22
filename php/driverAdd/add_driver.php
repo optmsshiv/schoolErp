@@ -81,9 +81,21 @@ try {
         $response["message"] = "Invalid request method.";
     }
 } catch (PDOException $e) {
-    // Log PDO errors to a file for debugging
-    error_log("Database error: " . $e->getMessage(), 3, "../logs/error.log");
-    $response["message"] = "A database error occurred. Please try again later.";
+    // Handle duplicate entry errors
+    if ($e->getCode() === "23000") { // SQLSTATE 23000: Integrity constraint violation
+        if (strpos($e->getMessage(), 'unique_driver_mobile') !== false) {
+            $response["message"] = "This mobile number is already registered.";
+        } elseif (strpos($e->getMessage(), 'unique_vehicle_number') !== false) {
+            $response["message"] = "This vehicle number is already registered.";
+        } elseif (strpos($e->getMessage(), 'unique_driver_aadhar') !== false) {
+            $response["message"] = "This Aadhar number is already registered.";
+        } else {
+            $response["message"] = "A duplicate entry error occurred.";
+        }
+    } else {
+        // General database error
+        $response["message"] = "A database error occurred: " . $e->getMessage();
+    }
 } catch (Exception $e) {
     // Handle general exceptions
     $response["message"] = $e->getMessage();

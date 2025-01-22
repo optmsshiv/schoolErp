@@ -27,7 +27,9 @@ document.addEventListener("DOMContentLoaded", function () {
                   title: "Driver Added!",
                   text: `Driver ${formData.get("driver_name")} has been added successfully.`,
                   icon: "success",
+                  showConfirmButton: true,
                   confirmButtonText: "OK",
+                  timer: 3000, // Auto-close after 3 seconds (optional)
                 }).then(() => {
                   // Optional: Reset the form and close the offcanvas
                   form.reset();
