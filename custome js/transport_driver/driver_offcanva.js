@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // SweetAlert2 success modal with driver's name
                 Swal.fire({
                   title: "Driver Added!",
-                  text: "Driver has been added successfully.",
+                  text: `Driver ${formData.get("driver_name")} has been added successfully.`,
                   icon: "success",
                   confirmButtonText: "OK",
                 }).then(() => {
