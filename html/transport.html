@@ -792,13 +792,13 @@
                         <small class="text-muted">Total Drivers</small>
                       </div>
                       <div class="d-flex align-items-center">
-                        <span class="badge bg-label-success rounded p-2">
-                          <i class="bx bx-dollar text-success"></i>
+                        <span class="badge bg-label-info rounded p-2">
+                          <i class="bx bx-car text-info"></i>
                         </span>
                       </div>
                     </div>
                     <div class="d-flex flex-column align-items-start">
-                      <h3 class="fw-semibold text-success mb-2">4,567</h3>
+                      <h3 class="fw-semibold text-success mb-2"><?php echo number_format($total_drivers); ?></h3>
                     </div>
                   </div>
                 </div>
@@ -953,6 +953,8 @@
   <script src="../custome js/transport_driver/driver_offcanva.js"></script>
   <!---->
   <script src="../custome js/transport_driver/get_driver_details.js"></script>
+<!---driver total number card-->
+  <script src="../php/driverAdd/driver_card.php"></script>
 
 
   <!-- Main JS -->
