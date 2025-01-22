@@ -63,11 +63,20 @@ try {
     // Handle duplicate entry errors
     if ($e->getCode() === "23000") { // SQLSTATE 23000: Integrity constraint violation
         if (strpos($e->getMessage(), 'driver_mobile') !== false) {
-            $response["message"] = "This mobile number is already registered.";
+          // Extract the duplicate mobile number from the error message
+            preg_match("/'(.+)' for key 'driver_mobile'/", $e->getMessage(), $matches);
+            $duplicate_value = $matches[1] ?? 'This mobile number';
+            $response["message"] = "The mobile number '$duplicate_value' is already registered.";
         } elseif (strpos($e->getMessage(), 'vehicle_number') !== false) {
-            $response["message"] = "This vehicle number is already registered.";
+          // Extract the duplicate vehicle number from the error message
+            preg_match("/'(.+)' for key 'vehicle_number'/", $e->getMessage(), $matches);
+            $duplicate_value = $matches[1] ?? 'This vehicle number';
+            $response["message"] = "The vehicle number '$duplicate_value' is already registered.";
         } elseif (strpos($e->getMessage(), 'driver_aadhar') !== false) {
-            $response["message"] = "This Aadhar number is already registered.";
+          // Extract the duplicate aadhar number from the error message
+            preg_match("/'(.+)' for key 'driver_aadhar'/", $e->getMessage(), $matches);
+            $duplicate_value = $matches[1] ?? 'This Aadhar number';
+            $response["message"] = "The Aadhar number '$duplicate_value' is already registered.";
         } else {
             $response["message"] = "A duplicate entry error occurred.";
         }
