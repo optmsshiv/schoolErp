@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <td>${driver.vehicle_name}</td>
               <td>${driver.vehicle_number}</td>
               <td>${driver.driver_address}</td>
-              <td><span class="badge"
+              <td>$<span class="badge"
                       :class="{
                               'bg-success': driver.driver_status === 'active',
                                 'bg-info': driver.driver_status === 'pending'
