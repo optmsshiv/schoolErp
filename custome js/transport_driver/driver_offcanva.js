@@ -20,21 +20,40 @@ document.addEventListener("DOMContentLoaded", function () {
           })
             .then(response => response.json())
             .then(result => {
-              console.log(result);
               if (result.status === "success") {
-                alert("Driver added successfully!");
-                form.reset(); // Reset the form
-                const offcanvas = bootstrap.Offcanvas.getInstance(
-                  document.getElementById("addDriverOffcanvas")
-                );
-                offcanvas.hide(); // Close the offcanvas
+                // SweetAlert2 success modal with driver's name
+                Swal.fire({
+                  title: "Driver Added!",
+                  text: `Driver ${formData.get("driver_name")} has been added successfully.`,
+                  icon: "success",
+                  confirmButtonText: "OK",
+                }).then(() => {
+                  // Optional: Reset the form and close the offcanvas
+                  form.reset();
+                  const offcanvas = bootstrap.Offcanvas.getInstance(
+                    document.getElementById("addDriverOffcanvas")
+                  );
+                  offcanvas.hide();
+                });
               } else {
-                alert("Error: " + result.message);
+                // SweetAlert2 error modal
+                Swal.fire({
+                  title: "Error!",
+                  text: result.message,
+                  icon: "error",
+                  confirmButtonText: "OK",
+                });
               }
             })
             .catch(error => {
               console.error("Error:", error);
-              alert("An unexpected error occurred.");
+              // SweetAlert2 error modal for unexpected errors
+              Swal.fire({
+                title: "Error!",
+                text: "An unexpected error occurred. Please try again later.",
+                icon: "error",
+                confirmButtonText: "OK",
+              });
             });
         });
       } else {
@@ -42,6 +61,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 });
+
+
 
 
 
