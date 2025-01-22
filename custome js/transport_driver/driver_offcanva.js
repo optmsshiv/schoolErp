@@ -5,4 +5,4 @@ document.addEventListener("DOMContentLoaded", function() {
           document.getElementById("offcanvasDriver").innerHTML = data;
       });
 });
-<script src="../custome js/transport_driver/add_driver_details.js"></script>
+
