@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
               if (result.status === "success") {
                 // SweetAlert2 success modal with driver's name
                 Swal.fire({
-                  position: "top", // Set modal position to top
+                  target: document.getElementById("addDriverOffcanvas"),
                   title: "Driver Added!",
                   text: `Driver ${formData.get("driver_name")} has been added successfully.`,
                   icon: "success",
@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
               } else {
                 // SweetAlert2 error modal
                 Swal.fire({
+                  target: document.getElementById("addDriverOffcanvas"),
                   title: "Error!",
                   text: result.message,
                   icon: "error",
@@ -50,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
               console.error("Error:", error);
               // SweetAlert2 error modal for unexpected errors
               Swal.fire({
+                target: document.getElementById("addDriverOffcanvas"),
                 title: "Error!",
                 text: "An unexpected error occurred. Please try again later.",
                 icon: "error",
