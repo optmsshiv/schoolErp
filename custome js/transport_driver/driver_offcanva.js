@@ -14,15 +14,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // AJAX logic to submit form data
           const formData = new FormData(form);
-          fetch("/php/driverAdd/add_driver.php", {
+          fetch("/path/to/add_driver.php", {
             method: "POST",
             body: formData,
           })
             .then(response => response.json())
             .then(result => {
-              console.log(result);
               if (result.status === "success") {
-                //alert("Driver added successfully!");
                 // SweetAlert2 success modal with driver's name
                 Swal.fire({
                   title: "Driver Added!",
@@ -30,13 +28,15 @@ document.addEventListener("DOMContentLoaded", function () {
                   icon: "success",
                   confirmButtonText: "OK",
                 }).then(() => {
-                form.reset(); // Reset the form
-                const offcanvas = bootstrap.Offcanvas.getInstance(
-                  document.getElementById("addDriverOffcanvas")
-                );
-                offcanvas.hide(); // Close the offcanvas
-              });
+                  // Optional: Reset the form and close the offcanvas
+                  form.reset();
+                  const offcanvas = bootstrap.Offcanvas.getInstance(
+                    document.getElementById("addDriverOffcanvas")
+                  );
+                  offcanvas.hide();
+                });
               } else {
+                // SweetAlert2 error modal
                 Swal.fire({
                   title: "Error!",
                   text: result.message,
@@ -61,6 +61,3 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 });
-
-
-
