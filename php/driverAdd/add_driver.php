@@ -62,11 +62,11 @@ try {
 } catch (PDOException $e) {
     // Handle duplicate entry errors
     if ($e->getCode() === "23000") { // SQLSTATE 23000: Integrity constraint violation
-        if (strpos($e->getMessage(), 'unique_driver_mobile') !== false) {
+        if (strpos($e->getMessage(), 'driver_mobile') !== false) {
             $response["message"] = "This mobile number is already registered.";
-        } elseif (strpos($e->getMessage(), 'unique_vehicle_number') !== false) {
+        } elseif (strpos($e->getMessage(), 'vehicle_number') !== false) {
             $response["message"] = "This vehicle number is already registered.";
-        } elseif (strpos($e->getMessage(), 'unique_driver_aadhar') !== false) {
+        } elseif (strpos($e->getMessage(), 'driver_aadhar') !== false) {
             $response["message"] = "This Aadhar number is already registered.";
         } else {
             $response["message"] = "A duplicate entry error occurred.";
