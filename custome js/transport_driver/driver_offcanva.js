@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // AJAX logic to submit form data
           const formData = new FormData(form);
-          fetch("/path/to/add_driver.php", {
+          fetch("/php/driverAdd/add_driver.php", {
             method: "POST",
             body: formData,
           })
