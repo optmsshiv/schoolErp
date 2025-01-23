@@ -765,7 +765,7 @@
           <div class="container-xxl flex-grow-1 container-p-y">
             <div class="row">
               <div class="col-sm-4 mb-4 mb-sm-0">
-                <div class="card">
+                <div class="card card-border-shadow-primary">
                   <div class="card-body">
                     <h5 class="card-title">Special title treatment</h5>
                     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
@@ -773,6 +773,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-sm-4 mb-4">
                 <div class="card">
                   <div class="card-body">
@@ -782,6 +783,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="col-sm-4 mb-4">
                 <div class="card">
                   <div class="card-body">
@@ -794,35 +796,35 @@
 
               <!-- First Card -->
               <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <div class="card custom-card" id="total_student" style="background-color: #6c757d">
+                <div class="card custom-card shadow-none bg-label-primary" id="total_student">
                   <!-- Changed color -->
                   <div class="d-flex align-items-center row mt-2">
                     <div class="col-sm-6 col-md-8 col-lg-9">
                       <div class="card-body p-2">
-                        <h4 class="custom-h4 text-success mb-1">1150</h4>
-                        <h5 class="custom-h5 text-white mt-3">Total Student</h5>
-                        <p class="text-white custom-h6 mb-0">Active Student: 1030</p>
+                        <h4 id="total_student" class="custom-h4 text-primary mb-1">Loading..</h4>
+                        <h5 class="custom-h5 text-primary mt-3">Total Student</h5>
+                        <p id="total_active_student" class="text-primary custom-h6 mb-0">Active Student: Loading...</p>
                       </div>
                     </div>
                     <div class="col-4 col-md-3 col-lg-2 text-end">
-                      <i class="bx bx-car bx-md" style="color: #edcf0d"></i>
+                      <i class="bx bx-user bx-md bg-label-primary"></i>
                     </div>
                   </div>
                 </div>
 
-                <div class="card custom-card mt-3" style="background-color: #6c757d">
+                <div class="card custom-card mt-3 bg-label-info">
                   <!-- Changed color -->
                   <div class="d-flex align-items-center row">
                     <div class="col-8">
                       <div class="card-body">
-                        <h4 class="custom-h4 text-success">150</h4>
-                        <h5 class="custom-h5 text-white">Transport Student</h5>
-                        <p class="mb-3 text-white custom-h6">Total Member: 130</p>
+                        <h4 class="custom-h4 text-info">Loading...</h4>
+                        <h5 class="custom-h5 text-info">Transport Student</h5>
+                        <p class="mb-3 text-info custom-h6">Total Member: Loading...</p>
                       </div>
                     </div>
                     <div class="col-4 text-center">
                       <div class="card-body">
-                        <i class="bx bx-car bx-md" style="color: #fff"></i>
+                        <i class="bx bx-car bx-md bg-label-info"></i>
                       </div>
                     </div>
                   </div>
@@ -831,41 +833,43 @@
 
               <!-- Second Card -->
               <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-                <div class="card custom-card" style="background-color: #007bff">
+                <div class="card custom-card bg-label-warning">
                   <!-- Changed color -->
                   <div class="d-flex align-items-center row">
                     <div class="col-8">
                       <div class="card-body p-2">
-                        <h4 class="custom-h4 text-success">30</h4>
-                        <h5 class="custom-h5 text-white">Total Faculty</h5>
-                        <p class="mb-3 text-white custom-h6">Total Member : 30</p>
+                        <h4 class="custom-h4 text-warning">Loading...</h4>
+                        <h5 class="custom-h5 text-warning">Total Faculty</h5>
+                        <p class="mb-3 text-warning custom-h6">Total Member : Loading...</p>
                       </div>
                     </div>
                     <div class="col-4 text-center">
                       <div class="card-body">
-                        <i class="bx bx-user bx-md" style="color: #fff"></i>
+                        <i class="bx bx-user bx-md bg-label-warning"></i>
                       </div>
                     </div>
                   </div>
                 </div>
                 <!-- Second 2 Card -->
 
-                <div class="card custom-card mt-3" style="background-color: #8e3e63">
+                <div class="card custom-card mt-3 bg-label-dark">
                   <div class="d-flex align-items-center row">
                     <div class="col-8">
-                      <div class="card-body">
-                        <h4 class="custom-h4 text-success">30</h4>
-                        <h5 class="custom-h5 text-white">Total Non-Teaching Staff</h5>
+                      <div class="card-body p-2">
+                        <h4 class="custom-h4 text-dark">Loading...</h4>
+                        <h5 class="custom-h5 text-dark">Non-Teaching Staff</h5>
+                        <p class="mb-3 text-dark custom-h6">Total Member: Loading...</p>
                       </div>
                     </div>
                     <div class="col-4 text-center">
                       <div class="card-body">
-                        <i class="bx bx-list-check bx-md" style="color: #fff"></i>
+                        <i class="bx bx-list-check bx-md bg-label-dark"></i>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
 
               <!-- Third Card -->
               <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
@@ -1150,6 +1154,9 @@
 
   <!-- Page JS -->
   <script src="../assets/js/dashboards-analytics.js"></script>
+
+  <!---total calculate card js-->
+  <script src="../custome js/card_count/total_student_card.js"></script>
 </body>
 
 </html>

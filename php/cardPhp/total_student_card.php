@@ -8,16 +8,16 @@ try {
     // Query to get the total number of drivers
     // SELECT COUNT(*) AS total_drivers FROM school_driver WHERE driver_status = 'active'; (when need to show only active driver)
 
-    $sql = "SELECT COUNT(*) AS total_drivers FROM school_driver"; //show all driver include active and inactive
+    $sql = "SELECT COUNT(*) AS total_student FROM students"; //show all driver include active and inactive
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
 
     // Fetch the result
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_drivers = $result['total_drivers'] ?? 0;
+    $total_drivers = $result['total_student'] ?? 0;
 
     // Return the count as JSON
-    echo json_encode(['total_drivers' => $total_drivers]);
+    echo json_encode(['total_student' => $total_student]);
 
 } catch (PDOException $e) {
     // Handle errors
