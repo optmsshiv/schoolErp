@@ -14,7 +14,7 @@ try {
 
     // Fetch the result
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    $total_drivers = $result['total_student'] ?? 0;
+    $total_student = $result['total_student'] ?? 0;
 
     // Return the count as JSON
     echo json_encode(['total_student' => $total_student]);
