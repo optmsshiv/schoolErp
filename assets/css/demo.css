@@ -320,21 +320,21 @@ body.dark-mode .icon.sun {
 }
 
 .custom-h4 {
-  font-size: 22px;
+  font-size: 28px;
   /* Adjust the font size as needed */
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .custom-h5 {
-  font-size: 16px;
+  font-size: 18px;
   /* Adjust the font size as needed */
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .custom-h6 {
-  font-size: 13px;
-  /* Adjust the font size as needed */
-  margin-top: 12px;
+  font-size: 14px;
+  /* Adjust the font size as needed
+  margin-top: 12px;*/
 }
 
 
