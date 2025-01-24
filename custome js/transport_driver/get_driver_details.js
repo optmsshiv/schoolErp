@@ -24,14 +24,28 @@ document.addEventListener("DOMContentLoaded", function () {
               <td>${driver.driver_address}</td>
               <td><span class="badge ${driver.driver_status === 'active' ? 'bg-label-success' : 'bg-label-danger'}">${driver.driver_status}</span></td>
               <td>
-                <button class="btn btn-warning btn-sm me-1" onclick="editDriver(${driver.driver_id})">Edit</button>
-                <button class="btn btn-danger btn-sm" onclick="deleteDriver(${driver.driver_id})">Delete</button>
+                <a href="javascript:;" onclick="viewDriver(${driver.driver_id})" class="tf-icons bx bx-show bx-sm me-2 text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="View Driver Details"></a>
+                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Driver" onclick="deleteDriver(${driver.driver_id})"></a>
+                <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
+                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          data-bs-auto-close="outside"
+                          data-bs-display="static"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                           title="More Options"
+                           aria-controls="dropdownMenuButton1"></a>
+                           <div class="dropdown-menu dropdown-menu-end" id="dropdownMenuButton1" aria-labelledby="dropdownMenuButton1">
+                            <a class="dropdown-item" onclick="editDriver(${driver.driver_id})" href="javascript:;">Edit</a>
+                            <a class="dropdown-item" onclick="suspendDriver(${driver.driver_id})" href="javascript:;">Suspended</a>
+                           </div>
+
               </td>
             `;
 
             tbody.appendChild(tr);
           });
 
+          //<a class="btn btn-warning btn-sm me-1" onclick="editDriver(${driver.driver_id})"></a>
           // Remove existing <tbody> and append new one
           const existingTbody = driverTable.parentNode.querySelector("tbody");
           if (existingTbody) {
@@ -60,4 +74,14 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Delete functionality for Driver ID: " + driverId);
       // Add your delete logic here
     }
+  }
+
+  function suspendDriver(driverId) {
+    alert("Suspend functionality for Driver ID: " + driverId);
+    // Add your suspend logic here
+  }
+
+  function viewDriver(driverId) {
+    alert("View functionality for Driver ID: " + driverId);
+    // Add your view logic here
   }

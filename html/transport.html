@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
   <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-   <!-- SweetAlert2 CSS -->
+  <!-- SweetAlert2 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet" />
 
   <!-- Page CSS -->
@@ -849,18 +849,14 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
-                    <button class="btn btn-primary me-2 float-end mb-3"
-                      data-bs-toggle="offcanvas"
-                      data-bs-target="#addDriverOffcanvas"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="top"
-                      title="Click to add a new driver"
-                      aria-controls="addDriverOffcanvas">
+                    <button class="btn btn-primary me-2 float-end mb-3" data-bs-toggle="offcanvas"
+                      data-bs-target="#addDriverOffcanvas" data-bs-toggle="tooltip" data-bs-placement="top"
+                      title="Click to add a new driver" aria-controls="addDriverOffcanvas">
                       <span class="tf-icons bx bx-user-plus me-2"></span> Add Driver
                     </button>
 
                     <!-- off-canvas -->
-                       <div id="offcanvasDriver"></div>
+                    <div id="offcanvasDriver"></div>
 
                     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Transport /</span> Drivers</h4>
                     <table class="table table-bordered table-sm align-middle mt-3 ">
@@ -885,15 +881,20 @@
                         <td>123 Main St, Anytown, USA</td>
                         <td>Active</td>
                         <td>
-                          <button class="btn btn-danger btn-sm me-2 float-end">
-                            <span class="tf-icons bx bx-trash bx-sm me-2 data-bs-toggle=" tooltip"
-                              data-bs-offset="0,4"></span></button>
-                          <button class="btn btn-primary btn-sm me-2 float-end">
-                            <span class="tf-icons bx bx-edit bx-sm me-2 data-bs-toggle=" tooltip"
-                              data-bs-offset="0,4"></span></button>
-                          <button class="btn btn-primary btn-sm me-2 float-end">
-                            <span class="tf-icons bx bx-show bx-sm me-2 data-bs-toggle=" tooltip"
-                              data-bs-offset="0,4"></span></button>
+                          <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info"></a>
+                          <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger"></a>
+                          <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
+                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                          data-bs-auto-close="outside"
+                          data-bs-display="static"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                           title="More Options"
+                           aria-controls="dropdownMenuButton1"></a>
+                           <div class="dropdown-menu dropdown-menu-end" id="dropdownMenuButton1" aria-labelledby="dropdownMenuButton1">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Suspended</a>
+                           </div>
                         </td>
                       </tr>
                     </table>
@@ -953,7 +954,7 @@
   <script src="../custome js/transport_driver/driver_offcanva.js"></script>
   <!---->
   <script src="../custome js/transport_driver/get_driver_details.js"></script>
-<!---driver total number card-->
+  <!---driver total number card-->
   <script src="../custome js/transport_driver/driver_card.js"></script>
 
 
@@ -963,7 +964,7 @@
   <!-- Page JS -->
   <script src="../assets/js/dashboards-analytics.js"></script>
   <!-- SweetAlert2 JavaScript -->
-          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 </body>
 
 </html>
