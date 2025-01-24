@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <td>
                 <a href="javascript:;" onclick="viewDriver(${driver.driver_id})" class="tf-icons bx bx-show bx-sm me-2 text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="View Driver Details"></a>
                 <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Driver" onclick="deleteDriver(${driver.driver_id})"></a>
+                <div class="dropdown">
                 <a href="javascript:;"
                           class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -42,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             <a class="dropdown-item" onclick="editDriver(${driver.driver_id})" href="javascript:;">Edit</a>
                             <a class="dropdown-item" onclick="suspendDriver(${driver.driver_id})" href="javascript:;">Suspended</a>
                            </ul>
+                           </div>
 
               </td>
             `;
