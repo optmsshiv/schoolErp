@@ -36,12 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
                            title="More Options"
                            aria-controls="dropdownMenuButton1">
                            </a>
-                           <div class="dropdown-menu dropdown-menu-end"
+                           <ul class="dropdown-menu dropdown-menu-end"
                            id="dropdownMenuButton1"
                            aria-labelledby="dropdownMenuButton1">
                             <a class="dropdown-item" onclick="editDriver(${driver.driver_id})" href="javascript:;">Edit</a>
                             <a class="dropdown-item" onclick="suspendDriver(${driver.driver_id})" href="javascript:;">Suspended</a>
-                           </div>
+                           </ul>
 
               </td>
             `;
