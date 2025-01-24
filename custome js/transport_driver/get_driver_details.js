@@ -24,8 +24,25 @@ document.addEventListener("DOMContentLoaded", function () {
               <td>${driver.driver_address}</td>
               <td><span class="badge ${driver.driver_status === 'active' ? 'bg-label-success' : 'bg-label-danger'}">${driver.driver_status}</span></td>
               <td>
-                <a href="javascript:;" onclick="viewDriver(${driver.driver_id})" class="tf-icons bx bx-show bx-sm me-2 text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="View Driver Details"></a>
-                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Driver" onclick="deleteDriver(${driver.driver_id})"></a>
+              <!-- View Driver Button -->
+                <a href="javascript:;"
+                onclick="viewDriver(${driver.driver_id})"
+                class="tf-icons bx bx-show bx-sm me-2 text-info"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="View Driver Details">
+                </a>
+
+                <!-- Delete Driver Button -->
+                <a href="javascript:;"
+                class="tf-icons bx bx-trash bx-sm me-2 text-danger"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
+                title="Delete Driver"
+                onclick="deleteDriver(${driver.driver_id})">
+                </a>
+                
+                <!-- Dropdown Trigger -->
                 <a href="javascript:;"
                           class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                           data-bs-toggle="dropdown"
