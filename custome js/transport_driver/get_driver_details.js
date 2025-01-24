@@ -34,7 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
                           data-bs-placement="top"
                            title="More Options"
                            aria-controls="dropdownMenuButton1"></a>
-                           <div class="dropdown-menu dropdown-menu-end" id="dropdownMenuButton1" aria-labelledby="dropdownMenuButton1">
+                           <div class="dropdown-menu dropdown-menu-end" id="dropdownMenuButton1"
+                           aria-labelledby="dropdownMenuButton1"
+                           style="position: absolute; inset: 0px 0px auto auto ; margin: 0px; transform: translate3d(-72.4333px, 163.833px, 0px);" data-popper-placement="bottom-end">
                             <a class="dropdown-item" onclick="editDriver(${driver.driver_id})" href="javascript:;">Edit</a>
                             <a class="dropdown-item" onclick="suspendDriver(${driver.driver_id})" href="javascript:;">Suspended</a>
                            </div>
