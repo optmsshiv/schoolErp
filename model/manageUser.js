@@ -37,7 +37,7 @@ $(document).ready(function () {
         // Loop through each user and append rows to the table
         response.forEach(function (user) {
            // Default avatar if not available
-          var user_role_avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/default-avatar.png';
+          var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/default-avatar.png';
           var row = `
             <tr>
               <td><input type="checkbox" class="row-select"></td>
@@ -45,7 +45,7 @@ $(document).ready(function () {
               <td>
                 <div class="d-flex align-items-center">
                   <div class="avatar avatar-sm">
-                    <img src="${user_role_avatar}" alt="avatar" class="rounded-circle" />
+                    <img src="${avatar}" alt="avatar" class="rounded-circle" />
                   </div>
                   <div class="ms-2">
                     <h6 class="mb-0 ms-2">${user.fullname}</h6>
