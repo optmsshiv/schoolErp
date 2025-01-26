@@ -43,7 +43,7 @@ $(document).ready(function () {
               <td>
                 <div class="d-flex align-items-center">
                   <div class="avatar avatar-sm">
-                    <img src="${user.user_role_avatar}" alt="avatar" class="rounded-circle" />
+                    <img src="${user_role_avatar}" alt="avatar" class="rounded-circle" />
                   </div>
                   <div class="ms-2">
                     <h6 class="mb-0 ms-2">${user.fullname}</h6>
