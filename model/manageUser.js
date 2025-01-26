@@ -167,8 +167,4 @@ $(document).ready(function () {
     table.search(this.value).draw();
   });
 
-  //search box
-  $('#searchBox').on('keyup', function () {
-    table.search(this.value).draw();
-  });
 });
