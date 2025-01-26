@@ -763,7 +763,91 @@
         <!-- Content wrapper -->
         <div class="content-wrapper">
           <div class="container-xxl flex-grow-1 container-p-y">
+
+            <div class="row mb-3">
+              <div class="col-sm-8">
+                <div class="card custom-card h-100">
+                  <div class="card-body card-widget-separator">
+                    <div class="row gy-4 gy-sm-1">
+
+                      <div class="col-xxl-4 col-md-4 col-sm-8">
+                        <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-4 pb-sm-0">
+                            <div>
+                              <p class="mb-1">Total Expanse</p>
+                              <h4 class="custom-h4 text-primary mb-1">Loading...</h4>
+
+                            </div>
+                              <span class="avatar me-sm-6 me-2">
+                                <span class="avatar-initial rounded w-px-44 h-px-44">
+                                <i class="bx bx-money bx-md "></i>
+                              </span>
+                              </span>
+                            </div>
+
+
+                      </div>
+                      <div class="col-xxl-4 col-md-4 col-sm-8">
+                        <div class="d-flex justify-content-between align-items-start card-widget-1 border-end pb-4 pb-sm-0">
+                          <div>
+                            <p class="mb-1">In-store Sales</p>
+                            <h4 class="mb-1">$5,345.43</h4>
+                            <p class="mb-0"><span class="me-2">5k orders</span><span class="badge bg-label-success">+5.7%</span></p>
+                          </div>
+                          <span class="avatar me-sm-6 me-2">
+                            <span class="avatar-initial rounded w-px-44 h-px-44">
+                              <i class="icon-base bx bx-store-alt icon-lg "></i>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+
+
+                      <div class="col-xxl-4 col-md-4 col-sm-8">
+                        <div class="d-flex justify-content-between align-items-start card-widget-1 pb-4 pb-sm-0">
+
+                          <h4 class="custom-h4 text-primary">Loading...</h4>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-4">
+                <div class="card custom-card h-100">
+                  <div class="card-body d-flex flex-column justify-content-between">
+                    <h4 class="custom-h4 text-dark">SMS Usage Report</h4>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex flex-column align-items-center justify-content-center">
+                        <i class="bx bx-message-square-detail bx-md text-success "></i>
+                        <span class="d-flex flex-column align-items-center justify-content-center mt-2">
+                          <p id="sms_today_sent" class="mb-0">15</p>
+                          <p class="mb-0 fw-bold">Today Sent</p>
+                        </span>
+                      </div>
+                      <div class="d-flex flex-column align-items-center justify-content-center">
+                        <i class="bx bx-message-square-detail bx-md text-danger"></i>
+                        <span class="d-flex flex-column align-items-center justify-content-center mt-2">
+                          <p id="sms_monthly_sent" class="mb-0">25</p>
+                          <p class="mb-0 fw-bold">Monthly Sent</p>
+                        </span>
+                      </div>
+                      <div class="d-flex flex-column align-items-center justify-content-center">
+                        <i class="bx bx-wallet bx-md text-info"></i>
+                        <span class="d-flex flex-column align-items-center justify-content-center mt-2">
+                          <p id="sms_balance" class="mb-0">500</p>
+                          <p class="mb-0 fw-bold">Balance</p>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="row g-6 mb-6">
+              <!---- Basic Bootstrap Table
               <div class="col-sm-4 mb-4">
                 <div class="card card-border-shadow-primary">
                   <div class="card-body">
@@ -792,7 +876,7 @@
                     <a href="#" class="btn btn-primary">Go somewhere</a>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
               <!-- First Card -->
               <div class="col-sm-6 col-xl-3 mb-3">
@@ -815,19 +899,20 @@
                   </div>
                 </div>
 
-                <div class="card custom-card mt-3 bg-label-info">
+                <div class="card custom-card mt-3 bg-label-danger">
                   <!-- Changed color -->
-                  <div class="d-flex align-items-center row">
-                    <div class="col-8">
-                      <div class="card-body">
-                        <h4 class="custom-h4 text-info">Loading...</h4>
-                        <h5 class="custom-h5 text-info">Transport Student</h5>
-                        <p class="mb-3 text-info custom-h6">Total Member: Loading...</p>
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex flex-column align-items-start">
+                        <h4 id="total_teacher" class="custom-h4 text-danger">Loading..</h4>
+                        <h5 class="custom-h5 text-danger">Total Collection</h5>
+                        <span class="d-flex">Total Amount:
+                          <p id="total_amount" class="text-danger ms-2">Loading...</p>
+                        </span>
                       </div>
-                    </div>
-                    <div class="col-4 text-center">
-                      <div class="card-body">
-                        <i class="bx bx-car bx-md bg-label-info"></i>
+                      <div class="d-flex align-items-center">
+                        <span class="badge bg-label-info rounded p-2"></span>
+                        <i class="bx bx-user bx-md"></i>
                       </div>
                     </div>
                   </div>
@@ -842,7 +927,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="d-flex flex-column align-items-start">
                         <h4 class="custom-h4 text-warning">Loading...</h4>
-                        <h5 class="custom-h5 text-warning">Total Faculty</h5>
+                        <h5 class="custom-h5 text-warning">Total Staff</h5>
                         <span class="d-flex">Total Active:
                           <p class="text-warning ms-2">Loading...</p>
                         </span>
@@ -858,34 +943,34 @@
                 <!-- Second 2 Card -->
 
                 <div class="card custom-card mt-3 bg-label-dark">
-                  <div class="d-flex align-items-center row">
-                    <div class="col-8">
-                      <div class="card-body p-2">
+                  <!-- Changed color -->
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex flex-column align-items-start">
                         <h4 class="custom-h4 text-dark">Loading...</h4>
-                        <h5 class="custom-h5 text-dark">Non-Teaching Staff</h5>
-                        <p class="mb-3 text-dark custom-h6">Total Member: Loading...</p>
+                        <h5 class="custom-h5 text-dark">Total Expense</h5>
+                        <span class="d-flex">Expense Today:
+                          <p class="text-dark ms-2">Loading...</p>
+                        </span>
                       </div>
-                    </div>
-                    <div class="col-4 text-center">
-                      <div class="card-body">
-                        <i class="bx bx-list-check bx-md bg-label-dark"></i>
+                      <div class="d-flex align-items-center">
+                        <span class="badge bg-label-dark rounded p-2"></span>
+                        <i class="bx bx-user bx-md bg-label-dark"></i>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-
               <!-- Third Card -->
               <div class="col-sm-6 col-xl-3 mb-3">
-                <div class="card custom-card">
+                <div class="card custom-card bg-label-success">
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="d-flex flex-column align-items-start">
                         <h4 class="custom-h4 text-success">Loading...</h4>
                         <h5 class="custom-h5 text-success">Total User</h5>
-                        <span class="d-flex">Active User:
-                          <p class="text-success ms-2">18</p>
+                        <span class="d-flex text-success">Active User:
+                          <p class="text-success ms-2">Loading...</p>
                         </span>
                       </div>
                       <div class="d-flex align-items-center">
@@ -895,7 +980,6 @@
                     </div>
                   </div>
                 </div>
-
 
                 <div class="card custom-card mt-3" style="background-color: #8e3e63">
                   <div class="d-flex align-items-center row">
@@ -917,20 +1001,19 @@
 
               <!-- Fourth Card -->
               <div class="col-sm-6 col-xl-3 mb-3">
-
-                <div class="card custom-card bg-label-danger">
+                <div class="card custom-card bg-label-info">
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="d-flex flex-column align-items-start">
-                        <h4 id="today_collection" class="custom-h4 text-danger">Loading...</h4>
-                        <h5 class="custom-h5 text-danger">Today Collection</h5>
-                        <span class="text-danger d-flex">Total Collection:
-                          <p id="total_collection" class="text-danger ms-2">Loading...</p>
+                        <h4 id="today_collection" class="custom-h4 text-info">Loading...</h4>
+                        <h5 class="custom-h5 text-info">Non-Teaching</h5>
+                        <span class="d-flex">Total:
+                          <p id="total_collection" class="text-info ms-2">Loading...</p>
                         </span>
                       </div>
                       <div class="d-flex align-items-center">
-                        <span class="badge bg-label-danger rounded p-2"></span>
-                        <i class="bx bx-dollar bx-md"></i>
+                        <span class="badge bg-label-info rounded p-2"></span>
+                        <i class="bx bx-user bx-md"></i>
                       </div>
                     </div>
                   </div>
@@ -957,7 +1040,7 @@
 
 
             <!-- Second Row end here -->
-
+            <!----
             <div class="row mb-3">
               <div class="col-sm-3">
                 <div class="card mt-2 custom-hover" style="background-color: #216374">
@@ -1046,9 +1129,25 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class="row">
+              <div class="col-6">
+                <div class="card custom-hover mt-3">
+                  <div class="card-body">
+                    <div id="collectionChart"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="card custom-hover mt-3 mb-3">
+                  <div class="card-body">
+                    <canvas id="myChart"></canvas>
+                  </div>
+                </div>
+              </div>
+
               <div class="col-4">
                 <div class="card custom-hover" style="height: 350px">
                   <div class="card-body">
@@ -1122,22 +1221,10 @@
                 </div>
               </div>
 
-              <div class="col-6">
-                <div class="card custom-hover mt-3 mb-3">
-                  <div class="card-body">
-                    <canvas id="myChart"></canvas>
-                  </div>
-                </div>
-              </div>
 
-              <div class="col-6">
-                <div class="card custom-hover mt-3 mb-3">
-                  <div class="card-body">
-                    <div id="collectionChart"></div>
-                  </div>
-                </div>
-              </div>
             </div>
+
+
           </div>
 
           <!-- / Content -->
@@ -1184,7 +1271,7 @@
   <script src="../assets/vendor/js/menu.js"></script>
 
   <!-------------------------------Chart js---------------------------------->
-  <script src="../model/collectionChart.js"></script>
+  <script src="/model/collectionChart.js"></script>
   <script src="../model/chart.js"></script>
 
   <!-- endbuild -->
