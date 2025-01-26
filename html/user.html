@@ -859,54 +859,81 @@
                       </div>
                     </div>
                   </div>
+                    <div >
+                      <table class="table table-sm table-hover table-bordered mb-4" style="text-align: center; white-space: nowrap;">
+                        <thead class="table-secondary" id="userTable" >
+                          <tr>
+                            <th style="width: 3%;"><input type="checkbox" id="select-all"></th> <!-- Select all checkbox -->
+                            <th class="fw-bold">User ID</th>
+                            <th class="fw-bold">User Name</th>
+                            <th class="fw-bold">Role</th>
+                            <th class="fw-bold">Phone</th>
+                            <th class="fw-bold">Join Date</th>
+                            <th class="fw-bold">Status</th>
+                            <th class="fw-bold">Actions</th>
+                          </tr>
+                        </thead>
+                      <tbody>
+                        <tr>
+                          <td><input type="checkbox" class="row-select"></td>
+                          <td>john21</td>
+                          <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-sm">
+                                  <img src="../assets/img/avatars/5.png" alt="avatar" class="rounded-circle" />
+                                </div>
+                                <div class="ms-2">
+                                  <h6 class="mb-0 ms-2">JohnDoe</h6>
+                                </div>
+                              </div>
+                          </td>
+                          <td>Admin</td>
+                          <td>+1234567890</td>
+                          <td>2023-01-15</td>
+                          <td><span class="badge bg-label-success me-1">Active</span></td>
+                          <td><a href="javascript:;" id="userView" class="tf-icons bx bx-show bx-sm me-2 text-info"></a>
+                            <a href="javascript:;" id="userDelete"
+                              class="tf-icons bx bx-trash bx-sm me-2 text-danger"></a>
+                            <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
+                              data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                              title="More Options"></a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                              <a class="dropdown-item" id="userEdit" href="javascript:;">Edit</a>
+                              <a class="dropdown-item" id="userSuspend" href="javascript:;">Suspended</a>
+                            </div>
+                          </td>
+                        </tr>
 
+                        <tr>
+                          <td><input type="checkbox" class="row-select"></td>
+                          <td>laura988</td>
+                          <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar avatar-sm">
+                                  <img src="../assets/img/avatars/6.png" alt="avatar" class="rounded-circle" />
+                                </div>
+                                <div class="ms-2">
+                                  <h6 class="mb-0 ms-2">LauraRed</h6>
+                                </div>
+                              </div>
+                          </td>
+                          <td>Admin</td>
+                          <td>+1234567897</td>
+                          <td>2023-08-30</td>
+                          <td><span class="badge bg-label-warning me-1">Inactive</span></td>
+                          <td><a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info"></a>
+                            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger"></a>
+                            <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
+                              data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                              title="More Options"></a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                              <a class="dropdown-item" href="javascript:;">Edit</a>
+                              <a class="dropdown-item" href="javascript:;">Suspended</a>
+                            </div>
+                        </tr>
+                      </tbody>
+                    </table>
 
-                    <div class="table-responsive">
-                  <table id="optms" class="table table-md table-hover table-bordered  border-bottom" style=" width:100%">
-                    <thead class="thead-light">
-                      <tr>
-                        <th><input type="checkbox" id="select-all"></th> <!-- Select all checkbox -->
-                        <th scope="col" class="fw-bold " >User ID</th>
-                        <th scope="col" class="fw-bold" >User Name</th>
-                        <th scope="col" class="fw-bold" >Role</th>
-                        <th scope="col" class="fw-bold" >Email</th>
-                        <th scope="col" class="fw-bold" >Phone</th>
-                        <th scope="col" class="fw-bold" >Join Date</th>
-                        <th scope="col" class="fw-bold" >Status</th>
-                        <th scope="col" class="fw-bold" >Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><input type="checkbox" class="row-select"></td>
-                        <td>john21</td>
-                        <td>JohnDoe</td>
-                        <td>Admin</td>
-                        <td>john.doe@example.com</td>
-                        <td>+1234567890</td>
-                        <td>2023-01-15</td>
-                        <td><span class="badge bg-label-success me-1">Active</span></td>
-                        <td><button class="btn btn-sm btn-warning">Edit</button>
-                          <button class="btn btn-sm btn-danger deleteBtn">Delete</button>
-                      </td>
-                      </tr>
-
-
-                      <tr>
-                        <td><input type="checkbox" class="row-select"></td>
-                        <td>laura988</td>
-                        <td>LauraRed</td>
-                        <td>Admin</td>
-                        <td>laura.red@example.com</td>
-                        <td>+1234567897</td>
-                        <td>2023-08-30</td>
-                        <td><span class="badge bg-label-success me-1">Active</span></td>
-                        <td><button class="btn btn-sm btn-warning">Edit</button> <button
-                            class="btn btn-sm btn-danger">Delete</button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  </div>
                 </div>
 
                 <!-- off-canvas -->

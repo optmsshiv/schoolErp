@@ -8,16 +8,6 @@ $servername = "localhost:3306";  // Replace with your database server name or IP
 $username = "edrppymy_admin";  // Replace with your MySQL username
 $password = "13579@demo";  // Replace with your MySQL password
 $dbname = "edrppymy_rrgis";    // Replace with your database name
-/*
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} else {
-    echo "Connected successfully to the database";
-}*/
 
 
 // Create a connection to the database
@@ -65,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Prepare the SQL query to insert data
-    $sql = "INSERT INTO userRole (user_id, fullname, role, email, phone, joining_date, status, salary, password) 
+    $sql = "INSERT INTO userRole (user_id, fullname, role, email, phone, joining_date, status, salary, password)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     // Prepare the statement
