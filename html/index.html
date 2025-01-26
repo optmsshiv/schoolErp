@@ -43,6 +43,9 @@
   <script src="../assets/js/config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+  <!--
+  <script src="../js/echarts.min.js"></script>-->
 </head>
 
 <body>
@@ -1132,26 +1135,20 @@
             </div> -->
 
             <div class="row">
+
               <div class="col-6">
-                <div class="card custom-hover mt-3">
+                <div class="card custom-hover mb-3">
                   <div class="card-body">
-                    <div id="collectionChart"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="card custom-hover mt-3">
-                  <div class="card-body">
-                    <div id="mains" style="width: 600px;height:400px;"></div>
+                    <div id="main" style="height:330px; width: 100%"></div>
                   </div>
                 </div>
               </div>
 
 
               <div class="col-6">
-                <div class="card custom-hover mt-3 mb-3">
+                <div class="card custom-hover mb-3">
                   <div class="card-body">
-                    <canvas id="myChart"></canvas>
+                    <canvas id="myChart" width="500px" height="260px" ></canvas>
                   </div>
                 </div>
               </div>
@@ -1283,9 +1280,8 @@
   <script src="../model/chart.js"></script>
 
   <!--eChart js-->
-  <script src="../js/echarts.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/echarts-gl@1.0.0/dist/echarts-gl.min.js"></script>
+
+
 
   <!-- endbuild -->
 
