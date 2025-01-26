@@ -38,7 +38,7 @@ $(document).ready(function () {
         response.forEach(function (user) {
            // Default avatar if not available
           var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/default-avatar.png';
-          tr.style.textAlign = 'center';
+          
           var row = `
             <tr>
               <td><input type="checkbox" class="row-select"></td>
