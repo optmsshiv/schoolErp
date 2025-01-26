@@ -35,7 +35,8 @@ function generateUserId($fullname) {
     $uniquePart = sprintf('%04d', rand(0, 9999));  // Generates a 4-digit number with leading zeros if needed
     $namePart = strtoupper(substr($fullname, 0, 3));  // Example: John -> JOH
    // $uniquePart = uniqid();
-    return $namePart . '-' . $uniquePart;  // Example: JOH-1234
+   // return $namePart . '-' . $uniquePart;  // Example: JOH-1234
+    return $namePart . $uniquePart;  // Example: JOH1234
 }
 
 // Check if the form is submitted
