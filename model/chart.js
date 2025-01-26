@@ -3,7 +3,7 @@ var ctx = document.getElementById('myChart').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['Jan', 'Feb', 'March', 'April', 'May', 'June','July','Aug','Sept','Oct','Nov','Dec'],
+      labels: ['April', 'May', 'June','July','Aug','Sept','Oct','Nov','Dec','Jan', 'Feb', 'March', ],
       datasets: [{
         label: 'Income Of the Year 2024',
         data: [12, 19, 3, 5, 2, 3, 15, 8, 11, 8, 9, 22],
