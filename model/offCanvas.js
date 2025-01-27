@@ -1,4 +1,4 @@
-const { Toast } = require("bootstrap");
+//const { Toast } = require("bootstrap");
 
 document.addEventListener('DOMContentLoaded', function () {
   console.log('DOM fully loaded');
