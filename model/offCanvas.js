@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .then(data => {
       // Insert fetched HTML into the placeholder
-      document.getElementById('offcanvasEnd').innerHTML = data;
+      document.getElementById('offcanvasAddUser').innerHTML = data;
 
       // Initialize off-canvas logic after loading HTML
       initializeOffCanvas();
