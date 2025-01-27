@@ -25,7 +25,7 @@ $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
 $offset = ($page - 1) * $limit;
 
 // Prepare query with search term and class filter
-$sql = "SELECT id, first_name, last_name, father_name, class_name, roll_no, phone, user_id
+$sql = "SELECT id, first_name, last_name, father_name, class_name, roll_no, phone, user_id,status
         FROM students
         WHERE CONCAT(first_name, ' ', last_name) LIKE :search";
 
