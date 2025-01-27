@@ -107,10 +107,8 @@ $(function () {
             <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger"></a>
             <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <a class="dropdown-item border-bottom" href="javascript:;" id="studentEdit" data-id="${
-                    user.user_id
-                  }">Edit</a>
-                  <a class="dropdown-item" href="javascript:;" id="studentSuspend" data-id="${user.user_id}">Suspend</a>
+
+                  <a class="dropdown-item" href="javascript:;" id="studentSuspend">Suspend</a>
                 </div>
           </td>
         </tr>`);
