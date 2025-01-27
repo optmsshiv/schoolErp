@@ -2,7 +2,7 @@
 window.onload = function () {
   console.log('Window fully loaded');
 
-  var offcanvas = document.getElementById('offcanvasUserAdd');
+  var offcanvas = document.getElementById('offcanvasEnd');
   var form;
 
   if (offcanvas) {
