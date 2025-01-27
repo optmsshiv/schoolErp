@@ -36,7 +36,7 @@ $(document).ready(function () {
 
         // Loop through each user and append rows to the table
         response.forEach(function (user) {
-           // Default avatar if not available
+          // Default avatar if not available
           var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
           var row = `
@@ -111,6 +111,12 @@ $(document).ready(function () {
     }
   });
 
+  // Event handler for custom length dropdown
+  $('#customLength').on('change', function () {
+    var length = $(this).val();
+    table.page.len(length).draw();
+  });
+
   // Handle 'View' button click event
   $('#userTable').on('click', '#userView', function () {
     var userId = $(this).data('id');
@@ -165,9 +171,15 @@ $(document).ready(function () {
     table.button('.buttons-print').trigger(); // Trigger print when clicked
   });
 
+  // Ensure the print button is only visible if the print button is configured
+  if ($('.buttons-print').length) {
+    $('#printBtn').show(); // Show the print button if it's available
+  } else {
+    $('#printBtn').hide(); // Hide the print button if not available
+  }
+
   //search box
   $('#searchBox').on('keyup', function () {
     table.search(this.value).draw();
   });
-
 });
