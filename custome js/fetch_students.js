@@ -111,7 +111,7 @@ $(function () {
           <td>${student.phone}</td>
           <td>${student.user_id}</td>
           <td>
-            <span class="badge ${student.status === 'Active' ? 'bg-label-success' : 'bg-label-danger'}">${
+            <span class="badge bg-label-${student.status === 'active' ? 'success' : 'danger'}">${
           student.status
         }</span></td>
           <td>
