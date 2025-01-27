@@ -75,8 +75,6 @@ $(function () {
         // Update pagination
         updatePaginationUI();
 
-        // Sort table
-        sortTable();// Call sortTable function to sort the table
 
         // Update "Select All" checkbox
         updateSelectAllCheckbox();
@@ -138,6 +136,8 @@ $(function () {
         </tr>
       `);
     }
+    // Sort table
+    sortTable(); // Call sortTable function to sort the table
   }
   // End of table rendering
   // function to sort table
