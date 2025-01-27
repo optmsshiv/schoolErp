@@ -1,5 +1,3 @@
-//const { Toast } = require("bootstrap");
-
 document.addEventListener('DOMContentLoaded', function () {
   console.log('DOM fully loaded');
 
@@ -24,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Function to initialize off-canvas behavior
   function initializeOffCanvas() {
-    var offcanvas = document.getElementById('offcanvasAddUser');
+    var offcanvas = document.getElementById('offcanvasEnd');
     var form;
 
     if (offcanvas) {
@@ -58,11 +56,10 @@ document.addEventListener('DOMContentLoaded', function () {
                   Swal.fire({
                     icon: 'success',
                     title: 'Success!',
-                    text: `New user created successfully with User ID: ${data.userId} and Password: ${data.password}`,
-                    confirmButtonText: 'OK',
                     position: 'top', // Change position to top
-                    toast: true,
-                    showConfirmButton: true
+                    toast: true, // Makes the alert appear as a toast
+                    text: `New user created successfully with User ID: ${data.userId} and Password: ${data.password}`,
+                    confirmButtonText: 'OK'
                   }).then(() => {
                     form.reset();
                     var bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
@@ -71,6 +68,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                   Swal.fire({
                     icon: 'error',
+                    position: 'top', // Change position to top
+                    toast: true, // Makes the alert appear as a toast
                     title: 'Oops...',
                     text: data.message || 'Something went wrong. Please try again.',
                     confirmButtonText: 'OK'
@@ -80,10 +79,10 @@ document.addEventListener('DOMContentLoaded', function () {
               .catch(error => {
                 Swal.fire({
                   icon: 'error',
+                  position: 'top', // Change position to top
+                  toast: true, // Makes the alert appear as a toast
                   title: 'Oops...',
                   text: 'Something went wrong. Please try again.',
-                  position: 'top', // Change position to top
-                  toast: true,
                   confirmButtonText: 'OK'
                 });
                 console.error('Fetch error:', error);
