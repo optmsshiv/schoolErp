@@ -101,7 +101,7 @@ $(function () {
           <td>${student.phone}</td>
           <td>${student.user_id}</td>
           <td>
-            <a href="javascript:;" class='tf-icons bx bx-show bx-sm me-2 text-info' data-user-id='${
+            <a href="javascript:;" class='tf-icons bx bx-show bx-sm me-2 text-info view-student' data-user-id='${
               student.user_id
             }'></a>
             <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger"></a>
