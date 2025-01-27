@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${user.role}</td>
                 <td>${user.phone}</td>
                 <td>${user.joining_date}</td>
-                <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-danger'}">${
+                <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : user.status === 'Suspended' ? 'bg-label-secondary' : 'bg-label-danger'}">${
               user.status
             }</span></td>
                 <td>

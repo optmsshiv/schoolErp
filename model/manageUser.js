@@ -56,16 +56,17 @@ $(document).ready(function () {
               <td>${user.role}</td>
               <td>${user.phone}</td>
               <td>${user.joining_date}</td>
-              <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-danger'}">${
-            user.status
-          }</span></td>
+              <td><span class="badge ${user.status === 'Active'
+              ? 'bg-label-success'
+              : user.status === 'Suspended'
+                ? 'bg-label-secondary'
+                : 'bg-label-danger'
+            }">${user.status}</span></td>
               <td>
-                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
-                  user.user_id
-                }"></a>
-                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
-                  user.user_id
-                }"></a>
+                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${user.user_id
+            }"></a>
+                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${user.user_id
+            }"></a>
                 <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
                   <a class="dropdown-item" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
