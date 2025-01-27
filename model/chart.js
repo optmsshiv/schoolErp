@@ -6,8 +6,8 @@ var ctx = document.getElementById('myChart').getContext('2d');
       labels: ['April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'March'],
       datasets: [
         {
-          label: 'Income Of the Year 2025',
-          data: [15000, 24000, 3000, 4000, 5000, 18000, 9000, 10000, 11000, 12000,6000, 7000], // Example data
+          label: 'Income Of the Year 2025 monthly',
+          data: [105000, 124000, 113000, 94000, 56000, 128000, 92000, 130000, 121000, 102000,216000, 107000], // Example data
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
