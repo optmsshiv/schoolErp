@@ -19,13 +19,21 @@ $(document).ready(function () {
         previous: '<'
       },
       lengthMenu: 'Display _MENU_ records per page',
-      info: 'Showing page _PAGE_ of _PAGES_'
+      info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+      zeroRecords: 'No matching records found',
+      infoEmpty: 'No entries to display',
+      infoFiltered: '(filtered from _MAX_ total entries)'
     },
 
-  infoCallback: function (settings, start, end, max, total, pre) {
-    // Custom info text
-    return `Showing ${start} to ${end} of ${total} entries (Selected ${settings._iDisplayLength} records per page)`;
-  }
+    infoCallback: function (settings, start, end, max, total, pre) {
+      // Custom info text with further tweaks
+      let displayLength = settings._iDisplayLength === -1 ? total : settings._iDisplayLength;
+      return `Showing ${start} to ${end} of ${total} entries (Selected ${displayLength} records per page)`;
+    },
+    drawCallback: function () {
+      // Add custom actions when the table is redrawn
+      console.log('Table redrawn with current settings');
+    }
   });
 
   // Fetch user data using AJAX
