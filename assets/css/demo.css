@@ -1026,7 +1026,20 @@ td {
   /* Use !important to override other potential styles */
 }
 
-
+/*hover effect on action icon*/
+.tf-icons{
+  transition: color 0.3s ease, transform 0.3s ease;
+    /* Smooth color and size transitions */
+}
+ /* Change color and slightly scale the icon when hovered */
+ .tf-icons:hover {
+   color: #00d0ff;
+   /* Change to your desired hover color */
+   transform: scale(1.2);
+   /* Slightly increase the size */
+   cursor: pointer;
+   /* Show pointer cursor */
+ }
 
 
 

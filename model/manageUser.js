@@ -51,7 +51,6 @@ $(document).ready(function () {
         response.forEach(function (user) {
           // Default avatar if not available
           var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
-
           var row = `
             <tr>
               <td><input type="checkbox" class="row-select"></td>
@@ -77,13 +76,13 @@ $(document).ready(function () {
             }">${user.status}</span></td>
               <td>
                 <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${user.user_id
-            }"></a>
+            }" title="View User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${user.user_id
-            }"></a>
+            }" title="Delete User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
-                  <a class="dropdown-item" href="javascript:;" id="userSuspend" data-id="${user.user_id}">Suspend</a>
+                  <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}" title="Edit User">Edit</a>
+                  <a class="dropdown-item" href="javascript:;" id="userSuspend" data-id="${user.user_id}" title="Suspend User">Suspend</a>
                 </div>
               </td>
             </tr>
