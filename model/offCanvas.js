@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('DOM fully loaded');
+//  console.log('DOM fully loaded');
 
   // Load off-canvas HTML dynamically
   fetch('../model/offCanvas.html')
@@ -27,13 +27,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (offcanvas) {
       offcanvas.addEventListener('shown.bs.offcanvas', function () {
-        console.log('Off-canvas shown');
+      //  console.log('Off-canvas shown');
 
         form = document.getElementById('addNewUser');
-        console.log('Form element:', form);
+      //  console.log('Form element:', form);
 
         if (form) {
-          console.log('Form found, adding event listener');
+        //  console.log('Form found, adding event listener');
 
           // Add submit event listener to the form
           form.addEventListener('submit', function (event) {
@@ -65,6 +65,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     form.reset();
                     var bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
                     bsOffcanvas.hide();
+                    // Refresh the table
+                    refreshUserTable();
                   });
                 } else {
                   Swal.fire({
@@ -98,5 +100,28 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       console.error('Off-canvas element not found');
     }
+  }
+
+ // Function to refresh the user table
+  /**
+   * Refreshes the user table by fetching the latest user data from the server
+   * and updating the table content.
+   */
+  function refreshUserTable() {
+    fetch('../php/userRole/get_user_role.php') // Replace with the correct endpoint for fetching users
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        return response.text(); // Assuming the response is HTML
+      })
+      .then(data => {
+        // Update the table content
+        document.getElementById('userTable').innerHTML = data; // Replace with your table body ID
+        console.log('Table refreshed successfully');
+      })
+      .catch(error => {
+        console.error('Error refreshing table:', error);
+      });
   }
 });
