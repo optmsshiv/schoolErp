@@ -861,21 +861,22 @@
                       </div>
                     </div>
                   </div>
-                    <div >
-                      <table id="userTable" class="table table-sm table-hover table-border mb-4" >
-                        <thead class="table-secondary" style="text-align: center; white-space: nowrap;">
-                          <tr>
-                            <th style="width: 3%;"><input type="checkbox" id="select-all"></th> <!-- Select all checkbox -->
-                            <th class="fw-bold">User ID</th>
-                            <th class="fw-bold">User Name</th>
-                            <th class="fw-bold">Role</th>
-                            <th class="fw-bold">Phone</th>
-                            <th class="fw-bold">Join Date</th>
-                            <th class="fw-bold">Status</th>
-                            <th class="fw-bold">Actions</th>
-                          </tr>
-                        </thead>
-                        <!---
+                  <div>
+                    <table id="userTable" class="table table-sm table-hover table-border mb-4">
+                      <thead class="table-secondary" style="text-align: center; white-space: nowrap;">
+                        <tr>
+                          <th style="width: 3%;"><input type="checkbox" id="select-all"></th>
+                          <!-- Select all checkbox -->
+                          <th class="fw-bold">User ID</th>
+                          <th class="fw-bold">User Name</th>
+                          <th class="fw-bold">Role</th>
+                          <th class="fw-bold">Phone</th>
+                          <th class="fw-bold">Join Date</th>
+                          <th class="fw-bold">Status</th>
+                          <th class="fw-bold">Actions</th>
+                        </tr>
+                      </thead>
+                      <!---
                       <tbody>
 
                         <tr>
@@ -939,97 +940,97 @@
                       </tbody>-->
                     </table>
 
+                  </div>
+
+                  <!-- off-canvas -->
+
+                  <div id="offcanvasPlaceholder"></div>
                 </div>
+              </div>
 
-                <!-- off-canvas -->
+              <!---Container-->
+            </div>
+          </div>
 
-                <div id="offcanvasPlaceholder"></div>
+          <div class="mb-3">
+
+          </div>
+          <!-- content wrapper -->
+          <!-- Footer -->
+          <footer class="content-footer footer bg-footer-theme">
+            <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+              <div class="mb-2 mb-md-0">
+                ©
+                <script>
+                  document.write(new Date().getFullYear());
+                </script>
+                , made with ❤️ by
+                <a href="https://optms.co.in" target="_blank" class="footer-link fw-medium">OPTMS Tech</a>
+              </div>
+              <div class="d-none d-lg-inline-block">
+                <a href="https://www.optms.co.in/" target="_blank" class="footer-link me-4">Connect</a>
+                <a href="https://www.optms.co.in/issues" target="_blank" class="footer-link">Support</a>
               </div>
             </div>
+          </footer>
+          <!-- / Footer -->
 
-            <!---Container-->
-          </div>
+          <div class="content-backdrop fade"></div>
+          <!-- / Layout page -->
         </div>
 
-        <div class="mb-3">
-
-        </div>
-        <!-- content wrapper -->
-        <!-- Footer -->
-        <footer class="content-footer footer bg-footer-theme">
-          <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-            <div class="mb-2 mb-md-0">
-              ©
-              <script>
-                document.write(new Date().getFullYear());
-              </script>
-              , made with ❤️ by
-              <a href="https://optms.co.in" target="_blank" class="footer-link fw-medium">OPTMS Tech</a>
-            </div>
-            <div class="d-none d-lg-inline-block">
-              <a href="https://www.optms.co.in/" target="_blank" class="footer-link me-4">Connect</a>
-              <a href="https://www.optms.co.in/issues" target="_blank" class="footer-link">Support</a>
-            </div>
-          </div>
-        </footer>
-        <!-- / Footer -->
-
-        <div class="content-backdrop fade"></div>
-        <!-- / Layout page -->
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
       </div>
+      <!-- / Layout wrapper -->
 
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
-    </div>
-    <!-- / Layout wrapper -->
+      <!-- Core JS -->
+      <!-- build:js assets/vendor/js/core.js -->
 
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
+      <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+      <script src="../assets/vendor/libs/popper/popper.js"></script>
+      <script src="../assets/vendor/js/bootstrap.js"></script>
+      <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+      <script src="../assets/vendor/js/menu.js"></script>
 
-    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../assets/vendor/js/bootstrap.js"></script>
-    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="../assets/vendor/js/menu.js"></script>
+      <!--Chart js-->
 
-    <!--Chart js-->
-
-    <script src="../model/offCanvas.js"></script>
-    <script src="../model/manageUser.js"></script>
-    <script src="../model/canvaDataPhp.js"></script>
+      <script src="../model/offCanvas.js"></script>
+      <script src="../model/manageUser.js"></script>
+      <script src="../model/canvaDataPhp.js"></script>
 
 
-    <!-- endbuild -->
+      <!-- endbuild -->
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-    <!-- endbuild-->
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+      <!-- endbuild-->
 
 
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+      <!-- DataTables CSS -->
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <!-- jQuery -->
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Bootstrap JS -->
+      <!-- Bootstrap JS -->
 
-    <!-- DataTables JS -->
-    <script type="text/javascript" charset="utf8"
-      src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" charset="utf8"
-      src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+      <!-- DataTables JS -->
+      <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+      <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
 
-    <!-- Vendors JS -->
-    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+      <!-- Vendors JS -->
+      <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
-    <!-- SweetAlert2 JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
+      <!-- SweetAlert2 JavaScript -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.js"></script>
 
-    <!-- Main JS -->
-    <script src="../assets/js/main.js"></script>
+      <!-- Main JS -->
+      <script src="../assets/js/main.js"></script>
 
-    <!-- Page JS -->
-    <script src="../assets/js/dashboards-analytics.js"></script>
+      <!-- Page JS -->
+      <script src="../assets/js/dashboards-analytics.js"></script>
 
 
 
