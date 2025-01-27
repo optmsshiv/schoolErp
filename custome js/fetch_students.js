@@ -101,8 +101,17 @@ $(function () {
           <td>${student.phone}</td>
           <td>${student.user_id}</td>
           <td>
-            <button class='btn btn-primary btn-sm view-student' data-user-id='${student.user_id}'>View</button>
-            <button class='btn btn-danger btn-sm'>Delete</button>
+            <a href="javascript:;" class='tf-icons bx bx-show bx-sm me-2 text-info' data-user-id='${
+              student.user_id
+            }'></a>
+            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger"></a>
+            <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item border-bottom" href="javascript:;" id="studentEdit" data-id="${
+                    user.user_id
+                  }">Edit</a>
+                  <a class="dropdown-item" href="javascript:;" id="studentSuspend" data-id="${user.user_id}">Suspend</a>
+                </div>
           </td>
         </tr>`);
       });
@@ -204,32 +213,32 @@ $(function () {
     const selectedCheckboxes = $tableBody.find('input[type="checkbox"]:checked');
 
     if (selectedCheckboxes.length === 0) {
-        alert('Please select a student first.');
-        return;
+      alert('Please select a student first.');
+      return;
     }
 
     selectedCheckboxes.each(function () {
-        const userId = $(this).data('user-id');
+      const userId = $(this).data('user-id');
 
-        // Send AJAX request
-        fetch('/php/send_credentials.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({ user_id: userId }),
-        })
+      // Send AJAX request
+      fetch('/php/send_credentials.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({ user_id: userId }),
+      })
         .then((response) => response.json())
         .then((data) => {
-            if (data.success) {
-                alert('WhatsApp message sent successfully!');
-            } else {
-                alert('Error: ' + data.message);
-            }
+          if (data.success) {
+            alert('WhatsApp message sent successfully!');
+          } else {
+            alert('Error: ' + data.message);
+          }
         })
         .catch((error) => {
-            console.error('Error:', error);
-            alert('An unexpected error occurred.');
+          console.error('Error:', error);
+          alert('An unexpected error occurred.');
         });
     });
   });
