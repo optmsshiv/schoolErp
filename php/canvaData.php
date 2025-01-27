@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include '../db_connection.php';
+include '../php/db_connection.php';
 
 // Function to generate a random password
 function generatePassword($length = 8) {
