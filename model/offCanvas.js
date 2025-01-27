@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
               .then(data => {
                 if (data.success) {
                   Swal.fire({
+                    target: document.getElementById('userAddCanvas'),
                     icon: 'success',
                     title: 'Success!',
                     position: 'top', // Change position to top
@@ -67,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   });
                 } else {
                   Swal.fire({
+                    target: document.getElementById('userAddCanvas'),
                     icon: 'error',
                     position: 'top', // Change position to top
                     toast: true, // Makes the alert appear as a toast
@@ -78,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
               })
               .catch(error => {
                 Swal.fire({
+                  target: document.getElementById('userAddCanvas'),
                   icon: 'error',
                   position: 'top', // Change position to top
                   toast: true, // Makes the alert appear as a toast
