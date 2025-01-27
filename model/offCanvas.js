@@ -1,3 +1,5 @@
+const { Toast } = require("bootstrap");
+
 document.addEventListener('DOMContentLoaded', function () {
   console.log('DOM fully loaded');
 
@@ -11,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .then(data => {
       // Insert fetched HTML into the placeholder
-      document.getElementById('offcanvasAddUser').innerHTML = data;
+      document.getElementById('offcanvasEnd').innerHTML = data;
 
       // Initialize off-canvas logic after loading HTML
       initializeOffCanvas();
@@ -57,7 +59,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     icon: 'success',
                     title: 'Success!',
                     text: `New user created successfully with User ID: ${data.userId} and Password: ${data.password}`,
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    position: 'top', // Change position to top
+                    toast: true,
+                    showConfirmButton: true
                   }).then(() => {
                     form.reset();
                     var bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
@@ -77,6 +82,8 @@ document.addEventListener('DOMContentLoaded', function () {
                   icon: 'error',
                   title: 'Oops...',
                   text: 'Something went wrong. Please try again.',
+                  position: 'top', // Change position to top
+                  toast: true,
                   confirmButtonText: 'OK'
                 });
                 console.error('Fetch error:', error);
