@@ -91,23 +91,33 @@ $(function () {
     if (students.length > 0) {
       let sr_no = (currentPage - 1) * recordsPerPage + 1;
       students.forEach(student => {
+        var avatar = student.student_image ? student.stident_image : '../assets/img/avatars/default-avatar.png';
         $tableBody.append(`<tr>
           <td><input type='checkbox' class='row-checkbox' data-user-id='${student.user_id}'></td>
           <td>${sr_no++}</td>
-          <td>${student.first_name} ${student.last_name}</td>
+          <td>
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-sm">
+                <img src="${avatar}" alt="avatar" class="rounded-circle" />
+              </div>
+              <div class="ms-2">
+                <h6 class="mb-0 ms-2">${student.first_name} ${student.last_name}</h6>
+              </div>
+            </div>
+          </td>
           <td>${student.father_name}</td>
           <td>${student.class_name}</td>
           <td>${student.roll_no}</td>
           <td>${student.phone}</td>
           <td>${student.user_id}</td>
+          <td>${student.status}</td>
           <td>
-            <a href="javascript:;" class='tf-icons bx bx-show bx-sm me-2 text-info view-student' data-user-id='${
+            <a href="javascript:;" class='tf-icons bx bx-show bx-sm me-2 text-primary view-student' data-user-id='${
               student.user_id
             }'></a>
             <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger"></a>
             <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
-
                   <a class="dropdown-item" href="javascript:;" id="studentSuspend">Suspend</a>
                 </div>
           </td>
