@@ -20,7 +20,12 @@ $(document).ready(function () {
       },
       lengthMenu: 'Display _MENU_ records per page',
       info: 'Showing page _PAGE_ of _PAGES_'
-    }
+    },
+
+  infoCallback: function (settings, start, end, max, total, pre) {
+    // Custom info text
+    return `Showing ${start} to ${end} of ${total} entries (Selected ${settings._iDisplayLength} records per page)`;
+  }
   });
 
   // Fetch user data using AJAX
