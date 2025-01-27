@@ -75,6 +75,9 @@ $(function () {
         // Update pagination
         updatePaginationUI();
 
+        // Sort table
+        sortTable();// Call sortTable function to sort the table
+
         // Update "Select All" checkbox
         updateSelectAllCheckbox();
       },
@@ -135,6 +138,22 @@ $(function () {
         </tr>
       `);
     }
+  }
+  // End of table rendering
+  // function to sort table
+  function sortTable() {
+    const table = document.getElementById('studentTable');
+    const rows = Array.from(table.tBodies[0].rows);
+
+    rows.sort((a, b) => {
+      const rollA = parseInt(a.cells[0].innerText, 10); // Roll No in column 0
+      const rollB = parseInt(b.cells[0].innerText, 10);
+      return rollA - rollB; // Ascending order
+    });
+
+    // Append sorted rows back to the tbody
+    const tbody = table.tBodies[0];
+    rows.forEach(row => tbody.appendChild(row));
   }
 
   // Update pagination UI
