@@ -1,6 +1,5 @@
-// JavaScript
-window.onload = function () {
-  console.log('Window fully loaded');
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('DOM fully loaded');
 
   var offcanvas = document.getElementById('offcanvasEnd');
   var form;
@@ -66,4 +65,4 @@ window.onload = function () {
   } else {
     console.error('Off-canvas element not found');
   }
-};
+});
