@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Function to initialize off-canvas behavior
   function initializeOffCanvas() {
-    var offcanvas = document.getElementById('offcanvasAddUser');
+    var offcanvas = document.getElementById('offcanvasEnd');
     var form;
 
     if (offcanvas) {
