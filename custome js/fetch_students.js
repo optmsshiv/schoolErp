@@ -111,9 +111,9 @@ $(function () {
           <td>${student.phone}</td>
           <td>${student.user_id}</td>
           <td>
-            <span class="badge ${student.status === 'Active' ? 'bg-label-success' : 'bg-label-danger'}">${
+            <span class="badge bg-label ${student.status === 'Active' ? 'success' : 'danger'}">${
           student.status
-        }</td>
+        }</span></td>
           <td>
             <a href="javascript:;" class='tf-icons bx bx-show bx-sm me-2 text-primary view-student' data-user-id='${
               student.user_id
