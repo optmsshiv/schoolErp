@@ -3,7 +3,7 @@ $(function () {
   let recordsPerPage = 10;
   let totalRecords = 0;
   let totalPages = 1;
-  let currentSortColumn = roll_no;
+  let currentSortColumn = null;
   let sortAscending = true;
 
   // Cache frequently accessed elements
