@@ -206,27 +206,12 @@ $(function () {
     fetch('/php/send_credentials.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({user_id: userIds})
+      body: new URLSearchParams({ user_id: userIds })
     })
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          // Success message with SweetAlert2
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: 'Credentials Message',
-            text: 'Message sent to successfully!',
-            showConfirmButton: false,
-            timer: 5000, // Timer set for 5 seconds
-            timerProgressBar: true, // Optional: shows a progress bar for the timer
-            didOpen: () => {
-              // Custom CSS to adjust the position of the SweetAlert
-              const swal2Popup = Swal.getPopup();
-              swal2Popup.style.marginTop = '80px'; // Adjust margin to move below navbar (increase value if necessary)
-            }
-          });
+          alert('WhatsApp message sent successfully!');
         } else {
           alert('Error: ' + data.message);
         }
@@ -235,7 +220,7 @@ $(function () {
         console.error('Error:', error);
         alert('An unexpected error occurred.');
       });
-  }
+  }  
 
 
 
