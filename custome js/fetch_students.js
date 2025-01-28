@@ -5,7 +5,6 @@ $(function () {
   let totalPages = 1;
   let currentSortColumn = null;
   let sortAscending = true;
-  let cachedClasses = null;
 
   // Cache frequently accessed elements
   const $searchBar = $('#search-bar');
@@ -22,89 +21,35 @@ $(function () {
   const $lastPage = $('#last-page');
   const $selectAll = $('#select-all');
   const $pageNumbers = $('#page-numbers');
-  const $studentCredentialsBtn = $('#student-credentials');
+  const $studentCredentialsBtn = $('#student-credentials'); // Button to send credentials
 
   // Fetch available class names for the dropdown
   function fetchClasses() {
-    if (cachedClasses) {
-      populateClassDropdown(cachedClasses);
-      return;
-    }
-
     $.ajax({
-      url: '../php/fetch_classes_active_student.php',
+      url: '../php/fetch_classes_active_student.php', // Your PHP endpoint to fetch class names
       type: 'GET',
       dataType: 'json',
       success: function (data) {
-        cachedClasses = data.classes;
-        populateClassDropdown(data.classes);
+        // Populate class dropdown with available class names
+        $classSelect.empty(); // Clear any existing options
+        $classSelect.append('<option value="All">All</option>'); // Default "All" option
+
+        data.classes.forEach(function (className) {
+          $classSelect.append(`<option value="${className}">${className}</option>`);
+        });
+
+        // Trigger fetchStudents to load student data after classes are populated
+        fetchStudents();
       },
-      error: function () {
-        console.error('Error fetching class names');
+      error: function (xhr, status, error) {
+        console.error('Error fetching class names: ', status, error);
         $classSelect.append('<option value="">Error loading classes</option>');
-      }
-    });
-  }
-
-  function populateClassDropdown(classes) {
-    $classSelect.empty().append('<option value="All">All</option>');
-    classes.forEach(className => $classSelect.append(`<option value="${className}">${className}</option>`));
-    fetchStudents();
-  }
-
-  // Debounce function for search
-  function debounce(func, delay) {
-    let debounceTimeout;
-    return function (...args) {
-      clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(() => func.apply(this, args), delay);
-    };
-  }
-
-  // Fetch student data
-  function fetchStudents(searchTerm = '', className = '') {
-    toggleLoading(true);
-
-    if (className === 'All') className = ''; // If class is 'All', don't filter by class
-
-    $.ajax({
-      url: '../php/fetch_active_student.php',
-      type: 'GET',
-      dataType: 'json',
-      data: {
-        search: searchTerm,
-        page: currentPage,
-        limit: recordsPerPage,
-        class: className,
-        sortColumn: currentSortColumn,
-        sortOrder: sortAscending ? 'ASC' : 'DESC'
-      },
-      success: function (data) {
-        toggleLoading(false);
-
-        totalRecords = data.totalRecords;
-        totalPages = Math.ceil(totalRecords / recordsPerPage);
-
-        // Update record counts
-        $totalRecords.text(totalRecords);
-        $currentRecords.text(Math.min(recordsPerPage, totalRecords - (currentPage - 1) * recordsPerPage));
-        $totalPagesEl.text(totalPages);
-
-        renderTable(data.students);
-        updatePaginationUI();
-        updateSelectAllCheckbox();
-      },
-      error: function () {
-        toggleLoading(false);
-        $tableBody.html("<tr><td colspan='9'>Error loading data. Please try again later.</td></tr>");
       }
     });
   }
 
   // Function to handle sorting
   function sortTable(column) {
-    if ($classSelect.val() === 'All') return; // Prevent sorting when 'All' is selected
-
     if (currentSortColumn === column) {
       // Toggle sorting direction
       sortAscending = !sortAscending;
@@ -114,72 +59,99 @@ $(function () {
       sortAscending = true;
     }
 
-    // Update the sorting indicator in the UI (optional)
-    $('th').removeClass('sorted-asc sorted-desc');
-    const $column = $('th').filter(function () {
-      return $(this).text().trim().toLowerCase().replace(' ', '_') === column;
-    });
-
-    $column.addClass(sortAscending ? 'sorted-asc' : 'sorted-desc');
-
     // Refetch students with updated sorting parameters
     fetchStudents($searchBar.val(), $classSelect.val());
   }
 
-  // Event listeners for sorting
-  $('th').on('click', function () {
-    const column = $(this).data('column'); // Use the data-column attribute for the column name
-    sortTable(column);
-  });
+  // Fetch student data
+  function fetchStudents(searchTerm = '', className = '') {
+    $.ajax({
+      url: '../php/fetch_active_student.php',
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        search: searchTerm,
+        page: currentPage,
+        limit: recordsPerPage,
+        class: className
+      },
+      success: function (data) {
+        totalRecords = data.totalRecords;
+        totalPages = Math.ceil(totalRecords / recordsPerPage);
+
+        // Update record counts
+        $totalRecords.text(totalRecords);
+        $currentRecords.text(Math.min(recordsPerPage, totalRecords - (currentPage - 1) * recordsPerPage));
+        $totalPagesEl.text(totalPages);
+
+        // Populate table
+        renderTable(data.students);
+
+        // Update pagination
+        updatePaginationUI();
+
+        // Update "Select All" checkbox
+        updateSelectAllCheckbox();
+      },
+      error: function (xhr, status, error) {
+        console.error('Error fetching data: ', status, error);
+        $tableBody.html("<tr><td colspan='9'>Error loading data. Please try again later.</td></tr>");
+      }
+    });
+  }
 
   // Render table rows
   function renderTable(students) {
     $tableBody.empty();
     if (students.length > 0) {
       let sr_no = (currentPage - 1) * recordsPerPage + 1;
-      students.forEach(student => $tableBody.append(renderStudentRow(student, sr_no++)));
-    } else {
-      $tableBody.html(`
-        <tr>
-        <td colspan="9" class="text-center" style="margin-top: 20px;">
-          <h2 class="badge bg-danger text-center" style="display: block;">No records found</h2>
-        </td>
-        </tr>`);
-    }
-  }
-
-  function renderStudentRow(student, srNo) {
-    const avatar = student.student_image || '../assets/img/avatars/default-avatar.png';
-    return `
-      <tr>
-        <td><input type="checkbox" class="row-checkbox" data-user-id="${student.user_id}"></td>
-        <td>${srNo}</td>
-        <td>
-          <div class="d-flex align-items-center">
-            <img src="${avatar}" alt="avatar" class="avatar avatar-sm rounded-circle" />
-            <span class="ms-2">${student.first_name} ${student.last_name}</span>
-          </div>
-        </td>
-        <td>${student.father_name}</td>
-        <td>${student.class_name}</td>
-        <td>${student.roll_no}</td>
-        <td>${student.phone}</td>
-        <td>${student.user_id}</td>
-        <td>
-          <span class="badge bg-label-${student.status === 'active' ? 'success' : 'danger'}">${student.status}</span>
-        </td>
-        <td>
-          <a href="#" class="tf-icons bx bx-show bx-sm me-2 text-primary  view-student" title="View Student" data-user-id="${
-            student.user_id
-          }"></a>
-          <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" title="Delete Student"></a>
-          <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+      students.forEach(student => {
+        var avatar = student.student_image ? student.stident_image : '../assets/img/avatars/default-avatar.png';
+        $tableBody.append(`<tr>
+          <td><input type='checkbox' class='row-checkbox' data-user-id='${student.user_id}'></td>
+          <td>${sr_no++}</td>
+          <td>
+            <div class="d-flex align-items-center">
+              <div class="avatar avatar-sm">
+                <img src="${avatar}" alt="avatar" class="rounded-circle" />
+              </div>
+              <div class="ms-2">
+                <h6 class="mb-0 ms-2">${student.first_name} ${student.last_name}</h6>
+              </div>
+            </div>
+          </td>
+          <td>${student.father_name}</td>
+          <td>${student.class_name}</td>
+          <td>${student.roll_no}</td>
+          <td>${student.phone}</td>
+          <td>${student.user_id}</td>
+          <td>
+            <span class="badge bg-label-${student.status === 'active' ? 'success' : 'danger'}">${
+          student.status
+        }</span></td>
+          <td>
+            <a href="javascript:;" class='tf-icons bx bx-show bx-sm me-2 text-primary view-student' data-user-id='${
+              student.user_id
+            }' title="View Student"></a>
+            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" title="Delete Student"></a>
+            <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
                   <a class="dropdown-item" href="javascript:;" id="studentSuspend" title="Suspend">Suspend</a>
                 </div>
-        </td>
-      </tr>`;
+          </td>
+        </tr>`);
+      });
+    } else {
+      $tableBody.html(`
+        <tr>
+          <td colspan="9" class="text-center" style="margin-top: 20px;">
+            <h2 class="badge bg-danger text-center" style="display: block;">No records found</h2>
+          </td>
+        </tr>
+      `);
+    }
   }
+  // End of table rendering
 
   // Update pagination UI
   function updatePaginationUI() {
@@ -190,8 +162,10 @@ $(function () {
     renderPageNumbers();
   }
 
+  // Render page numbers
   function renderPageNumbers() {
     $pageNumbers.empty();
+
     const startPage = Math.max(1, currentPage - 1);
     const endPage = Math.min(totalPages, currentPage + 1);
 
@@ -215,12 +189,7 @@ $(function () {
     });
   }
 
-  function toggleLoading(show) {
-    if (show) {
-      $tableBody.html('<tr><td colspan="9" class="text-center">Loading...</td></tr>');
-    }
-  }
-
+  // Update "Select All" checkbox
   function updateSelectAllCheckbox() {
     const allCheckboxes = $tableBody.find('input[type="checkbox"]');
     const checkedCheckboxes = allCheckboxes.filter(':checked');
@@ -229,49 +198,78 @@ $(function () {
     $selectAll.prop('indeterminate', checkedCheckboxes.length > 0 && checkedCheckboxes.length < allCheckboxes.length);
   }
 
-  // Event Listeners
-  $searchBar.on(
-    'input',
-    debounce(function () {
-      currentPage = 1;
-      fetchStudents($searchBar.val(), $classSelect.val());
-    }, 500)
-  );
+  // View student details
+  function viewStudent(userId) {
+    // Redirect to the studentinfo.html page with user_id as a query parameter
+    window.location.href = `studentInfo.html?user_id=${userId}`;
+  }
 
-  $classSelect.on('change', function () {
-    currentPage = 1;
+  // Event listeners for fetching and filtering data
+  $searchBar.on('input', () => fetchStudents($searchBar.val(), $classSelect.val()));
+  $classSelect.on('change', () => fetchStudents($searchBar.val(), $classSelect.val()));
+  $recordsPerPage.on('change', () => {
+    recordsPerPage = parseInt($recordsPerPage.val());
     fetchStudents($searchBar.val(), $classSelect.val());
   });
 
-  $recordsPerPage.on('change', function () {
-    recordsPerPage = parseInt($recordsPerPage.val(), 10);
-    currentPage = 1;
-    fetchStudents($searchBar.val(), $classSelect.val());
+  $prevPage.on('click', () => currentPage > 1 && changePage(currentPage - 1));
+  $nextPage.on('click', () => currentPage < totalPages && changePage(currentPage + 1));
+  $firstPage.on('click', () => currentPage > 1 && changePage(1));
+  $lastPage.on('click', () => currentPage < totalPages && changePage(totalPages));
+
+  $selectAll.on('change', function () {
+    $tableBody.find('input[type="checkbox"]').prop('checked', this.checked);
   });
 
-  $prevPage.on('click', function () {
-    if (currentPage > 1) {
-      currentPage--;
-      fetchStudents($searchBar.val(), $classSelect.val());
+  $tableBody.on('change', 'input[type="checkbox"]', updateSelectAllCheckbox);
+
+  // Event delegation for view button
+  $tableBody.on('click', '.view-student', function () {
+    const userId = $(this).data('user-id');
+    viewStudent(userId); // Call viewStudent function
+  });
+
+  // Change page
+  function changePage(page) {
+    currentPage = page;
+    fetchStudents($searchBar.val(), $classSelect.val());
+  }
+
+  // Send student credentials via WhatsApp
+  $studentCredentialsBtn.on('click', function () {
+    const selectedCheckboxes = $tableBody.find('input[type="checkbox"]:checked');
+
+    if (selectedCheckboxes.length === 0) {
+      alert('Please select a student first.');
+      return;
     }
+
+    selectedCheckboxes.each(function () {
+      const userId = $(this).data('user-id');
+
+      // Send AJAX request
+      fetch('/php/send_credentials.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({ user_id: userId })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('WhatsApp message sent successfully!');
+          } else {
+            alert('Error: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An unexpected error occurred.');
+        });
+    });
   });
 
-  $nextPage.on('click', function () {
-    if (currentPage < totalPages) {
-      currentPage++;
-      fetchStudents($searchBar.val(), $classSelect.val());
-    }
-  });
-
-  $firstPage.on('click', function () {
-    currentPage = 1;
-    fetchStudents($searchBar.val(), $classSelect.val());
-  });
-
-  $lastPage.on('click', function () {
-    currentPage = totalPages;
-    fetchStudents($searchBar.val(), $classSelect.val());
-  });
-
-  fetchClasses();
+  // Initial fetch
+  fetchClasses(); // First, fetch and populate classes, then fetch students
 });
