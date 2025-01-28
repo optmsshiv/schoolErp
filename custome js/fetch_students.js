@@ -48,6 +48,11 @@ $(function () {
     });
   }
 
+  // Attach event listener to all <th> elements
+  $('th').on('click', function () {
+    const column = $(this).text().toLowerCase().replace(' ', '_'); // Get column name
+    sortTable(column);
+  });
   // Function to handle sorting
   function sortTable(column) {
     if (currentSortColumn === column) {
@@ -58,6 +63,8 @@ $(function () {
       currentSortColumn = column;
       sortAscending = true;
     }
+
+
 
     // Refetch students with updated sorting parameters
     fetchStudents($searchBar.val(), $classSelect.val());
@@ -73,7 +80,9 @@ $(function () {
         search: searchTerm,
         page: currentPage,
         limit: recordsPerPage,
-        class: className
+        class: className,
+        sortColumn: currentSortColumn,
+        sortOrder: sortAscending ? 'ASC' : 'DESC'
       },
       success: function (data) {
         totalRecords = data.totalRecords;
@@ -89,6 +98,10 @@ $(function () {
 
         // Update pagination
         updatePaginationUI();
+
+        // Highlight active sort column
+        $('th').removeClass('sort-active'); // Remove the class from all headers
+        $(`th:contains(${column.replace('_', ' ')})`).addClass('sort-active'); // Add it to the active header
 
         // Update "Select All" checkbox
         updateSelectAllCheckbox();

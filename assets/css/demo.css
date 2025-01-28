@@ -1041,6 +1041,13 @@ td {
    /* Show pointer cursor */
  }
 
+ /*short column active*/
+ .sort-active {
+   text-decoration: underline;
+   font-weight: bold;
+   color: #f7e781e0;
+ }
+
 
 
 
