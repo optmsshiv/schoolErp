@@ -31,8 +31,11 @@ $sortOrder = isset($_GET['sortOrder']) && in_array(strtoupper($_GET['sortOrder']
 // Validate sort column to prevent SQL injection
 $allowedColumns = ['id', 'first_name', 'last_name', 'father_name', 'class_name', 'roll_no', 'phone', 'user_id', 'status'];
 if (!in_array($sortColumn, $allowedColumns)) {
-    $sortColumn = 'id'; // Fallback to a safe column
+    $sortColumn = 'id'; // Fallback to 'id'
 }
+
+// Validate sort order
+$sortOrder = strtoupper($sortOrder) === 'DESC' ? 'DESC' : 'ASC';  // Ensure valid 'ASC' or 'DESC'
 
 // Prepare query with search term, class filter, and sorting
 $sql = "SELECT id, first_name, last_name, father_name, class_name, roll_no, phone, user_id, status
@@ -95,4 +98,4 @@ echo json_encode([
 
 // Close the PDO connection (not strictly necessary, but a good practice)
 $pdo = null;
-
+?>

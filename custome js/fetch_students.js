@@ -65,7 +65,7 @@ $(function () {
   function fetchStudents(searchTerm = '', className = '') {
     toggleLoading(true);
 
-    if (className === 'All') className = '';
+    if (className === 'All') className = ''; // If class is 'All', don't filter by class
 
     $.ajax({
       url: '../php/fetch_active_student.php',
@@ -101,6 +101,37 @@ $(function () {
     });
   }
 
+  // Function to handle sorting
+  function sortTable(column) {
+    if ($classSelect.val() === 'All') return; // Prevent sorting when 'All' is selected
+
+    if (currentSortColumn === column) {
+      // Toggle sorting direction
+      sortAscending = !sortAscending;
+    } else {
+      // Set new column and reset to ascending order
+      currentSortColumn = column;
+      sortAscending = true;
+    }
+
+    // Update the sorting indicator in the UI (optional)
+    $('th').removeClass('sorted-asc sorted-desc');
+    const $column = $('th').filter(function () {
+      return $(this).text().trim().toLowerCase().replace(' ', '_') === column;
+    });
+
+    $column.addClass(sortAscending ? 'sorted-asc' : 'sorted-desc');
+
+    // Refetch students with updated sorting parameters
+    fetchStudents($searchBar.val(), $classSelect.val());
+  }
+
+  // Event listeners for sorting
+  $('th').on('click', function () {
+    const column = $(this).data('column'); // Use the data-column attribute for the column name
+    sortTable(column);
+  });
+
   // Render table rows
   function renderTable(students) {
     $tableBody.empty();
@@ -108,7 +139,12 @@ $(function () {
       let sr_no = (currentPage - 1) * recordsPerPage + 1;
       students.forEach(student => $tableBody.append(renderStudentRow(student, sr_no++)));
     } else {
-      $tableBody.html(`<tr><td colspan="9" class="text-center">No records found</td></tr>`);
+      $tableBody.html(`
+        <tr>
+        <td colspan="9" class="text-center" style="margin-top: 20px;">
+          <h2 class="badge bg-danger text-center" style="display: block;">No records found</h2>
+        </td>
+        </tr>`);
     }
   }
 
@@ -196,67 +232,46 @@ $(function () {
   // Event Listeners
   $searchBar.on(
     'input',
-    debounce(() => fetchStudents($searchBar.val(), $classSelect.val()), 300)
+    debounce(function () {
+      currentPage = 1;
+      fetchStudents($searchBar.val(), $classSelect.val());
+    }, 500)
   );
-  $classSelect.on('change', () => fetchStudents($searchBar.val(), $classSelect.val()));
-  $recordsPerPage.on('change', () => {
-    recordsPerPage = parseInt($recordsPerPage.val());
+
+  $classSelect.on('change', function () {
+    currentPage = 1;
     fetchStudents($searchBar.val(), $classSelect.val());
   });
 
-  $prevPage.on('click', () => currentPage > 1 && changePage(currentPage - 1));
-  $nextPage.on('click', () => currentPage < totalPages && changePage(currentPage + 1));
-  $firstPage.on('click', () => currentPage > 1 && changePage(1));
-  $lastPage.on('click', () => currentPage < totalPages && changePage(totalPages));
-
-  $selectAll.on('change', function () {
-    $tableBody.find('input[type="checkbox"]').prop('checked', this.checked);
+  $recordsPerPage.on('change', function () {
+    recordsPerPage = parseInt($recordsPerPage.val(), 10);
+    currentPage = 1;
+    fetchStudents($searchBar.val(), $classSelect.val());
   });
 
-  $tableBody.on('change', 'input[type="checkbox"]', updateSelectAllCheckbox);
-  $tableBody.on('click', '.view-student', function () {
-    const userId = $(this).data('user-id');
-    window.location.href = `studentInfo.html?user_id=${userId}`;
-  });
-
-  $studentCredentialsBtn.on('click', function () {
-    const selectedCheckboxes = $tableBody.find('input[type="checkbox"]:checked');
-
-    if (selectedCheckboxes.length === 0) {
-      alert('Please select a student first.');
-      return;
+  $prevPage.on('click', function () {
+    if (currentPage > 1) {
+      currentPage--;
+      fetchStudents($searchBar.val(), $classSelect.val());
     }
-
-    if (!confirm('Are you sure you want to send credentials to selected students?')) return;
-
-    selectedCheckboxes.each(function () {
-      const userId = $(this).data('user-id');
-
-      fetch('/php/send_credentials.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ user_id: userId })
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            alert('WhatsApp message sent successfully!');
-          } else {
-            alert('Error: ' + data.message);
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('An unexpected error occurred.');
-        });
-    });
   });
 
-  function changePage(page) {
-    currentPage = page;
-    fetchStudents($searchBar.val(), $classSelect.val());
-  }
+  $nextPage.on('click', function () {
+    if (currentPage < totalPages) {
+      currentPage++;
+      fetchStudents($searchBar.val(), $classSelect.val());
+    }
+  });
 
-  // Initial fetch
+  $firstPage.on('click', function () {
+    currentPage = 1;
+    fetchStudents($searchBar.val(), $classSelect.val());
+  });
+
+  $lastPage.on('click', function () {
+    currentPage = totalPages;
+    fetchStudents($searchBar.val(), $classSelect.val());
+  });
+
   fetchClasses();
 });
