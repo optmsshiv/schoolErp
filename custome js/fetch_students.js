@@ -5,6 +5,7 @@ $(function () {
   let totalPages = 1;
   let currentSortColumn = null;
   let sortAscending = true;
+  let cachedClasses = null;
 
   // Cache frequently accessed elements
   const $searchBar = $('#search-bar');
@@ -21,57 +22,51 @@ $(function () {
   const $lastPage = $('#last-page');
   const $selectAll = $('#select-all');
   const $pageNumbers = $('#page-numbers');
-  const $studentCredentialsBtn = $('#student-credentials'); // Button to send credentials
+  const $studentCredentialsBtn = $('#student-credentials');
 
   // Fetch available class names for the dropdown
   function fetchClasses() {
+    if (cachedClasses) {
+      populateClassDropdown(cachedClasses);
+      return;
+    }
+
     $.ajax({
-      url: '../php/fetch_classes_active_student.php', // Your PHP endpoint to fetch class names
+      url: '../php/fetch_classes_active_student.php',
       type: 'GET',
       dataType: 'json',
       success: function (data) {
-        // Populate class dropdown with available class names
-        $classSelect.empty(); // Clear any existing options
-        $classSelect.append('<option value="All">All</option>'); // Default "All" option
-
-        data.classes.forEach(function (className) {
-          $classSelect.append(`<option value="${className}">${className}</option>`);
-        });
-
-        // Trigger fetchStudents to load student data after classes are populated
-        fetchStudents();
+        cachedClasses = data.classes;
+        populateClassDropdown(data.classes);
       },
-      error: function (xhr, status, error) {
-        console.error('Error fetching class names: ', status, error);
+      error: function () {
+        console.error('Error fetching class names');
         $classSelect.append('<option value="">Error loading classes</option>');
       }
     });
   }
 
-  // Attach event listener to all <th> elements
-  $('th').on('click', function () {
-    const column = $(this).text().toLowerCase().replace(' ', '_'); // Get column name
-    sortTable(column);
-  });
-  // Function to handle sorting
-  function sortTable(column) {
-    if (currentSortColumn === column) {
-      // Toggle sorting direction
-      sortAscending = !sortAscending;
-    } else {
-      // Set new column and reset to ascending order
-      currentSortColumn = column;
-      sortAscending = true;
-    }
+  function populateClassDropdown(classes) {
+    $classSelect.empty().append('<option value="All">All</option>');
+    classes.forEach(className => $classSelect.append(`<option value="${className}">${className}</option>`));
+    fetchStudents();
+  }
 
-
-
-    // Refetch students with updated sorting parameters
-    fetchStudents($searchBar.val(), $classSelect.val());
+  // Debounce function for search
+  function debounce(func, delay) {
+    let debounceTimeout;
+    return function (...args) {
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => func.apply(this, args), delay);
+    };
   }
 
   // Fetch student data
   function fetchStudents(searchTerm = '', className = '') {
+    toggleLoading(true);
+
+    if (className === 'All') className = '';
+
     $.ajax({
       url: '../php/fetch_active_student.php',
       type: 'GET',
@@ -85,6 +80,8 @@ $(function () {
         sortOrder: sortAscending ? 'ASC' : 'DESC'
       },
       success: function (data) {
+        toggleLoading(false);
+
         totalRecords = data.totalRecords;
         totalPages = Math.ceil(totalRecords / recordsPerPage);
 
@@ -93,23 +90,12 @@ $(function () {
         $currentRecords.text(Math.min(recordsPerPage, totalRecords - (currentPage - 1) * recordsPerPage));
         $totalPagesEl.text(totalPages);
 
-        // Populate table
         renderTable(data.students);
-
-        // Update pagination
         updatePaginationUI();
-
-        // Attach event listener to sortable <th> elements
-        $('th.sortable').on('click', function () {
-          const column = $(this).data('column'); // Get column name from data attribute
-          sortTable(column);
-        });
-
-        // Update "Select All" checkbox
         updateSelectAllCheckbox();
       },
-      error: function (xhr, status, error) {
-        console.error('Error fetching data: ', status, error);
+      error: function () {
+        toggleLoading(false);
         $tableBody.html("<tr><td colspan='9'>Error loading data. Please try again later.</td></tr>");
       }
     });
@@ -120,53 +106,38 @@ $(function () {
     $tableBody.empty();
     if (students.length > 0) {
       let sr_no = (currentPage - 1) * recordsPerPage + 1;
-      students.forEach(student => {
-        var avatar = student.student_image ? student.stident_image : '../assets/img/avatars/default-avatar.png';
-        $tableBody.append(`<tr>
-          <td><input type='checkbox' class='row-checkbox' data-user-id='${student.user_id}'></td>
-          <td>${sr_no++}</td>
-          <td>
-            <div class="d-flex align-items-center">
-              <div class="avatar avatar-sm">
-                <img src="${avatar}" alt="avatar" class="rounded-circle" />
-              </div>
-              <div class="ms-2">
-                <h6 class="mb-0 ms-2">${student.first_name} ${student.last_name}</h6>
-              </div>
-            </div>
-          </td>
-          <td>${student.father_name}</td>
-          <td>${student.class_name}</td>
-          <td>${student.roll_no}</td>
-          <td>${student.phone}</td>
-          <td>${student.user_id}</td>
-          <td>
-            <span class="badge bg-label-${student.status === 'active' ? 'success' : 'danger'}">${
-          student.status
-        }</span></td>
-          <td>
-            <a href="javascript:;" class='tf-icons bx bx-show bx-sm me-2 text-primary view-student' data-user-id='${
-              student.user_id
-            }' title="View Student"></a>
-            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" title="Delete Student"></a>
-            <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-                <div class="dropdown-menu dropdown-menu-end">
-                  <a class="dropdown-item" href="javascript:;" id="studentSuspend" title="Suspend">Suspend</a>
-                </div>
-          </td>
-        </tr>`);
-      });
+      students.forEach(student => $tableBody.append(renderStudentRow(student, sr_no++)));
     } else {
-      $tableBody.html(`
-        <tr>
-          <td colspan="9" class="text-center" style="margin-top: 20px;">
-            <h2 class="badge bg-danger text-center" style="display: block;">No records found</h2>
-          </td>
-        </tr>
-      `);
+      $tableBody.html(`<tr><td colspan="9" class="text-center">No records found</td></tr>`);
     }
   }
-  // End of table rendering
+
+  function renderStudentRow(student, srNo) {
+    const avatar = student.student_image || '../assets/img/avatars/default-avatar.png';
+    return `
+      <tr>
+        <td><input type="checkbox" class="row-checkbox" data-user-id="${student.user_id}"></td>
+        <td>${srNo}</td>
+        <td>
+          <div class="d-flex align-items-center">
+            <img src="${avatar}" alt="avatar" class="avatar avatar-sm rounded-circle" />
+            <span class="ms-2">${student.first_name} ${student.last_name}</span>
+          </div>
+        </td>
+        <td>${student.father_name}</td>
+        <td>${student.class_name}</td>
+        <td>${student.roll_no}</td>
+        <td>${student.phone}</td>
+        <td>${student.user_id}</td>
+        <td>
+          <span class="badge bg-label-${student.status === 'active' ? 'success' : 'danger'}">${student.status}</span>
+        </td>
+        <td>
+          <a href="#" class="view-student text-primary" data-user-id="${student.user_id}">View</a>
+          <a href="#" class="text-danger">Delete</a>
+        </td>
+      </tr>`;
+  }
 
   // Update pagination UI
   function updatePaginationUI() {
@@ -177,10 +148,8 @@ $(function () {
     renderPageNumbers();
   }
 
-  // Render page numbers
   function renderPageNumbers() {
     $pageNumbers.empty();
-
     const startPage = Math.max(1, currentPage - 1);
     const endPage = Math.min(totalPages, currentPage + 1);
 
@@ -204,7 +173,12 @@ $(function () {
     });
   }
 
-  // Update "Select All" checkbox
+  function toggleLoading(show) {
+    if (show) {
+      $tableBody.html('<tr><td colspan="9" class="text-center">Loading...</td></tr>');
+    }
+  }
+
   function updateSelectAllCheckbox() {
     const allCheckboxes = $tableBody.find('input[type="checkbox"]');
     const checkedCheckboxes = allCheckboxes.filter(':checked');
@@ -213,14 +187,11 @@ $(function () {
     $selectAll.prop('indeterminate', checkedCheckboxes.length > 0 && checkedCheckboxes.length < allCheckboxes.length);
   }
 
-  // View student details
-  function viewStudent(userId) {
-    // Redirect to the studentinfo.html page with user_id as a query parameter
-    window.location.href = `studentInfo.html?user_id=${userId}`;
-  }
-
-  // Event listeners for fetching and filtering data
-  $searchBar.on('input', () => fetchStudents($searchBar.val(), $classSelect.val()));
+  // Event Listeners
+  $searchBar.on(
+    'input',
+    debounce(() => fetchStudents($searchBar.val(), $classSelect.val()), 300)
+  );
   $classSelect.on('change', () => fetchStudents($searchBar.val(), $classSelect.val()));
   $recordsPerPage.on('change', () => {
     recordsPerPage = parseInt($recordsPerPage.val());
@@ -237,20 +208,11 @@ $(function () {
   });
 
   $tableBody.on('change', 'input[type="checkbox"]', updateSelectAllCheckbox);
-
-  // Event delegation for view button
   $tableBody.on('click', '.view-student', function () {
     const userId = $(this).data('user-id');
-    viewStudent(userId); // Call viewStudent function
+    window.location.href = `studentInfo.html?user_id=${userId}`;
   });
 
-  // Change page
-  function changePage(page) {
-    currentPage = page;
-    fetchStudents($searchBar.val(), $classSelect.val());
-  }
-
-  // Send student credentials via WhatsApp
   $studentCredentialsBtn.on('click', function () {
     const selectedCheckboxes = $tableBody.find('input[type="checkbox"]:checked');
 
@@ -259,15 +221,14 @@ $(function () {
       return;
     }
 
+    if (!confirm('Are you sure you want to send credentials to selected students?')) return;
+
     selectedCheckboxes.each(function () {
       const userId = $(this).data('user-id');
 
-      // Send AJAX request
       fetch('/php/send_credentials.php', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ user_id: userId })
       })
         .then(response => response.json())
@@ -285,6 +246,11 @@ $(function () {
     });
   });
 
+  function changePage(page) {
+    currentPage = page;
+    fetchStudents($searchBar.val(), $classSelect.val());
+  }
+
   // Initial fetch
-  fetchClasses(); // First, fetch and populate classes, then fetch students
+  fetchClasses();
 });
