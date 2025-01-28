@@ -3,6 +3,8 @@ $(function () {
   let recordsPerPage = 10;
   let totalRecords = 0;
   let totalPages = 1;
+  let currentSortColumn = null;
+  let sortAscending = true;
 
   // Cache frequently accessed elements
   const $searchBar = $('#search-bar');
@@ -33,19 +35,32 @@ $(function () {
         $classSelect.append('<option value="All">All</option>'); // Default "All" option
 
         data.classes.forEach(function (className) {
-          $classSelect.append(
-            `<option value="${className}">${className}</option>`
-          );
+          $classSelect.append(`<option value="${className}">${className}</option>`);
         });
 
         // Trigger fetchStudents to load student data after classes are populated
         fetchStudents();
       },
       error: function (xhr, status, error) {
-        console.error("Error fetching class names: ", status, error);
+        console.error('Error fetching class names: ', status, error);
         $classSelect.append('<option value="">Error loading classes</option>');
       }
     });
+  }
+
+  // Function to handle sorting
+  function sortTable(column) {
+    if (currentSortColumn === column) {
+      // Toggle sorting direction
+      sortAscending = !sortAscending;
+    } else {
+      // Set new column and reset to ascending order
+      currentSortColumn = column;
+      sortAscending = true;
+    }
+
+    // Refetch students with updated sorting parameters
+    fetchStudents($searchBar.val(), $classSelect.val());
   }
 
   // Fetch student data
@@ -75,12 +90,11 @@ $(function () {
         // Update pagination
         updatePaginationUI();
 
-
         // Update "Select All" checkbox
         updateSelectAllCheckbox();
       },
       error: function (xhr, status, error) {
-        console.error("Error fetching data: ", status, error);
+        console.error('Error fetching data: ', status, error);
         $tableBody.html("<tr><td colspan='9'>Error loading data. Please try again later.</td></tr>");
       }
     });
@@ -136,25 +150,8 @@ $(function () {
         </tr>
       `);
     }
-    // Sort table
-    sortTable(); // Call sortTable function to sort the table
   }
   // End of table rendering
-  // function to sort table
-  function sortTable() {
-    const table = document.getElementById('studentTable');
-    const rows = Array.from(table.tBodies[0].rows);
-
-    rows.sort((a, b) => {
-      const rollA = parseInt(a.cells[0].innerText, 10); // Roll No in column 0
-      const rollB = parseInt(b.cells[0].innerText, 10);
-      return rollA - rollB; // Ascending order
-    });
-
-    // Append sorted rows back to the tbody
-    const tbody = table.tBodies[0];
-    rows.forEach(row => tbody.appendChild(row));
-  }
 
   // Update pagination UI
   function updatePaginationUI() {
@@ -254,19 +251,19 @@ $(function () {
       fetch('/php/send_credentials.php', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: new URLSearchParams({ user_id: userId }),
+        body: new URLSearchParams({ user_id: userId })
       })
-        .then((response) => response.json())
-        .then((data) => {
+        .then(response => response.json())
+        .then(data => {
           if (data.success) {
             alert('WhatsApp message sent successfully!');
           } else {
             alert('Error: ' + data.message);
           }
         })
-        .catch((error) => {
+        .catch(error => {
           console.error('Error:', error);
           alert('An unexpected error occurred.');
         });
