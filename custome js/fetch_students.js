@@ -99,11 +99,11 @@ $(function () {
         // Update pagination
         updatePaginationUI();
 
-        // Highlight active sort column
-        $('th').removeClass('sort-active'); // Remove the class from all headers
-        if (currentSortColumn) {
-          $(`th:contains(${currentSortColumn.replace('_', ' ')})`).addClass('sort-active'); // Add it to the active header
-        }
+        // Attach event listener to sortable <th> elements
+        $('th.sortable').on('click', function () {
+          const column = $(this).data('column'); // Get column name from data attribute
+          sortTable(column);
+        });
 
         // Update "Select All" checkbox
         updateSelectAllCheckbox();
