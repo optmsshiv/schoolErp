@@ -225,7 +225,7 @@ $(function () {
         if (data.success) {
           // Success message with SweetAlert2
           Swal.fire({
-            position: 'top-end',
+            position: 'top',
             icon: 'success',
             title: `Message sent to ${studentNamesList} successfully!`,
             showConfirmButton: false,
