@@ -203,6 +203,18 @@ $(function () {
 
   // Send student credentials via WhatsApp
   function sendCredentials(userIds) {
+    // Create an array of student names (for display purposes)
+    let studentNames = [];
+    const selectedCheckboxes = $tableBody.find('input[type="checkbox"]:checked');
+
+    selectedCheckboxes.each(function () {
+      const studentName = $(this).closest('tr').find('td:nth-child(3) h6').text();
+      studentNames.push(studentName);
+    });
+
+    // Join the names into a string (you can format it as needed)
+    const studentNamesList = studentNames.join(', ');
+
     fetch('/php/send_credentials.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -211,7 +223,16 @@ $(function () {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          alert('WhatsApp message sent successfully!');
+          // Success message with SweetAlert2
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: `Message sent to ${studentNamesList} successfully!`,
+            showConfirmButton: false,
+            timer: 5000, // Timer set for 5 seconds
+            toast: true,
+            timerProgressBar: true // Optional: shows a progress bar for the timer
+          });
         } else {
           alert('Error: ' + data.message);
         }
@@ -221,6 +242,8 @@ $(function () {
         alert('An unexpected error occurred.');
       });
   }
+
+
 
   // Event listeners
   $searchBar.on('input', () => fetchStudents($searchBar.val(), $classSelect.val()));
