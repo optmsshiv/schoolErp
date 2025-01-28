@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Meta API credentials
-$accessToken = 'EAAX3BfPtyaEBO78sPtDJBFN5ohbw60KTdZAtyJoLparqkQ2yr6BZAi9hb9w6wxfkKRlZBKwpI1wj4pb8Vmno2byJTLOHsf1E8xZBbdE0j0TTsukko5xPlsPRnwL835qnpckTJq22zwYkQaaQeLfnJZCEmc2WEjZB9qMRZCDhNmlgQYeYxJRLiZCmlEaGsZC69oquImjAcQSkGE9fNZC4yqPKR17scF4wm6ZAKrvnSOrP8bYvjsZD'; // Replace with your access token
+$accessToken = 'EAAX3BfPtyaEBO8T1wv1bpLp8qZCZBoPiPWa9yfrpZAGmr3XcksglkEVP4ZABe6qtIGAj6YSIFfSJVxTYfZACsiEyLKvhCKo3v0lPNngLNvzOH8u8Rpish5gWh7aXPqAth4CUVoph56pTHAbh29CxU8SX9fLWIdJZB0ijZA0k04Ge9zCOOVaYJK3xySMd4fZCAJQhrM3ixSgJCZABZA2oDRucQbZCRZBvSM9dGjurjpq2kY3NEcMZD'; // Replace with your access token
 $phoneNumberId = '363449376861068'; // Replace with your phone number ID
 
 
