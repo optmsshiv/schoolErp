@@ -218,7 +218,7 @@ $(function () {
     fetch('/php/send_credentials.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ user_id: userIds })
+      body: new URLSearchParams({ user_id: JSON.stringify(userIdsArray) })
     })
       .then(response => response.json())
       .then(data => {
@@ -228,11 +228,11 @@ $(function () {
             toast: true,
             position: 'center',
             icon: 'success',
-            title: "Credentials Message",
+            title: 'Credentials Message',
             text: `Message sent to ${studentNamesList} successfully!`,
             showConfirmButton: false,
             timer: 5000, // Timer set for 5 seconds
-            timerProgressBar: true, // Optional: shows a progress bar for the timer
+            timerProgressBar: true // Optional: shows a progress bar for the timer
           });
         } else {
           alert('Error: ' + data.message);
