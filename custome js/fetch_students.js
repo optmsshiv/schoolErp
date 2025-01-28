@@ -227,15 +227,21 @@ $(function () {
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: `Message sent to ${studentNamesList} successfully!`,
+            title: "Credentials Message",
+            text: `Message sent to ${studentNamesList} successfully!`,
             showConfirmButton: false,
             timer: 5000, // Timer set for 5 seconds
             toast: true,
             timerProgressBar: true, // Optional: shows a progress bar for the timer
              didOpen: () => {
-          // This ensures that even if the page is scrolled, the alert stays visible at the top
-          Swal.getPopup().style.zIndex = 9999; // Set a high z-index to ensure it's on top
-        }
+               // This ensures that even if the page is scrolled, the alert stays visible at the top
+               const popup = Swal.getPopup();
+               popup.style.zIndex = 9999; // Ensure it's on top
+               popup.style.position = 'fixed'; // Ensure fixed position at the top
+               popup.style.top = '10px'; // Adjust the top offset (10px from the top)
+               popup.style.left = '50%'; // Center the toast horizontally
+               popup.style.transform = 'translateX(-50%)'; // Center it exactly
+             }
           });
         } else {
           alert('Error: ' + data.message);
