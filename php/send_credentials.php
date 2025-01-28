@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
              "to" => $userPhoneNumber,
              "type" => "template",
              "template" => [
-                 "name" => "message", // Approved template name
+                 "name" => "erp_credentials", // Approved template name
                  "language" => ["code" => "en_US"],
                  "components" => [
                      [
