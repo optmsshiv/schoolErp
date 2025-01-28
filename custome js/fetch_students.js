@@ -3,7 +3,7 @@ $(function () {
   let recordsPerPage = 10;
   let totalRecords = 0;
   let totalPages = 1;
-  let currentSortColumn = null;
+  let currentSortColumn = roll_no;
   let sortAscending = true;
 
   // Cache frequently accessed elements
@@ -101,7 +101,9 @@ $(function () {
 
         // Highlight active sort column
         $('th').removeClass('sort-active'); // Remove the class from all headers
-        $(`th:contains(${column.replace('_', ' ')})`).addClass('sort-active'); // Add it to the active header
+        if (currentSortColumn) {
+          $(`th:contains(${currentSortColumn.replace('_', ' ')})`).addClass('sort-active'); // Add it to the active header
+        }
 
         // Update "Select All" checkbox
         updateSelectAllCheckbox();
