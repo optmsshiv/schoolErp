@@ -225,13 +225,19 @@ $(function () {
         if (data.success) {
           // Success message with SweetAlert2
           Swal.fire({
+            position: 'top-end',
             icon: 'success',
-            title:"Credentials Message",
+            title: 'Credentials Message',
             text: `Message sent to ${studentNamesList} successfully!`,
             showConfirmButton: false,
             timer: 5000, // Timer set for 5 seconds
             toast: true,
-            timerProgressBar: true // Optional: shows a progress bar for the timer
+            timerProgressBar: true,
+            didOpen: () => {
+              // Custom CSS to adjust the position of the SweetAlert
+              const swal2Popup = Swal.getPopup();
+              swal2Popup.style.marginTop = '80px'; // Adjust margin to move below navbar (increase value if necessary)
+            }
           });
         } else {
           alert('Error: ' + data.message);
