@@ -226,7 +226,8 @@ $(function () {
           // Success message with SweetAlert2
           Swal.fire({
             icon: 'success',
-            title: `Message sent to ${studentNamesList} successfully!`,
+            title:"Credentials Message",
+            text: `Message sent to ${studentNamesList} successfully!`,
             showConfirmButton: false,
             timer: 5000, // Timer set for 5 seconds
             toast: true,
