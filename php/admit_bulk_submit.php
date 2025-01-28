@@ -66,7 +66,7 @@ try {
                 // Insert into user_auth table
                 $stmtAuth->execute([
                     ':user_id' => $user_id,
-                    ':default_password' => $hashedPassword
+                    ':default_password' => $default_password
                 ]);
             }
 
