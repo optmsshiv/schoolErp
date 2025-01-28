@@ -133,7 +133,7 @@ $(function () {
           <span class="badge bg-label-${student.status === 'active' ? 'success' : 'danger'}">${student.status}</span>
         </td>
         <td>
-          <a href="#" class='tf-icons bx bx-show bx-sm me-2 text-primary  view-student" title="View Student" data-user-id="${
+          <a href="#" class="tf-icons bx bx-show bx-sm me-2 text-primary  view-student" title="View Student" data-user-id="${
             student.user_id
           }"></a>
           <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" title="Delete Student"></a>
