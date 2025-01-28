@@ -211,7 +211,19 @@ $(function () {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          alert('WhatsApp message sent successfully!');
+          // Success message with SweetAlert2
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: `Message sent to ${studentName} successfully!`,
+            showConfirmButton: false,
+            timer: 5000, // Timer set for 5 seconds
+            toast: true,
+            timerProgressBar: true, // Optional: shows a progress bar for the timer
+            didClose: () => {
+              // Optionally, you can perform other actions after the alert is closed
+            }
+          });
         } else {
           alert('Error: ' + data.message);
         }
@@ -221,6 +233,7 @@ $(function () {
         alert('An unexpected error occurred.');
       });
   }
+
 
   // Event listeners
   $searchBar.on('input', () => fetchStudents($searchBar.val(), $classSelect.val()));

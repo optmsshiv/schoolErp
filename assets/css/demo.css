@@ -1041,7 +1041,7 @@ td {
    /* Show pointer cursor */
  }
 
- /*short column active*/
+ /*short column active
  .sort-active {
    text-decoration: underline;
    font-weight: bold;
