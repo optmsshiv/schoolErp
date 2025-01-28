@@ -218,7 +218,7 @@ $(function () {
     fetch('/php/send_credentials.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ user_id: JSON.stringify(userIdsArray) })
+      body: new URLSearchParams({ user_id: userIds })
     })
       .then(response => response.json())
       .then(data => {
