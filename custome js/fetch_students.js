@@ -133,8 +133,14 @@ $(function () {
           <span class="badge bg-label-${student.status === 'active' ? 'success' : 'danger'}">${student.status}</span>
         </td>
         <td>
-          <a href="#" class="view-student text-primary" data-user-id="${student.user_id}">View</a>
-          <a href="#" class="text-danger">Delete</a>
+          <a href="#" class="class='tf-icons bx bx-show bx-sm me-2 text-primary  view-student text-primary" data-user-id="${
+            student.user_id
+          }"></a>
+          <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" title="Delete Student"></a>
+          <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item" href="javascript:;" id="studentSuspend" title="Suspend">Suspend</a>
+                </div>
         </td>
       </tr>`;
   }
