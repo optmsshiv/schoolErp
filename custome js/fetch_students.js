@@ -203,22 +203,10 @@ $(function () {
 
   // Send student credentials via WhatsApp
   function sendCredentials(userIds) {
-    // Create an array of student names (for display purposes)
-    let studentNames = [];
-    const selectedCheckboxes = $tableBody.find('input[type="checkbox"]:checked');
-
-    selectedCheckboxes.each(function () {
-      const studentName = $(this).closest('tr').find('td:nth-child(3) h6').text();
-      studentNames.push(studentName);
-    });
-
-    // Join the names into a string (you can format it as needed)
-    const studentNamesList = studentNames.join(', ');
-
     fetch('/php/send_credentials.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ user_id: userIds })
+      body: new URLSearchParams({user_id: userIds})
     })
       .then(response => response.json())
       .then(data => {
@@ -226,13 +214,18 @@ $(function () {
           // Success message with SweetAlert2
           Swal.fire({
             toast: true,
-            position: 'center',
+            position: 'top-end',
             icon: 'success',
             title: 'Credentials Message',
-            text: `Message sent to ${studentNamesList} successfully!`,
+            text: 'Message sent to successfully!',
             showConfirmButton: false,
             timer: 5000, // Timer set for 5 seconds
-            timerProgressBar: true // Optional: shows a progress bar for the timer
+            timerProgressBar: true, // Optional: shows a progress bar for the timer
+            didOpen: () => {
+              // Custom CSS to adjust the position of the SweetAlert
+              const swal2Popup = Swal.getPopup();
+              swal2Popup.style.marginTop = '80px'; // Adjust margin to move below navbar (increase value if necessary)
+            }
           });
         } else {
           alert('Error: ' + data.message);
