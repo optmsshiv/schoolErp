@@ -215,7 +215,7 @@ $(function () {
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: `Message sent to ${studentName} successfully!`,
+            title: `Message sent to ${student.first_name} ${student.last_name} successfully!`,
             showConfirmButton: false,
             timer: 5000, // Timer set for 5 seconds
             toast: true,
