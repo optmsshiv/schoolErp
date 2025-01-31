@@ -56,7 +56,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ]);
 
         // Return success response
-        echo json_encode(['success' => true, 'userId' => $userId, 'password' => $password]);
+        echo json_encode([
+          'success' => true,
+          'userId' => $userId,
+          'password' => $password,
+          'fullname' => $fullname,  // Added fullname to the response
+          'phone' => $phoneNumber   // Added phone number to the response
+        ]);
 
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);

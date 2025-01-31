@@ -1,3 +1,8 @@
+// Declare variables for Bearer Token and Phone Number ID
+const BEARER_TOKEN =
+  'EAAX3BfPtyaEBO5WMc3eYZAoMEXoqgaMC3dlFKQOOnt3hs2ZCWHSIOtZCqHYe0QFPDaQdZAB344coG4Vh2V9Dzrw1NnnjmUAF3pVC9ooHsYSABrlXt9gBwyURNcZBNftyWbcyd4oCQxUgC2cHe5XOfV4umeRu1mKDDb4dZCwNQEelZA21BvYKVIIKeZBnOrVpZCjNXbF7rvksZC0NUgnvBBeyYi1NymsVKcY36nq3bxpUK8B80m'; // Replace with your actual Bearer Token
+const PHONE_NUMBER_ID = '363449376861068'; // Replace with your actual Phone Number ID
+
 document.addEventListener('DOMContentLoaded', function () {
   console.log('DOM fully loaded');
 
@@ -25,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     offcanvasElement.addEventListener('shown.bs.offcanvas', function () {
-      console.log('Off-canvas shown');
+      // console.log('Off-canvas shown');
 
       var form = document.getElementById('addNewUser');
       if (!form) {
@@ -33,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      console.log('Form found, adding event listener');
+      // console.log('Form found, adding event listener');
 
       // Prevent duplicate event listeners
       form.removeEventListener('submit', handleFormSubmit);
@@ -94,6 +99,9 @@ document.addEventListener('DOMContentLoaded', function () {
           }).then(() => {
             form.reset(); // Reset the form
             refreshUserTable(); // Refresh the table to show new data
+
+            // Send WhatsApp Message
+            sendWhatsAppMessage(data.fullname, data.userId, data.password, data.phone);
           });
         } else {
           // Hide loading Swal and show error message
@@ -132,6 +140,50 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
+  function sendWhatsAppMessage(fullname, userId, password, phone) {
+    if (!phone) {
+      console.error('Phone number is missing.');
+      return;
+    }
+
+    var templateName = 'user_role'; // Replace with your actual template name
+     var fromName = 'OPTMS Tech'; // Change this to your organization's name or dynamic value
+
+    var messageData = {
+      messaging_product: 'whatsapp',
+      to: phone, // Automatically use the user's phone number
+      type: 'template',
+      template: {
+        name: templateName,
+        language: { code: 'en' },
+        components: [
+          {
+            type: 'body',
+            parameters: [
+              { type: 'text', text: fullname },
+              { type: 'text', text: userId },
+              { type: 'text', text: password },
+              { type: 'text', text: fromName }
+            ]
+          }
+        ]
+      }
+    };
+
+    fetch('https://graph.facebook.com/v17.0/${phoneNumberId}/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${BEARER_TOKEN}`
+      },
+      body: JSON.stringify(messageData)
+    })
+      .then(response => response.json())
+      .then(data => console.log('WhatsApp Message Sent:', data))
+      .catch(error => console.error('WhatsApp API Error:', error));
+  }
+
+  // Function to refresh the user table
   function refreshUserTable() {
     $.ajax({
       url: '../php/userRole/get_user_role.php',
