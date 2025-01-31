@@ -228,6 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
                     <a class="dropdown-item" href="javascript:;" id="userSuspend" data-id="${user.user_id}">Suspend</a>
+                    <a class="dropdown-item" href="javascript:;" id="userCredential" data-id="${user.user_id}">Credential</a>
                   </div>
                 </td>
               </tr>
