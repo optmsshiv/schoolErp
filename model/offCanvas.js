@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     };
 
-    fetch('https://graph.facebook.com/v17.0/${PHONE_NUMBER_ID}/messages', {
+    fetch('https://graph.facebook.com/v21.0/${PHONE_NUMBER_ID}/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
