@@ -10,26 +10,21 @@ document.addEventListener('DOMContentLoaded', function () {
       return response.text();
     })
     .then(data => {
-      // Insert fetched HTML into the placeholder
       document.getElementById('offcanvasAddUser').innerHTML = data;
-
-      // Initialize off-canvas logic after loading HTML
-      initializeOffCanvas();
+      initializeOffCanvas(); // Initialize offcanvas after loading
     })
     .catch(error => {
       console.error('Error loading offCanvas.html:', error);
     });
 
-  // Function to initialize off-canvas behavior
   function initializeOffCanvas() {
-    var offcanvas = document.getElementById('userAddCanvas');
-    if (!offcanvas) {
+    var offcanvasElement = document.getElementById('userAddCanvas');
+    if (!offcanvasElement) {
       console.error('Off-canvas element not found');
       return;
     }
 
-    // Attach event listener only once when the off-canvas is shown
-    offcanvas.addEventListener('shown.bs.offcanvas', function () {
+    offcanvasElement.addEventListener('shown.bs.offcanvas', function () {
       console.log('Off-canvas shown');
 
       var form = document.getElementById('addNewUser');
@@ -40,28 +35,42 @@ document.addEventListener('DOMContentLoaded', function () {
 
       console.log('Form found, adding event listener');
 
-      // Remove any previously added event listener to prevent duplication
+      // Prevent duplicate event listeners
       form.removeEventListener('submit', handleFormSubmit);
-
-      // Attach submit event listener
       form.addEventListener('submit', handleFormSubmit);
     });
   }
 
-  // Function to handle form submission
   function handleFormSubmit(event) {
     event.preventDefault();
-
     var form = event.target;
     var submitButton = form.querySelector("button[type='submit']");
 
-    // Disable submit button to prevent multiple submissions
+    // Disable the submit button to prevent multiple clicks
     if (submitButton) {
       submitButton.disabled = true;
     }
 
+    // Show loading Swal immediately
+    Swal.fire({
+      title: 'Processing...',
+      text: 'Please wait while we add the user...',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
     var formData = new FormData(form);
 
+    // Close the off-canvas immediately before sending the request
+    var offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('userAddCanvas'));
+    if (offcanvasInstance) {
+      offcanvasInstance.hide();
+    }
+
+    // Send the form data to the server
     fetch('../php/canvaData.php', {
       method: 'POST',
       body: formData
@@ -74,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .then(data => {
         if (data.success) {
+          // Hide loading Swal and show success message
           Swal.fire({
             icon: 'success',
             title: 'Success!',
@@ -82,24 +92,11 @@ document.addEventListener('DOMContentLoaded', function () {
             text: `New user created successfully with User ID: ${data.userId} and Password: ${data.password}`,
             confirmButtonText: 'OK'
           }).then(() => {
-            // Reset form
-            form.reset();
-
-            // Hide the off-canvas **before** refreshing the table
-            var offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('userAddCanvas'));
-            if (offcanvas) {
-              offcanvas.hide();
-            }
-
-            // Re-enable submit button after submission
-            if (submitButton) {
-              submitButton.disabled = false;
-            }
-
-            // Refresh user table after off-canvas is closed
-            setTimeout(refreshUserTable, 500); // Small delay to ensure smooth transition
+            form.reset(); // Reset the form
+            refreshUserTable(); // Refresh the table to show new data
           });
         } else {
+          // Hide loading Swal and show error message
           Swal.fire({
             icon: 'error',
             position: 'top',
@@ -108,14 +105,15 @@ document.addEventListener('DOMContentLoaded', function () {
             text: data.message || 'Something went wrong. Please try again.',
             confirmButtonText: 'OK'
           });
+        }
 
-          // Re-enable submit button in case of an error
-          if (submitButton) {
-            submitButton.disabled = false;
-          }
+        // Re-enable submit button
+        if (submitButton) {
+          submitButton.disabled = false;
         }
       })
       .catch(error => {
+        // Hide loading Swal and show error message
         Swal.fire({
           icon: 'error',
           position: 'top',
@@ -127,25 +125,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.error('Fetch error:', error);
 
-        // Re-enable submit button in case of an error
+        // Re-enable submit button
         if (submitButton) {
           submitButton.disabled = false;
         }
       });
   }
 
-  // Function to refresh the user table
   function refreshUserTable() {
     $.ajax({
-      url: '../php/userRole/get_user_role.php', // The PHP file where user data is fetched
+      url: '../php/userRole/get_user_role.php',
       type: 'GET',
       dataType: 'json',
       success: function (response) {
         if (response && response.length > 0) {
           var tableBody = $('#userTable tbody');
-          tableBody.empty(); // Clear any existing rows
+          tableBody.empty();
 
-          // Loop through each user and append rows to the table
           response.forEach(function (user) {
             var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
@@ -184,10 +180,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 </td>
               </tr>
             `;
-            tableBody.append(row); // Add the new row to the table
+            tableBody.append(row);
           });
 
-          // Reinitialize DataTable after adding rows dynamically
           var table = $('#userTable').DataTable();
           table.clear();
           table.rows.add($('#userTable tbody tr')).draw();
