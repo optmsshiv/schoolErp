@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  //  console.log('DOM fully loaded');
+  console.log('DOM fully loaded');
 
   // Load off-canvas HTML dynamically
   fetch('../model/offCanvas.html')
@@ -23,85 +23,117 @@ document.addEventListener('DOMContentLoaded', function () {
   // Function to initialize off-canvas behavior
   function initializeOffCanvas() {
     var offcanvas = document.getElementById('userAddCanvas');
-    var form;
+    if (!offcanvas) {
+      console.error('Off-canvas element not found');
+      return;
+    }
 
-    if (offcanvas) {
-      offcanvas.addEventListener('shown.bs.offcanvas', function () {
-        //  console.log('Off-canvas shown');
+    // Attach event listener only once when the off-canvas is shown
+    offcanvas.addEventListener('shown.bs.offcanvas', function () {
+      console.log('Off-canvas shown');
 
-        form = document.getElementById('addNewUser');
-        //  console.log('Form element:', form);
+      var form = document.getElementById('addNewUser');
+      if (!form) {
+        console.error('Form element not found');
+        return;
+      }
 
-        if (form) {
-          //  console.log('Form found, adding event listener');
+      console.log('Form found, adding event listener');
 
-          // Add submit event listener to the form
-          form.addEventListener('submit', function (event) {
-            event.preventDefault();
+      // Remove any previously added event listener to prevent duplication
+      form.removeEventListener('submit', handleFormSubmit);
 
-            var formData = new FormData(this);
+      // Attach submit event listener
+      form.addEventListener('submit', handleFormSubmit);
+    });
+  }
 
-            fetch('../php/canvaData.php', {
-              method: 'POST',
-              body: formData
-            })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error('Network response was not ok');
-                }
-                return response.json();
-              })
-              .then(data => {
-                if (data.success) {
-                  Swal.fire({
-                    target: document.getElementById('userAddCanvas'),
-                    icon: 'success',
-                    title: 'Success!',
-                    position: 'top', // Change position to top
-                    toast: true, // Makes the alert appear as a toast
-                    text: `New user created successfully with User ID: ${data.userId} and Password: ${data.password}`,
-                    confirmButtonText: 'OK'
-                  }).then(() => {
-                    form.reset();
-                    var bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
-                    bsOffcanvas.hide();
+  // Function to handle form submission
+  function handleFormSubmit(event) {
+    event.preventDefault();
 
-                    // Refresh the user table
-                    refreshUserTable();
-                  });
-                } else {
-                  Swal.fire({
-                    target: document.getElementById('userAddCanvas'),
-                    icon: 'error',
-                    position: 'top', // Change position to top
-                    toast: true, // Makes the alert appear as a toast
-                    title: 'Oops...',
-                    text: data.message || 'Something went wrong. Please try again.',
-                    confirmButtonText: 'OK'
-                  });
-                }
-              })
-              .catch(error => {
-                Swal.fire({
-                  target: document.getElementById('userAddCanvas'),
-                  icon: 'error',
-                  position: 'top', // Change position to top
-                  toast: true, // Makes the alert appear as a toast
-                  title: 'Oops...',
-                  text: 'Something went wrong. Please try again.',
-                  confirmButtonText: 'OK'
-                });
-                console.error('Fetch error:', error);
-              });
+    var form = event.target;
+    var submitButton = form.querySelector("button[type='submit']");
+
+    // Disable submit button to prevent multiple submissions
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+
+    var formData = new FormData(form);
+
+    fetch('../php/canvaData.php', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            position: 'top',
+            toast: true,
+            text: `New user created successfully with User ID: ${data.userId} and Password: ${data.password}`,
+            confirmButtonText: 'OK'
+          }).then(() => {
+            // Reset form
+            form.reset();
+
+            // Hide the off-canvas **before** refreshing the table
+            var offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('userAddCanvas'));
+            if (offcanvas) {
+              offcanvas.hide();
+            }
+
+            // Re-enable submit button after submission
+            if (submitButton) {
+              submitButton.disabled = false;
+            }
+
+            // Refresh user table after off-canvas is closed
+            setTimeout(refreshUserTable, 500); // Small delay to ensure smooth transition
           });
         } else {
-          console.error('Form element not found');
+          Swal.fire({
+            icon: 'error',
+            position: 'top',
+            toast: true,
+            title: 'Oops...',
+            text: data.message || 'Something went wrong. Please try again.',
+            confirmButtonText: 'OK'
+          });
+
+          // Re-enable submit button in case of an error
+          if (submitButton) {
+            submitButton.disabled = false;
+          }
+        }
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          position: 'top',
+          toast: true,
+          title: 'Oops...',
+          text: 'Something went wrong. Please try again.',
+          confirmButtonText: 'OK'
+        });
+
+        console.error('Fetch error:', error);
+
+        // Re-enable submit button in case of an error
+        if (submitButton) {
+          submitButton.disabled = false;
         }
       });
-    } else {
-      console.error('Off-canvas element not found');
-    }
   }
+
   // Function to refresh the user table
   function refreshUserTable() {
     $.ajax({
@@ -109,14 +141,12 @@ document.addEventListener('DOMContentLoaded', function () {
       type: 'GET',
       dataType: 'json',
       success: function (response) {
-        // Check if data exists
         if (response && response.length > 0) {
           var tableBody = $('#userTable tbody');
           tableBody.empty(); // Clear any existing rows
 
           // Loop through each user and append rows to the table
           response.forEach(function (user) {
-            // Default avatar if not available
             var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
             var row = `
@@ -136,13 +166,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${user.role}</td>
                 <td>${user.phone}</td>
                 <td>${user.joining_date}</td>
-                <td><span class="badge ${
-                  user.status === 'Active'
-                    ? 'bg-label-success'
-                    : user.status === 'Suspended'
-                    ? 'bg-label-secondary'
-                    : 'bg-label-danger'
-                }">${user.status}</span></td>
+                <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-danger'}">${
+              user.status
+            }</span></td>
                 <td>
                   <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
                     user.user_id
@@ -152,9 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   }"></a>
                   <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                   <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${
-                      user.user_id
-                    }">Edit</a>
+                    <a class="dropdown-item" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
                     <a class="dropdown-item" href="javascript:;" id="userSuspend" data-id="${user.user_id}">Suspend</a>
                   </div>
                 </td>
@@ -173,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
       },
       error: function (xhr, status, error) {
         console.error('AJAX error: ' + status + ': ' + error);
-      },
+      }
     });
   }
 });
