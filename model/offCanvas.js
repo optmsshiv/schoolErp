@@ -92,8 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
           Swal.fire({
             icon: 'success',
             title: 'Success!',
-            position: 'top',
-            margin : 80,
             toast: true,
             text: `New user created successfully with User ID: ${data.userId} and Password: ${data.password}`,
             confirmButtonText: 'OK'
