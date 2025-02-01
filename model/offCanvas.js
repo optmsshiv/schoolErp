@@ -221,8 +221,8 @@ document.addEventListener('DOMContentLoaded', function () {
                              }"></a>
 
                 <div class="dropdown">
-                    <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
-                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                    <button href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
+                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></button>
                     <ul class="dropdown-menu dropdown-menu-end">
                        <li> <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a></li>
                        <li> <a class="dropdown-item border-bottom" href="javascript:;" id="userSuspend" data-id="${user.user_id
