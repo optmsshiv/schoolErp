@@ -221,14 +221,13 @@ document.addEventListener('DOMContentLoaded', function () {
                              }"></a>
 
                 <div class="dropdown">
-                    <button href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
-                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                       <li> <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a></li>
-                       <li> <a class="dropdown-item border-bottom" href="javascript:;" id="userSuspend" data-id="${user.user_id
-                          }">Suspend</a></li>
-                       <li> <a class="dropdown-item" href="javascript:;" id="userCredential" data-id="${user.user_id}">Credential</a><li>
-                    </ul>
+                    <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
+                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
+                        <a class="dropdown-item" href="javascript:;" id="userCredential" data-id="${user.user_id}">Credential</a>
+                        <a class="dropdown-item" href="javascript:;" id="userSuspend" data-id="${user.user_id}">Suspend</a>
+                    </div>
                 </div>
             </td>
 
