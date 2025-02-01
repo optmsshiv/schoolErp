@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
             icon: 'success',
             title: 'Success!',
             position: 'top',
-            top: 80,
+            margin : 80,
             toast: true,
             text: `New user created successfully with User ID: ${data.userId} and Password: ${data.password}`,
             confirmButtonText: 'OK'
