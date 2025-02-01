@@ -250,3 +250,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+  function validateMobileNumber(input) {
+    // Remove non-numeric characters
+    input.value = input.value.replace(/\D/g, '');
+
+    // Show error message if input is incomplete
+    const errorMsg = document.getElementById('phoneError');
+    if (input.value.length !== 10) {
+      errorMsg.style.display = 'block';
+    } else {
+      errorMsg.style.display = 'none';
+    }
+  }
