@@ -227,9 +227,15 @@ document.addEventListener('DOMContentLoaded', function () {
                      <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                      <div class="dropdown-menu dropdown-menu-end">
-                       <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
-                       <a class="dropdown-item border-bottom" href="javascript:;" id="userSuspend" data-id="${user.user_id}">Suspend</a>
-                       <a class="dropdown-item" href="javascript:;" id="userIdCredential" data-id="${user.user_id}">Credential</a>
+                       <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${
+                         user.user_id
+                       }">Edit</a>
+                       <a class="dropdown-item border-bottom" href="javascript:;" id="userSuspend" data-id="${
+                         user.user_id
+                       }">Suspend</a>
+                       <a class="dropdown-item" href="javascript:;" id="userIdCredential" data-id="${
+                         user.user_id
+                       }">Credential</a>
                      </div>
                    </div>
                 </td>
@@ -237,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
             tableBody.append(row);
           });
-
+          $('.dropdown-toggle').dropdown(); // Force dropdown initialization
           var table = $('#userTable').DataTable();
           table.clear();
           table.rows.add($('#userTable tbody tr')).draw();
