@@ -81,8 +81,11 @@ $(document).ready(function () {
             }" title="Delete User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}" title="Edit User">Edit</a>
-                  <a class="dropdown-item" href="javascript:;" id="userSuspend" data-id="${user.user_id}" title="Suspend User">Suspend</a>
+                  <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id
+            }" title="Edit User">Edit</a>
+                  <a class="dropdown-item" href="javascript:;" id="userSuspend" data-id="${user.user_id
+            }" title="Suspend User">Suspend</a>
+                  <a class="dropdown-item" href="javascript:;" id="userIdSms" data-id="${user.user_id}">Credential</a>
                 </div>
               </td>
             </tr>
@@ -150,7 +153,8 @@ $(document).ready(function () {
     alert('Suspend User ID: ' + userId);
     // Implement user suspension functionality (e.g., AJAX request to suspend user)
   });
-
+  
+/*
   // Handle 'Delete' button click event
   $('#userTable').on('click', '#userDelete', function () {
     var userId = $(this).data('id');
@@ -177,7 +181,7 @@ $(document).ready(function () {
         }
       });
     }
-  });
+  });*/
 
   // Handle print button click event
   $('#printBtn').on('click', function () {
