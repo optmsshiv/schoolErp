@@ -164,13 +164,10 @@ $(document).ready(function () {
     swal({
       title: 'Are you sure?',
       text: 'You are about to delete User ID: ' + userId,
-      text: "You won't be able to undo this!",
       icon: 'warning',
-      confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!',
-      dangerMode: true
-    }).then(willDelete => {
+      buttons: ['Cancel', 'Delete'],
+      dangerMode: true,
+    }).then((willDelete) => {
       if (willDelete) {
         // Send AJAX request to delete user
         $.ajax({
@@ -192,7 +189,7 @@ $(document).ready(function () {
         });
       }
     });
-  });
+});
 
 
   // Handle print button click event
