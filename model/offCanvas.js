@@ -241,8 +241,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 </td>
               </tr>
             `;
-
-            console.log(row); // Debugging line to check if Credential is generated
             tableBody.append(row);
           });
 
