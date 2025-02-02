@@ -1066,13 +1066,11 @@ td {
   font-size: 0.8125rem;
   color: #dc3545;
 }
-.invalid-feedback.show {
-  display: block;
-}
+
 
 .was-validated .form-control:invalid, .form-control.is-invalid {
   border-color: #dc3545;
-  border-width: 2px; 
+  border-width: 2px;
   padding-right: calc(1.5em + 0.75rem);
 }
 
