@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // delete user
-/*
+
   document.body.addEventListener('click', function (event) {
     if (event.target.classList.contains('bx-trash')) {
       let row = event.target.closest('tr'); // Get the closest row
@@ -291,34 +291,6 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   });
-*/
-
-
-$(document).on('click', '#userDelete', function () {
-  var userId = $(this).data('id'); // Get user ID from the button's data-id attribute
-  if (confirm('Are you sure you want to delete this user?')) {
-    $.ajax({
-      url: '../php/userRole/delete_user.php', // Replace with the correct PHP endpoint for deletion
-      type: 'POST',
-      data: { user_id: userId },
-      dataType: 'json',
-      success: function (response) {
-        if (response.success) {
-          alert('User deleted successfully.');
-          refreshUserTable(); // Refresh the table to reflect the changes
-        } else {
-          alert('Error deleting user: ' + response.message);
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error('AJAX error: ' + status + ': ' + error);
-        alert('An error occurred while trying to delete the user.');
-      }
-    });
-  }
-});
-
-
 
 
 });
