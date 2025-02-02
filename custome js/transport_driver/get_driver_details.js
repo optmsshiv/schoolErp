@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 title="Delete Driver"
                 onclick="deleteDriver(${driver.driver_id})">
                 </a>
-                
+
                 <!-- Dropdown Trigger -->
                 <a href="javascript:;"
                           class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
                            title="More Options">
                            </a>
                            <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" onclick="editDriver(${driver.driver_id})" href="javascript:;">Edit</a>
+                            <a class="dropdown-item border-bottom" onclick="editDriver(${driver.driver_id})" href="javascript:;">Edit</a>
                             <a class="dropdown-item" onclick="suspendDriver(${driver.driver_id})" href="javascript:;">Suspended</a>
                            </div>
 
