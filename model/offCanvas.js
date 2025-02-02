@@ -190,53 +190,59 @@ document.addEventListener('DOMContentLoaded', function () {
       dataType: 'json',
       success: function (response) {
         if (response && response.length > 0) {
-          var tableBody = $('#userTable tbody');
-          tableBody.empty();
+          var table = $('#userTable').DataTable();
+          table.clear(); // Clear existing table data
 
-          response.forEach(function (user) {
+          var newRows = response.map(user => {
             var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
-            var row = `
-              <tr>
-                <td><input type="checkbox" class="row-select"></td>
-                <td>${user.user_id}</td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar avatar-sm">
-                      <img src="${avatar}" alt="avatar" class="rounded-circle" />
-                    </div>
-                    <div class="ms-2">
-                      <h6 class="mb-0 ms-2">${user.fullname}</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>${user.role}</td>
-                <td>${user.phone}</td>
-                <td>${user.joining_date}</td>
-                <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-danger'}">${user.status
-              }</span></td>
-                <td>
-                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${user.user_id
-              }"></a>
-                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${user.user_id
-              }"></a>
-                  <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-                  <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id
-              }">Edit</a>
-                    <a class="dropdown-item border-bottom" href="javascript:;" id="userSuspend" data-id="${user.user_id
-              }">Suspend</a>
-                    <a class="dropdown-item" href="javascript:;" id="userIdCredential" data-id="${user.user_id}">Credential</a>
-                  </div>
-                </td>
-              </tr>
-            `;
-            tableBody.append(row);
+            return $(`
+                        <tr>
+                            <td><input type="checkbox" class="row-select"></td>
+                            <td>${user.user_id}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-sm">
+                                        <img src="${avatar}" alt="avatar" class="rounded-circle" />
+                                    </div>
+                                    <div class="ms-2">
+                                        <h6 class="mb-0 ms-2">${user.fullname}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${user.role}</td>
+                            <td>${user.phone}</td>
+                            <td>${user.joining_date}</td>
+                            <td><span class="badge ${
+                              user.status === 'Active' ? 'bg-label-success' : 'bg-label-danger'
+                            }">${user.status}</span></td>
+                            <td>
+                                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${
+                                  user.user_id
+                                }"></a>
+                                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${
+                                  user.user_id
+                                }"></a>
+                                <div class="dropdown">
+                                    <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${
+                                          user.user_id
+                                        }">Edit</a>
+                                        <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${
+                                          user.user_id
+                                        }">Suspend</a>
+                                        <a class="dropdown-item userCredential" href="javascript:;" data-id="${
+                                          user.user_id
+                                        }">Credential</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    `);
           });
 
-          var table = $('#userTable').DataTable();
-          table.clear();
-          table.rows.add($('#userTable tbody tr')).draw();
+          table.rows.add(newRows).draw(); // Add new rows and redraw the table
         } else {
           alert('No users found!');
         }
@@ -246,6 +252,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
 });
 
 function validateMobileNumber(input) {
