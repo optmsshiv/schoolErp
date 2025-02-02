@@ -1055,9 +1055,7 @@ td {
   font-size: 0.8125rem;
   color: #28a745;
 }
-.valid-feedback.show {
-  display: block;
-}
+
 /* validation feedback*/
 .invalid-feedback {
   display: none;
@@ -1067,10 +1065,8 @@ td {
   color: #dc3545;
 }
 
-
-.was-validated .form-control:invalid, .form-control.is-invalid {
+.was-validated .form-control:invalid{
   border-color: #dc3545;
   border-width: 2px;
-  padding-right: calc(1.5em + 0.75rem);
 }
 
