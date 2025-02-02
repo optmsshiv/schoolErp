@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
                        <a class="dropdown-item border-bottom" href="javascript:;" id="userSuspend" data-id="${
                          user.user_id
                        }">Suspend</a>
-                       <a class="dropdown-item" href="javascript:;" id="userIdCredential" data-id="${
+                       <a class="dropdown-item" href="javascript:;" id="userIdSms" data-id="${
                          user.user_id
                        }">Credential</a>
                      </div>
@@ -241,9 +241,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 </td>
               </tr>
             `;
+
+            console.log(row); // Debugging line to check if Credential is generated
             tableBody.append(row);
           });
-          $('.dropdown-toggle').dropdown(); // Force dropdown initialization
+
           var table = $('#userTable').DataTable();
           table.clear();
           table.rows.add($('#userTable tbody tr')).draw();
