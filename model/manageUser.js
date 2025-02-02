@@ -161,36 +161,27 @@ $(document).ready(function () {
     var row = $(this).closest('tr'); // Get the closest row (tr) to the delete button
 
     // Optional: Ask for confirmation before deleting
-    swal({
-      title: 'Are you sure?',
-      text: 'You are about to delete User ID: ' + userId,
-      icon: 'warning',
-      buttons: ['Cancel', 'Delete'],
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        // Send AJAX request to delete user
-        $.ajax({
-          url: '../php/userRole/delete_user.php', // PHP file to handle user deletion
-          type: 'POST',
-          data: { user_id: userId },
-          success: function (response) {
-            if (response.success) {
-              swal('Deleted!', 'User deleted successfully', 'success');
-              table.row(row).remove().draw(); // Remove row from DataTable
-            } else {
-              swal('Failed!', 'Failed to delete user', 'error');
-            }
-          },
-          error: function (xhr, status, error) {
-            console.error('AJAX error: ' + status + ': ' + error);
-            swal('Error!', 'Something went wrong, please try again later.', 'error');
+    var confirmDelete = confirm('Are you sure you want to delete User ID: ' + userId + '?');
+    if (confirmDelete) {
+      // Send AJAX request to delete user
+      $.ajax({
+        url: '../php/userRole/delete_user.php', // PHP file to handle user deletion
+        type: 'POST',
+        data: { user_id: userId },
+        success: function (response) {
+          if (response.success) {
+            alert('User deleted successfully');
+            table.row(row).remove().draw(); // Remove row from DataTable
+          } else {
+            alert('Failed to delete user');
           }
-        });
-      }
-    });
-});
-
+        },
+        error: function (xhr, status, error) {
+          console.error('AJAX error: ' + status + ': ' + error);
+        }
+      });
+    }
+  });
 
   // Handle print button click event
   $('#printBtn').on('click', function () {
