@@ -280,7 +280,6 @@ document.addEventListener('DOMContentLoaded', function () {
               if (response === 'success') {
                 row.remove(); // Remove row from table
                 Swal.fire('Deleted!', 'The user has been deleted.', 'success');
-                refreshUserTable();
               } else {
                 Swal.fire('Error!', 'Failed to delete the user.', 'error');
               }
