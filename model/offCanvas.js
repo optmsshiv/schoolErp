@@ -1,6 +1,6 @@
 // Declare variables for Bearer Token and Phone Number ID
 const BEARER_TOKEN =
-  'EAAX3BfPtyaEBOZB9QyNV5igM8OHZCHTaZCCwjlGS88wju9zbBvJiqdwHd3ZBmqPgXvjTZBUh3JxHqGi2TDcZBPVR0Y5RmrTr8EahA23edcPycp2ZCeZBLLz8dBhGu5STmbQGa5B5zA6Rc3mAoSXimpdrAa8d7IiEjUjQRFWmwwgqfUWd2ITBBZAtUpKU2ZBtJmTFnZCCwZDZD'; // Replace with your actual Bearer Token
+  'AAX3BfPtyaEBOZB9QyNV5igM8OHZCHTaZCCwjlGS88wju9zbBvJiqdwHd3ZBmqPgXvjTZBUh3JxHqGi2TDcZBPVR0Y5RmrTr8EahA23edcPycp2ZCeZBLLz8dBhGu5STmbQGa5B5zA6Rc3mAoSXimpdrAa8d7IiEjUjQRFWmwwgqfUWd2ITBBZAtUpKU2ZBtJmTFnZCCwZDZD'; // Replace with your actual Bearer Token
 const PHONE_NUMBER_ID = '363449376861068'; // Replace with your actual Phone Number ID
 // vanilla js (without JQuery)
 document.addEventListener('DOMContentLoaded', function () {
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
-  
+
 });
 
 function validateMobileNumber(input) {
