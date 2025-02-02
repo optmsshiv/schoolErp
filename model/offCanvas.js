@@ -68,11 +68,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  validateField(document.getElementById('fullname'), /^[a-zA-Z\s]+$/);
-  validateField(document.getElementById('basicPost'), /^[a-zA-Z\s]+$/);
-  validateField(document.getElementById('basicEmail'), /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);
-  validateField(document.getElementById('phoneNumber'), /^\d{10}$/);
-  validateField(document.getElementById('basicSalary'), /^\d+(\.\d{1,2})?$/);
+  // Apply real-time validation to the fields
+  validateField(document.getElementById('fullname'), /^[a-zA-Z\s]+$/, 'Please enter a valid name.');
+  validateField(document.getElementById('basicPost'), /^[a-zA-Z\s]+$/, 'Please enter a valid job title.');
+  validateField(document.getElementById('basicEmail'), /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Please enter a valid email address.');
+  validateField(document.getElementById('phoneNumber'), /^\d{10}$/, 'Phone number must be exactly 10 digits.');
+  validateField(document.getElementById('basicSalary'), /^\d+(\.\d{1,2})?$/, 'Please enter a valid salary amount.');
 
   // Validate the status dropdown
   document.getElementById('basicStatus').addEventListener('change', function () {
@@ -105,9 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Prevent form submission
-
-  // Real time form validation
-
   function handleFormSubmit(event) {
     event.preventDefault();
     var form = event.target;
