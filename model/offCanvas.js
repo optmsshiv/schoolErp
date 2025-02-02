@@ -4,7 +4,6 @@ const BEARER_TOKEN =
 const PHONE_NUMBER_ID = '363449376861068'; // Replace with your actual Phone Number ID
 // vanilla js (without JQuery)
 document.addEventListener('DOMContentLoaded', function () {
-  console.log('DOM fully loaded');
 
   // Load off-canvas HTML dynamically
   fetch('../model/offCanvas.html')
@@ -19,7 +18,13 @@ document.addEventListener('DOMContentLoaded', function () {
       initializeOffCanvas(); // Initialize offcanvas after loading
     })
     .catch(error => {
-      console.error('Error loading offCanvas.html:', error);
+     // console.error('Error loading offCanvas.html:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error Loading Content',
+        text: 'There was an issue loading the required content. Please try again later.',
+        confirmButtonText: 'OK'
+      });
     });
 
   function initializeOffCanvas() {
@@ -46,6 +51,49 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Real time form validation
+  function validateField(field, regex) {
+    field.addEventListener('input', function () {
+      if (regex.test(field.value.trim())) {
+        field.classList.remove('is-invalid');
+        field.classList.add('is-valid');
+      } else {
+        field.classList.remove('is-valid');
+        field.classList.add('is-invalid');
+      }
+    });
+  }
+
+  validateField(document.getElementById('fullname'), /^[a-zA-Z\s]+$/);
+  validateField(document.getElementById('basicPost'), /^[a-zA-Z\s]+$/);
+  validateField(document.getElementById('basicEmail'), /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);
+  validateField(document.getElementById('phoneNumber'), /^\d{10}$/);
+  validateField(document.getElementById('basicSalary'), /^\d+(\.\d{1,2})?$/);
+
+  document.getElementById('basicStatus').addEventListener('change', function () {
+    if (this.value !== '') {
+      this.classList.remove('is-invalid');
+      this.classList.add('is-valid');
+    } else {
+      this.classList.remove('is-valid');
+      this.classList.add('is-invalid');
+    }
+  });
+
+  document.getElementById('basicDate').addEventListener('input', function () {
+    if (this.value) {
+      this.classList.remove('is-invalid');
+      this.classList.add('is-valid');
+    } else {
+      this.classList.remove('is-valid');
+      this.classList.add('is-invalid');
+    }
+  });
+
+  // Prevent form submission
+
+  // Real time form validation
+
   function handleFormSubmit(event) {
     event.preventDefault();
     var form = event.target;
@@ -67,6 +115,27 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
+    // Check if all fields are valid before proceeding
+    let isValid = true;
+    form.querySelectorAll('input, select').forEach(field => {
+      if (!field.checkValidity() || field.classList.contains('is-invalid')) {
+        isValid = false;
+        field.classList.add('is-invalid');
+      }
+    });
+
+    if (!isValid) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid Form',
+        text: 'Please fill out all required fields correctly.',
+        confirmButtonText: 'OK'
+      });
+      submitButton.disabled = false;
+      return; // Prevent form submission
+    }
+
+    // Collect form data
     var formData = new FormData(form);
 
     // Close the off-canvas immediately before sending the request
@@ -254,7 +323,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
-  // deltec user
+  // delete user
   document.body.addEventListener('click', function (event) {
     if (event.target.classList.contains('bx-trash')) {
       let row = event.target.closest('tr'); // Get the closest row
@@ -289,63 +358,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
       });
-    }
-  });
-
-  // form validation
-  
-  function validateField(field, regex) {
-    field.addEventListener('input', function () {
-      if (regex.test(field.value.trim())) {
-        field.classList.remove('is-invalid');
-        field.classList.add('is-valid');
-      } else {
-        field.classList.remove('is-valid');
-        field.classList.add('is-invalid');
-      }
-    });
-  }
-
-  validateField(document.getElementById('fullname'), /^[a-zA-Z\s]+$/);
-  validateField(document.getElementById('basicPost'), /^[a-zA-Z\s]+$/);
-  validateField(document.getElementById('basicEmail'), /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);
-  validateField(document.getElementById('phoneNumber'), /^\d{10}$/);
-  validateField(document.getElementById('basicSalary'), /^\d+(\.\d{1,2})?$/);
-
-  document.getElementById('basicStatus').addEventListener('change', function () {
-    if (this.value !== '') {
-      this.classList.remove('is-invalid');
-      this.classList.add('is-valid');
-    } else {
-      this.classList.remove('is-valid');
-      this.classList.add('is-invalid');
-    }
-  });
-
-  document.getElementById('basicDate').addEventListener('input', function () {
-    if (this.value) {
-      this.classList.remove('is-invalid');
-      this.classList.add('is-valid');
-    } else {
-      this.classList.remove('is-valid');
-      this.classList.add('is-invalid');
-    }
-  });
-
-  form.addEventListener('submit', function (event) {
-    let isValid = true;
-    form.querySelectorAll('input, select').forEach(field => {
-      if (!field.checkValidity()) {
-        field.classList.add('is-invalid');
-        isValid = false;
-      } else {
-        field.classList.remove('is-invalid');
-        field.classList.add('is-valid');
-      }
-    });
-
-    if (!isValid) {
-      event.preventDefault(); // Prevent form submission
     }
   });
 });
