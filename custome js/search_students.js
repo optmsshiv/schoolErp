@@ -198,9 +198,9 @@ async function fetchFeeDetails(userId) {
       </td>
           <td align="center">₹ ${detail.received_amount || '0'}</td>
           <td align="center">₹ ${detail.total_amount || '0'}</td>
-          <td><span class="badge rounded-pill ${detail.status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'}">${
-        detail.status
-      }</span></td>
+          <td><span class="badge rounded-pill text-bg-primary ${
+            detail.status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'
+          }">${detail.status}</span></td>
           <td align="center">
             <div class="dropdown">
               <button class="btn text-muted p-0" type="button" data-bs-toggle="dropdown">
