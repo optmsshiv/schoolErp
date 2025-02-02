@@ -227,8 +227,7 @@ document.addEventListener('DOMContentLoaded', function () {
               }">Edit</a>
                     <a class="dropdown-item border-bottom" href="javascript:;" id="userSuspend" data-id="${user.user_id
               }">Suspend</a>
-                    <a class="dropdown-item" href="javascript:;" id="userIdCredential" data-id="${user.user_id
-              }">Credential</a>
+                    <a class="dropdown-item" href="javascript:;" id="userIdCredential" data-id="${user.user_id}">Credential</a>
                   </div>
                   </div>
                 </td>
