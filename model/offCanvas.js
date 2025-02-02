@@ -299,3 +299,64 @@ function validateMobileNumber(input) {
     errorMsg.style.display = 'none';
   }
 }
+
+// form validation
+
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('addNewUser');
+
+  function validateField(field, regex) {
+    field.addEventListener('input', function () {
+      if (regex.test(field.value.trim())) {
+        field.classList.remove('is-invalid');
+        field.classList.add('is-valid');
+      } else {
+        field.classList.remove('is-valid');
+        field.classList.add('is-invalid');
+      }
+    });
+  }
+
+  validateField(document.getElementById('fullname'), /^[a-zA-Z\s]+$/);
+  validateField(document.getElementById('basicPost'), /^[a-zA-Z\s]+$/);
+  validateField(document.getElementById('basicEmail'), /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);
+  validateField(document.getElementById('phoneNumber'), /^\d{10}$/);
+  validateField(document.getElementById('basicSalary'), /^\d+(\.\d{1,2})?$/);
+
+  document.getElementById('basicStatus').addEventListener('change', function () {
+    if (this.value !== '') {
+      this.classList.remove('is-invalid');
+      this.classList.add('is-valid');
+    } else {
+      this.classList.remove('is-valid');
+      this.classList.add('is-invalid');
+    }
+  });
+
+  document.getElementById('basicDate').addEventListener('input', function () {
+    if (this.value) {
+      this.classList.remove('is-invalid');
+      this.classList.add('is-valid');
+    } else {
+      this.classList.remove('is-valid');
+      this.classList.add('is-invalid');
+    }
+  });
+
+  form.addEventListener('submit', function (event) {
+    let isValid = true;
+    form.querySelectorAll('input, select').forEach(field => {
+      if (!field.checkValidity()) {
+        field.classList.add('is-invalid');
+        isValid = false;
+      } else {
+        field.classList.remove('is-invalid');
+        field.classList.add('is-valid');
+      }
+    });
+
+    if (!isValid) {
+      event.preventDefault(); // Prevent form submission
+    }
+  });
+});
