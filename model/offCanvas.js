@@ -293,8 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // form validation
-  const form = document.getElementById('addNewUser');
-
+  
   function validateField(field, regex) {
     field.addEventListener('input', function () {
       if (regex.test(field.value.trim())) {
