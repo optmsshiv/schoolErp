@@ -42,13 +42,14 @@
   </div>
 
   <div class="offcanvas-body flex-grow-1">
-    <form id="addNewUser" class="add-new-record pt-0 row g-2" method="post" novalidate>
+    <form id="addNewUser" class="add-new-record pt-0 row g-2 needs-validation was-validated" method="post" novalidate="">
         <div class="col-sm-12">
           <label class="form-label" for="fullname">Full Name</label>
           <div class="input-group input-group-merge canvas">
             <span class="input-group-text"><i class="bx bx-user"></i></span>
-            <input type="text" id="fullname" class="form-control dt-fullname" name="basicFullname" placeholder="John Doe" required />
+            <input type="text" id="fullname" class="form-control dt-fullname" name="basicFullname" placeholder="John Doe" required="" />
           </div>
+          <div class="valid-feedback"> Looks good! </div>
           <div class="invalid-feedback">Please enter a valid full name (letters and spaces only).</div>
         </div>
 
@@ -56,8 +57,9 @@
         <label class="form-label" for="basicPost">Role</label>
         <div class="input-group input-group-merge canvas">
           <span class="input-group-text"><i class='bx bxs-briefcase'></i></span>
-          <input type="text" id="basicPost" name="basicPost" class="form-control dt-role" placeholder="Web Developer" required />
+          <input type="text" id="basicPost" name="basicPost" class="form-control dt-role" placeholder="Web Developer" required="" />
         </div>
+        <div class="valid-feedback"> Looks good! </div>
         <div class="invalid-feedback">Role is required.</div>
       </div>
 
@@ -66,8 +68,9 @@
         <div class="input-group input-group-merge canvas">
           <span class="input-group-text"><i class="bx bx-envelope"></i></span>
           <input type="text" id="basicEmail" name="basicEmail" class="form-control dt-email"
-            placeholder="john.doe@example.com" required aria-label="john.doe@example.com" />
+            placeholder="john.doe@example.com" required="" aria-label="john.doe@example.com" />
         </div>
+        <div class="valid-feedback"> Looks good! </div>
         <div class="invalid-feedback">Please enter a valid email address.</div>
         <div class="form-text">
           You can use letters, numbers & periods
@@ -80,8 +83,9 @@
           <span class="input-group-text"><i class='bx bx-mobile'></i></span>
           <input type="text" id="phoneNumber" name="phoneNumber" class="form-control dt-phone"
             placeholder="Enter 10-digit mobile number" maxlength="10" pattern="\d{10}" oninput="validateMobileNumber(this)"
-            required />
+            required="" />
         </div>
+        <div class="valid-feedback"> Looks good! </div>
         <small id="phoneError" style="color: red; display: none;">Please enter a valid 10-digit number.</small>
       </div>
 
@@ -89,8 +93,9 @@
         <label class="form-label" for="basicDate">Joining Date</label>
         <div class="input-group input-group-merge canvas">
           <span class="input-group-text"><i class='bx bx-calendar'></i></span>
-          <input type="date" class="form-control dt-date" id="basicDate" name="basicDate" required />
+          <input type="date" class="form-control dt-date" id="basicDate" name="basicDate" required="" />
         </div>
+        <div class="valid-feedback"> Looks good! </div>
         <div class="invalid-feedback">Please select a joining date.</div>
       </div>
 
@@ -98,12 +103,13 @@
         <label class="form-label" for="basicStatus">Status</label>
         <div class="input-group input-group-merge canvas">
           <span class="input-group-text"><i class="bx bx-user-check"></i></span>
-          <select id="basicStatus" name="basicStatus" class="form-select dt-status" required>
+          <select id="basicStatus" name="basicStatus" class="form-select dt-status" required="">
             <option value="" disabled selected>Select Status</option>
             <option value="Pending">Pending</option>
             <option value="Active">Active</option>
           </select>
         </div>
+        <div class="valid-feedback"> Looks good! </div>
         <div class="invalid-feedback">Please select a status.</div>
       </div>
 
@@ -112,8 +118,9 @@
           <div class="input-group input-group-merge canvas">
             <span class="input-group-text"><i class='bx bx-rupee'></i></span>
             <input type="text" id="basicSalary" name="basicSalary" class="form-control dt-salary" placeholder="12000"
-              pattern="^\d+(\.\d{1,2})?$" required />
+              pattern="^\d+(\.\d{1,2})?$" required="" />
             </div>
+            <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback">Please enter a valid salary amount.</div>
         </div>
 

@@ -1047,7 +1047,28 @@ td {
    font-weight: bold;
    color: #f7e781e0;
  }*/
-
+/* validation feedback*/
+.valid-feedback {
+  display: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  color: #28a745;
+}
+.valid-feedback.show {
+  display: block;
+}
+/* validation feedback*/
+.invalid-feedback {
+  display: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  color: #dc3545;
+}
+.invalid-feedback.show {
+  display: block;
+}
 
 
 
