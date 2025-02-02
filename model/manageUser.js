@@ -153,35 +153,47 @@ $(document).ready(function () {
     alert('Suspend User ID: ' + userId);
     // Implement user suspension functionality (e.g., AJAX request to suspend user)
   });
-  
-/*
+
+
   // Handle 'Delete' button click event
   $('#userTable').on('click', '#userDelete', function () {
     var userId = $(this).data('id');
     var row = $(this).closest('tr'); // Get the closest row (tr) to the delete button
 
     // Optional: Ask for confirmation before deleting
-    var confirmDelete = confirm('Are you sure you want to delete User ID: ' + userId + '?');
-    if (confirmDelete) {
-      // Send AJAX request to delete user
-      $.ajax({
-        url: '../delete_user.php', // PHP file to handle user deletion
-        type: 'POST',
-        data: { user_id: userId },
-        success: function (response) {
-          if (response.success) {
-            alert('User deleted successfully');
-            table.row(row).remove().draw(); // Remove row from DataTable
-          } else {
-            alert('Failed to delete user');
+    swal({
+      title: 'Are you sure?',
+      text: 'You are about to delete User ID: ' + userId,
+      text: "You won't be able to undo this!",
+      icon: 'warning',
+      confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+      dangerMode: true
+    }).then(willDelete => {
+      if (willDelete) {
+        // Send AJAX request to delete user
+        $.ajax({
+          url: '../php/userRole/delete_user.php', // PHP file to handle user deletion
+          type: 'POST',
+          data: { user_id: userId },
+          success: function (response) {
+            if (response.success) {
+              swal('Deleted!', 'User deleted successfully', 'success');
+              table.row(row).remove().draw(); // Remove row from DataTable
+            } else {
+              swal('Failed!', 'Failed to delete user', 'error');
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error('AJAX error: ' + status + ': ' + error);
+            swal('Error!', 'Something went wrong, please try again later.', 'error');
           }
-        },
-        error: function (xhr, status, error) {
-          console.error('AJAX error: ' + status + ': ' + error);
-        }
-      });
-    }
-  });*/
+        });
+      }
+    });
+  });
+
 
   // Handle print button click event
   $('#printBtn').on('click', function () {
@@ -200,3 +212,44 @@ $(document).ready(function () {
     table.search(this.value).draw();
   });
 });
+
+
+/*
+// delete user
+  document.body.addEventListener('click', function (event) {
+    if (event.target.classList.contains('bx-trash')) {
+      let row = event.target.closest('tr'); // Get the closest row
+      let userId = event.target.getAttribute('data-id'); // Get user ID
+
+      Swal.fire({
+        title: 'Are you sure want to delete ID ' + userId + '?',
+        text: "You won't be able to undo this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(result => {
+        if (result.isConfirmed) {
+          fetch('../php/userRole/delete_user.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'user_id=' + encodeURIComponent(userId)
+          })
+            .then(response => response.text())
+            .then(response => {
+              if (response === 'success') {
+                row.remove(); // Remove row from table
+                Swal.fire('Deleted!', 'The user has been deleted.', 'success');
+              } else {
+                Swal.fire('Error!', 'Failed to delete the user.', 'error');
+              }
+            })
+            .catch(() => {
+              Swal.fire('Error!', 'Server error occurred.', 'error');
+            });
+        }
+      });
+    }
+  });
+*/
