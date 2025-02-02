@@ -4,7 +4,6 @@ const BEARER_TOKEN =
 const PHONE_NUMBER_ID = '363449376861068'; // Replace with your actual Phone Number ID
 // vanilla js (without JQuery)
 document.addEventListener('DOMContentLoaded', function () {
-
   // Load off-canvas HTML dynamically
   fetch('../model/offCanvas.html')
     .then(response => {
@@ -18,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
       initializeOffCanvas(); // Initialize offcanvas after loading
     })
     .catch(error => {
-     // console.error('Error loading offCanvas.html:', error);
+      // console.error('Error loading offCanvas.html:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error Loading Content',
@@ -52,14 +51,19 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Real time form validation
-  function validateField(field, regex) {
+  // Real-time Validation for Fields
+  function validateField(field, regex, errorMessage) {
     field.addEventListener('input', function () {
+      let errorElement = document.getElementById(field.id + 'Error');
       if (regex.test(field.value.trim())) {
         field.classList.remove('is-invalid');
         field.classList.add('is-valid');
+        errorElement.style.display = 'none';
       } else {
         field.classList.remove('is-valid');
         field.classList.add('is-invalid');
+        errorElement.style.display = 'block';
+        errorElement.textContent = errorMessage;
       }
     });
   }
@@ -70,23 +74,33 @@ document.addEventListener('DOMContentLoaded', function () {
   validateField(document.getElementById('phoneNumber'), /^\d{10}$/);
   validateField(document.getElementById('basicSalary'), /^\d+(\.\d{1,2})?$/);
 
+  // Validate the status dropdown
   document.getElementById('basicStatus').addEventListener('change', function () {
+    let errorElement = document.getElementById('basicStatusError');
     if (this.value !== '') {
       this.classList.remove('is-invalid');
       this.classList.add('is-valid');
+      errorElement.style.display = 'none';
     } else {
       this.classList.remove('is-valid');
       this.classList.add('is-invalid');
+      errorElement.style.display = 'block';
+      errorElement.textContent = 'Please select a status.';
     }
   });
 
+  // Validate the date field
   document.getElementById('basicDate').addEventListener('input', function () {
+    let errorElement = document.getElementById('basicDateError');
     if (this.value) {
       this.classList.remove('is-invalid');
       this.classList.add('is-valid');
+      errorElement.style.display = 'none';
     } else {
       this.classList.remove('is-valid');
       this.classList.add('is-invalid');
+      errorElement.style.display = 'block';
+      errorElement.textContent = 'Please select a valid date.';
     }
   });
 
