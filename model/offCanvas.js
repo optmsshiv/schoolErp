@@ -4,6 +4,7 @@ const BEARER_TOKEN =
 const PHONE_NUMBER_ID = '363449376861068'; // Replace with your actual Phone Number ID
 // vanilla js (without JQuery)
 document.addEventListener('DOMContentLoaded', function () {
+
   // Load off-canvas HTML dynamically
   fetch('../model/offCanvas.html')
     .then(response => {
@@ -17,13 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
       initializeOffCanvas(); // Initialize offcanvas after loading
     })
     .catch(error => {
-      // console.error('Error loading offCanvas.html:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error Loading Content',
-        text: 'There was an issue loading the required content. Please try again later.',
-        confirmButtonText: 'OK'
-      });
+      console.error('Error loading offCanvas.html:', error);
     });
 
   function initializeOffCanvas() {
@@ -50,62 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Real time form validation
-  // Real-time Validation for Fields
-  function validateField(field, regex, errorMessage) {
-    field.addEventListener('input', function () {
-      let errorElement = document.getElementById(field.id + 'Error');
-      if (regex.test(field.value.trim())) {
-        field.classList.remove('is-invalid');
-        field.classList.add('is-valid');
-        errorElement.style.display = 'none';
-      } else {
-        field.classList.remove('is-valid');
-        field.classList.add('is-invalid');
-        errorElement.style.display = 'block';
-        errorElement.textContent = errorMessage;
-      }
-    });
-  }
-
-  // Apply real-time validation to the fields
-  validateField(document.getElementById('fullname'), /^[a-zA-Z\s]+$/, 'Please enter a valid name.');
-  validateField(document.getElementById('basicPost'), /^[a-zA-Z\s]+$/, 'Please enter a valid job title.');
-  validateField(document.getElementById('basicEmail'), /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 'Please enter a valid email address.');
-  
-  validateField(document.getElementById('basicSalary'), /^\d+(\.\d{1,2})?$/, 'Please enter a valid salary amount.');
-
-  // Validate the status dropdown
-  document.getElementById('basicStatus').addEventListener('change', function () {
-    let errorElement = document.getElementById('basicStatusError');
-    if (this.value !== '') {
-      this.classList.remove('is-invalid');
-      this.classList.add('is-valid');
-      errorElement.style.display = 'none';
-    } else {
-      this.classList.remove('is-valid');
-      this.classList.add('is-invalid');
-      errorElement.style.display = 'block';
-      errorElement.textContent = 'Please select a status.';
-    }
-  });
-
-  // Validate the date field
-  document.getElementById('basicDate').addEventListener('input', function () {
-    let errorElement = document.getElementById('basicDateError');
-    if (this.value) {
-      this.classList.remove('is-invalid');
-      this.classList.add('is-valid');
-      errorElement.style.display = 'none';
-    } else {
-      this.classList.remove('is-valid');
-      this.classList.add('is-invalid');
-      errorElement.style.display = 'block';
-      errorElement.textContent = 'Please select a valid date.';
-    }
-  });
-
-  // Prevent form submission
   function handleFormSubmit(event) {
     event.preventDefault();
     var form = event.target;
@@ -127,27 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // Check if all fields are valid before proceeding
-    let isValid = true;
-    form.querySelectorAll('input, select').forEach(field => {
-      if (!field.checkValidity() || field.classList.contains('is-invalid')) {
-        isValid = false;
-        field.classList.add('is-invalid');
-      }
-    });
-
-    if (!isValid) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Invalid Form',
-        text: 'Please fill out all required fields correctly.',
-        confirmButtonText: 'OK'
-      });
-      submitButton.disabled = false;
-      return; // Prevent form submission
-    }
-
-    // Collect form data
     var formData = new FormData(form);
 
     // Close the off-canvas immediately before sending the request
