@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function () {
       let userId = event.target.getAttribute('data-id'); // Get user ID
 
       Swal.fire({
-        title: 'Are you sure want to delete ID ' + userId + '?',
+        title: 'Are you sure want to delete ID : ' + userId + '?',
         text: "You won't be able to undo this!",
         icon: 'warning',
         showCancelButton: true,
