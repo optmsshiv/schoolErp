@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function () {
       let userId = event.target.getAttribute('data-id'); // Get user ID
 
       Swal.fire({
-        title: 'Are you sure want to delete ID : ' + userId + '?',
+        title: 'Are you sure want to delete ID ' + userId + '?',
         text: "You won't be able to undo this!",
         icon: 'warning',
         showCancelButton: true,
@@ -280,7 +280,6 @@ document.addEventListener('DOMContentLoaded', function () {
               if (response === 'success') {
                 row.remove(); // Remove row from table
                 Swal.fire('Deleted!', 'The user has been deleted.', 'success');
-
                 refreshUserTable();
               } else {
                 Swal.fire('Error!', 'Failed to delete the user.', 'error');
@@ -293,6 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   });
+
 
 });
 
