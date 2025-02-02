@@ -166,10 +166,7 @@ $(document).ready(function () {
       text: 'You are about to delete User ID: ' + userId,
       text: "You won't be able to undo this!",
       icon: 'warning',
-      showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!',
+      buttons: ['Cancel', 'Delete'],
       dangerMode: true
     }).then(willDelete => {
       if (willDelete) {
