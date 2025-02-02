@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
           response.forEach(function (user) {
             var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
-            console.log('User ID:', user.user_id, 'Adding Credential option:', user);
+
             var row = `
               <tr>
                 <td><input type="checkbox" class="row-select"></td>
@@ -232,6 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
               </tr>
             `;
             tableBody.append(row);
+            console.log('User ID:', user.user_id, 'Adding Credential option:', user);
           });
 
           var table = $('#userTable').DataTable();
