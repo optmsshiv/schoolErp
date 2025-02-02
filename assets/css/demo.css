@@ -1054,6 +1054,7 @@ td {
   margin-top: 0.25rem;
   font-size: 0.8125rem;
   color: #28a745;
+  border-width: 2px;
 }
 
 /* validation feedback*/
@@ -1063,10 +1064,6 @@ td {
   margin-top: 0.25rem;
   font-size: 0.8125rem;
   color: #dc3545;
-}
-
-.was-validated .form-control:invalid{
-  border-color: #dc3545;
   border-width: 2px;
 }
 
