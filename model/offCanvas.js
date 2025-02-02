@@ -1,6 +1,6 @@
 // Declare variables for Bearer Token and Phone Number ID
 const BEARER_TOKEN =
-  'EAAX3BfPtyaEBO5WMc3eYZAoMEXoqgaMC3dlFKQOOnt3hs2ZCWHSIOtZCqHYe0QFPDaQdZAB344coG4Vh2V9Dzrw1NnnjmUAF3pVC9ooHsYSABrlXt9gBwyURNcZBNftyWbcyd4oCQxUgC2cHe5XOfV4umeRu1mKDDb4dZCwNQEelZA21BvYKVIIKeZBnOrVpZCjNXbF7rvksZC0NUgnvBBeyYi1NymsVKcY36nq3bxpUK8B80m'; // Replace with your actual Bearer Token
+  'EAAX3BfPtyaEBOZB9QyNV5igM8OHZCHTaZCCwjlGS88wju9zbBvJiqdwHd3ZBmqPgXvjTZBUh3JxHqGi2TDcZBPVR0Y5RmrTr8EahA23edcPycp2ZCeZBLLz8dBhGu5STmbQGa5B5zA6Rc3mAoSXimpdrAa8d7IiEjUjQRFWmwwgqfUWd2ITBBZAtUpKU2ZBtJmTFnZCCwZDZD'; // Replace with your actual Bearer Token
 const PHONE_NUMBER_ID = '363449376861068'; // Replace with your actual Phone Number ID
 // vanilla js (without JQuery)
 document.addEventListener('DOMContentLoaded', function () {
