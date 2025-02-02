@@ -165,7 +165,7 @@ $(document).ready(function () {
     if (confirmDelete) {
       // Send AJAX request to delete user
       $.ajax({
-        url: '../php/userRole/delete_user.php', // PHP file to handle user deletion
+        url: '../pp/userRole/delete_user.php', // PHP file to handle user deletion
         type: 'POST',
         data: { user_id: userId },
         success: function (response) {
