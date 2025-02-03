@@ -199,6 +199,18 @@ $(document).on('click', '#userDelete', function () {
     confirmButtonText: 'Yes, delete it!'
   }).then(result => {
     if (result.isConfirmed) {
+      // Show Swal loading while processing
+      Swal.fire({
+        title: 'Deleting...',
+        text: 'Please wait',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+      
       $.ajax({
         url: '../php/userRole/delete_user.php', // PHP script to handle deletion
         type: 'POST',
