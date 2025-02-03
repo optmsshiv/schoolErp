@@ -186,7 +186,7 @@ $(document).ready(function () {
   $(document).on('click', '#userDelete', function () {
     var userId = $(this).data('id'); // Get the user ID from data attribute
 
-    if (confirm('Are you sure you want to delete this user?')) {
+    if (confirm('Are you sure you want to delete this user: ' + userId + '?')) {
       $.ajax({
         url: '../php/userRole/delete_user.php', // PHP file to handle deletion
         type: 'POST',
@@ -195,6 +195,7 @@ $(document).ready(function () {
         success: function (response) {
           if (response.success) {
             alert('User deleted successfully!');
+            table.row(row).remove().draw(); // Remove row from DataTable
             refreshUserTable(); // Refresh the table after deletion
           } else {
             alert('Error: ' + response.message);
