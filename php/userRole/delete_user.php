@@ -1,5 +1,5 @@
 <?php
-require '../config/db.php'; // Include database connection
+require '../db_connection.php'; // Include database connection
 
 header('Content-Type: application/json');
 
