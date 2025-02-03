@@ -185,6 +185,7 @@ $(document).ready(function () {
 
   $(document).on('click', '#userDelete', function () {
     var userId = $(this).data('id'); // Get the user ID from data attribute
+    var row = $(this).closest('tr'); // Get the table row containing the delete button
 
     if (confirm('Are you sure you want to delete this user: ' + userId + '?')) {
       $.ajax({
@@ -195,8 +196,9 @@ $(document).ready(function () {
         success: function (response) {
           if (response.success) {
             alert('User deleted successfully!');
+            var table = $('#userTable').DataTable();
             table.row(row).remove().draw(); // Remove row from DataTable
-            refreshUserTable(); // Refresh the table after deletion
+            // refreshUserTable(); // Refresh the table after deletion
           } else {
             alert('Error: ' + response.message);
           }
