@@ -154,35 +154,8 @@ $(document).ready(function () {
     // Implement user suspension functionality (e.g., AJAX request to suspend user)
   });
 
+ // Handle Delete function
 /*
-  // Handle 'Delete' button click event
-  $('#userTable').on('click', '#userDelete', function () {
-    var userId = $(this).data('id');
-    var row = $(this).closest('tr'); // Get the closest row (tr) to the delete button
-
-    // Optional: Ask for confirmation before deleting
-    var confirmDelete = confirm('Are you sure you want to delete User ID: ' + userId + '?');
-    if (confirmDelete) {
-      // Send AJAX request to delete user
-      $.ajax({
-        url: '../php/userRole/delete_user.php', // PHP file to handle user deletion
-        type: 'POST',
-        data: { user_id: userId },
-        success: function (response) {
-          if (response.success) {
-            alert('User deleted successfully');
-            table.row(row).remove().draw(); // Remove row from DataTable
-          } else {
-            alert('Failed to delete user');
-          }
-        },
-        error: function (xhr, status, error) {
-          console.error('AJAX error: ' + status + ': ' + error);
-        }
-      });
-    }
-  });*/
-
   $(document).on('click', '#userDelete', function () {
     var userId = $(this).data('id'); // Get the user ID from data attribute
     var row = $(this).closest('tr'); // Get the table row containing the delete button
@@ -209,6 +182,55 @@ $(document).ready(function () {
       });
     }
   });
+*/
+
+$(document).on('click', '#userDelete', function () {
+  var userId = $(this).data('id'); // Get the user ID
+  var row = $(this).closest('tr'); // Get the table row containing the delete button
+
+  // Show confirmation popup using SweetAlert2
+  Swal.fire({
+    title: 'You will not be able to revert this! ',
+    text: 'Are you sure want to delete the user :  ' + userId + '?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!'
+  }).then(result => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: '../php/userRole/delete_user.php', // PHP script to handle deletion
+        type: 'POST',
+        data: { user_id: userId },
+        dataType: 'json',
+        success: function (response) {
+          if (response.success) {
+            // Show success message
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'User has been deleted.',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
+
+            // Remove the row dynamically from DataTable
+            var table = $('#userTable').DataTable();
+            table.row(row).remove().draw();
+          } else {
+            Swal.fire('Error!', response.message, 'error');
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('AJAX Error:', status, error);
+          Swal.fire('Error!', 'An error occurred while deleting.', 'error');
+        }
+      });
+    }
+  });
+});
+
 
 
   // Handle print button click event
