@@ -253,46 +253,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // delete user
-/*
-  document.body.addEventListener('click', function (event) {
-    if (event.target.classList.contains('bx-trash')) {
-      let row = event.target.closest('tr'); // Get the closest row
-      let userId = event.target.getAttribute('data-id'); // Get user ID
-
-      Swal.fire({
-        title: 'Are you sure want to delete ID ' + userId + '?',
-        text: "You won't be able to undo this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Yes, delete it!'
-      }).then(result => {
-        if (result.isConfirmed) {
-          fetch('../php/userRole/delete_user.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'user_id=' + encodeURIComponent(userId)
-          })
-            .then(response => response.text())
-            .then(response => {
-              if (response === 'success') {
-                row.remove(); // Remove row from table
-                Swal.fire('Deleted!', 'The user has been deleted.', 'success');
-              } else {
-                Swal.fire('Error!', 'Failed to delete the user.', 'error');
-              }
-            })
-            .catch(() => {
-              Swal.fire('Error!', 'Server error occurred.', 'error');
-            });
-        }
-      });
-    }
-  });
-*/
-
 });
 
 function validateMobileNumber(input) {

@@ -209,7 +209,7 @@ $(document).on('click', '#userDelete', function () {
             // Show success message
             Swal.fire({
               title: 'Deleted!',
-              text: 'User has been deleted.',
+              text: 'User ' + userId + ' has been deleted.',
               icon: 'success',
               timer: 2000,
               showConfirmButton: false
