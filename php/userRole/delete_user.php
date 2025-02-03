@@ -1,27 +1,24 @@
 <?php
-// Include database connection
-include '../db_connection.php';
+require '../config/db.php'; // Include database connection
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id'])) {
+header('Content-Type: application/json');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     $user_id = $_POST['user_id'];
 
     try {
-        
-        // Correct DELETE statement: Ensure the query targets the correct user_id
-        $query = "DELETE FROM userRole WHERE user_id = :user_id";
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt = $pdo->prepare("DELETE FROM userRole WHERE user_id = ?");
+        $stmt->execute([$user_id]);
 
-        if ($stmt->execute()) {
-            echo "success"; // Send success response
+        if ($stmt->rowCount() > 0) {
+            echo json_encode(["success" => true]);
         } else {
-            echo "error"; // Send error response
+            echo json_encode(["success" => false, "message" => "User not found or already deleted"]);
         }
     } catch (PDOException $e) {
-        // Log the exception message for debugging
-        error_log("PDOException: " . $e->getMessage());
-        echo "error"; // Handle exception
+        echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
     }
+} else {
+    echo json_encode(["success" => false, "message" => "Invalid request"]);
 }
-
 ?>

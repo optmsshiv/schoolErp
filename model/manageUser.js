@@ -32,7 +32,7 @@ $(document).ready(function () {
     },
     drawCallback: function () {
       // Add custom actions when the table is redrawn
-      console.log('Table redrawn with current settings');
+     // console.log('Table redrawn with current settings');
     }
   });
 
@@ -182,6 +182,31 @@ $(document).ready(function () {
       });
     }
   });*/
+
+  $(document).on('click', '#userDelete', function () {
+    var userId = $(this).data('id'); // Get the user ID from data attribute
+
+    if (confirm('Are you sure you want to delete this user?')) {
+      $.ajax({
+        url: '../php/userRole/delete_user.php', // PHP file to handle deletion
+        type: 'POST',
+        data: { user_id: userId },
+        dataType: 'json',
+        success: function (response) {
+          if (response.success) {
+            alert('User deleted successfully!');
+            refreshUserTable(); // Refresh the table after deletion
+          } else {
+            alert('Error: ' + response.message);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('AJAX Error: ' + status + ': ' + error);
+        }
+      });
+    }
+  });
+
 
   // Handle print button click event
   $('#printBtn').on('click', function () {

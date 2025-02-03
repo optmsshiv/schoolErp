@@ -254,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // delete user
-
+/*
   document.body.addEventListener('click', function (event) {
     if (event.target.classList.contains('bx-trash')) {
       let row = event.target.closest('tr'); // Get the closest row
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
   });
-
+*/
 
 });
 
