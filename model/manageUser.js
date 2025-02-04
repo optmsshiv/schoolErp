@@ -98,20 +98,17 @@ $(document).ready(function () {
               <td>${user.role}</td>
               <td>${user.phone}</td>
               <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
-              <td><span class="badge ${
-                user.status === 'Active'
-                  ? 'bg-label-success'
-                  : user.status === 'Suspended'
-                  ? 'bg-label-secondary'
-                  : 'bg-label-warning'
-              }">${user.status}</span></td>
+              <td><span class="badge ${user.status === 'Active'
+              ? 'bg-label-success'
+              : user.status === 'Suspended'
+                ? 'bg-label-secondary'
+                : 'bg-label-warning'
+            }">${user.status}</span></td>
               <td>
-                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
-                  user.user_id
-                }" title="View User"></a>
-                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
-                  user.user_id
-                }" title="Delete User"></a>
+                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${user.user_id
+            }" title="View User"></a>
+                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${user.user_id
+            }" title="Delete User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
                   ${dropdownMenu}
@@ -180,96 +177,116 @@ $(document).ready(function () {
   // Handling Status Change (Activate, Suspend)
   $(document).on('click', '.userActivate', function () {
     var userId = $(this).data('id');
-    changeStatus(userId, 'Active');
+    if (confirm('Are you sure you want to activate this user?')) {
+      changeStatus(userId, 'Active');
+    }
   });
 
   $(document).on('click', '.userSuspend', function () {
     var userId = $(this).data('id');
-    changeStatus(userId, 'Suspended');
+    if (confirm('Are you sure you want to suspend this user?')) {
+      changeStatus(userId, 'Suspended');
+    }
   });
 
-    function changeStatus(userId, newStatus) {
-      $.ajax({
-        url: '../php/userRole/update_user_status.php',
-        type: 'POST',
-        data: { user_id: userId, status: newStatus },
-        dataType: 'json', // Ensure response is parsed as JSON
-        success: function (response) {
-          console.log('Server Response:', response); // Debugging line
+  function showLoadingSpinner() {
+    $('body').append('<div class="loading-spinner">Loading...</div>');
+  }
 
-          if (response && response.success) {
-            // Ensure response.success exists
-            Swal.fire({
-              icon: 'success',
-              title: `User status changed to ${newStatus}`,
-              toast: true,
-              timer: 2000
-            });
+  function hideLoadingSpinner() {
+    $('.loading-spinner').remove();
+  }
 
-            // Find the row for the updated user
-            var row = $(`#userTable tbody tr`).filter(function () {
-              return $(this).find('td:eq(1)').text().trim() == userId;
-            });
+  function changeStatus(userId, newStatus) {
+    showLoadingSpinner();
+    $.ajax({
+      url: '../php/userRole/update_user_status.php',
+      type: 'POST',
+      data: { user_id: userId, status: newStatus },
+      dataType: 'json', // Ensure response is parsed as JSON
+      success: function (response) {
+        hideLoadingSpinner();
+        console.log('Server Response:', response); // Debugging line
 
-            if (row.length === 0) {
-              console.error('Row not found for user ID:', userId);
-              return;
-            }
+        if (response && response.success) {
+          // Ensure response.success exists
 
-            // Update the status badge
-            var statusBadge = row.find('td:eq(6) span');
-            statusBadge.removeClass('bg-label-success bg-label-danger bg-label-warning');
+          $(`#userTable tbody tr[data-id="${userId}"]`).addClass('highlight');
+          setTimeout(() => {
+            $(`#userTable tbody tr[data-id="${userId}"]`).removeClass('highlight');
+          }, 2000); // Highlight for 2 seconds
 
-            if (newStatus === 'Active') {
-              statusBadge.addClass('bg-label-success').text(newStatus);
-            } else if (newStatus === 'Suspended') {
-              statusBadge.addClass('bg-label-secondary').text(newStatus);
-            } else if (newStatus === 'Pending') {
-              statusBadge.addClass('bg-label-warning').text(newStatus);
-            }
+          Swal.fire({
+            icon: 'success',
+            title: `User status changed to ${newStatus}`,
+            toast: true,
+            timer: 2000
+          });
 
-            // Update dropdown menu based on the new status
-            var dropdownMenu = row.find('.dropdown-menu');
-            dropdownMenu.empty(); // Clear existing options
+          // Find the row for the updated user
+          var row = $(`#userTable tbody tr`).filter(function () {
+            return $(this).find('td:eq(1)').text().trim() == userId;
+          });
 
-            if (newStatus === 'Pending') {
-              dropdownMenu.append(
-                `
+          if (row.length === 0) {
+            console.error('Row not found for user ID:', userId);
+            return;
+          }
+
+          // Update the status badge
+          var statusBadge = row.find('td:eq(6) span');
+          statusBadge.removeClass('bg-label-success bg-label-danger bg-label-warning');
+
+          if (newStatus === 'Active') {
+            statusBadge.addClass('bg-label-success').text(newStatus);
+          } else if (newStatus === 'Suspended') {
+            statusBadge.addClass('bg-label-secondary').text(newStatus);
+          } else if (newStatus === 'Pending') {
+            statusBadge.addClass('bg-label-warning').text(newStatus);
+          }
+
+          // Update dropdown menu based on the new status
+          var dropdownMenu = row.find('.dropdown-menu');
+          dropdownMenu.empty(); // Clear existing options
+
+          if (newStatus === 'Pending') {
+            dropdownMenu.append(
+              `
                 <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${userId}">Edit</a>
                 <a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`
-              );
-            } else if (newStatus === 'Active') {
-              dropdownMenu.append(`
+            );
+          } else if (newStatus === 'Active') {
+            dropdownMenu.append(`
                         <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${userId}">Edit</a>
                         <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${userId}">Suspend</a>
                         <a class="dropdown-item userCredential" href="javascript:;" data-id="${userId}">Send Credential</a>
                     `);
-            } else if (newStatus === 'Suspended') {
-              dropdownMenu.append(
-                `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`
-              );
-            }
-          } else {
-            console.error('Response format incorrect or success=false:', response);
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: 'Failed to change status!',
-              confirmButtonText: 'OK'
-            });
+          } else if (newStatus === 'Suspended') {
+            dropdownMenu.append(
+              `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`
+            );
           }
-        },
-        error: function (xhr, status, error) {
-          console.error('AJAX error:', xhr.responseText);
+        } else {
+          console.error('Response format incorrect or success=false:', response);
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'Something went wrong. Please try again.',
+            text: 'Failed to change status!',
             confirmButtonText: 'OK'
           });
         }
-      });
-    }
+      },
+      error: function (xhr, status, error) {
+        console.error('AJAX error:', xhr.responseText);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong. Please try again.',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+  }
 
 
   // Handle 'Credential send' button click event
@@ -368,8 +385,6 @@ $(document).ready(function () {
       }
     });
   });
-
-
 
   // Handle print button click event
   $('#printBtn').on('click', function () {
