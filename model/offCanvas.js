@@ -194,6 +194,25 @@ document.addEventListener('DOMContentLoaded', function () {
           response.forEach(function (user) {
             var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
+            // Determine dropdown menu options based on user status
+            var dropdownMenu = '';
+            if (user.status === 'Pending') {
+              dropdownMenu = `
+
+                            <a class="dropdown-item border-bottom userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+                        `;
+            } else if (user.status === 'Active') {
+              dropdownMenu = `
+                            <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
+                            <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
+                            <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
+                        `;
+            } else if (user.status === 'Suspended') {
+              dropdownMenu = `
+                            <a class="dropdown-item border-bottom userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+                        `;
+            }
+
             var row = `
               <tr>
                 <td><input type="checkbox" class="row-select"></td>
@@ -227,12 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
                        <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${
                          user.user_id
                        }">Edit</a>
-                       <a class="dropdown-item border-bottom" href="javascript:;" id="userSuspend" data-id="${
-                         user.user_id
-                       }">Suspend</a>
-                       <a class="dropdown-item" href="javascript:;" id="userIdSms" data-id="${
-                         user.user_id
-                       }">Credential</a>
+                       ${dropdownMenu}
                      </div>
                 </td>
               </tr>

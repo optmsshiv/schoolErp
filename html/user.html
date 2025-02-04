@@ -724,15 +724,35 @@
 
             <div class="row gy-1">
               <div class="col-3">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Total Students</h5>
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="bx bx-user-plus"></i>
+                <div class="card bg-label-primary" style="border-bottom: 3px solid #007bff;">
+                  <div class="card-body ">
+                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-start">
+                      <div class="me-3">
+                        <h5 class="fw-bold text-primary">Total Users</h5>
+                        <h4 class="fw-bold text-primary" id="total_users">100</h4>
                       </div>
-                      <div class="ps-3">
-                        <h6>100</h6>
+                    </div>
+                    <div class="card-icon rounded-circle d-flex align-items-center">
+                      <i class="bx bx-user text-primary fs-3"></i>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-3">
+                <div class="card bg-label-success" style="border-bottom: 3px solid #28a745;">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex align-items-start">
+                        <div class="me-3">
+                          <h5 class="fw-bold text-success">Active Users</h5>
+                          <h4 class="fw-bold text-success" id="active_users">50</h4>
+                        </div>
+                      </div>
+                      <div class="card-icon rounded-circle d-flex align-items-center">
+                        <i class="bx bx-user text-success fs-3"></i>
                       </div>
                     </div>
                   </div>
@@ -740,15 +760,17 @@
               </div>
 
               <div class="col-3">
-                <div class="card">
+                <div class="card bg-label-danger" style="border-bottom: 3px solid #dc3545;">
                   <div class="card-body">
-                    <h5 class="card-title">Total Students</h5>
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="bx bx-user-plus"></i>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex align-items-start">
+                        <div class="me-3">
+                          <h5 class="fw-bold text-danger">Inactive Users</h5>
+                          <h4 class="fw-bold text-danger" id="inactive_users">50</h4>
+                        </div>
                       </div>
-                      <div class="ps-3">
-                        <h6>100</h6>
+                      <div class="card-icon rounded-circle d-flex align-items-center">
+                        <i class="bx bx-user text-danger fs-3"></i>
                       </div>
                     </div>
                   </div>
@@ -756,44 +778,27 @@
               </div>
 
               <div class="col-3">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Total Students</h5>
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="bx bx-user-plus"></i>
+                <div class="card  bg-label-warning " style="border-bottom: 3px solid #ffc107;">
+                  <div class="card-body ">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex align-items-start">
+                        <div class="me-3">
+                          <h5 class="fw-bold text-warning">Pending Users</h5>
+                          <h4 class="fw-bold text-warning" id="pending_users">50</h4>
+                        </div>
                       </div>
-                      <div class="ps-3">
-                        <h6>100</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-3">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Total Students</h5>
-                    <div class="d-flex align-items-center">
-                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                        <i class="bx bx-user-plus"></i>
-                      </div>
-                      <div class="ps-3">
-                        <h6>100</h6>
+                      <div class="card-icon rounded-circle d-flex align-items-center">
+                        <i class="bx bx-user text-warning fs-3"></i>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
 
               <!------------Table layout----------------->
-
               <div class="col-xxl container-p-y">
                 <div class="card userCard">
-                  <h3 class="text-center fw-bold mt-3 ms-3 d-flex">User Management</h3>
-
+                  <h3 class="fw-bold">User Management</h3>
                   <!---
                     <div class="row">
                       <div class="col-md-3">
@@ -819,7 +824,7 @@
 
                   <div class="container-12">
                     <div class="row">
-                      <div class="col-3 px-4">
+                      <div class="col-3 px-2">
                         <div class="custom-length-container">
                           <label for="customLength">Show</label>
                           <select class="form-control form-select px-3" id="customLength">

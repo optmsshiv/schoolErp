@@ -32,7 +32,7 @@ $(document).ready(function () {
     },
     drawCallback: function () {
       // Add custom actions when the table is redrawn
-     // console.log('Table redrawn with current settings');
+      // console.log('Table redrawn with current settings');
     }
   });
 
@@ -51,6 +51,24 @@ $(document).ready(function () {
         response.forEach(function (user) {
           // Default avatar if not available
           var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
+
+          // Determine dropdown menu options based on user status
+          var dropdownMenu = '';
+          if (user.status === 'Pending') {
+            dropdownMenu = `
+                            <a class="dropdown-item border-bottom userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+                        `;
+          } else if (user.status === 'Active') {
+            dropdownMenu = `
+                            <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
+                            <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
+                        `;
+          } else if (user.status === 'Suspended') {
+            dropdownMenu = `
+                            <a class="dropdown-item border-bottom userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+                        `;
+          }
+
           var row = `
             <tr>
               <td><input type="checkbox" class="row-select"></td>
@@ -68,29 +86,22 @@ $(document).ready(function () {
               <td>${user.role}</td>
               <td>${user.phone}</td>
               <td>${user.joining_date}</td>
-              <td><span class="badge ${
-                user.status === 'Active'
-                  ? 'bg-label-success'
-                  : user.status === 'Suspended'
-                  ? 'bg-label-secondary'
-                  : 'bg-label-danger'
-              }">${user.status}</span></td>
+              <td><span class="badge ${user.status === 'Active'
+              ? 'bg-label-success'
+              : user.status === 'Suspended'
+                ? 'bg-label-secondary'
+                : 'bg-label-danger'
+            }">${user.status}</span></td>
               <td>
-                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
-                  user.user_id
-                }" title="View User"></a>
-                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
-                  user.user_id
-                }" title="Delete User"></a>
+                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${user.user_id
+            }" title="View User"></a>
+                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${user.user_id
+            }" title="Delete User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
-                  <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${
-                    user.user_id
-                  }" title="Edit User">Edit</a>
-                  <a class="dropdown-item border-bottom" href="javascript:;" id="userSuspend" data-id="${
-                    user.user_id
-                  }" title="Suspend User">Suspend</a>
-                  <a class="dropdown-item" href="javascript:;" id="userIdSms" data-id="${user.user_id}">Credential</a>
+                  <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id
+            }" title="Edit User">Edit</a>
+                  ${dropdownMenu}
                 </div>
               </td>
             </tr>
@@ -152,101 +163,167 @@ $(document).ready(function () {
     // Open edit modal or redirect to edit page
   });
 
-  // Handle 'Suspend' button click event
-  $('#userTable').on('click', '#userSuspend', function () {
+
+  // Handling Status Change (Activate, Suspend)
+  $(document).on('click', '.userActivate', function () {
     var userId = $(this).data('id');
-    alert('Suspend User ID: ' + userId);
-    // Implement user suspension functionality (e.g., AJAX request to suspend user)
+    changeStatus(userId, 'Active');
   });
 
- // Handle Delete function
-/*
+  $(document).on('click', '.userSuspend', function () {
+    var userId = $(this).data('id');
+    changeStatus(userId, 'Suspended');
+  });
+
+  function changeStatus(userId, newStatus) {
+    $.ajax({
+      url: '../php/userRole/update_user_status.php',
+      type: 'POST',
+      data: { user_id: userId, status: newStatus },
+      success: function (response) {
+        if (response.success) {
+          alert(`User status changed to ${newStatus}`);
+
+          // Find the row for the updated user
+          var row = $(`#userTable tbody tr`).filter(function () {
+            return $(this).find('td:eq(1)').text() == userId;
+          });
+
+          // Update the status badge
+          var statusBadge = row.find('td:eq(6) span');
+          if (newStatus === 'Active') {
+            statusBadge.removeClass('bg-label-danger bg-label-warning').addClass('bg-label-success').text(newStatus);
+          } else if (newStatus === 'Suspended') {
+            statusBadge.removeClass('bg-label-success bg-label-warning').addClass('bg-label-danger').text(newStatus);
+          } else if (newStatus === 'Pending') {
+            statusBadge.removeClass('bg-label-success bg-label-danger').addClass('bg-label-warning').text(newStatus);
+          }
+
+          // Update dropdown menu based on the new status
+          var dropdownMenu = row.find('.dropdown-menu');
+          dropdownMenu.empty(); // Clear existing options
+
+          if (newStatus === 'Pending') {
+            dropdownMenu.append(
+              `<a class="dropdown-item border-bottom userActivate" href="javascript:;" data-id="${userId}">Activate</a>`
+            );
+          } else if (newStatus === 'Active') {
+            dropdownMenu.append(`
+                        <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${userId}">Suspend</a>
+                        <a class="dropdown-item userCredential" href="javascript:;" data-id="${userId}">Send Credential</a>
+                    `);
+          } else if (newStatus === 'Suspended') {
+            dropdownMenu.append(
+              `<a class="dropdown-item border-bottom userActivate" href="javascript:;" data-id="${userId}">Activate</a>`
+            );
+          }
+        } else {
+          alert('Failed to change status!');
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error('AJAX error: ' + status + ': ' + error);
+      }
+    });
+  }
+
+
+  // Handle 'Credential send' button click event
+  $('#userTable').on('click', '#userCredentialSend', function () {
+    var userId = $(this).data('id');
+    alert('Send credentials for User ID: ' + userId);
+    // Implement credential sending functionality (e.g., AJAX request to send credentials)
+  });
+
+
+  // Handle Delete function
+  /*
+    $(document).on('click', '#userDelete', function () {
+      var userId = $(this).data('id'); // Get the user ID from data attribute
+      var row = $(this).closest('tr'); // Get the table row containing the delete button
+
+      if (confirm('Are you sure you want to delete this user: ' + userId + '?')) {
+        $.ajax({
+          url: '../php/userRole/delete_user.php', // PHP file to handle deletion
+          type: 'POST',
+          data: { user_id: userId },
+          dataType: 'json',
+          success: function (response) {
+            if (response.success) {
+              alert('User deleted successfully!');
+              var table = $('#userTable').DataTable();
+              table.row(row).remove().draw(); // Remove row from DataTable
+              // refreshUserTable(); // Refresh the table after deletion
+            } else {
+              alert('Error: ' + response.message);
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error('AJAX Error: ' + status + ': ' + error);
+          }
+        });
+      }
+    });
+  */
+
   $(document).on('click', '#userDelete', function () {
-    var userId = $(this).data('id'); // Get the user ID from data attribute
+    var userId = $(this).data('id'); // Get the user ID
     var row = $(this).closest('tr'); // Get the table row containing the delete button
 
-    if (confirm('Are you sure you want to delete this user: ' + userId + '?')) {
-      $.ajax({
-        url: '../php/userRole/delete_user.php', // PHP file to handle deletion
-        type: 'POST',
-        data: { user_id: userId },
-        dataType: 'json',
-        success: function (response) {
-          if (response.success) {
-            alert('User deleted successfully!');
-            var table = $('#userTable').DataTable();
-            table.row(row).remove().draw(); // Remove row from DataTable
-            // refreshUserTable(); // Refresh the table after deletion
-          } else {
-            alert('Error: ' + response.message);
+    // Show confirmation popup using SweetAlert2
+    Swal.fire({
+      title: 'You will not be able to revert this! ',
+      text: 'Are you sure want to delete the user :  ' + userId + '?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(result => {
+      if (result.isConfirmed) {
+        // Show Swal loading while processing
+        Swal.fire({
+          title: 'Deleting...',
+          text: 'Please wait',
+          icon: 'info',
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
           }
-        },
-        error: function (xhr, status, error) {
-          console.error('AJAX Error: ' + status + ': ' + error);
-        }
-      });
-    }
-  });
-*/
+        });
 
-$(document).on('click', '#userDelete', function () {
-  var userId = $(this).data('id'); // Get the user ID
-  var row = $(this).closest('tr'); // Get the table row containing the delete button
+        $.ajax({
+          url: '../php/userRole/delete_user.php', // PHP script to handle deletion
+          type: 'POST',
+          data: { user_id: userId },
+          dataType: 'json',
+          success: function (response) {
+            if (response.success) {
+              // Show success message
+              Swal.fire({
+                title: 'Deleted!',
+                text: 'User ' + userId + ' has been deleted.',
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+              });
 
-  // Show confirmation popup using SweetAlert2
-  Swal.fire({
-    title: 'You will not be able to revert this! ',
-    text: 'Are you sure want to delete the user :  ' + userId + '?',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
-    confirmButtonText: 'Yes, delete it!'
-  }).then(result => {
-    if (result.isConfirmed) {
-      // Show Swal loading while processing
-      Swal.fire({
-        title: 'Deleting...',
-        text: 'Please wait',
-        icon: 'info',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        didOpen: () => {
-          Swal.showLoading();
-        }
-      });
-
-      $.ajax({
-        url: '../php/userRole/delete_user.php', // PHP script to handle deletion
-        type: 'POST',
-        data: { user_id: userId },
-        dataType: 'json',
-        success: function (response) {
-          if (response.success) {
-            // Show success message
-            Swal.fire({
-              title: 'Deleted!',
-              text: 'User ' + userId + ' has been deleted.',
-              icon: 'success',
-              timer: 2000,
-              showConfirmButton: false
-            });
-
-            // Remove the row dynamically from DataTable
-            var table = $('#userTable').DataTable();
-            table.row(row).remove().draw();
-          } else {
-            Swal.fire('Error!', response.message, 'error');
+              // Remove the row dynamically from DataTable
+              var table = $('#userTable').DataTable();
+              table.row(row).remove().draw();
+            } else {
+              Swal.fire('Error!', response.message, 'error');
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+            Swal.fire('Error!', 'An error occurred while deleting.', 'error');
           }
-        },
-        error: function (xhr, status, error) {
-          console.error('AJAX Error:', status, error);
-          Swal.fire('Error!', 'An error occurred while deleting.', 'error');
-        }
-      });
-    }
+        });
+      }
+    });
   });
-});
 
 
 
