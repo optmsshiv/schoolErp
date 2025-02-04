@@ -182,6 +182,15 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch(error => console.error('WhatsApp API Error:', error));
   }
 
+  // Function to format date
+  function formatDate(dateString) {
+    if (!dateString) return 'N/A'; // Handle empty dates
+    let date = new Date(dateString);
+    let day = String(date.getDate()).padStart(2, '0');
+    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    let year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
   // Function to refresh the user table
   function addNewUserToTable(user) {
     var tableBody = $('#userTable tbody');

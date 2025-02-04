@@ -36,6 +36,16 @@ $(document).ready(function () {
     }
   });
 
+  // Function to format date
+  function formatDate(dateString) {
+    if (!dateString) return 'N/A'; // Handle empty dates
+    let date = new Date(dateString);
+    let day = String(date.getDate()).padStart(2, '0');
+    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    let year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
   // Fetch user data using AJAX
   $.ajax({
     url: '../php/userRole/get_user_role.php', // The PHP file where user data is fetched
