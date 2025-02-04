@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var dropdownMenu = '';
             if (user.status === 'Pending') {
               dropdownMenu = `
-
+                            <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
                             <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                         `;
             } else if (user.status === 'Active') {
@@ -245,9 +245,6 @@ document.addEventListener('DOMContentLoaded', function () {
                      <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                      <div class="dropdown-menu dropdown-menu-end">
-                       <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${
-                         user.user_id
-                       }">Edit</a>
                        ${dropdownMenu}
                      </div>
                 </td>

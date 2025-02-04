@@ -166,3 +166,64 @@ function refreshUserTable() {
       }
     });
   }
+
+
+  /* funciton to chagne status */
+
+    function changeStatus(userId, newStatus) {
+    $.ajax({
+      url: '../php/userRole/update_user_status.php',
+      type: 'POST',
+      data: { user_id: userId, status: newStatus },
+      success: function (response) {
+        if (response.success) {
+          alert(`User status changed to ${newStatus}`);
+
+          // Find the row for the updated user
+          var row = $(`#userTable tbody tr`).filter(function () {
+            return $(this).find('td:eq(1)').text().trim() == userId;
+          });
+
+          if (row.length === 0) {
+            console.error('Row not found for user ID:', userId);
+            return;
+          }
+
+          // Update the status badge
+          var statusBadge = row.find('td:eq(6) span');
+          if (newStatus === 'Active') {
+            statusBadge.removeClass('bg-label-danger bg-label-warning').addClass('bg-label-success').text(newStatus);
+          } else if (newStatus === 'Suspended') {
+            statusBadge.removeClass('bg-label-success bg-label-warning').addClass('bg-label-danger').text(newStatus);
+          } else if (newStatus === 'Pending') {
+            statusBadge.removeClass('bg-label-success bg-label-danger').addClass('bg-label-warning').text(newStatus);
+          }
+
+          // Update dropdown menu based on the new status
+          var dropdownMenu = row.find('.dropdown-menu');
+          dropdownMenu.empty(); // Clear existing options
+
+          if (newStatus === 'Pending') {
+            dropdownMenu.append(
+              `<a class="dropdown-item border-bottom userActivate" href="javascript:;" data-id="${userId}">Activate</a>`
+            );
+          } else if (newStatus === 'Active') {
+            dropdownMenu.append(`
+                        <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${userId}">Suspend</a>
+                        <a class="dropdown-item userCredential" href="javascript:;" data-id="${userId}">Send Credential</a>
+                    `);
+          } else if (newStatus === 'Suspended') {
+            dropdownMenu.append(
+              `<a class="dropdown-item border-bottom userActivate" href="javascript:;" data-id="${userId}">Activate</a>`
+            );
+          }
+        } else {
+          alert('Failed to change status!');
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error('AJAX error: ' + status + ': ' + error);
+      }
+    });
+  }
+
