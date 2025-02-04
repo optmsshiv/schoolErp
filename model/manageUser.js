@@ -56,7 +56,7 @@ $(document).ready(function () {
           var dropdownMenu = '';
           if (user.status === 'Pending') {
             dropdownMenu = `
-                            <a class="dropdown-item border-bottom userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+                            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                         `;
           } else if (user.status === 'Active') {
             dropdownMenu = `
