@@ -85,7 +85,7 @@ $(document).ready(function () {
               </td>
               <td>${user.role}</td>
               <td>${user.phone}</td>
-              <td>${user.joining_date || new Date().toISOString().split('T')[0]}</td>
+              <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
               <td><span class="badge ${
                 user.status === 'Active'
                   ? 'bg-label-success'
