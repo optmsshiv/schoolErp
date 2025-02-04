@@ -59,9 +59,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode([
           'success' => true,
           'userId' => $userId,
-          'password' => $password,
           'fullname' => $fullname,  // Added fullname to the response
-          'phone' => $phoneNumber   // Added phone number to the response
+          'role' => $role ?? 'N/A',  // Make sure this is set
+          'phone' => $phoneNumber,   // Added phone number to the response
+          'joining_date' => $joiningDate ?? date('d-m-Y'),  // Ensure this is included
+          'status' => 'Active',  // Default status or from database
+          'password' => $password,
         ]);
 
     } catch (PDOException $e) {
