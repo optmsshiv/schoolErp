@@ -95,7 +95,9 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmButtonText: 'OK'
           }).then(() => {
             form.reset(); // Reset the form
-            refreshUserTable(); // Refresh the table to show new data
+            //  refreshUserTable(); // Refresh the table to show new data
+            // Add only the new user to the table
+            addNewUserToTable(data);
 
             // Send WhatsApp Message
             sendWhatsAppMessage(data.fullname, data.userId, data.password, data.phone);
@@ -181,39 +183,30 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Function to refresh the user table
-  function refreshUserTable() {
-    $.ajax({
-      url: '../php/userRole/get_user_role.php',
-      type: 'GET',
-      dataType: 'json',
-      success: function (response) {
-        if (response && response.length > 0) {
-          var tableBody = $('#userTable tbody');
-          tableBody.empty();
+  function addNewUserToTable(user) {
+    var tableBody = $('#userTable tbody');
+    var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
-          response.forEach(function (user) {
-            var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
-
-            // Determine dropdown menu options based on user status
-            var dropdownMenu = '';
-            if (user.status === 'Pending') {
-              dropdownMenu = `
+    // Determine dropdown menu options based on user status
+    var dropdownMenu = '';
+    if (user.status === 'Pending') {
+      dropdownMenu = `
 
                             <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                         `;
-            } else if (user.status === 'Active') {
-              dropdownMenu = `
+    } else if (user.status === 'Active') {
+      dropdownMenu = `
                             <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
                             <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
                             <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
                         `;
-            } else if (user.status === 'Suspended') {
-              dropdownMenu = `
+    } else if (user.status === 'Suspended') {
+      dropdownMenu = `
                             <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                         `;
-            }
+    }
 
-            var row = `
+    var row = `
               <tr>
                 <td><input type="checkbox" class="row-select"></td>
                 <td>${user.user_id}</td>
@@ -230,42 +223,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${user.role}</td>
                 <td>${user.phone}</td>
                 <td>${user.joining_date}</td>
-                <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-danger'}">${
-              user.status
-            }</span></td>
+                <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${user.status
+      }</span></td>
                 <td>
-                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
-                    user.user_id
-                  }"></a>
-                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
-                    user.user_id
-                  }"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${user.user_id
+      }"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${user.user_id
+      }"></a>
                      <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                      <div class="dropdown-menu dropdown-menu-end">
-                       <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${
-                         user.user_id
-                       }">Edit</a>
+                       <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id
+      }">Edit</a>
                        ${dropdownMenu}
                      </div>
                 </td>
               </tr>
             `;
-            tableBody.append(row);
-          });
 
-          var table = $('#userTable').DataTable();
-          table.clear();
-          table.rows.add($('#userTable tbody tr')).draw();
-        } else {
-          alert('No users found!');
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error('AJAX error: ' + status + ': ' + error);
-      }
-    });
+    // Append new user to the table
+    tableBody.append(row);
+
+    // Reinitialize DataTable to include the new row
+    $('#userTable').DataTable().row.add($(row)).draw();
   }
+
 
 });
 

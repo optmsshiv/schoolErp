@@ -78,3 +78,91 @@
                        <a class="dropdown-item" href="javascript:;" id="userIdSms" data-id="${
                          user.user_id
                        }">Credential</a>
+
+
+
+function refreshUserTable() {
+    $.ajax({
+      url: '../php/userRole/get_user_role.php',
+      type: 'GET',
+      dataType: 'json',
+      success: function (response) {
+        if (response && response.length > 0) {
+          var tableBody = $('#userTable tbody');
+          tableBody.empty();
+
+          response.forEach(function (user) {
+            var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
+
+            // Determine dropdown menu options based on user status
+            var dropdownMenu = '';
+            if (user.status === 'Pending') {
+              dropdownMenu = `
+
+                            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+                        `;
+            } else if (user.status === 'Active') {
+              dropdownMenu = `
+                            <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
+                            <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
+                            <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
+                        `;
+            } else if (user.status === 'Suspended') {
+              dropdownMenu = `
+                            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+                        `;
+            }
+
+            var row = `
+              <tr>
+                <td><input type="checkbox" class="row-select"></td>
+                <td>${user.user_id}</td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm">
+                      <img src="${avatar}" alt="avatar" class="rounded-circle" />
+                    </div>
+                    <div class="ms-2">
+                      <h6 class="mb-0 ms-2">${user.fullname}</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>${user.role}</td>
+                <td>${user.phone}</td>
+                <td>${user.joining_date}</td>
+                <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
+              user.status
+            }</span></td>
+                <td>
+                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
+                    user.user_id
+                  }"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
+                    user.user_id
+                  }"></a>
+                     <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                     <div class="dropdown-menu dropdown-menu-end">
+                       <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${
+                         user.user_id
+                       }">Edit</a>
+                       ${dropdownMenu}
+                     </div>
+                </td>
+              </tr>
+            `;
+            tableBody.append(row);
+          });
+
+          var table = $('#userTable').DataTable();
+          table.clear();
+          table.rows.add($('#userTable tbody tr')).draw();
+        } else {
+          alert('No users found!');
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error('AJAX error: ' + status + ': ' + error);
+      }
+    });
+  }
