@@ -223,7 +223,7 @@ $(document).ready(function () {
             if (newStatus === 'Active') {
               statusBadge.addClass('bg-label-success').text(newStatus);
             } else if (newStatus === 'Suspended') {
-              statusBadge.addClass('bg-label-danger').text(newStatus);
+              statusBadge.addClass('bg-label-secondary').text(newStatus);
             } else if (newStatus === 'Pending') {
               statusBadge.addClass('bg-label-warning').text(newStatus);
             }
@@ -246,7 +246,7 @@ $(document).ready(function () {
                     `);
             } else if (newStatus === 'Suspended') {
               dropdownMenu.append(
-                `<a class="dropdown-item border-bottom userActivate" href="javascript:;" data-id="${userId}">Activate</a>`
+                `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`
               );
             }
           } else {
