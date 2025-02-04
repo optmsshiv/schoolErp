@@ -28,9 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role = $_POST['basicPost'] ?? '';
         $email = $_POST['basicEmail'] ?? '';
         $phoneNumber = $_POST['phoneNumber'] ?? '';
-        $joiningDate = $_POST['basicDate'] ?? '';
-        $status = $_POST['basicStatus'] ?? '';
-        $salary = $_POST['basicSalary'] ?? '';
+        $joiningDate = $_POST['basicDate'] ?? ''; // YYYY-MM-DD from form
+        $status = $_POST['basicStatus'] ?? 'Pending';
+        $salary = $_POST['basicSalary'] ?? '0';
+
+        // Format joining date to DD-MM-YYYY
+        $formattedJoiningDate = !empty($joiningDate) ? date('d-m-Y', strtotime($joiningDate)) : date('d-m-Y');
 
         // Generate user ID and password
         $userId = generateUserId($fullname);
@@ -49,22 +52,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':role' => $role,
             ':email' => $email,
             ':phone' => $phoneNumber,
-            ':joining_date' => $joiningDate,
+            ':joining_date' => $joiningDate, // Storing in YYYY-MM-DD format for consistency
             ':status' => $status,
             ':salary' => $salary,
             ':password' => $hashedPassword
         ]);
 
-        // Return success response
+        // Return success response with properly formatted date
         echo json_encode([
-          'success' => true,
-          'userId' => $userId,
-          'fullname' => $fullname,  // Added fullname to the response
-          'role' => $role ?? 'N/A',  // Make sure this is set
-          'phone' => $phoneNumber,   // Added phone number to the response
-          'joining_date' => $joiningDate ?? date('d-m-Y'),  // Ensure this is included
-          'status' => 'Active',  // Default status or from database
-          'password' => $password,
+            'success' => true,
+            'userId' => $userId,
+            'fullname' => $fullname,
+            'role' => $role ?? 'N/A',
+            'phone' => $phoneNumber,
+            'joining_date' => $formattedJoiningDate, // ✅ Formatted DD-MM-YYYY
+            'status' => $status,
+            'password' => $password,
         ]);
 
     } catch (PDOException $e) {
