@@ -65,7 +65,7 @@ $(document).ready(function () {
                         `;
           } else if (user.status === 'Suspended') {
             dropdownMenu = `
-                            <a class="dropdown-item border-bottom userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+                            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                         `;
           }
 
