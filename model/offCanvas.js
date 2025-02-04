@@ -187,53 +187,63 @@ document.addEventListener('DOMContentLoaded', function () {
     var tableBody = $('#userTable tbody');
     var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
-    var row = `
-        <tr>
-            <td><input type="checkbox" class="row-select"></td>
-            <td>${user.userId}</td>
-            <td>
-                <div class="d-flex align-items-center">
+    // Determine dropdown menu options based on user status
+            var dropdownMenu = '';
+            if (user.status === 'Pending') {
+              dropdownMenu = `
+
+                            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+                        `;
+            } else if (user.status === 'Active') {
+              dropdownMenu = `
+                            <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
+                            <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
+                            <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
+                        `;
+            } else if (user.status === 'Suspended') {
+              dropdownMenu = `
+                            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+                        `;
+            }
+
+            var row = `
+              <tr>
+                <td><input type="checkbox" class="row-select"></td>
+                <td>${user.user_id}</td>
+                <td>
+                  <div class="d-flex align-items-center">
                     <div class="avatar avatar-sm">
-                        <img src="${avatar}" alt="avatar" class="rounded-circle" />
+                      <img src="${avatar}" alt="avatar" class="rounded-circle" />
                     </div>
                     <div class="ms-2">
-                        <h6 class="mb-0 ms-2">${user.fullname}</h6>
+                      <h6 class="mb-0 ms-2">${user.fullname}</h6>
                     </div>
-                </div>
-            </td>
-            <td>${user.role}</td>
-            <td>${user.phone}</td>
-            <td>${user.joining_date}</td>
-            <td>
-                <span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-danger'}">
-                    ${user.status}
-                </span>
-            </td>
-            <td>
-                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
-                  user.userId
-                }"></a>
-                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
-                  user.userId
-                }"></a>
-                <div class="dropdown">
-                    <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
+                  </div>
+                </td>
+                <td>${user.role}</td>
+                <td>${user.phone}</td>
+                <td>${user.joining_date}</td>
+                <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
+              user.status
+            }</span></td>
+                <td>
+                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
+                    user.user_id
+                  }"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
+                    user.user_id
+                  }"></a>
+                     <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-                    <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${
-                          user.userId
-                        }">Edit</a>
-                        <a class="dropdown-item border-bottom" href="javascript:;" id="userSuspend" data-id="${
-                          user.userId
-                        }">Suspend</a>
-                        <a class="dropdown-item" href="javascript:;" id="userIdCredential" data-id="${
-                          user.userId
-                        }">Credential</a>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    `;
+                     <div class="dropdown-menu dropdown-menu-end">
+                       <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${
+                         user.user_id
+                       }">Edit</a>
+                       ${dropdownMenu}
+                     </div>
+                </td>
+              </tr>
+            `;
 
     // Append new user to the table
     tableBody.append(row);
