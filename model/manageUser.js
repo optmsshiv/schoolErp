@@ -235,12 +235,12 @@ $(document).ready(function () {
             if (newStatus === 'Pending') {
               dropdownMenu.append(
                 `
-                <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+                <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${userId}">Edit</a>
                 <a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`
               );
             } else if (newStatus === 'Active') {
               dropdownMenu.append(`
-                        <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+                        <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${userId}">Edit</a>
                         <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${userId}">Suspend</a>
                         <a class="dropdown-item userCredential" href="javascript:;" data-id="${userId}">Send Credential</a>
                     `);
