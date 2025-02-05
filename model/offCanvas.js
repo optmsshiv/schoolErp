@@ -1,6 +1,6 @@
 // Declare variables for Bearer Token and Phone Number ID
- BEARER_TOKEN = '565986464565'; // Replace with your actual Bearer Token
- PHONE_NUMBER_ID = '565986464565'; // Replace with your actual Phone Number ID
+ const BEARER_TOKEN = '565986464565'; // Replace with your actual Bearer Token
+
 // vanilla js (without JQuery)
 document.addEventListener('DOMContentLoaded', function () {
   // Load off-canvas HTML dynamically
