@@ -1,6 +1,4 @@
-// Declare variables for Bearer Token and Phone Number ID
-const BEARER_TOKEN = getenv('WHATSAPP_ACCESS_TOKEN'); // Replace with your actual Bearer Token
-const PHONE_NUMBER_ID = getenv('WHATSAPP_PHONE_ID'); // Replace with your actual Phone Number ID
+
 // vanilla js (without JQuery)
 document.addEventListener('DOMContentLoaded', function () {
   // Load off-canvas HTML dynamically
@@ -138,6 +136,9 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
+  // Declare variables for Bearer Token and Phone Number ID
+  const BEARER_TOKEN = getenv('WHATSAPP_ACCESS_TOKEN'); // Replace with your actual Bearer Token
+  const PHONE_NUMBER_ID = getenv('WHATSAPP_PHONE_ID'); // Replace with your actual Phone Number ID
   function sendWhatsAppMessage(fullname, userId, password, phone) {
     if (!phone) {
       console.error('Phone number is missing.');
@@ -196,25 +197,25 @@ document.addEventListener('DOMContentLoaded', function () {
     var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
     // Determine dropdown menu options based on user status
-            var dropdownMenu = '';
-            if (user.status === 'Pending') {
-              dropdownMenu = `
+    var dropdownMenu = '';
+    if (user.status === 'Pending') {
+      dropdownMenu = `
                             <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
                             <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                         `;
-            } else if (user.status === 'Active') {
-              dropdownMenu = `
+    } else if (user.status === 'Active') {
+      dropdownMenu = `
                             <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
                             <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
                             <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
                         `;
-            } else if (user.status === 'Suspended') {
-              dropdownMenu = `
+    } else if (user.status === 'Suspended') {
+      dropdownMenu = `
                             <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                         `;
-            }
+    }
 
-            var row = `
+    var row = `
               <tr>
                 <td><input type="checkbox" class="row-select"></td>
                 <td>${user.user_id}</td>
@@ -232,8 +233,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${user.phone}</td>
                 <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
                 <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
-              user.status
-            }</span></td>
+      user.status
+    }</span></td>
                 <td>
                   <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
                     user.user_id
@@ -256,8 +257,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Reinitialize DataTable to include the new row
     $('#userTable').DataTable().row.add($(row)).draw();
   }
-
-
 });
 
 function validateMobileNumber(input) {
