@@ -186,7 +186,7 @@ $(document).ready(function () {
         $('#editUserModal').find('#userIdInput').val(userId);
 
         // Show loading text inside the modal
-        $('#editUserModal .modal-body').html('<p>Loading user details...</p>');
+      //  $('#editUserModal .modal-body').html('<p>Loading user details...</p>');
 
         // Show the modal
         $('#editUserModal').modal('show');
