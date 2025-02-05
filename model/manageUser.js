@@ -167,7 +167,7 @@ $(document).ready(function () {
   });
 
   // Handle 'Edit' button click event
-  $('.document').on('click', '.userEdit', function () {
+  $(document).on('click', '.userEdit', function () {
     var userId = $(this).data('id');
     alert('Edit User ID: ' + userId);
     // Open edit modal or redirect to edit page
