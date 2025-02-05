@@ -1,0 +1,107 @@
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- Large modal -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <img id="userAvatar" src="default-avatar.png" alt="User Avatar" class="rounded-circle mb-3" width="100">
+        </div>
+
+        <input type="hidden" id="userIdInput">
+
+        <div class="row">
+          <div class="col-md-6">
+            <label for="fullNameInput" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullNameInput">
+          </div>
+          <div class="col-md-6">
+            <label for="roleSelect" class="form-label">Role</label>
+            <select class="form-control" id="roleSelect">
+              <option value="Admin">Admin</option>
+              <option value="User">User</option>
+              <option value="Editor">Editor</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="emailInput" class="form-label">Email</label>
+            <input type="email" class="form-control" id="emailInput">
+          </div>
+          <div class="col-md-6">
+            <label for="phoneInput" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="phoneInput">
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="joiningDateInput" class="form-label">Joining Date</label>
+            <input type="date" class="form-control" id="joiningDateInput">
+          </div>
+          <div class="col-md-6">
+            <label for="statusSelect" class="form-label">Status</label>
+            <select class="form-control" id="statusSelect">
+              <option value="Active">Active</option>
+              <option value="Suspended">Suspended</option>
+              <option value="Pending">Pending</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="salaryInput" class="form-label">Salary</label>
+            <input type="number" class="form-control" id="salaryInput">
+          </div>
+          <div class="col-md-6">
+            <label for="aadharInput" class="form-label">Aadhar Card</label>
+            <input type="text" class="form-control" id="aadharInput">
+          </div>
+        </div>
+
+        <h5 class="mt-4">Bank Details</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="bankNameInput" class="form-label">Bank Name</label>
+            <input type="text" class="form-control" id="bankNameInput">
+          </div>
+          <div class="col-md-6">
+            <label for="branchNameInput" class="form-label">Branch Name</label>
+            <input type="text" class="form-control" id="branchNameInput">
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="accountNumberInput" class="form-label">Account Number</label>
+            <input type="text" class="form-control" id="accountNumberInput">
+          </div>
+          <div class="col-md-6">
+            <label for="ifscCodeInput" class="form-label">IFSC Code</label>
+            <input type="text" class="form-control" id="ifscCodeInput">
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <label for="accountTypeSelect" class="form-label">Account Type</label>
+            <select class="form-control" id="accountTypeSelect">
+              <option value="Savings">Savings</option>
+              <option value="Current">Current</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveUserChanges">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>

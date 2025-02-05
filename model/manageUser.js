@@ -169,8 +169,17 @@ $(document).ready(function () {
   // Handle 'Edit' button click event
   $(document).on('click', '.userEdit', function () {
     var userId = $(this).data('id');
-    alert('Edit User ID: ' + userId);
+    // alert('Edit User ID: ' + userId);
     // Open edit modal or redirect to edit page
+    
+    // Show user ID in console for debugging
+    console.log('Edit User ID:', userId);
+
+    // Set user ID in the modal (if needed)
+    $('#editUserModal').find('#userIdInput').val(userId);
+
+    // Show the modal
+    $('#editUserModal').modal('show');
   });
 
 
@@ -292,7 +301,7 @@ $(document).ready(function () {
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
     var userId = $(this).data('id');
-    alert('Send credentials for User ID: ${userId}');
+    alert('Send credentials for User ID:' + userId);
     // Implement credential sending functionality (e.g., AJAX request to send credentials)
   });
 
