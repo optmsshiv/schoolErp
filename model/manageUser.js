@@ -167,7 +167,7 @@ $(document).ready(function () {
   });
 
   // Handle 'Edit' button click event
-  $('#userTable').on('click', '#userEdit', function () {
+  $('.document').on('click', '.userEdit', function () {
     var userId = $(this).data('id');
     alert('Edit User ID: ' + userId);
     // Open edit modal or redirect to edit page
@@ -216,13 +216,6 @@ $(document).ready(function () {
             toast: true,
             timer: 2000
           });
-
-          // Highlight the row in the table
-          /*
-          $(`#userTable tbody tr[data-id="${userId}"]`).addClass('highlight');
-          setTimeout(() => {
-            $(`#userTable tbody tr[data-id="${userId}"]`).removeClass('highlight');
-          }, 5000); // Highlight for 5 seconds  */
 
           // Find the row for the updated user
           var row = $(`#userTable tbody tr`).filter(function () {
