@@ -90,11 +90,11 @@ document.addEventListener('DOMContentLoaded', function () {
             icon: 'success',
             title: 'Success!',
             toast: true,
-            text: `New user created successfully with User ID: ${data.userId} and Password: ${data.password}`,
+            text: `New user created successfully with User ID: ${data.user_id} and Password: ${data.password}`,
             confirmButtonText: 'OK'
           }).then(() => {
             form.reset(); // Reset the form
-            
+
             // Add only the new user to the table
             addNewUserToTable(data);
 
