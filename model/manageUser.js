@@ -232,13 +232,14 @@ $(document).ready(function () {
             console.error('Row not found for user ID:', userId);
             return;
           }
-
-          $(`#userTable tbody tr[data-id="${userId}"]`).addClass('highlight');
-          setTimeout(() => {
-            $(`#userTable tbody tr[data-id="${userId}"]`).removeClass('highlight');
-          }, 5000); // Highlight for 5 seconds
-
           
+          // Apply highlight class and ensure it sticks
+          row.addClass('highlight');
+
+          setTimeout(() => {
+            row.removeClass('highlight');
+          }, 5000); // Keep highlighted for 5 seconds
+
           // Update the status badge
           var statusBadge = row.find('td:eq(6) span');
           statusBadge.removeClass('bg-label-success bg-label-danger bg-label-warning');
