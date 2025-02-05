@@ -224,15 +224,19 @@ $(document).ready(function () {
           }, 5000); // Highlight for 5 seconds*/
 
           // Find the row for the updated user
+          /*
           var row = $(`#userTable tbody tr`).filter(function () {
             return $(this).find('td:eq(1)').text().trim() == userId;
-          });
+          }); */
+
+          // Select the row correctly
+          var row = $(`#userTable tbody tr[data-id="${userId}"]`);
 
           if (row.length === 0) {
             console.error('Row not found for user ID:', userId);
             return;
           }
-          
+
           // Apply highlight class and ensure it sticks
           row.addClass('highlight');
 
