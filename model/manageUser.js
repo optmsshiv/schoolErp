@@ -236,8 +236,72 @@ $(document).ready(function () {
       error: function () {
         alert('Failed to load the edit modal.');
       }
+    })
+
+    // Save button handle
+    $(document).on('click', '#saveUserChanges', function () {
+    var formData = new FormData();
+    formData.append('user_id', $('#userIdInput').val());
+    formData.append('fullname', $('#fullNameInput').val());
+    formData.append('role', $('#roleSelect').val());
+    formData.append('email', $('#emailInput').val());
+    formData.append('phone', $('#phoneInput').val());
+    formData.append('joining_date', $('#joiningDateInput').val());
+    formData.append('status', $('#statusSelect').val());
+    formData.append('status_change_cause', $('#statusCauseInput').val());
+    formData.append('change_by', $('#changeByInput').val());
+    formData.append('salary', $('#salaryInput').val());
+    formData.append('aadhar_card', $('#aadharInput').val());
+    formData.append('bank_name', $('#bankNameInput').val());
+    formData.append('branch_name', $('#branchNameInput').val());
+    formData.append('account_number', $('#accountNumberInput').val());
+    formData.append('ifsc_code', $('#ifscCodeInput').val());
+    formData.append('account_type', $('#accountTypeSelect').val());
+
+    // Check if user uploaded a new avatar
+    var avatarFile = $('#avatarUpload')[0].files[0];
+    if (avatarFile) {
+        formData.append('user_avatar', avatarFile);
+    }
+
+    $.ajax({
+        url: '../php/userRole/update_user_details.php',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        dataType: 'json',
+        success: function (response) {
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'User updated successfully!',
+                    toast: true,
+                    timer: 2000
+                });
+
+                // Close modal after success
+                $('#editUserModal').modal('hide');
+
+                // Reload or update table row dynamically
+                location.reload();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Update failed!',
+                    text: response.message
+                });
+            }
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Something went wrong. Please try again.'
+            });
+        }
     });
-  });
+});
 
 
   // Handling Status Change (Activate, Suspend)
