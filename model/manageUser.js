@@ -216,12 +216,13 @@ $(document).ready(function () {
             toast: true,
             timer: 2000
           });
-          /*
+
           // Highlight the row in the table
+          /*
           $(`#userTable tbody tr[data-id="${userId}"]`).addClass('highlight');
           setTimeout(() => {
             $(`#userTable tbody tr[data-id="${userId}"]`).removeClass('highlight');
-          }, 5000); // Highlight for 5 seconds*/
+          }, 5000); // Highlight for 5 seconds  */
 
           // Find the row for the updated user
           var row = $(`#userTable tbody tr`).filter(function () {
@@ -242,7 +243,7 @@ $(document).ready(function () {
 
           // Update the status badge
           var statusBadge = row.find('td:eq(6) span');
-          statusBadge.removeClass('bg-label-success bg-label-danger bg-label-warning');
+          statusBadge.removeClass('bg-label-success bg-label-secondary bg-label-warning');
 
           if (newStatus === 'Active') {
             statusBadge.addClass('bg-label-success').text(newStatus);
