@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $salary = $_POST['basicSalary'] ?? '0';
 
         // Format joining date to DD-MM-YYYY
-        $formattedJoiningDate = !empty($joiningDate) ? date('d-m-Y', strtotime($joiningDate)) : date('d-m-Y');
+       // $formattedJoiningDate = !empty($joiningDate) ? date('d-m-Y', strtotime($joiningDate)) : date('d-m-Y');
 
         // Generate user ID and password
         $userId = generateUserId($fullname);
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'fullname' => $fullname,
             'role' => $role ?? 'N/A',
             'phone' => $phoneNumber,
-            'joining_date' => $formattedJoiningDate, // ✅ Formatted DD-MM-YYYY
+            'joining_date' => $joiningDate, // ✅ Formatted DD-MM-YYYY
             'status' => $status,
             'password' => $password,
         ]);
