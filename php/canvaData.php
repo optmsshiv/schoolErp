@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Return success response with properly formatted date
         echo json_encode([
             'success' => true,
-            'userId' => $userId,
+            'user_id' => $user_id,
             'fullname' => $fullname,
             'role' => $role ?? 'N/A',
             'phone' => $phoneNumber,

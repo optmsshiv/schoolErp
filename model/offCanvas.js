@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmButtonText: 'OK'
           }).then(() => {
             form.reset(); // Reset the form
-            //  refreshUserTable(); // Refresh the table to show new data
+            
             // Add only the new user to the table
             addNewUserToTable(data);
 
