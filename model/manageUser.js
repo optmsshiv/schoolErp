@@ -200,6 +200,7 @@ $(document).ready(function () {
           success: function (response) {
             if (response.success) {
               var user = response.data;
+              console.log('User Data:', user); // Check if data exists
 
               // Populate the form with user data
               $('#userIdInput').val(user.user_id);
