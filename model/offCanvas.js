@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${user.phone}</td>
                 <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
                 <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
-              user.status || 'Pending'
+              user.status
             }</span></td>
                 <td>
                   <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
