@@ -170,6 +170,8 @@ $(document).ready(function () {
   $(document).on('click', '.userEdit', function () {
     var userId = $(this).data('id');
 
+    $('#userAvatar').attr('src', '/assets/img/avatars/default-avatar.png');
+
     // Show user ID in console for debugging
     console.log('Edit User ID:', userId);
     // Load the modal content dynamically
@@ -221,7 +223,7 @@ $(document).ready(function () {
               $('#accountTypeSelect').val(user.account_type);
 
               // Update user avatar
-              $('#userAvatar').attr('src', user.user_role_avatar || 'default-avatar.png');
+              $('#userAvatar').attr('src', user.user_role_avatar || '/assets/img/avatars/default-avatar.png');
             } else {
               $('#editUserModal .modal-body').html('<p class="text-danger">User not found.</p>');
             }
