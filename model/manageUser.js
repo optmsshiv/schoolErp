@@ -184,11 +184,51 @@ $(document).ready(function () {
 
         // Set user ID in modal
         $('#editUserModal').find('#userIdInput').val(userId);
-        // Show loading indicator inside modal
-        $('#editUserModal .modal-body').html('<p>Loading...</p>');
+
+        // Show loading text inside the modal
+        $('#editUserModal .modal-body').html('<p>Loading user details...</p>');
 
         // Show the modal
         $('#editUserModal').modal('show');
+
+        // Load user details using AJAX
+        $.ajax({
+          url: '../php/userRole/get_user_details.php', // Ensure correct path
+          type: 'POST',
+          data: { user_id: userId },
+          dataType: 'json',
+          success: function (response) {
+            if (response.success) {
+              var user = response.data;
+
+              // Populate the form with user data
+              $('#userIdInput').val(user.user_id);
+              $('#fullNameInput').val(user.fullname);
+              $('#roleSelect').val(user.role);
+              $('#emailInput').val(user.email);
+              $('#phoneInput').val(user.phone);
+              $('#joiningDateInput').val(user.joining_date);
+              $('#statusSelect').val(user.status);
+              $('#statusCauseInput').val(user.status_change_cause);
+              $('#changeByInput').val(user.change_by);
+              $('#salaryInput').val(user.salary);
+              $('#aadharInput').val(user.aadhar_card);
+              $('#bankNameInput').val(user.bank_name);
+              $('#branchNameInput').val(user.branch_name);
+              $('#accountNumberInput').val(user.account_number);
+              $('#ifscCodeInput').val(user.ifsc_code);
+              $('#accountTypeSelect').val(user.account_type);
+
+              // Update user avatar
+              $('#userAvatar').attr('src', user.user_role_avatar || 'default-avatar.png');
+            } else {
+              $('#editUserModal .modal-body').html('<p class="text-danger">User not found.</p>');
+            }
+          },
+          error: function () {
+            $('#editUserModal .modal-body').html('<p class="text-danger">Error fetching data. Please try again.</p>');
+          }
+        });
       },
       error: function () {
         alert('Failed to load the edit modal.');
