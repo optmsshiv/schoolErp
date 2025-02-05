@@ -210,18 +210,18 @@ $(document).ready(function () {
 
         if (response && response.success) {
           // Ensure response.success exists
-
-          $(`#userTable tbody tr[data-id="${userId}"]`).addClass('highlight');
-          setTimeout(() => {
-            $(`#userTable tbody tr[data-id="${userId}"]`).removeClass('highlight');
-          }, 2000); // Highlight for 2 seconds
-
           Swal.fire({
             icon: 'success',
             title: `User status changed to ${newStatus}`,
             toast: true,
             timer: 2000
           });
+          /*
+          // Highlight the row in the table
+          $(`#userTable tbody tr[data-id="${userId}"]`).addClass('highlight');
+          setTimeout(() => {
+            $(`#userTable tbody tr[data-id="${userId}"]`).removeClass('highlight');
+          }, 5000); // Highlight for 5 seconds*/
 
           // Find the row for the updated user
           var row = $(`#userTable tbody tr`).filter(function () {
@@ -233,6 +233,12 @@ $(document).ready(function () {
             return;
           }
 
+          $(`#userTable tbody tr[data-id="${userId}"]`).addClass('highlight');
+          setTimeout(() => {
+            $(`#userTable tbody tr[data-id="${userId}"]`).removeClass('highlight');
+          }, 5000); // Highlight for 5 seconds
+
+          
           // Update the status badge
           var statusBadge = row.find('td:eq(6) span');
           statusBadge.removeClass('bg-label-success bg-label-danger bg-label-warning');
@@ -288,14 +294,12 @@ $(document).ready(function () {
     });
   }
 
-
   // Handle 'Credential send' button click event
-  $('#userTable').on('click', '#userCredentialSend', function () {
+  $(document).on('click', '.userCredential', function () {
     var userId = $(this).data('id');
-    alert('Send credentials for User ID: ' + userId);
+    alert('Send credentials for User ID: ${userId}');
     // Implement credential sending functionality (e.g., AJAX request to send credentials)
   });
-
 
   // Handle Delete function
   /*

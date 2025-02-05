@@ -3,6 +3,9 @@
 .AppleDouble
 .LSOverride
 
+# API
+.env
+
 # Thumbnails
 ._*
 Thumbs.db
