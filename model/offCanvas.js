@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var row = `
               <tr>
                 <td><input type="checkbox" class="row-select"></td>
-                <td>${user.userId}</td>
+                <td>${user.user_id}</td>
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="avatar avatar-sm">
