@@ -169,17 +169,31 @@ $(document).ready(function () {
   // Handle 'Edit' button click event
   $(document).on('click', '.userEdit', function () {
     var userId = $(this).data('id');
-    // alert('Edit User ID: ' + userId);
-    // Open edit modal or redirect to edit page
-    
+
     // Show user ID in console for debugging
     console.log('Edit User ID:', userId);
+    // Load the modal content dynamically
+    $.ajax({
+      url: '/html/model_user_edit/user_edit.html', // Adjust path based on your folder structure
+      type: 'GET',
+      success: function (data) {
+        // Append the modal to the body (if not already present)
+        if ($('#editUserModal').length === 0) {
+          $('body').append(data);
+        }
 
-    // Set user ID in the modal (if needed)
-    $('#editUserModal').find('#userIdInput').val(userId);
+        // Set user ID in modal
+        $('#editUserModal').find('#userIdInput').val(userId);
+        // Show loading indicator inside modal
+        $('#editUserModal .modal-body').html('<p>Loading...</p>');
 
-    // Show the modal
-    $('#editUserModal').modal('show');
+        // Show the modal
+        $('#editUserModal').modal('show');
+      },
+      error: function () {
+        alert('Failed to load the edit modal.');
+      }
+    });
   });
 
 
