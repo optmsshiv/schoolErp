@@ -237,6 +237,7 @@ $(document).ready(function () {
 
               // Populate the form with user data
               $('#userIdInput').val(user.user_id);
+              $('#qualificationInput').val(user.qualification);
               $('#fullNameInput').val(user.fullname);
               $('#roleSelect').val(user.role);
               $('#emailInput').val(user.email);
@@ -247,6 +248,10 @@ $(document).ready(function () {
               $('#changeByInput').val(user.change_by);
               $('#salaryInput').val(user.salary);
               $('#aadharInput').val(user.aadhar_card);
+              $('#subjectInput').val(user.subject);
+              $('#userAddress').val(user.address);
+              $('#genderSelect').val(user.gender);
+              $('#dobDateInput').val(user.dob);
               $('#bankNameInput').val(user.bank_name);
               $('#branchNameInput').val(user.branch_name);
               $('#accountNumberInput').val(user.account_number);
