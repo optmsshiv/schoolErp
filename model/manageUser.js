@@ -306,7 +306,7 @@ $(document).ready(function () {
     }
 
     // Validate required fields (Example)
-    if (!$('#userIdInput').val() || !$('#fullNameInput').val() || !$('#emailInput').val()) {
+    if (!$('#aadharInput').val() || !$('#fullNameInput').val() || !$('#emailInput').val()) {
       Swal.fire({
         icon: 'error',
         title: 'Missing Information',
