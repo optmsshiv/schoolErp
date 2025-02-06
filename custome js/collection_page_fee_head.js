@@ -151,13 +151,16 @@ function fetchFeePlansData(studentData) {
     monthAmounts.forEach((amount, index) => {
       const amountCell = document.createElement('td');
       amountCell.innerHTML = paidMonths.includes(months[index])
-        ? `<div class="amount">${amount > 0 ? amount : 'N/A'}</div>` // Show amount only if paid
+        ? `<div class="amount text-success fw-bold">
+             ${amount > 0 ? amount : 'N/A'}
+             <i class="bx bx-check-circle text-success"></i> <!-- Green Check -->
+           </div>` // Show green check for paid months
         : `<div class="amount-button">
              <div class="amount">${amount > 0 ? amount : 'N/A'}</div>
              <button class="btn btn-outline-primary rounded-circle">
                <i class="bx bx-plus"></i>
              </button>
-           </div>`; // Show button if not paid
+           </div>`; // Show plus button if unpaid
       row.appendChild(amountCell);
 
       // Add to total if it's numeric
@@ -170,7 +173,7 @@ function fetchFeePlansData(studentData) {
     tableBody.appendChild(row);
   });
 
-  // Add "Total" row with amount buttons (hide buttons for paid months)
+  // Add "Total" row with amount buttons (show green check for paid months)
   const totalRow = document.createElement('tr');
   totalRow.classList.add('text-center');
 
@@ -179,23 +182,27 @@ function fetchFeePlansData(studentData) {
   totalFeeHeadCell.textContent = 'Total';
   totalRow.appendChild(totalFeeHeadCell);
 
-  // Add total amounts for each month with the plus button (only if not paid)
+  // Add total amounts for each month with green check or plus button
   totalAmounts.forEach((totalAmount, index) => {
     const totalAmountCell = document.createElement('td');
     totalAmountCell.innerHTML = paidMonths.includes(months[index])
-      ? `<div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>` // No button if paid
+      ? `<div class="amount text-success fw-bold">
+           ${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}
+           <i class="bx bx-check-circle text-success"></i> <!-- Green Check -->
+         </div>` // Green check if paid
       : `<div class="amount-button">
            <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
            <button class="btn btn-outline-primary rounded-circle">
              <i class="bx bx-plus"></i>
            </button>
-         </div>`; // Show button if not paid
+         </div>`; // Show plus button if unpaid
     totalRow.appendChild(totalAmountCell);
   });
 
   // Append total row to the table
   tableBody.appendChild(totalRow);
 }
+
 
 
 // Variable to keep track of the total
