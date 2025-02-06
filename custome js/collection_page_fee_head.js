@@ -92,6 +92,26 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+
+// Fetch paid months from the database
+function fetchPaidMonths() {
+    const studentId = '${user_id}'; // Replace with dynamic student ID
+
+    fetch(`fetch_paid_months.php?student_id=${studentId}`)
+        .then(response => response.json())
+        .then(paidMonths => {
+            paidMonths.forEach(month => hidePlusButton(month));
+        })
+        .catch(error => console.error('Error fetching paid months:', error));
+}
+
+// Hide plus button for a specific month
+function hidePlusButton(month) {
+    document.querySelectorAll(`button[data-month="${month}"]`).forEach(button => {
+        button.style.display = 'none';
+    });
+}
+
 function fetchFeePlansData(studentData) {
   const months = [
     'April', 'May', 'June', 'July', 'August',
@@ -199,6 +219,9 @@ function addToFeeCollection(month, feeType, amount) {
   `;
 
   tableBody.appendChild(newRow);
+
+  // Fetch and hide plus buttons for already paid months
+  fetchPaidMonths();
 
   // Update total amount
   totalAmount += parseFloat(amount); // Add the new amount to the total
