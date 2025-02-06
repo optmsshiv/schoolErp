@@ -94,8 +94,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function fetchFeePlansData(studentData) {
   const months = [
-    'April', 'May', 'June', 'July', 'August', 'September',
-    'October', 'November', 'December', 'January', 'February', 'March'
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+    'January',
+    'February',
+    'March'
   ];
 
   const paidMonths = JSON.parse(sessionStorage.getItem('paidMonths')) || []; // Get paid months from session storage
@@ -187,33 +197,6 @@ function fetchFeePlansData(studentData) {
   tableBody.appendChild(totalRow);
 }
 
-
-  // Add "Total" row with amount buttons
-  const totalRow = document.createElement('tr');
-  totalRow.classList.add('text-center');
-
-  // Add "Total" cell
-  const totalFeeHeadCell = document.createElement('td');
-  totalFeeHeadCell.textContent = 'Total';
-  totalRow.appendChild(totalFeeHeadCell);
-
-  // Add total amounts for each month with the plus button
-  totalAmounts.forEach(totalAmount => {
-    const totalAmountCell = document.createElement('td');
-    totalAmountCell.innerHTML = `
-      <div class="amount-button">
-        <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-        <button class="btn btn-outline-primary rounded-circle">
-          <i class="bx bx-plus"></i>
-        </button>
-      </div>
-    `;
-    totalRow.appendChild(totalAmountCell);
-  });
-
-  // Append total row to the table
-  tableBody.appendChild(totalRow);
-}
 
 // Variable to keep track of the total
 let totalAmount = 0;
