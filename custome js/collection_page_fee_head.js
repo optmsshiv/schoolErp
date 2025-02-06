@@ -95,7 +95,10 @@ document.addEventListener('DOMContentLoaded', function () {
 function fetchPaidMonths() {
   return fetch('../php/submitFee/get_collected_fee.php') // Your PHP file that returns paid months as JSON
     .then(response => response.json())
-    .catch(error => console.error('Error fetching paid months:', error));
+    .catch(error => {
+      console.error('Error fetching paid months:', error);
+      return []; // Return an empty array if an error occurs
+    });
 }
 
 function fetchFeePlansData(studentData) {
@@ -107,70 +110,74 @@ function fetchFeePlansData(studentData) {
 
 
   fetchPaidMonths().then(paidMonths => {
-  // Generate the table header dynamically
-  const theadRow = document.querySelector('#student_fee_table thead tr');
-  theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
-
-  months.forEach(month => {
-    const th = document.createElement('th');
-    th.textContent = month;
-    theadRow.appendChild(th);
-  });
-
-  // Create a map to organize data by Fee Head and months
-  const feeDataMap = {};
-
-  studentData.forEach(student => {
-    const { monthly_fee } = student;
-
-    // Populate "Monthly Fee" for all months
-    if (!feeDataMap['Monthly Fee']) {
-      feeDataMap['Monthly Fee'] = new Array(months.length).fill(monthly_fee || 'N/A'); // Default to N/A if fee is not available
+    // Make sure paidMonths is an array, even if the server returns an empty response
+    if (!Array.isArray(paidMonths)) {
+      paidMonths = [];
     }
-  });
+    // Generate the table header dynamically
+    const theadRow = document.querySelector('#student_fee_table thead tr');
+    theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
 
-  // Populate the table body dynamically
-  const tableBody = document.querySelector('#student_fee_table tbody');
-  tableBody.innerHTML = ''; // Clear any existing rows
+    months.forEach(month => {
+      const th = document.createElement('th');
+      th.textContent = month;
+      theadRow.appendChild(th);
+    });
 
-  let totalAmounts = new Array(months.length).fill(0); // Array to store total amounts for each month
+    // Create a map to organize data by Fee Head and months
+    const feeDataMap = {};
 
-  Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
-    const row = document.createElement('tr');
-    row.classList.add('text-center');
+    studentData.forEach(student => {
+      const { monthly_fee } = student;
 
-    // Fee Head column
-    const feeHeadCell = document.createElement('td');
-    feeHeadCell.textContent = feeHeadName;
-    row.appendChild(feeHeadCell);
-
-    // Amount columns for each month (No button here for monthly fee)
-    monthAmounts.forEach((amount, index) => {
-      const amountCell = document.createElement('td');
-      amountCell.textContent = amount !== 'N/A' && amount ? amount : 'N/A'; // Show amount if available
-      row.appendChild(amountCell);
-
-      // Add the amount to the total for that month (only if it's numeric)
-      if (amount && !isNaN(amount)) {
-        totalAmounts[index] += parseFloat(amount);
+      // Populate "Monthly Fee" for all months
+      if (!feeDataMap['Monthly Fee']) {
+        feeDataMap['Monthly Fee'] = new Array(months.length).fill(monthly_fee || 'N/A'); // Default to N/A if fee is not available
       }
     });
 
-    // Append row to the table body
-    tableBody.appendChild(row);
-  });
+    // Populate the table body dynamically
+    const tableBody = document.querySelector('#student_fee_table tbody');
+    tableBody.innerHTML = ''; // Clear any existing rows
 
-  // Add "Total" row with amount buttons
-  const totalRow = document.createElement('tr');
-  totalRow.classList.add('text-center');
+    let totalAmounts = new Array(months.length).fill(0); // Array to store total amounts for each month
 
-  // Add "Total" cell
-  const totalFeeHeadCell = document.createElement('td');
-  totalFeeHeadCell.textContent = 'Total';
-  totalRow.appendChild(totalFeeHeadCell);
+    Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
+      const row = document.createElement('tr');
+      row.classList.add('text-center');
 
-  // Add total amounts for each month with the plus button
-   // Add total amounts for each month with the plus button
+      // Fee Head column
+      const feeHeadCell = document.createElement('td');
+      feeHeadCell.textContent = feeHeadName;
+      row.appendChild(feeHeadCell);
+
+      // Amount columns for each month (No button here for monthly fee)
+      monthAmounts.forEach((amount, index) => {
+        const amountCell = document.createElement('td');
+        amountCell.textContent = amount !== 'N/A' && amount ? amount : 'N/A'; // Show amount if available
+        row.appendChild(amountCell);
+
+        // Add the amount to the total for that month (only if it's numeric)
+        if (amount && !isNaN(amount)) {
+          totalAmounts[index] += parseFloat(amount);
+        }
+      });
+
+      // Append row to the table body
+      tableBody.appendChild(row);
+    });
+
+    // Add "Total" row with amount buttons
+    const totalRow = document.createElement('tr');
+    totalRow.classList.add('text-center');
+
+    // Add "Total" cell
+    const totalFeeHeadCell = document.createElement('td');
+    totalFeeHeadCell.textContent = 'Total';
+    totalRow.appendChild(totalFeeHeadCell);
+
+    // Add total amounts for each month with the plus button
+    // Add total amounts for each month with the plus button
     totalAmounts.forEach((totalAmount, index) => {
       const totalAmountCell = document.createElement('td');
 
@@ -196,12 +203,12 @@ function fetchFeePlansData(studentData) {
         `;
       }
 
-    totalRow.appendChild(totalAmountCell);
-  });
+      totalRow.appendChild(totalAmountCell);
+    });
 
-  // Append total row to the table
-  tableBody.appendChild(totalRow);
-});
+    // Append total row to the table
+    tableBody.appendChild(totalRow);
+  });
 }
 
 // Variable to keep track of the total

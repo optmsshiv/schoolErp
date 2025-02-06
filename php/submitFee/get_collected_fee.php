@@ -1,7 +1,7 @@
 <?php
 require '../db_connection.php'; // Include your database connection
 
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 
 // Assuming you're already connected to the database
 session_start();
@@ -16,6 +16,10 @@ $stmt->execute();
 
 $paidMonths = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-// Return the result as JSON
-echo json_encode($paidMonths);
+// Debugging: Check what data is returned
+if (empty($paidMonths)) {
+    echo json_encode([]); // Return an empty array if no paid months found
+} else {
+    echo json_encode($paidMonths); // Return the array of paid months
+}
 ?>
