@@ -44,10 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   exit;
                }
 
-        if ($_FILES['user_avatar']['size'] > 2 * 1024 * 1024) {
-            echo json_encode(['success' => false, 'message' => 'File too large. Max size: 2MB.']);
-            exit;
-        }
+       //if ($_FILES['user_avatar']['size'] > 2 * 1024 * 1024) {
+       //    echo json_encode(['success' => false, 'message' => 'File too large. Max size: 2MB.']);
+       //    exit;
+       //}
 
         if (move_uploaded_file($_FILES['user_avatar']['tmp_name'], $avatarPath)) {
             $avatarUrl = '/assets/img/avatars/hh' . $avatarName;

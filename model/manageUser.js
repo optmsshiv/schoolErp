@@ -178,15 +178,15 @@ $(document).ready(function () {
      }
 
      // File size limit (2MB)
-     if (file.size > 2 * 1024 * 1024) {
-       Swal.fire({
-         icon: 'warning',
-         title: 'File too large',
-         text: 'Maximum allowed size is 2MB.'
-       });
-       input.value = ''; // Reset input
-       return;
-     }
+    //if (file.size > 2 * 1024 * 1024) {
+    //  Swal.fire({
+    //    icon: 'warning',
+    //    title: 'File too large',
+    //    text: 'Maximum allowed size is 2MB.'
+    //  });
+    //  input.value = ''; // Reset input
+    //  return;
+    //}
 
      var reader = new FileReader();
      reader.onload = function (e) {
