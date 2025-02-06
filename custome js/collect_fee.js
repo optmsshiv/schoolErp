@@ -20,13 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
-
 /**
  * Fetch the paid months from the server.
  * @returns {Promise<Array>} - A promise resolving to an array of paid months.
  */
 function fetchPaidMonths() {
-  return fetch('getPaidMonths.php')
+  return fetch('/php/submitFee/get_collected_fee.php')
     .then(response => response.json())
     .catch(error => {
       console.error('Error fetching paid months:', error);
