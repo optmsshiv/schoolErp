@@ -106,12 +106,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':user_avatar', $avatarUrl);
         }
 
-        $stmt->execute();
-
-        echo json_encode(['success' => true, 'message' => 'User updated successfully']);
+        if ($stmt->execute()) {
+    echo json_encode(['success' => true, 'message' => 'User updated successfully']);
+} else {
+    echo json_encode(['success' => false, 'message' => 'Database update failed']);
+}
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
     }
+
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request']);
 }
