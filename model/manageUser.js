@@ -292,6 +292,7 @@ $(document).ready(function () {
     formData.append('change_by', $('#changeByInput').val());
     formData.append('salary', $('#salaryInput').val());
     formData.append('aadhar_card', $('#aadharInput').val());
+    formData.append('address', $('#userAddress').val());
     formData.append('bank_name', $('#bankNameInput').val());
     formData.append('branch_name', $('#branchNameInput').val());
     formData.append('account_number', $('#accountNumberInput').val());
