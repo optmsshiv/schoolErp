@@ -256,7 +256,7 @@ $(document).ready(function () {
               $('#branchNameInput').val(user.branch_name);
               $('#accountNumberInput').val(user.account_number);
               $('#ifscCodeInput').val(user.ifsc_code);
-              $('#accountTypeSelect').val(user.account_type);
+              $('#accountType').val(user.account_type);
 
               // Update user avatar
               $('#userAvatar').attr('src', user.user_role_avatar || '/assets/img/avatars/default-avatar.png');
@@ -297,7 +297,7 @@ $(document).ready(function () {
     formData.append('branch_name', $('#branchNameInput').val());
     formData.append('account_number', $('#accountNumberInput').val());
     formData.append('ifsc_code', $('#ifscCodeInput').val());
-    formData.append('account_type', $('#accountTypeSelect').val());
+    formData.append('account_type', $('#accountType').val());
 
     // Add new fields to formData
     formData.append('subject', $('#subjectInput').val());
