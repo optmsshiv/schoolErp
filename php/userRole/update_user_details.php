@@ -33,12 +33,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $avatarName = time() . '_' . basename($_FILES['user_avatar']['name']);
         $avatarPath = $uploadDir . $avatarName;
 
+        if (!file_exists($uploadDir)) {
+        mkdir($uploadDir, 0755, true); // Create directory if it doesn't exist
+            }
+
         // Validate file type and size (restrict to JPG, PNG, max 2MB)
-        $allowedTypes = ['image/jpeg', 'image/png'];
-        if (!in_array($_FILES['user_avatar']['type'], $allowedTypes)) {
-            echo json_encode(['success' => false, 'message' => 'Invalid file type. Only JPG and PNG allowed.']);
-            exit;
-        }
+        $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+          if (!in_array(mime_content_type($_FILES['user_avatar']['tmp_name']), $allowedTypes)) {
+                echo json_encode(['success' => false, 'message' => 'Invalid file type. Only JPG and PNG allowed.']);
+                  exit;
+               }
+
         if ($_FILES['user_avatar']['size'] > 2 * 1024 * 1024) {
             echo json_encode(['success' => false, 'message' => 'File too large. Max size: 2MB.']);
             exit;
