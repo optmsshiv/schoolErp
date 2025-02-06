@@ -166,6 +166,21 @@ $(document).ready(function () {
     // Redirect to user view page or load modal with user data
   });
 
+  $(document).on('change', '#avatarUpload', function (event) {
+    var input = event.target;
+
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $('#userAvatar').attr('src', e.target.result);
+      };
+
+      reader.readAsDataURL(input.files[0]); // Convert to base64
+    }
+  });
+
+
   // Handle 'Edit' button click event
   $(document).on('click', '.userEdit', function () {
     var userId = $(this).data('id');
