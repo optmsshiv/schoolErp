@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function fetchPaidMonths() {
-  return fetch('../php/submitFee/get_collected_fee.php') // Your PHP file that returns paid months as JSON
+  return fetch('/php/submitFee/get_collected_fee.php') // Your PHP file that returns paid months as JSON
     .then(response => response.json())
     .catch(error => {
       console.error('Error fetching paid months:', error);
