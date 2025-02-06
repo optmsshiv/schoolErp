@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (move_uploaded_file($_FILES['user_avatar']['tmp_name'], $avatarPath)) {
-            $avatarUrl = '/assets/img/avatars/' . $avatarName;
+            $avatarUrl = '/assets/img/avatars/hh' . $avatarName;
         } else {
             echo json_encode(['success' => false, 'message' => 'Avatar upload failed']);
             exit;
@@ -54,13 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // Include subject, gender, dob, and qualification in the query
-        $query = "UPDATE users SET
+        $query = "UPDATE userRole SET
                   fullname = :fullname, role = :role, email = :email, phone = :phone,
                   subject = :subject, gender = :gender, dob = :dob, qualification = :qualification,
                   joining_date = :joining_date, status = :status, status_change_cause = :status_change_cause,
                   change_by = :change_by, salary = :salary, aadhar_card = :aadhar_card, address = :user_address,
                   bank_name = :bank_name, branch_name = :branch_name, account_number = :account_number,
-                  ifsc_code = :ifsc_code, account_type = :account_type";
+                  ifsc_code = :ifsc_code, account_type = :account_type
+                  WHERE user_id = :user_id";
 
         if ($avatarUrl !== null) {
             $query .= ", user_role_avatar = :user_avatar";
@@ -89,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':account_number', $account_number);
         $stmt->bindParam(':ifsc_code', $ifsc_code);
         $stmt->bindParam(':account_type', $account_type);
-        $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
 
         if ($avatarUrl !== null) {
             $stmt->bindParam(':user_avatar', $avatarUrl);
