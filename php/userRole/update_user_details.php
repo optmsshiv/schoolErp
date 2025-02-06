@@ -6,8 +6,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Enable PDO error mode
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Sanitize and validate inputs
-        $user_id = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT);
+        // Validate and sanitize user ID
+        if (!isset($_POST['user_id']) || empty($_POST['user_id'])) {
+            echo json_encode(['success' => false, 'message' => 'User ID is missing!']);
+            exit;
+        }
+
+        $user_id = filter_var($_POST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+
+        // Ensure user exists before updating
+        $checkStmt = $pdo->prepare("SELECT user_id FROM userRole WHERE user_id = :user_id");
+        $checkStmt->execute([':user_id' => $user_id]);
+
+        if ($checkStmt->rowCount() === 0) {
+            echo json_encode(['success' => false, 'message' => 'User not found!']);
+            exit;
+        }
+
+        // Sanitize inputs
         $fullname = htmlspecialchars($_POST['fullname'], ENT_QUOTES, 'UTF-8');
         $role = htmlspecialchars($_POST['role'], ENT_QUOTES, 'UTF-8');
         $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ? $_POST['email'] : null;
@@ -29,13 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $ifsc_code = htmlspecialchars($_POST['ifsc_code'], ENT_QUOTES, 'UTF-8');
         $account_type = htmlspecialchars($_POST['account_type'], ENT_QUOTES, 'UTF-8');
 
-        // Validate email
-        if (!$email) {
-            echo json_encode(['success' => false, 'message' => 'Invalid email format']);
-            exit;
-        }
-
-        // Handle avatar upload
+        // Avatar Upload (if provided)
         $avatarUrl = null;
         if (!empty($_FILES['user_avatar']['name'])) {
             $uploadDir = __DIR__ . '/../assets/img/avatars/';
@@ -43,19 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $avatarPath = $uploadDir . $avatarName;
 
             if (!file_exists($uploadDir)) {
-                mkdir($uploadDir, 0755, true); // Create directory if it doesn't exist
+                mkdir($uploadDir, 0755, true);
             }
 
-            // Validate file type (JPG, PNG only)
             $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
             if (!in_array(mime_content_type($_FILES['user_avatar']['tmp_name']), $allowedTypes)) {
                 echo json_encode(['success' => false, 'message' => 'Invalid file type. Only JPG and PNG allowed.']);
-                exit;
-            }
-
-            // Validate file upload success
-            if ($_FILES['user_avatar']['error'] !== UPLOAD_ERR_OK) {
-                echo json_encode(['success' => false, 'message' => 'File upload error.']);
                 exit;
             }
 
@@ -109,7 +112,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':user_avatar', $avatarUrl);
         }
 
-        echo json_encode(['success' => $stmt->execute()]);
+        // Execute query
+        $updateSuccess = $stmt->execute();
+
+        if ($updateSuccess) {
+            echo json_encode(['success' => true, 'message' => 'User updated successfully!']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Update failed.']);
+        }
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     }
