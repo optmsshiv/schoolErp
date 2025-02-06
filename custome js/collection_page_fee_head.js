@@ -92,7 +92,18 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-function fetchFeePlansData(studentData) {
+async function fetchCollectedFees() {
+  try {
+    const response = await fetch('../php/submitFee/get_collected_fees.php');
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching collected fees:', error);
+    return {}; // Return an empty object if an error occurs
+  }
+}
+
+async function fetchFeePlansData(studentData) {
+  const collectedFees = await fetchCollectedFees(); // Fetch collected fees from database
   const months = [
     'April', 'May', 'June', 'July', 'August',
     'September', 'October', 'November', 'December',
@@ -119,6 +130,11 @@ function fetchFeePlansData(studentData) {
     if (!feeDataMap['Monthly Fee']) {
       feeDataMap['Monthly Fee'] = new Array(months.length).fill(monthly_fee || 'N/A'); // Default to N/A if fee is not available
     }
+
+    // Store collected fee months for this student
+    if (user_id && collectedFees[user_id]) {
+      feeDataMap[`${user_id}_collected`] = collectedFees[user_id];
+    }
   });
 
   // Populate the table body dynamically
@@ -136,6 +152,11 @@ function fetchFeePlansData(studentData) {
     feeHeadCell.textContent = feeHeadName;
     row.appendChild(feeHeadCell);
 
+    // Get the collected months for the current student
+    const studentUserId = feeHeadName.split('_')[0];
+    const collectedMonths = feeDataMap[`${studentUserId}_collected`] || [];
+
+
     // Amount columns for each month (No button here for monthly fee)
     monthAmounts.forEach((amount, index) => {
       const amountCell = document.createElement('td');
@@ -147,6 +168,21 @@ function fetchFeePlansData(studentData) {
         totalAmounts[index] += parseFloat(amount);
       }
     });
+
+    // Hide the plus button for already paid months
+      const plusButtonCell = document.createElement('td');
+      if (collectedMonths.includes(months[index])) {
+        plusButtonCell.innerHTML = ''; // No button if fee already paid
+      } else {
+        plusButtonCell.innerHTML = `
+          <button class="btn btn-outline-primary rounded-circle">
+            <i class="bx bx-plus"></i>
+          </button>
+        `;
+      }
+      row.appendChild(plusButtonCell);
+    
+
 
     // Append row to the table body
     tableBody.appendChild(row);
