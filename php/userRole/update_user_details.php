@@ -2,69 +2,72 @@
 require '../db_connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Sanitize and validate inputs
-    $user_id = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT);
-    $fullname = htmlspecialchars($_POST['fullname'], ENT_QUOTES, 'UTF-8');
-    $role = htmlspecialchars($_POST['role'], ENT_QUOTES, 'UTF-8');
-    $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ? $_POST['email'] : null;
-    $subject = htmlspecialchars($_POST['subject'], ENT_QUOTES, 'UTF-8');
-    $gender = htmlspecialchars($_POST['gender'], ENT_QUOTES, 'UTF-8');
-    $phone = htmlspecialchars($_POST['phone'], ENT_QUOTES, 'UTF-8');
-    $dob = htmlspecialchars($_POST['dob'], ENT_QUOTES, 'UTF-8');
-    $qualification = htmlspecialchars($_POST['qualification'], ENT_QUOTES, 'UTF-8');
-    $joining_date = htmlspecialchars($_POST['joining_date'], ENT_QUOTES, 'UTF-8');
-    $status = htmlspecialchars($_POST['status'], ENT_QUOTES, 'UTF-8');
-    $status_change_cause = htmlspecialchars($_POST['status_change_cause'], ENT_QUOTES, 'UTF-8');
-    $change_by = htmlspecialchars($_POST['change_by'], ENT_QUOTES, 'UTF-8');
-    $salary = filter_var($_POST['salary'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    $aadhar_card = htmlspecialchars($_POST['aadhar_card'], ENT_QUOTES, 'UTF-8');
-    $user_address = htmlspecialchars($_POST['user_address'], ENT_QUOTES, 'UTF-8');
-    $bank_name = htmlspecialchars($_POST['bank_name'], ENT_QUOTES, 'UTF-8');
-    $branch_name = htmlspecialchars($_POST['branch_name'], ENT_QUOTES, 'UTF-8');
-    $account_number = htmlspecialchars($_POST['account_number'], ENT_QUOTES, 'UTF-8');
-    $ifsc_code = htmlspecialchars($_POST['ifsc_code'], ENT_QUOTES, 'UTF-8');
-    $account_type = htmlspecialchars($_POST['account_type'], ENT_QUOTES, 'UTF-8');
+    try {
+        // Enable PDO error mode
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $avatarUrl = null; // Initialize variable to prevent undefined errors
+        // Sanitize and validate inputs
+        $user_id = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_NUMBER_INT);
+        $fullname = htmlspecialchars($_POST['fullname'], ENT_QUOTES, 'UTF-8');
+        $role = htmlspecialchars($_POST['role'], ENT_QUOTES, 'UTF-8');
+        $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ? $_POST['email'] : null;
+        $subject = htmlspecialchars($_POST['subject'], ENT_QUOTES, 'UTF-8');
+        $gender = htmlspecialchars($_POST['gender'], ENT_QUOTES, 'UTF-8');
+        $phone = htmlspecialchars($_POST['phone'], ENT_QUOTES, 'UTF-8');
+        $dob = htmlspecialchars($_POST['dob'], ENT_QUOTES, 'UTF-8');
+        $qualification = htmlspecialchars($_POST['qualification'], ENT_QUOTES, 'UTF-8');
+        $joining_date = htmlspecialchars($_POST['joining_date'], ENT_QUOTES, 'UTF-8');
+        $status = htmlspecialchars($_POST['status'], ENT_QUOTES, 'UTF-8');
+        $status_change_cause = htmlspecialchars($_POST['status_change_cause'], ENT_QUOTES, 'UTF-8');
+        $change_by = htmlspecialchars($_POST['change_by'], ENT_QUOTES, 'UTF-8');
+        $salary = filter_var($_POST['salary'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $aadhar_card = htmlspecialchars($_POST['aadhar_card'], ENT_QUOTES, 'UTF-8');
+        $user_address = htmlspecialchars($_POST['user_address'], ENT_QUOTES, 'UTF-8');
+        $bank_name = htmlspecialchars($_POST['bank_name'], ENT_QUOTES, 'UTF-8');
+        $branch_name = htmlspecialchars($_POST['branch_name'], ENT_QUOTES, 'UTF-8');
+        $account_number = htmlspecialchars($_POST['account_number'], ENT_QUOTES, 'UTF-8');
+        $ifsc_code = htmlspecialchars($_POST['ifsc_code'], ENT_QUOTES, 'UTF-8');
+        $account_type = htmlspecialchars($_POST['account_type'], ENT_QUOTES, 'UTF-8');
 
-    // Handle avatar upload
-    if (!empty($_FILES['user_avatar']['name'])) {
-        $uploadDir = __DIR__ . '/assets/img/avatars/';
-        $avatarName = time() . '_' . basename($_FILES['user_avatar']['name']);
-        $avatarPath = $uploadDir . $avatarName;
-
-        if (!file_exists($uploadDir)) {
-        mkdir($uploadDir, 0755, true); // Create directory if it doesn't exist
-            }
-
-        // Validate file type and size (restrict to JPG, PNG, max 2MB)
-        $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-          if (!in_array(mime_content_type($_FILES['user_avatar']['tmp_name']), $allowedTypes)) {
-                echo json_encode(['success' => false, 'message' => 'Invalid file type. Only JPG and PNG allowed.']);
-                  exit;
-               }
-
-       //if ($_FILES['user_avatar']['size'] > 2 * 1024 * 1024) {
-       //    echo json_encode(['success' => false, 'message' => 'File too large. Max size: 2MB.']);
-       //    exit;
-       //}
-
-        // Check if the file was uploaded properly
-    if ($_FILES['user_avatar']['error'] !== UPLOAD_ERR_OK) {
-        echo json_encode(['success' => false, 'message' => 'File upload error: ' . $_FILES['user_avatar']['error']]);
-        exit;
-    }
-
-        if (move_uploaded_file($_FILES['user_avatar']['tmp_name'], $avatarPath)) {
-            $avatarUrl = '/assets/img/avatars/hh' . $avatarName;
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Avatar upload failed']);
+        // Validate email
+        if (!$email) {
+            echo json_encode(['success' => false, 'message' => 'Invalid email format']);
             exit;
         }
-    }
 
-    try {
-        // Include subject, gender, dob, and qualification in the query
+        // Handle avatar upload
+        $avatarUrl = null;
+        if (!empty($_FILES['user_avatar']['name'])) {
+            $uploadDir = __DIR__ . '/../assets/img/avatars/';
+            $avatarName = time() . '_' . basename($_FILES['user_avatar']['name']);
+            $avatarPath = $uploadDir . $avatarName;
+
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0755, true); // Create directory if it doesn't exist
+            }
+
+            // Validate file type (JPG, PNG only)
+            $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            if (!in_array(mime_content_type($_FILES['user_avatar']['tmp_name']), $allowedTypes)) {
+                echo json_encode(['success' => false, 'message' => 'Invalid file type. Only JPG and PNG allowed.']);
+                exit;
+            }
+
+            // Validate file upload success
+            if ($_FILES['user_avatar']['error'] !== UPLOAD_ERR_OK) {
+                echo json_encode(['success' => false, 'message' => 'File upload error.']);
+                exit;
+            }
+
+            if (move_uploaded_file($_FILES['user_avatar']['tmp_name'], $avatarPath)) {
+                $avatarUrl = '/assets/img/avatars/' . $avatarName;
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Avatar upload failed']);
+                exit;
+            }
+        }
+
+        // Update query
         $query = "UPDATE userRole SET
                   fullname = :fullname, role = :role, email = :email, phone = :phone,
                   subject = :subject, gender = :gender, dob = :dob, qualification = :qualification,
@@ -100,21 +103,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':account_number', $account_number);
         $stmt->bindParam(':ifsc_code', $ifsc_code);
         $stmt->bindParam(':account_type', $account_type);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 
         if ($avatarUrl !== null) {
             $stmt->bindParam(':user_avatar', $avatarUrl);
         }
 
-        if ($stmt->execute()) {
-    echo json_encode(['success' => true, 'message' => 'User updated successfully']);
-} else {
-    echo json_encode(['success' => false, 'message' => 'Database update failed']);
-}
+        echo json_encode(['success' => $stmt->execute()]);
     } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     }
-
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request']);
 }

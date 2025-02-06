@@ -298,8 +298,6 @@ $(document).ready(function () {
     formData.append('account_number', $('#accountNumberInput').val());
     formData.append('ifsc_code', $('#ifscCodeInput').val());
     formData.append('account_type', $('#accountType').val());
-
-    // Add new fields to formData
     formData.append('subject', $('#subjectInput').val());
     formData.append('gender', $('#genderSelect').val());
     formData.append('dob', $('#dobDateInput').val());
