@@ -322,13 +322,14 @@ $(document).ready(function () {
     }
 
     $.ajax({
-      url: '../php/userRole/update_user_details.php',
+      url: '/php/userRole/update_user_details.php',
       type: 'POST',
       data: formData,
       contentType: false,
       processData: false,
       dataType: 'json',
       success: function (response) {
+        console.log('Server Response:', response); // Debug response
         if (response.success) {
           Swal.fire({
             icon: 'success',
