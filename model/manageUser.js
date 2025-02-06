@@ -327,6 +327,7 @@ $(document).ready(function () {
           Swal.fire({
             icon: 'success',
             title: 'User updated successfully!',
+            position: 'top', // Position at the top of the modal
             toast: true,
             timer: 2000
           });
