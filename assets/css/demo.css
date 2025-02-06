@@ -1065,3 +1065,25 @@ td {
   transition: background-color 1s ease-out;
 }
 
+
+/* custom avatar */
+.avatar-container {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+}
+
+.avatar-preview {
+  width: 120px;
+  /* Custom width */
+  height: 120px;
+  /* Custom height */
+  object-fit: cover;
+  border: 2px solid #ddd;
+  transition: transform 0.2s ease-in-out;
+}
+
+.avatar-container:hover .avatar-preview {
+  transform: scale(1.1);
+  border-color: #007bff;
+}

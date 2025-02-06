@@ -7,9 +7,13 @@
       </div>
       <div class="modal-body">
         <div class="text-center">
-          <img id="userAvatar" src="/assets/img/avatars/default-avatar.png" alt="User Avatar" class="rounded-circle mb-3" width="100">
-          <input type="file" id="avatarUpload" class="form-control mt-2" accept="image/*">
+          <label for="avatarUpload" class="avatar-container">
+            <img id="userAvatar" src="/assets/img/avatars/default-avatar.png" alt="User Avatar"
+              class="rounded-circle avatar-preview">
+          </label>
+          <input type="file" id="avatarUpload" class="form-control mt-2 d-none" accept="image/*">
         </div>
+
 
         <div class="row">
           <div class="col-md-4 mt-3">

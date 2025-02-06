@@ -159,26 +159,44 @@ $(document).ready(function () {
     table.page.len(length).draw();
   });
 
-  // Handle 'View' button click event
-  $('#userTable').on('click', '#userView', function () {
-    var userId = $(this).data('id');
-    alert('View details for User ID: ' + userId);
-    // Redirect to user view page or load modal with user data
-  });
+ $(document).on('change', '#avatarUpload', function (event) {
+   var input = event.target;
+   var file = input.files[0];
 
-  $(document).on('change', '#avatarUpload', function (event) {
-    var input = event.target;
+   if (file) {
+     var fileType = file.type;
+     var validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
+     if (!validImageTypes.includes(fileType)) {
+       Swal.fire({
+         icon: 'error',
+         title: 'Invalid File',
+         text: 'Please select a valid image (JPEG, PNG, GIF, WEBP).'
+       });
+       input.value = ''; // Reset input
+       return;
+     }
 
-      reader.onload = function (e) {
-        $('#userAvatar').attr('src', e.target.result);
-      };
+     // File size limit (2MB)
+     if (file.size > 2 * 1024 * 1024) {
+       Swal.fire({
+         icon: 'warning',
+         title: 'File too large',
+         text: 'Maximum allowed size is 2MB.'
+       });
+       input.value = ''; // Reset input
+       return;
+     }
 
-      reader.readAsDataURL(input.files[0]); // Convert to base64
-    }
-  });
+     var reader = new FileReader();
+     reader.onload = function (e) {
+       $('#userAvatar').attr('src', e.target.result);
+     };
+
+     reader.readAsDataURL(file);
+   }
+ });
+
 
 
   // Handle 'Edit' button click event
