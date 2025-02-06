@@ -14,14 +14,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $user_id = filter_var($_POST['user_id'], FILTER_SANITIZE_NUMBER_INT);
 
-        // Ensure user exists before updating
-        $checkStmt = $pdo->prepare("SELECT user_id FROM userRole WHERE user_id = :user_id");
-        $checkStmt->execute([':user_id' => $user_id]);
+       $checkStmt = $pdo->prepare("SELECT user_id FROM userRole WHERE user_id = :user_id");
+$checkStmt->execute([':user_id' => $user_id]);
+$result = $checkStmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($checkStmt->rowCount() === 0) {
-            echo json_encode(['success' => false, 'message' => 'User not found!']);
-            exit;
-        }
+if (!$result) {
+    error_log("User ID not found in DB: " . json_encode($user_id));
+    echo json_encode(['success' => false, 'message' => 'User not found!']);
+    exit;
+}
+
 
         // Sanitize inputs
         $fullname = htmlspecialchars($_POST['fullname'], ENT_QUOTES, 'UTF-8');
