@@ -60,8 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   joining_date = :joining_date, status = :status, status_change_cause = :status_change_cause,
                   change_by = :change_by, salary = :salary, aadhar_card = :aadhar_card, address = :user_address,
                   bank_name = :bank_name, branch_name = :branch_name, account_number = :account_number,
-                  ifsc_code = :ifsc_code, account_type = :account_type
-                  WHERE user_id = :user_id";
+                  ifsc_code = :ifsc_code, account_type = :account_type";
 
         if ($avatarUrl !== null) {
             $query .= ", user_role_avatar = :user_avatar";
