@@ -312,6 +312,7 @@ $(document).ready(function () {
     }
 
     // Validate required fields (Example)
+    /*
     if (!$('#aadharInput').val() || !$('#fullNameInput').val() || !$('#emailInput').val()) {
       Swal.fire({
         icon: 'error',
@@ -319,7 +320,7 @@ $(document).ready(function () {
         text: 'Please fill in all required fields.'
       });
       return;
-    }
+    }*/
 
     $.ajax({
       url: '/php/userRole/update_user_details.php',
