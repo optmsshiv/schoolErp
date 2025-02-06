@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Handle avatar upload
     if (!empty($_FILES['user_avatar']['name'])) {
-        $uploadDir = '/assets/img/avatars/';
+        $uploadDir = __DIR__ . '/assets/img/avatars/';
         $avatarName = time() . '_' . basename($_FILES['user_avatar']['name']);
         $avatarPath = $uploadDir . $avatarName;
 
@@ -48,6 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
        //    echo json_encode(['success' => false, 'message' => 'File too large. Max size: 2MB.']);
        //    exit;
        //}
+
+        // Check if the file was uploaded properly
+    if ($_FILES['user_avatar']['error'] !== UPLOAD_ERR_OK) {
+        echo json_encode(['success' => false, 'message' => 'File upload error: ' . $_FILES['user_avatar']['error']]);
+        exit;
+    }
 
         if (move_uploaded_file($_FILES['user_avatar']['tmp_name'], $avatarPath)) {
             $avatarUrl = '/assets/img/avatars/hh' . $avatarName;
