@@ -249,7 +249,7 @@ $(document).ready(function () {
               $('#salaryInput').val(user.salary);
               $('#aadharInput').val(user.aadhar_card);
               $('#subjectInput').val(user.subject);
-              $('#userAddress').val(user.address);
+              $('#userAddress').val(user.user_address);
               $('#genderSelect').val(user.gender);
               $('#dobDateInput').val(user.dob);
               $('#bankNameInput').val(user.bank_name);
@@ -292,7 +292,7 @@ $(document).ready(function () {
     formData.append('change_by', $('#changeByInput').val());
     formData.append('salary', $('#salaryInput').val());
     formData.append('aadhar_card', $('#aadharInput').val());
-    formData.append('address', $('#userAddress').val());
+    formData.append('user_address', $('#userAddress').val());
     formData.append('bank_name', $('#bankNameInput').val());
     formData.append('branch_name', $('#branchNameInput').val());
     formData.append('account_number', $('#accountNumberInput').val());
