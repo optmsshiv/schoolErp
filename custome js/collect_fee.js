@@ -7,16 +7,32 @@ document.addEventListener('DOMContentLoaded', function () {
   const tableBody = document.querySelector('#student_data tbody');
 
   if (collectFeeButton) {
-    collectFeeButton.addEventListener('click', function (event) {
+    collectFeeButton.addEventListener('click', async function (event) {
       if (!isTableDataAvailable(tableBody)) {
         event.preventDefault(); // Prevent navigation
         showErrorWithLoadingBar('No student data available!'); // Show error with loading bar
       } else {
-        collectFeeData(); // Proceed with fee collection
+       await collectFeeData(); // Proceed with fee collection
+       const paidMonths = await fetchPaidMonths(); // Fetch paid months
+       sessionStorage.setItem('paidMonths', JSON.stringify(paidMonths));
       }
     });
   }
 });
+
+
+/**
+ * Fetch the paid months from the server.
+ * @returns {Promise<Array>} - A promise resolving to an array of paid months.
+ */
+function fetchPaidMonths() {
+  return fetch('getPaidMonths.php')
+    .then(response => response.json())
+    .catch(error => {
+      console.error('Error fetching paid months:', error);
+      return [];
+    });
+}
 
 /**
  * Check if the table contains any data rows.
