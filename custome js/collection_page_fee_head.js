@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 async function fetchCollectedFees() {
   try {
-    const response = await fetch('../php/submitFee/get_collected_fees.php');
+    const response = await fetch('../php/submitFee/get_collected_fee.php');
     return await response.json();
   } catch (error) {
     console.error('Error fetching collected fees:', error);
@@ -181,7 +181,7 @@ async function fetchFeePlansData(studentData) {
         `;
       }
       row.appendChild(plusButtonCell);
-    
+
 
 
     // Append row to the table body
