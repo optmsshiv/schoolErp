@@ -6,12 +6,12 @@ header('Content-Type: application/json');
 // Assuming you're already connected to the database
 session_start();
 
-$studentId = $_SESSION['student_id']; // Assuming student ID is stored in the session
+$studentId = $_SESSION['user_id']; // Assuming student ID is stored in the session
 
 // Query to get the list of paid months for the student
-$query = "SELECT month FROM feeDetails WHERE student_id = :student_id AND payment_status = paid";
+$query = "SELECT month FROM feeDetails WHERE user_id = :user_id AND payment_status = paid";
 $stmt = $pdo->prepare($query);
-$stmt->bindParam(':student_id', $studentId, PDO::PARAM_INT);
+$stmt->bindParam(':user_id', $studentId, PDO::PARAM_INT);
 $stmt->execute();
 
 $paidMonths = $stmt->fetchAll(PDO::FETCH_COLUMN);
