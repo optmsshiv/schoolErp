@@ -274,6 +274,8 @@ $(document).ready(function () {
 
   $(document).on('click', '#saveUserChanges', function () {
     var formData = new FormData();
+
+    // Collect form data
     formData.append('user_id', $('#userIdInput').val());
     formData.append('fullname', $('#fullNameInput').val());
     formData.append('role', $('#roleSelect').val());
@@ -291,10 +293,26 @@ $(document).ready(function () {
     formData.append('ifsc_code', $('#ifscCodeInput').val());
     formData.append('account_type', $('#accountTypeSelect').val());
 
+    // Add new fields to formData
+    formData.append('subject', $('#subjectInput').val());
+    formData.append('gender', $('#genderSelect').val());
+    formData.append('dob', $('#dobDateInput').val());
+    formData.append('qualification', $('#qualificationInput').val());
+
     // Check if user uploaded a new avatar
     var avatarFile = $('#avatarUpload')[0].files[0];
     if (avatarFile) {
       formData.append('user_avatar', avatarFile);
+    }
+
+    // Validate required fields (Example)
+    if (!$('#userIdInput').val() || !$('#fullNameInput').val() || !$('#emailInput').val()) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Missing Information',
+        text: 'Please fill in all required fields.'
+      });
+      return;
     }
 
     $.ajax({
@@ -335,6 +353,7 @@ $(document).ready(function () {
       }
     });
   });
+
 
 
 
