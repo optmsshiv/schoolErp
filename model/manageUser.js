@@ -171,7 +171,7 @@ $(document).ready(function () {
        Swal.fire({
          icon: 'error',
          title: 'Invalid File',
-         text: 'Please select a valid image (JPEG, PNG, GIF, WEBP).'
+         text: 'Please select a valid image (JPEG, jpg, PNG, GIF, WEBP).'
        });
        input.value = ''; // Reset input
        return;
@@ -196,8 +196,6 @@ $(document).ready(function () {
      reader.readAsDataURL(file);
    }
  });
-
-
 
   // Handle 'Edit' button click event
   $(document).on('click', '.userEdit', function () {

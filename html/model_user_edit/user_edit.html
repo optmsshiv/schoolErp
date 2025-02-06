@@ -2,7 +2,7 @@
   <div class="modal-dialog modal-lg"> <!-- Large modal -->
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+        <h5 class="modal-title" id="editUserModalLabel">Edit or Update user here...</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -13,7 +13,6 @@
           </label>
           <input type="file" id="avatarUpload" class="form-control mt-2 d-none" accept="image/*">
         </div>
-
 
         <div class="row">
           <div class="col-md-4 mt-3">
@@ -59,11 +58,7 @@
 
           <div class="col-md-4">
             <label for="statusSelect" class="form-label">Status</label>
-            <select class="form-control" id="statusSelect" name="status" readonly>
-              <option value="Active">Active</option>
-              <option value="Suspended">Suspended</option>
-              <option value="Pending">Pending</option>
-            </select>
+            <input type="text" class="form-control" id="statusSelect" readonly>
           </div>
 
           <div class="col-md-4">
