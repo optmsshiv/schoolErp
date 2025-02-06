@@ -92,6 +92,12 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+function fetchPaidMonths() {
+  return fetch('../php/submitFee/get_collected_fee.php') // Your PHP file that returns paid months as JSON
+    .then(response => response.json())
+    .catch(error => console.error('Error fetching paid months:', error));
+}
+
 function fetchFeePlansData(studentData) {
   const months = [
     'April', 'May', 'June', 'July', 'August',
@@ -99,6 +105,8 @@ function fetchFeePlansData(studentData) {
     'January', 'February', 'March'
   ];
 
+
+  fetchPaidMonths().then(paidMonths => {
   // Generate the table header dynamically
   const theadRow = document.querySelector('#student_fee_table thead tr');
   theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
@@ -162,21 +170,38 @@ function fetchFeePlansData(studentData) {
   totalRow.appendChild(totalFeeHeadCell);
 
   // Add total amounts for each month with the plus button
-  totalAmounts.forEach(totalAmount => {
-    const totalAmountCell = document.createElement('td');
-    totalAmountCell.innerHTML = `
-      <div class="amount-button">
-        <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-        <button class="btn btn-outline-primary rounded-circle">
-          <i class="bx bx-plus"></i>
-        </button>
-      </div>
-    `;
+   // Add total amounts for each month with the plus button
+    totalAmounts.forEach((totalAmount, index) => {
+      const totalAmountCell = document.createElement('td');
+
+      const isPaid = paidMonths.includes(months[index]); // Check if the month is paid
+
+      if (isPaid) {
+        totalAmountCell.innerHTML = `
+          <div class="amount-button">
+            <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
+            <button class="btn btn-outline-primary rounded-circle" disabled>
+              <i class="bx bx-check"></i> <!-- Change to check icon for paid months -->
+            </button>
+          </div>
+        `;
+      } else {
+        totalAmountCell.innerHTML = `
+          <div class="amount-button">
+            <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
+            <button class="btn btn-outline-primary rounded-circle">
+              <i class="bx bx-plus"></i>
+            </button>
+          </div>
+        `;
+      }
+
     totalRow.appendChild(totalAmountCell);
   });
 
   // Append total row to the table
   tableBody.appendChild(totalRow);
+});
 }
 
 // Variable to keep track of the total

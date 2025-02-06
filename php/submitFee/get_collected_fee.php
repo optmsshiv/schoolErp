@@ -3,33 +3,19 @@ require '../db_connection.php'; // Include your database connection
 
 header('Content-Type: application/json');
 
-// Initialize an empty array to hold the collected fee data
-$collectedFees = [];
+// Assuming you're already connected to the database
+session_start();
 
-// Query to fetch collected fees
-$sql = "SELECT user_id, MONTH(payment_date) AS month FROM feeDetails WHERE payment_status = 1"; // assuming 1 indicates payment completed
-$result = $conn->query($sql);
+$studentId = $_SESSION['student_id']; // Assuming student ID is stored in the session
 
-if ($result->num_rows > 0) {
-    // Loop through the result set and organize the data by user_id
-    while ($row = $result->fetch_assoc()) {
-        $user_id = $row['user_id'];
-        $month = $row['month']; // The month in which the fee was paid
+// Query to get the list of paid months for the student
+$query = "SELECT month FROM feeDetails WHERE student_id = :student_id AND payment_status = paid";
+$stmt = $pdo->prepare($query);
+$stmt->bindParam(':student_id', $studentId, PDO::PARAM_INT);
+$stmt->execute();
 
-        // Check if the user already exists in the collectedFees array
-        if (!isset($collectedFees[$user_id])) {
-            $collectedFees[$user_id] = [];
-        }
+$paidMonths = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        // Add the month to the collected fee months for that user
-        $collectedFees[$user_id][] = $month;
-    }
-}
-
-// Return the collected fee data as a JSON response
-header('Content-Type: application/json');
-echo json_encode($collectedFees);
-
-// Close the database connection
-$conn->close();
+// Return the result as JSON
+echo json_encode($paidMonths);
 ?>
