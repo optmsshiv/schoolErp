@@ -361,9 +361,6 @@ $(document).ready(function () {
     });
   });
 
-
-
-
   // Handling Status Change (Activate, Suspend)
   $(document).on('click', '.userActivate', function () {
     var userId = $(this).data('id');

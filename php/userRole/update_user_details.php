@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Handle avatar upload
     if (!empty($_FILES['user_avatar']['name'])) {
-        $uploadDir = '../uploads/avatars/';
+        $uploadDir = '/assets/img/avatars/';
         $avatarName = time() . '_' . basename($_FILES['user_avatar']['name']);
         $avatarPath = $uploadDir . $avatarName;
 
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (move_uploaded_file($_FILES['user_avatar']['tmp_name'], $avatarPath)) {
-            $avatarUrl = 'uploads/avatars/' . $avatarName;
+            $avatarUrl = '/assets/img/avatars/' . $avatarName;
         } else {
             echo json_encode(['success' => false, 'message' => 'Avatar upload failed']);
             exit;
