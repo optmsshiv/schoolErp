@@ -313,7 +313,7 @@ $(document).ready(function () {
      email: email,
      phone: phone,
      dob: dob,
-     joining_date: joiningDate,
+     joining_date: formattedJoiningDate,
      status: status,
      gender: gender,
      salary: salary,
