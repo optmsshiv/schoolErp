@@ -324,7 +324,7 @@ $(document).ready(function () {
       var res = JSON.parse(response);
        if (res.success) {
         $('#userAvatar').attr('src', '/' + res.avatar_path);
-        $this.prop('disabled', false).text('Save Changes');
+        
 
          // Show success message
          alert('User details updated successfully!');
