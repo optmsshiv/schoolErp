@@ -332,7 +332,9 @@ $(document).ready(function () {
          alert('User details updated successfully!');
          $('#editUserModal').modal('hide'); // Close modal
          // Find the row corresponding to the user
-         var userRow = $('#userTable').find('tr[data-id="' + userId + '"]');
+         var userRow = $(`#userTable tbody tr`).filter(function () {
+           return $(this).find('td:eq(1)').text().trim() == userId;
+         });
 
          // Apply green highlight
          userRow.addClass('highlight-success');
