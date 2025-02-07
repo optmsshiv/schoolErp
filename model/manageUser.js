@@ -344,7 +344,7 @@ $(document).ready(function () {
           */
 
          // Find the row corresponding to the user
-         var userRow = $('#userTable').find('tr[data-id="' + userId + '"]');
+         var userRow = $('#userTable tbody').find('tr[data-id="${userId}"]');
 
          if (userRow.length > 0) {
            // Update the table row data dynamically
