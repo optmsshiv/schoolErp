@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             var row = `
-              <tr>
+              <tr data-id="${user.user_id}">
                 <td><input type="checkbox" class="row-select"></td>
                 <td>${user.user_id}</td>
                 <td>
