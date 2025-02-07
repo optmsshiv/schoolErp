@@ -351,16 +351,8 @@ $(document).ready(function () {
            userRow.find('td:nth-child(3) h6').text($('#fullNameInput').val());
            userRow.find('td:nth-child(4)').text($('#roleSelect').val());
            userRow.find('td:nth-child(5)').text($('#phoneInput').val());
-           // userRow.find('td:nth-child(6)').text($('formatDate(#joiningDateInput)'));
-           // Update joining date from the response
-           let joiningDateVal = response.joining_date || $('#joiningDateInput').val(); // Fallback to input value if not in response
+           userRow.find('td:nth-child(6)').text($('#joiningDateInput').val());
 
-           if (joiningDateVal) {
-             let formattedDate = formatDate(joiningDateVal);
-             userRow.find('td:nth-child(6)').text(formattedDate);
-           } else {
-             console.warn('Joining date is empty or undefined!');
-           }
            // Update the avatar if a new one was uploaded
            if (response.avatar_path) {
              userRow.find('td:nth-child(3) img').attr('src', response.avatar_path);
