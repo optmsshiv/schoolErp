@@ -1,7 +1,7 @@
 <?php
 require '../db_connection.php';
 
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 
 $response = ['success' => false];
 
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Prepare SQL statement
-    $query = "UPDATE users SET
+    $query = "UPDATE userRole SET
         fullname = :full_name,
         qualification = :qualification,
         role = :role,
