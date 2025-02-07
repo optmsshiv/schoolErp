@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Move uploaded file to the target directory
         if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFilePath)) {
-            $avatarPath = str_replace("/", "", $targetFilePath); // Convert path for frontend use
+            $avatarPath = str_replace("../", "/", $targetFilePath); // Convert path for frontend use
         }
     }
 
