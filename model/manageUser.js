@@ -323,7 +323,7 @@ $(document).ready(function () {
      success: function (response) {
        console.log('Server Response:', response); // Debugging
        if (response.success && response.avatar_path) {
-         alert(response.message || 'User details updated successfully!');
+         alert('User details updated successfully!');
 
          // Update the user avatar preview in the modal
          if (response.avatar_path) {
@@ -372,7 +372,7 @@ $(document).ready(function () {
            console.warn('Row for user ID ' + userId + ' not found!');
          }
        } else {
-         alert('Failed to update user: ' + (response.error || response.message || 'Unknown error'));
+         alert('Failed to update user: ' + (response.error || "Unknown error"));
        }
      },
      error: function () {
