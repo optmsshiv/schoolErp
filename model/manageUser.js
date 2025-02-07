@@ -372,7 +372,7 @@ $(document).ready(function () {
            console.warn('Row for user ID ' + userId + ' not found!');
          }
        } else {
-         alert('Failed to update user: ' + (response.error || 'Unknown error'));
+         alert('Failed to update user: ' + (response.error || response.message || 'Unknown error'));
        }
      },
      error: function () {
