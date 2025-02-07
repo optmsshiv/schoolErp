@@ -281,6 +281,9 @@ $(document).ready(function () {
   // Save user role update
 
  $(document).on('click', '#saveUserChanges', function () {
+   var $this = $(this);
+   $this.prop('disabled', true).text('Saving...'); // Disable button and change text to prevent multiple clicks
+
    var userId = $('#userIdInput').val();
    var fullName = $('#fullNameInput').val();
    var qualification = $('#qualificationInput').val();
@@ -335,26 +338,48 @@ $(document).ready(function () {
          alert('User details updated successfully!');
          $('#editUserModal').modal('hide'); // Close modal
 
-         // Find the row corresponding to the user
+         // Find the row corresponding to the user to use this remove Using data-id on <tr> from table
          /*
          var userRow = $(`#userTable tbody tr`).filter(function () {
            return $(this).find('td:eq(1)').text().trim() == userId;
          });*/
+
+         /*$('tr[data-id="userId"]') is a direct selection and faster than filtering through all rows.
+         The first method (filter(function() { return $(this).find('td:eq(1)').text() == userId; }))
+          requires checking each row manually, making it slower.
+          */
+
+         // Find the row corresponding to the user
          var userRow = $('#userTable').find('tr[data-id="' + userId + '"]');
 
-         // Apply green highlight
-         userRow.addClass('highlight-success');
+         if (userRow.length > 0) {
+           // Update the table row data dynamically
+           userRow.find('.nameColumn').text(fullName);
+           userRow.find('.phoneColumn').text(phone);
+           userRow.find('.roleColumn').text(role);
 
-         // Remove highlight after 3 seconds
-         setTimeout(function () {
-           userRow.removeClass('highlight-success');
-         }, 3000);
+           // Apply green highlight
+           userRow.addClass('highlight-success');
+
+           // Remove highlight after 3 seconds
+           setTimeout(function () {
+             userRow.addClass('fade-out');
+             setTimeout(function () {
+               userRow.removeClass('highlight-success fade-out'); // Remove both classes
+             }, 1000); // Wait for fade-out animation before fully removing highlight
+           }, 3000);
+         } else {
+           console.warn('Row for user ID ' + userId + ' not found!');
+         }
        } else {
          alert('Failed to update user: ' + response.message);
        }
      },
      error: function () {
        alert('Error updating user. Please try again.');
+     },
+     complete: function () {
+       $this.prop('disabled', false).text('Save Changes'); // Re-enable button
      }
    });
  });

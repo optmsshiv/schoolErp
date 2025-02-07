@@ -1072,6 +1072,10 @@ td {
   transition: background-color 0.8s ease-in-out;
 }
 
+.fade-out {
+  background-color: transparent !important;
+}
+
 
 /* custom avatar */
 .avatar-container {
