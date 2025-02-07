@@ -322,7 +322,7 @@ $(document).ready(function () {
      contentType: false, // Required for file upload
      success: function (response) {
        console.log('Server Response:', response); // Debugging
-       if (response.success && response.avatar_path === true) {
+       if (response.success && response.avatar_path) {
          alert('User details updated successfully!');
 
          // Update the user avatar preview in the modal
