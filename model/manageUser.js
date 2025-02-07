@@ -331,7 +331,16 @@ $(document).ready(function () {
        if (response.success) {
          alert('User details updated successfully!');
          $('#editUserModal').modal('hide'); // Close modal
-         location.reload(); // Refresh the page to see changes
+         // Find the row corresponding to the user
+         var userRow = $('#userTable').find('tr[data-id="' + userId + '"]');
+
+         // Apply green highlight
+         userRow.addClass('highlight-success');
+
+         // Remove highlight after 3 seconds
+         setTimeout(function () {
+           userRow.removeClass('highlight-success');
+         }, 3000);
        } else {
          alert('Failed to update user: ' + response.message);
        }

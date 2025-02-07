@@ -1065,6 +1065,13 @@ td {
   transition: background-color 1s ease-out;
 }
 
+/*after edit save*/
+.highlight-success {
+  background-color: #d4edda !important;
+  /* Light green */
+  transition: background-color 0.8s ease-in-out;
+}
+
 
 /* custom avatar */
 .avatar-container {
