@@ -321,6 +321,7 @@ $(document).ready(function () {
      processData: false, // Required for file upload
      contentType: false, // Required for file upload
      success: function (response) {
+       console.log('Server Response:', response); // Debugging
        if (response.success && response.avatar_path) {
          alert('User details updated successfully!');
 

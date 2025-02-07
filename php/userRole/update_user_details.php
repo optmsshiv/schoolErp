@@ -113,6 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Execute query
         if ($stmt->execute()) {
             $response['success'] = true;
+            $response['message'] = "User updated successfully!";
             if ($avatarPath) {
                 $response['avatar_path'] = $avatarPath;
             }
