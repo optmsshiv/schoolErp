@@ -281,7 +281,7 @@ $(document).ready(function () {
     var formData = new FormData();
 
     // Collect form data
-    formData.append('user_id', $('#userIdInput').val());
+    formData.append('user_id', $('#user_id').val());
     formData.append('fullname', $('#fullNameInput').val());
     formData.append('role', $('#roleSelect').val());
     formData.append('email', $('#emailInput').val());
