@@ -352,8 +352,7 @@ $(document).ready(function () {
            userRow.find('td:nth-child(4)').text($('#roleSelect').val());
            userRow.find('td:nth-child(5)').text($('#phoneInput').val());
            // userRow.find('td:nth-child(6)').text($('formatDate(#joiningDateInput)'));
-           let formattedDate = formatDate($('#joiningDateInput').val());
-           userRow.find('td:nth-child(6)').text(formattedDate);
+           
            // Update the avatar if a new one was uploaded
            if (response.avatar_path) {
              userRow.find('td:nth-child(2) img').attr('src', response.avatar_path);
