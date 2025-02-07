@@ -278,10 +278,13 @@ $(document).ready(function () {
   // Save user role update
 
   $(document).on('click', '#saveUserChanges', function () {
+
+    console.log('User ID being sent:', $('#user_id').val());
+
     var formData = new FormData();
 
     // Collect form data
-    formData.append('user_id', $('#user_id').val());
+    formData.append('user_id', $('#userIdInput').val());
     formData.append('fullname', $('#fullNameInput').val());
     formData.append('role', $('#roleSelect').val());
     formData.append('email', $('#emailInput').val());

@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        $user_id = filter_var($_POST['user_id'], FILTER_SANITIZE_NUMBER_INT);
+        $user_id = $_POST['user_id']; // Get user_id as it is
 
         // Ensure user exists before updating
         $checkStmt = $pdo->prepare("SELECT user_id FROM userRole WHERE user_id = :user_id");
@@ -45,9 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $ifsc_code = htmlspecialchars($_POST['ifsc_code'], ENT_QUOTES, 'UTF-8');
         $account_type = htmlspecialchars($_POST['account_type'], ENT_QUOTES, 'UTF-8');
 
+        error_log("Received user_id: " . $_POST['user_id']);
+
         // Avatar Upload (if provided)
         $avatarUrl = null;
-        if (!empty($_FILES['user_avatar']['name'])) {
+        if (!empty($_FILES['user_avatar']['name']) && $_FILES['user_avatar']['error'] === 0) {
             $uploadDir = __DIR__ . '/../assets/img/avatars/';
             $avatarName = time() . '_' . basename($_FILES['user_avatar']['name']);
             $avatarPath = $uploadDir . $avatarName;
@@ -57,7 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-            if (!in_array(mime_content_type($_FILES['user_avatar']['tmp_name']), $allowedTypes)) {
+            $fileType = mime_content_type($_FILES['user_avatar']['tmp_name']);
+
+            if (!in_array($fileType, $allowedTypes)) {
                 echo json_encode(['success' => false, 'message' => 'Invalid file type. Only JPG and PNG allowed.']);
                 exit;
             }
@@ -86,42 +90,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $query .= " WHERE user_id = :user_id";
 
         $stmt = $pdo->prepare($query);
-        $stmt->bindParam(':fullname', $fullname);
-        $stmt->bindParam(':role', $role);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':phone', $phone);
-        $stmt->bindParam(':subject', $subject);
-        $stmt->bindParam(':gender', $gender);
-        $stmt->bindParam(':dob', $dob);
-        $stmt->bindParam(':qualification', $qualification);
-        $stmt->bindParam(':joining_date', $joining_date);
-        $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':status_change_cause', $status_change_cause);
-        $stmt->bindParam(':change_by', $change_by);
-        $stmt->bindParam(':salary', $salary);
-        $stmt->bindParam(':aadhar_card', $aadhar_card);
-        $stmt->bindParam(':user_address', $user_address);
-        $stmt->bindParam(':bank_name', $bank_name);
-        $stmt->bindParam(':branch_name', $branch_name);
-        $stmt->bindParam(':account_number', $account_number);
-        $stmt->bindParam(':ifsc_code', $ifsc_code);
-        $stmt->bindParam(':account_type', $account_type);
+        $stmt->bindParam(':fullname', $fullname, PDO::PARAM_STR);
+        $stmt->bindParam(':role', $role, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
+        $stmt->bindParam(':subject', $subject, PDO::PARAM_STR);
+        $stmt->bindParam(':gender', $gender, PDO::PARAM_STR);
+        $stmt->bindParam(':dob', $dob, PDO::PARAM_STR);
+        $stmt->bindParam(':qualification', $qualification, PDO::PARAM_STR);
+        $stmt->bindParam(':joining_date', $joining_date, PDO::PARAM_STR);
+        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+        $stmt->bindParam(':status_change_cause', $status_change_cause, PDO::PARAM_STR);
+        $stmt->bindParam(':change_by', $change_by, PDO::PARAM_STR);
+        $stmt->bindParam(':salary', $salary, PDO::PARAM_STR);
+        $stmt->bindParam(':aadhar_card', $aadhar_card, PDO::PARAM_STR);
+        $stmt->bindParam(':user_address', $user_address, PDO::PARAM_STR);
+        $stmt->bindParam(':bank_name', $bank_name, PDO::PARAM_STR);
+        $stmt->bindParam(':branch_name', $branch_name, PDO::PARAM_STR);
+        $stmt->bindParam(':account_number', $account_number, PDO::PARAM_STR);
+        $stmt->bindParam(':ifsc_code', $ifsc_code, PDO::PARAM_STR);
+        $stmt->bindParam(':account_type', $account_type, PDO::PARAM_STR);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
 
         if ($avatarUrl !== null) {
-            $stmt->bindParam(':user_avatar', $avatarUrl);
+            $stmt->bindParam(':user_avatar', $avatarUrl, PDO::PARAM_STR);
         }
 
         // Execute query
         $updateSuccess = $stmt->execute();
 
-        if ($updateSuccess) {
-            echo json_encode(['success' => true, 'message' => 'User updated successfully!']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Update failed.']);
-        }
+        echo json_encode(['success' => $updateSuccess, 'message' => $updateSuccess ? 'User updated successfully!' : 'Update failed.']);
     } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request']);
