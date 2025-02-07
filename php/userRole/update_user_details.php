@@ -3,6 +3,10 @@ require '../db_connection.php';
 
 // header('Content-Type: application/json');
 
+// Debugging: Check if the file is being sent
+print_r($_FILES);
+exit;
+
 $response = ['success' => false];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
