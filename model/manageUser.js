@@ -277,92 +277,70 @@ $(document).ready(function () {
 
   // Save user role update
 
-  $(document).on('click', '#saveUserChanges', function () {
+ $(document).on('click', '#saveUserChanges', function () {
+   var userId = $('#userIdInput').val();
+   var fullName = $('#fullNameInput').val();
+   var qualification = $('#qualificationInput').val();
+   var role = $('#roleSelect').val();
+   var email = $('#emailInput').val();
+   var phone = $('#phoneInput').val();
+   var dob = $('#dobDateInput').val();
+   var joiningDate = $('#joiningDateInput').val();
+   var status = $('#statusSelect').val();
+   var gender = $('#genderSelect').val();
+   var salary = $('#salaryInput').val();
+   var aadhar = $('#aadharInput').val();
+   var subject = $('#subjectInput').val();
+   var address = $('#userAddress').val();
+   var bankName = $('#bankNameInput').val();
+   var branchName = $('#branchNameInput').val();
+   var accountNumber = $('#accountNumberInput').val();
+   var ifscCode = $('#ifscCodeInput').val();
+   var accountType = $('#accountType').val();
 
-    console.log('User ID being sent:', $('#user_id').val());
+   // Creating data object to send
+   var formData = {
+     user_id: userId,
+     full_name: fullName,
+     qualification: qualification,
+     role: role,
+     email: email,
+     phone: phone,
+     dob: dob,
+     joining_date: joiningDate,
+     status: status,
+     gender: gender,
+     salary: salary,
+     aadhar: aadhar,
+     subject: subject,
+     user_address: address,
+     bank_name: bankName,
+     branch_name: branchName,
+     account_number: accountNumber,
+     ifsc_code: ifscCode,
+     account_type: accountType
+   };
 
-    var formData = new FormData();
-
-    // Collect form data
-    formData.append('user_id', $('#userIdInput').val());
-    formData.append('fullname', $('#fullNameInput').val());
-    formData.append('role', $('#roleSelect').val());
-    formData.append('email', $('#emailInput').val());
-    formData.append('phone', $('#phoneInput').val());
-    formData.append('joining_date', $('#joiningDateInput').val());
-    formData.append('status', $('#statusSelect').val());
-    formData.append('status_change_cause', $('#statusCauseInput').val());
-    formData.append('change_by', $('#changeByInput').val());
-    formData.append('salary', $('#salaryInput').val());
-    formData.append('aadhar_card', $('#aadharInput').val());
-    formData.append('user_address', $('#userAddress').val());
-    formData.append('bank_name', $('#bankNameInput').val());
-    formData.append('branch_name', $('#branchNameInput').val());
-    formData.append('account_number', $('#accountNumberInput').val());
-    formData.append('ifsc_code', $('#ifscCodeInput').val());
-    formData.append('account_type', $('#accountType').val());
-    formData.append('subject', $('#subjectInput').val());
-    formData.append('gender', $('#genderSelect').val());
-    formData.append('dob', $('#dobDateInput').val());
-    formData.append('qualification', $('#qualificationInput').val());
-
-    // Check if user uploaded a new avatar
-    var avatarFile = $('#avatarUpload')[0].files[0];
-    if (avatarFile) {
-      formData.append('user_avatar', avatarFile);
-    }
-
-    // Validate required fields (Example)
-    /*
-    if (!$('#aadharInput').val() || !$('#fullNameInput').val() || !$('#emailInput').val()) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Missing Information',
-        text: 'Please fill in all required fields.'
-      });
-      return;
-    }*/
-
-    $.ajax({
-      url: '/php/userRole/update_user_details.php',
-      type: 'POST',
-      data: formData,
-      contentType: false,
-      processData: false,
-      dataType: 'json',
-      success: function (response) {
-        console.log('Server Response:', response); // Debug response
-        if (response.success) {
-          Swal.fire({
-            icon: 'success',
-            title: 'User updated successfully!',
-            position: 'top', // Position at the top of the modal
-            toast: true,
-            timer: 2000
-          });
-
-          // Close modal after success
-          $('#editUserModal').modal('hide');
-
-          // Reload or update table row dynamically
-          location.reload();
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Update failed!',
-            text: response.message
-          });
-        }
-      },
-      error: function () {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Something went wrong. Please try again.'
-        });
-      }
-    });
-  });
+   // AJAX request to save data
+   $.ajax({
+     url: '/php/userRole/update_user_details.php', // Ensure the correct PHP path
+     type: 'POST',
+     data: formData,
+     dataType: 'json',
+     success: function (response) {
+       if (response.success) {
+         alert('User details updated successfully!');
+         $('#editUserModal').modal('hide'); // Close modal
+         location.reload(); // Refresh the page to see changes
+       } else {
+         alert('Failed to update user: ' + response.message);
+       }
+     },
+     error: function () {
+       alert('Error updating user. Please try again.');
+     }
+   });
+ });
 
   // Handling Status Change (Activate, Suspend)
   $(document).on('click', '.userActivate', function () {
