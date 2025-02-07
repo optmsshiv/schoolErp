@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $query .= ", user_role_avatar = :user_avatar";
         }
 
-        $query .= " WHERE user_id = :user_id";
+        $query .= " WHERE user_id = :user_id LIMIT 1"; // Ensures only one row is updated
 
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':fullname', $fullname, PDO::PARAM_STR);
