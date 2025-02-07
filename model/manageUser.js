@@ -357,6 +357,7 @@ $(document).ready(function () {
            userRow.find('.nameColumn').text(fullName);
            userRow.find('.phoneColumn').text(phone);
            userRow.find('.roleColumn').text(role);
+           userRow.find('.joinColumn').text(joiningDate);
 
            // Apply green highlight
            userRow.addClass('highlight-success');
