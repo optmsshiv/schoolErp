@@ -351,7 +351,7 @@ $(document).ready(function () {
            userRow.find('td:nth-child(3) h6').text($('#fullNameInput').val());
            userRow.find('td:nth-child(4)').text($('#roleSelect').val());
            userRow.find('td:nth-child(5)').text($('#phoneInput').val());
-           userRow.find('td:nth-child(6)').text($(formatDate('#joiningDateInput')));
+           userRow.find('td:nth-child(6)').text($('formatDate(#joiningDateInput)'));
 
            // Apply green highlight
            userRow.addClass('highlight-success');
