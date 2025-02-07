@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Handle file upload
         if (!empty($_FILES['avatar']['name'])) {
-            $uploadDir = "/assets/img/avatars/"; // Ensure this directory exists
+            $uploadDir = "../assets/img/avatars/"; // Ensure this directory exists
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true); // Create the directory if it doesn't exist
             }
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $targetFilePath = $uploadDir . $fileName;
 
             if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFilePath)) {
-                $avatarPath = str_replace("../", "/", $targetFilePath); // Adjust path for frontend usage
+                $avatarPath = "/assets/img/avatars/" . $fileName; // Adjust path for frontend usage
             } else {
                 throw new Exception("Failed to upload the file.");
             }
