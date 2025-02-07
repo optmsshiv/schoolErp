@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $account_type = $_POST['account_type'];
 
     try {
-        $stmt = $pdo->prepare("UPDATE users SET
+        $stmt = $pdo->prepare("UPDATE userRole SET
             fullname = ?, qualification = ?, role = ?, email = ?, phone = ?, dob = ?,
             joining_date = ?, status = ?, gender = ?, salary = ?, aadhar_card = ?,
             subject = ?, user_address = ?, bank_name = ?, branch_name = ?,
