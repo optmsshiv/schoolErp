@@ -321,7 +321,7 @@ $(document).ready(function () {
      processData: false, // Required for file upload
      contentType: false, // Required for file upload
      success: function (response) {
-       if (response.success) {
+       if (response.success && response.avatar_path) {
          alert('User details updated successfully!');
 
          // Update the user avatar preview in the modal
@@ -351,7 +351,9 @@ $(document).ready(function () {
            userRow.find('td:nth-child(3) h6').text($('#fullNameInput').val());
            userRow.find('td:nth-child(4)').text($('#roleSelect').val());
            userRow.find('td:nth-child(5)').text($('#phoneInput').val());
-          // userRow.find('td:nth-child(6)').text($('formatDate(#joiningDateInput)'));
+           // userRow.find('td:nth-child(6)').text($('formatDate(#joiningDateInput)'));
+           let formattedDate = formatDate($('#joiningDateInput').val());
+           userRow.find('td:nth-child(6)').text(formattedDate);
 
            // Apply green highlight
            userRow.addClass('highlight-success');

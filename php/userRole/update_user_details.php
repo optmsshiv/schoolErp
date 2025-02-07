@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $targetFilePath = $uploadDir . $fileName;
 
             if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFilePath)) {
-                $avatarPath = "/assets/img/avatars/" . $fileName; // Adjust path for frontend usage
+                $avatarPath = "/assets/img/avatars/" . $fileName; // Public URL path
             } else {
                 throw new Exception("Failed to upload the file.");
             }
