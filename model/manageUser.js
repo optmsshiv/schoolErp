@@ -288,7 +288,7 @@ $(document).ready(function () {
    var userId = $('#userIdInput').val();
 
    formData.append('user_id', userId);
-   formData.append('full_name', $('#fullNameInput').val());
+   formData.append('fullName', $('#fullNameInput').val());
    formData.append('qualification', $('#qualificationInput').val());
    formData.append('role', $('#roleSelect').val());
    formData.append('email', $('#emailInput').val());
