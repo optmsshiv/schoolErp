@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         account_type = :account_type";
 
     if ($avatarPath) {
-        $query .= ", user_role_avatar = :avatarPath";
+        $query .= ", user_role_avatar = :avatarPath"; // Correct column name
     }
 
     $query .= " WHERE user_id = :user_id";

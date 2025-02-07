@@ -348,10 +348,10 @@ $(document).ready(function () {
 
          if (userRow.length > 0) {
            // Update the table row data dynamically
-           userRow.find('td:nth-child(3) h6').text(fullName);
-           userRow.find('td:nth-child(4)').text(role);
-           userRow.find('td:nth-child(5)').text(phone);
-           userRow.find('td:nth-child(6)').text(formatDate(joiningDate));
+           userRow.find('td:nth-child(3) h6').text($('#fullNameInput').val());
+           userRow.find('td:nth-child(4)').text($('#roleSelect').val());
+           userRow.find('td:nth-child(5)').text($('#phoneInput').val());
+          // userRow.find('td:nth-child(6)').text(formatDate(joiningDate));
 
            // Apply green highlight
            userRow.addClass('highlight-success');
