@@ -288,7 +288,7 @@ $(document).ready(function () {
    var userId = $('#userIdInput').val();
 
    formData.append('user_id', userId);
-   formData.append('fullName', $('#fullNameInput').val());
+   formData.append('full_name', $('#fullNameInput').val());
    formData.append('qualification', $('#qualificationInput').val());
    formData.append('role', $('#roleSelect').val());
    formData.append('email', $('#emailInput').val());
@@ -348,7 +348,7 @@ $(document).ready(function () {
 
          if (userRow.length > 0) {
            // Update the table row data dynamically
-           userRow.find('td:nth-child(3) h6').text(fullName);
+           userRow.find('td:nth-child(3) h6').text(full_name);
            userRow.find('td:nth-child(4)').text(role);
            userRow.find('td:nth-child(5)').text(phone);
            userRow.find('td:nth-child(6)').text(formatDate(joiningDate));
