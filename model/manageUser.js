@@ -314,7 +314,7 @@ $(document).ready(function () {
 
    // AJAX request to save data
    $.ajax({
-     url: '../php/userRole/update_user.php',
+     url: '/php/userRole/update_user_details.php',
      type: 'POST',
      data: formData,
      dataType: 'json',
