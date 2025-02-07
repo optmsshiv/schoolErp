@@ -292,7 +292,6 @@ $(document).ready(function () {
    var phone = $('#phoneInput').val();
    var dob = $('#dobDateInput').val();
    var joiningDate = $('#joiningDateInput').val();
-   var formattedJoiningDate = formatDate(joiningDate);
    var status = $('#statusSelect').val();
    var gender = $('#genderSelect').val();
    var salary = $('#salaryInput').val();
@@ -314,7 +313,7 @@ $(document).ready(function () {
      email: email,
      phone: phone,
      dob: dob,
-     joining_date: formattedJoiningDate,
+     joining_date: joiningDate,
      status: status,
      gender: gender,
      salary: salary,
