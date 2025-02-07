@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Check if an image file is uploaded
     if (!empty($_FILES['avatar']['name'])) {
-        $targetDir = "../uploads/avatars/"; // Ensure this directory exists
+        $targetDir = "/assets/img/avatars/"; // Ensure this directory exists
         $fileName = "user_" . $user_id . "_" . time() . "." . pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
         $targetFilePath = $targetDir . $fileName;
 
