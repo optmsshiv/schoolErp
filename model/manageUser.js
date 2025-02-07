@@ -323,7 +323,7 @@ $(document).ready(function () {
      success: function (response) {
        console.log('Server Response:', response); // Debugging
        if (response.success && response.avatar_path) {
-         alert('User details updated successfully!');
+         alert(response.message || 'User details updated successfully!');
 
          // Update the user avatar preview in the modal
          if (response.avatar_path) {
