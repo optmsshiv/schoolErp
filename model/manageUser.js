@@ -334,10 +334,13 @@ $(document).ready(function () {
        if (response.success) {
          alert('User details updated successfully!');
          $('#editUserModal').modal('hide'); // Close modal
+
          // Find the row corresponding to the user
+         /*
          var userRow = $(`#userTable tbody tr`).filter(function () {
            return $(this).find('td:eq(1)').text().trim() == userId;
-         });
+         });*/
+         var userRow = $('#userTable').find('tr[data-id="' + userId + '"]');
 
          // Apply green highlight
          userRow.addClass('highlight-success');
@@ -400,9 +403,11 @@ $(document).ready(function () {
           });
 
           // Find the row for the updated user
+          /*
           var row = $(`#userTable tbody tr`).filter(function () {
             return $(this).find('td:eq(1)').text().trim() == userId;
-          });
+          });*/
+          var row = $('#userTable').find('tr[data-id="' + userId + '"]');
 
           if (row.length === 0) {
             console.error('Row not found for user ID:', userId);
