@@ -292,6 +292,7 @@ $(document).ready(function () {
    var phone = $('#phoneInput').val();
    var dob = $('#dobDateInput').val();
    var joiningDate = $('#joiningDateInput').val();
+   var formattedJoiningDate = formatDate(joiningDate);
    var status = $('#statusSelect').val();
    var gender = $('#genderSelect').val();
    var salary = $('#salaryInput').val();
