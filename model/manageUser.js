@@ -321,19 +321,13 @@ $(document).ready(function () {
      processData: false, // Required for file upload
      contentType: false, // Required for file upload
      success: function (response) {
-      var res = JSON.parse(response);
-       if (res.success) {
-        $('#userAvatar').attr('src', '/' + res.avatar_path);
-
-
-         // Show success message
+       if (response.success) {
          alert('User details updated successfully!');
 
          // Update the user avatar preview in the modal
-         /*
          if (response.avatar_path) {
            $('#userAvatar').attr('src', response.avatar_path);
-         }*/
+         }
 
          // Close the modal
          $('#editUserModal').modal('hide');
