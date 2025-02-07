@@ -354,10 +354,10 @@ $(document).ready(function () {
 
          if (userRow.length > 0) {
            // Update the table row data dynamically
-           userRow.find('td:nth-child(2)').text(fullName);
-           userRow.find('td:nth-child(4)').text(phone);
-           userRow.find('td:nth-child(3)').text(role);
-           userRow.find('td:nth-child(5)').text(joiningDate);
+           userRow.find('td:nth-child(3)').text(fullName);
+           userRow.find('td:nth-child(4)').text(role);
+           userRow.find('td:nth-child(5)').text(phone);
+           userRow.find('td:nth-child(6)').text(joiningDate);
 
            // Apply green highlight
            userRow.addClass('highlight-success');
