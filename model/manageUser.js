@@ -282,61 +282,55 @@ $(document).ready(function () {
 
  $(document).on('click', '#saveUserChanges', function () {
    var $this = $(this);
-   $this.prop('disabled', true).text('Saving...'); // Disable button and change text to prevent multiple clicks
+   $this.prop('disabled', true).text('Saving...');
 
+   var formData = new FormData();
    var userId = $('#userIdInput').val();
-   var fullName = $('#fullNameInput').val();
-   var qualification = $('#qualificationInput').val();
-   var role = $('#roleSelect').val();
-   var email = $('#emailInput').val();
-   var phone = $('#phoneInput').val();
-   var dob = $('#dobDateInput').val();
-   var joiningDate = $('#joiningDateInput').val();
-   var status = $('#statusSelect').val();
-   var gender = $('#genderSelect').val();
-   var salary = $('#salaryInput').val();
-   var aadhar = $('#aadharInput').val();
-   var subject = $('#subjectInput').val();
-   var address = $('#userAddress').val();
-   var bankName = $('#bankNameInput').val();
-   var branchName = $('#branchNameInput').val();
-   var accountNumber = $('#accountNumberInput').val();
-   var ifscCode = $('#ifscCodeInput').val();
-   var accountType = $('#accountType').val();
 
-   // Creating data object to send
-   var formData = {
-     user_id: userId,
-     full_name: fullName,
-     qualification: qualification,
-     role: role,
-     email: email,
-     phone: phone,
-     dob: dob,
-     joining_date: joiningDate,
-     status: status,
-     gender: gender,
-     salary: salary,
-     aadhar: aadhar,
-     subject: subject,
-     user_address: address,
-     bank_name: bankName,
-     branch_name: branchName,
-     account_number: accountNumber,
-     ifsc_code: ifscCode,
-     account_type: accountType
-   };
+   formData.append('user_id', userId);
+   formData.append('full_name', $('#fullNameInput').val());
+   formData.append('qualification', $('#qualificationInput').val());
+   formData.append('role', $('#roleSelect').val());
+   formData.append('email', $('#emailInput').val());
+   formData.append('phone', $('#phoneInput').val());
+   formData.append('dob', $('#dobDateInput').val());
+   formData.append('joining_date', $('#joiningDateInput').val());
+   formData.append('status', $('#statusSelect').val());
+   formData.append('gender', $('#genderSelect').val());
+   formData.append('salary', $('#salaryInput').val());
+   formData.append('aadhar', $('#aadharInput').val());
+   formData.append('subject', $('#subjectInput').val());
+   formData.append('user_address', $('#userAddress').val());
+   formData.append('bank_name', $('#bankNameInput').val());
+   formData.append('branch_name', $('#branchNameInput').val());
+   formData.append('account_number', $('#accountNumberInput').val());
+   formData.append('ifsc_code', $('#ifscCodeInput').val());
+   formData.append('account_type', $('#accountType').val());
+
+   var avatarFile = $('#avatarUpload')[0].files[0];
+   if (avatarFile) {
+     formData.append('avatar', avatarFile);
+   }
 
    // AJAX request to save data
    $.ajax({
-     url: '/php/userRole/update_user_details.php', // Ensure the correct PHP path
+     url: '../php/userRole/update_user.php',
      type: 'POST',
      data: formData,
      dataType: 'json',
+     processData: false, // Required for file upload
+     contentType: false, // Required for file upload
      success: function (response) {
        if (response.success) {
          alert('User details updated successfully!');
-         $('#editUserModal').modal('hide'); // Close modal
+
+         // Update the user avatar preview in the modal
+         if (response.avatar_path) {
+           $('#userAvatar').attr('src', response.avatar_path);
+         }
+
+         // Close the modal
+         $('#editUserModal').modal('hide');
 
          // Find the row corresponding to the user to use this remove Using data-id on <tr> from table
          /*

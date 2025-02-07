@@ -1258,3 +1258,233 @@ for (let i = 0; i < tableRows.length; i +=4) { const student={ full_name: getCel
   The trimmed text content of the cell. */ function getCellText(row, cellIndex) { const
   cell=row.querySelector(`td:nth-child(${cellIndex})`); return cell ? cell.textContent.trim() : 'N/A' ; }
 
+
+
+  /* Helper function to show an error message with a loading bar. */
+  function showErrorWithLoadingBar(errorMessage) {
+    toggleLoadingBar(true); // Show loading bar
+    const errorElement = document.getElementById('error-message');
+    if (errorElement) {
+      errorElement.textContent = errorMessage;
+      errorElement.classList.remove('invisible');
+      }
+      }
+      /* Helper function to show a success message with a loading bar. */
+      function showSuccessWithLoadingBar(successMessage) {
+        toggleLoadingBar(true); // Show loading bar
+        const successElement = document.getElementById('success-message');
+        if (successElement) {
+          successElement.textContent = successMessage;
+          successElement.classList.remove('invisible');
+          }
+          }
+          /* Helper function to toggle the loading bar. */
+          function toggleLoadingBar(isLoading) {
+            const loadingBarElement = document.getElementById('loading-bar');
+            if (loadingBarElement) {
+              if (isLoading) {
+                loadingBarElement.classList.remove('invisible');
+                }
+                else {
+                  loadingBarElement.classList.add('invisible');
+                  }
+                  }
+                  }
+                  /* Helper function to get the current date and time. */
+                  function getCurrentDateTime() {
+                    const date = new Date();
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const hour = String(date.getHours()).padStart(2, '0');
+                    const minute = String(date.getMinutes()).padStart(2, '0');
+                    const second = String(date.getSeconds()).padStart(2, '0');
+                    return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+                    }
+                    /* Helper function to get the current date. */
+                    function getCurrentDate() {
+                      const date = new Date();
+                      const year = date.getFullYear();
+                      const month = String(date.getMonth() + 1).padStart(2, '0');
+                      const day = String(date.getDate()).padStart(2, '0');
+                      return `${year}-${month}-${day}`;
+                      }
+                      /* Helper function to get the current time. */
+                      function getCurrentTime() {
+                        const date = new Date();
+                        const hour = String(date.getHours()).padStart(2, '0');
+                        const minute = String(date.getMinutes()).padStart(2, '0');
+                        const second = String(date.getSeconds()).padStart(2, '0');
+                        return `${hour}:${minute}:${second}`;
+                        }
+                        /* Helper function to get the current date and time in a specific format. */
+                        function getCurrentDateTimeInFormat(format) {
+                          const date = new Date();
+                          const year = date.getFullYear();
+                          const month = String(date.getMonth() + 1).padStart(2, '0');
+                          const day = String(date.getDate()).padStart(2, '0');
+                          const hour = String(date.getHours()).padStart(2, '0');
+                          const minute = String(date.getMinutes()).padStart(2, '0');
+                          const second = String(date.getSeconds()).padStart(2, '0');
+                          return format.replace('YYYY', year).replace('MM', month).replace('DD', day
+                          ).replace('HH', hour).replace('MM', minute).replace('SS', second);
+                          }
+
+/* working save code 07-02-2025 Friday */
+                           $(document).on('click', '#saveUserChanges', function () {
+   var $this = $(this);
+   $this.prop('disabled', true).text('Saving...'); // Disable button and change text to prevent multiple clicks
+
+   var userId = $('#userIdInput').val();
+   var fullName = $('#fullNameInput').val();
+   var qualification = $('#qualificationInput').val();
+   var role = $('#roleSelect').val();
+   var email = $('#emailInput').val();
+   var phone = $('#phoneInput').val();
+   var dob = $('#dobDateInput').val();
+   var joiningDate = $('#joiningDateInput').val();
+   var status = $('#statusSelect').val();
+   var gender = $('#genderSelect').val();
+   var salary = $('#salaryInput').val();
+   var aadhar = $('#aadharInput').val();
+   var subject = $('#subjectInput').val();
+   var address = $('#userAddress').val();
+   var bankName = $('#bankNameInput').val();
+   var branchName = $('#branchNameInput').val();
+   var accountNumber = $('#accountNumberInput').val();
+   var ifscCode = $('#ifscCodeInput').val();
+   var accountType = $('#accountType').val();
+
+   // Creating data object to send
+   var formData = {
+     user_id: userId,
+     full_name: fullName,
+     qualification: qualification,
+     role: role,
+     email: email,
+     phone: phone,
+     dob: dob,
+     joining_date: joiningDate,
+     status: status,
+     gender: gender,
+     salary: salary,
+     aadhar: aadhar,
+     subject: subject,
+     user_address: address,
+     bank_name: bankName,
+     branch_name: branchName,
+     account_number: accountNumber,
+     ifsc_code: ifscCode,
+     account_type: accountType
+   };
+
+   // AJAX request to save data
+   $.ajax({
+     url: '/php/userRole/update_user_details.php', // Ensure the correct PHP path
+     type: 'POST',
+     data: formData,
+     dataType: 'json',
+     success: function (response) {
+       if (response.success) {
+         alert('User details updated successfully!');
+         $('#editUserModal').modal('hide'); // Close modal
+
+         // Find the row corresponding to the user to use this remove Using data-id on <tr> from table
+         /*
+         var userRow = $(`#userTable tbody tr`).filter(function () {
+           return $(this).find('td:eq(1)').text().trim() == userId;
+         });*/
+
+         /*$('tr[data-id="userId"]') is a direct selection and faster than filtering through all rows.
+         The first method (filter(function() { return $(this).find('td:eq(1)').text() == userId; }))
+          requires checking each row manually, making it slower.
+          */
+
+         // Find the row corresponding to the user
+         var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
+
+         if (userRow.length > 0) {
+           // Update the table row data dynamically
+           userRow.find('td:nth-child(3) h6').text(fullName);
+           userRow.find('td:nth-child(4)').text(role);
+           userRow.find('td:nth-child(5)').text(phone);
+           userRow.find('td:nth-child(6)').text(formatDate(joiningDate));
+
+           // Apply green highlight
+           userRow.addClass('highlight-success');
+
+           // Remove highlight after 3 seconds
+           setTimeout(function () {
+             userRow.addClass('fade-out');
+             setTimeout(function () {
+               userRow.removeClass('highlight-success fade-out'); // Remove both classes
+             }, 1000); // Wait for fade-out animation before fully removing highlight
+           }, 3000);
+         } else {
+           console.warn('Row for user ID ' + userId + ' not found!');
+         }
+       } else {
+         alert('Failed to update user: ' + response.message);
+       }
+     },
+     error: function () {
+       alert('Error updating user. Please try again.');
+     },
+     complete: function () {
+       $this.prop('disabled', false).text('Save Changes'); // Re-enable button
+     }
+   });
+ });
+
+<?php
+require '../db_connection.php';
+
+header('Content-Type: application/json');
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $user_id = $_POST['user_id'];
+    $full_name = $_POST['full_name'];
+    $qualification = $_POST['qualification'];
+    $role = $_POST['role'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $dob = $_POST['dob'];
+    $joining_date = $_POST['joining_date'];
+    $status = $_POST['status'];
+    $gender = $_POST['gender'];
+    $salary = $_POST['salary'];
+    $aadhar = $_POST['aadhar'];
+    $subject = $_POST['subject'];
+    $user_address = $_POST['user_address'];
+    $bank_name = $_POST['bank_name'];
+    $branch_name = $_POST['branch_name'];
+    $account_number = $_POST['account_number'];
+    $ifsc_code = $_POST['ifsc_code'];
+    $account_type = $_POST['account_type'];
+
+    try {
+        $stmt = $pdo->prepare("UPDATE userRole SET
+            fullname = ?, qualification = ?, role = ?, email = ?, phone = ?, dob = ?,
+            joining_date = ?, status = ?, gender = ?, salary = ?, aadhar_card = ?,
+            subject = ?, user_address = ?, bank_name = ?, branch_name = ?,
+            account_number = ?, ifsc_code = ?, account_type = ? WHERE user_id = ?");
+
+        $stmt->execute([
+            $full_name, $qualification, $role, $email, $phone, $dob, $joining_date,
+            $status, $gender, $salary, $aadhar, $subject, $user_address,
+            $bank_name, $branch_name, $account_number, $ifsc_code, $account_type, $user_id
+        ]);
+
+        if ($stmt->rowCount() > 0) {
+            echo json_encode(["success" => true]);
+        } else {
+            echo json_encode(["success" => false, "message" => "No changes made or invalid user ID"]);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(["success" => false, "message" => "Database error: " . $e->getMessage()]);
+    }
+} else {
+    echo json_encode(["success" => false, "message" => "Invalid request"]);
+}
+?>
+
