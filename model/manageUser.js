@@ -321,7 +321,12 @@ $(document).ready(function () {
      processData: false, // Required for file upload
      contentType: false, // Required for file upload
      success: function (response) {
-       if (response.success) {
+      var res = JSON.parse(response);
+       if (res.success) {
+        $('#userAvatar').attr('src', '/' + res.avatar_path);
+        $this.prop('disabled', false).text('Save Changes');
+
+         // Show success message
          alert('User details updated successfully!');
 
          // Update the user avatar preview in the modal
