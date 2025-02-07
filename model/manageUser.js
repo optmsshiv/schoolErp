@@ -311,7 +311,7 @@ $(document).ready(function () {
    if (avatarFile) {
      formData.append('avatar', avatarFile);
    }
-   console.log([...formData.entries()]); // Check what's inside the formData
+  // console.log([...formData.entries()]); // Check what's inside the formData
    // AJAX request to save data
    $.ajax({
      url: '/php/userRole/update_user_details.php',
@@ -321,7 +321,6 @@ $(document).ready(function () {
      processData: false, // Required for file upload
      contentType: false, // Required for file upload
      success: function (response) {
-       console.log(response); // Debugging
        if (response.success && response.avatar_path) {
          alert('User details updated successfully!');
 
@@ -349,10 +348,19 @@ $(document).ready(function () {
 
          if (userRow.length > 0) {
            // Update the table row data dynamically
+           /*
            userRow.find('td:nth-child(3) h6').text($('#fullNameInput').val());
            userRow.find('td:nth-child(4)').text($('#roleSelect').val());
            userRow.find('td:nth-child(5)').text($('#phoneInput').val());
-           userRow.find('td:nth-child(6)').text($('#joiningDateInput').val());
+           userRow.find('td:nth-child(6)').text($('#joiningDateInput').val());*/
+
+           userRow.find('td:nth-child(3) h6').text(fullName);
+           userRow.find('td:nth-child(4)').text(role);
+           userRow.find('td:nth-child(5)').text(phone);
+           userRow.find('td:nth-child(6)').text(formatDate(joiningDate));
+
+
+
 
            // Update the avatar if a new one was uploaded
            if (response.avatar_path) {
