@@ -324,15 +324,16 @@ $(document).ready(function () {
       var res = JSON.parse(response);
        if (res.success) {
         $('#userAvatar').attr('src', '/' + res.avatar_path);
-        
+
 
          // Show success message
          alert('User details updated successfully!');
 
          // Update the user avatar preview in the modal
+         /*
          if (response.avatar_path) {
            $('#userAvatar').attr('src', response.avatar_path);
-         }
+         }*/
 
          // Close the modal
          $('#editUserModal').modal('hide');
