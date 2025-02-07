@@ -119,9 +119,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             throw new Exception("Database update failed.");
         }
-    } catch (Exception $e) {
-        $response['error'] = $e->getMessage();
-    }
+     } catch (PDOException $e) {
+    $response['error'] = "Database error: " . $e->getMessage();
+} catch (Exception $e) {
+    $response['error'] = "Error: " . $e->getMessage();
+}
+
 }
 
 // Return JSON response
