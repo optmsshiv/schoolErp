@@ -10,7 +10,7 @@ $(document).ready(function () {
     pagingType: 'full_numbers',
     responsive: true,
     ordering: false, // Disable sorting for all columns
-    pageLength: 5,
+    pageLength: 10,
     language: {
       paginate: {
         first: '<<',
