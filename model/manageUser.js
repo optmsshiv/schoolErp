@@ -37,15 +37,15 @@ $(document).ready(function () {
   });
 
   // Function to format date
-     function formatDate(dateString) {
-       if (!dateString || dateString === '0000-00-00') return 'N/A'; // Handle empty and invalid dates
-       let date = new Date(dateString);
-       if (isNaN(date.getTime())) return 'N/A'; // Ensure the date is valid
-       let day = String(date.getDate()).padStart(2, '0');
-       let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-       let year = date.getFullYear();
-       return `${day}-${month}-${year}`;
-     }
+  function formatDate(dateString) {
+    if (!dateString || dateString === '0000-00-00') return 'N/A'; // Handle empty and invalid dates
+    let date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'N/A'; // Ensure the date is valid
+    let day = String(date.getDate()).padStart(2, '0');
+    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    let year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
 
 
   // Fetch user data using AJAX
@@ -100,20 +100,17 @@ $(document).ready(function () {
               <td>${user.role}</td>
               <td>${user.phone}</td>
               <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
-              <td><span class="badge ${
-                user.status === 'Active'
-                  ? 'bg-label-success'
-                  : user.status === 'Suspended'
-                  ? 'bg-label-secondary'
-                  : 'bg-label-warning'
-              }">${user.status}</span></td>
+              <td><span class="badge ${user.status === 'Active'
+              ? 'bg-label-success'
+              : user.status === 'Suspended'
+                ? 'bg-label-secondary'
+                : 'bg-label-warning'
+            }">${user.status}</span></td>
               <td>
-                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
-                  user.user_id
-                }" title="View User"></a>
-                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
-                  user.user_id
-                }" title="Delete User"></a>
+                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${user.user_id
+            }" title="View User"></a>
+                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${user.user_id
+            }" title="Delete User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
                   ${dropdownMenu}
@@ -164,43 +161,43 @@ $(document).ready(function () {
     table.page.len(length).draw();
   });
 
- $(document).on('change', '#avatarUpload', function (event) {
-   var input = event.target;
-   var file = input.files[0];
+  $(document).on('change', '#avatarUpload', function (event) {
+    var input = event.target;
+    var file = input.files[0];
 
-   if (file) {
-     var fileType = file.type;
-     var validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    if (file) {
+      var fileType = file.type;
+      var validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 
-     if (!validImageTypes.includes(fileType)) {
-       Swal.fire({
-         icon: 'error',
-         title: 'Invalid File',
-         text: 'Please select a valid image (JPEG, jpg, PNG, GIF, WEBP).'
-       });
-       input.value = ''; // Reset input
-       return;
-     }
+      if (!validImageTypes.includes(fileType)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid File',
+          text: 'Please select a valid image (JPEG, jpg, PNG, GIF, WEBP).'
+        });
+        input.value = ''; // Reset input
+        return;
+      }
 
-     // File size limit (2MB)
-    //if (file.size > 2 * 1024 * 1024) {
-    //  Swal.fire({
-    //    icon: 'warning',
-    //    title: 'File too large',
-    //    text: 'Maximum allowed size is 2MB.'
-    //  });
-    //  input.value = ''; // Reset input
-    //  return;
-    //}
+      // File size limit (2MB)
+      //if (file.size > 2 * 1024 * 1024) {
+      //  Swal.fire({
+      //    icon: 'warning',
+      //    title: 'File too large',
+      //    text: 'Maximum allowed size is 2MB.'
+      //  });
+      //  input.value = ''; // Reset input
+      //  return;
+      //}
 
-     var reader = new FileReader();
-     reader.onload = function (e) {
-       $('#userAvatar').attr('src', e.target.result);
-     };
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $('#userAvatar').attr('src', e.target.result);
+      };
 
-     reader.readAsDataURL(file);
-   }
- });
+      reader.readAsDataURL(file);
+    }
+  });
 
   // Handle 'Edit' button click event
   $(document).on('click', '.userEdit', function () {
@@ -224,7 +221,7 @@ $(document).ready(function () {
         $('#editUserModal').find('#userIdInput').val(userId);
 
         // Show loading text inside the modal
-      //  $('#editUserModal .modal-body').html('<p>Loading user details...</p>');
+        //  $('#editUserModal .modal-body').html('<p>Loading user details...</p>');
 
         // Show the modal
         $('#editUserModal').modal('show');
@@ -238,7 +235,7 @@ $(document).ready(function () {
           success: function (response) {
             if (response.success) {
               var user = response.data;
-            //  console.log('User Data:', user); // Check if data exists
+              //  console.log('User Data:', user); // Check if data exists
 
               // Populate the form with user data
               $('#userIdInput').val(user.user_id);
@@ -282,125 +279,121 @@ $(document).ready(function () {
 
   // Save user role update
 
- $(document).on('click', '#saveUserChanges', function () {
-   var $this = $(this);
-   if ($this.prop('disabled')) return; // Prevent multiple clicks
-   // $this.prop('disabled', true).text('Saving...');
-   //$this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
-   // Show a loader inside the button instead of plain text
-   $this
-     .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...')
-     .prop('disabled', true);
+  $(document).on('click', '#saveUserChanges', function () {
+    var $this = $(this);
+    if ($this.prop('disabled')) return; // Prevent multiple clicks
 
-   // Collect form data
-   var formData = new FormData();
-   var userId = $('#userIdInput').val();
+    // Show a loader inside the button instead of plain text
+    $this
+      .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...')
+      .prop('disabled', true);
 
-   var fullName = $('#fullNameInput').val();
-   var role = $('#roleSelect').val();
-   var phone = $('#phoneInput').val();
-   var joiningDate = formatDate($('#joiningDateInput').val());
+    // Collect form data efficiently
+    var formData = new FormData();
+    var userId = $('#userIdInput').val().trim();
 
-   formData.append('user_id', userId);
-   formData.append('full_name', $('#fullNameInput').val());
-   formData.append('qualification', $('#qualificationInput').val());
-   formData.append('role', $('#roleSelect').val());
-   formData.append('email', $('#emailInput').val());
-   formData.append('phone', $('#phoneInput').val());
-   formData.append('dob', $('#dobDateInput').val());
-   formData.append('joining_date', $('#joiningDateInput').val());
-   formData.append('status', $('#statusSelect').val());
-   formData.append('gender', $('#genderSelect').val());
-   formData.append('salary', $('#salaryInput').val());
-   formData.append('aadhar', $('#aadharInput').val());
-   formData.append('subject', $('#subjectInput').val());
-   formData.append('user_address', $('#userAddress').val());
-   formData.append('bank_name', $('#bankNameInput').val());
-   formData.append('branch_name', $('#branchNameInput').val());
-   formData.append('account_number', $('#accountNumberInput').val());
-   formData.append('ifsc_code', $('#ifscCodeInput').val());
-   formData.append('account_type', $('#accountType').val());
+    // Store values in variables to reduce multiple DOM queries
+    var fullName = $('#fullNameInput').val().trim();
+    var role = $('#roleSelect').val();
+    var phone = $('#phoneInput').val().trim();
+    var joiningDate = $('#joiningDateInput').val(); // Keep as YYYY-MM-DD for input fields
 
-   var avatarFile = $('#avatarUpload')[0].files[0];
-   if (avatarFile) {
-     formData.append('avatar', avatarFile);
-   }
-   // console.log([...formData.entries()]); // Check what's inside the formData
-   // AJAX request to save data
-   $.ajax({
-     url: '/php/userRole/update_user_details.php',
-     type: 'POST',
-     data: formData,
-     dataType: 'json',
-     processData: false, // Required for file upload
-     contentType: false, // Required for file upload
-     success: function (response) {
-       //  console.log('Server Response:', response); // Debugging
-       if (response.success) {
-         alert('User details updated successfully!');
+    // Append required fields
+    formData.append('user_id', userId);
+    formData.append('full_name', fullName);
+    formData.append('qualification', $('#qualificationInput').val().trim());
+    formData.append('role', role);
+    formData.append('email', $('#emailInput').val().trim());
+    formData.append('phone', phone);
+    formData.append('dob', $('#dobDateInput').val());
+    formData.append('joining_date', joiningDate);
+    formData.append('status', $('#statusSelect').val());
+    formData.append('gender', $('#genderSelect').val());
+    formData.append('salary', $('#salaryInput').val().trim());
+    formData.append('aadhar', $('#aadharInput').val().trim());
+    formData.append('subject', $('#subjectInput').val().trim());
+    formData.append('user_address', $('#userAddress').val().trim());
+    formData.append('bank_name', $('#bankNameInput').val().trim());
+    formData.append('branch_name', $('#branchNameInput').val().trim());
+    formData.append('account_number', $('#accountNumberInput').val().trim());
+    formData.append('ifsc_code', $('#ifscCodeInput').val().trim());
+    formData.append('account_type', $('#accountType').val());
 
-         // Update input fields safely
-         $('#dobDateInput').val(sanitizeDate(response.dob));
-         $('#joiningDateInput').val(sanitizeDate(response.joining_date));// Update joining date
+    // Handle avatar upload
+    var avatarFile = $('#avatarUpload')[0].files[0];
+    if (avatarFile) {
+      formData.append('avatar', avatarFile);
+    }
 
-         // Update the user avatar preview in the modal
-         if (response.avatar_path) {
-           $('#userAvatar').attr('src', response.avatar_path);
-         }
+    // Debugging: Log FormData (optional)
+    // console.log([...formData.entries()]);
 
-         // Close the modal
-         $('#editUserModal').modal('hide');
+    // AJAX request to save data
+    $.ajax({
+      url: '/php/userRole/update_user_details.php',
+      type: 'POST',
+      data: formData,
+      dataType: 'json',
+      processData: false,
+      contentType: false,
+      success: function (response) {
+        if (response.success) {
+          alert('User details updated successfully!');
 
-         // Find the row corresponding to the user to use this remove Using data-id on <tr> from table
-         /*
-         var userRow = $(`#userTable tbody tr`).filter(function () {
-           return $(this).find('td:eq(1)').text().trim() == userId;
-         });*/
+          // Update input fields safely
+          $('#dobDateInput').val(response.dob || '');
+          $('#joiningDateInput').val(response.joining_date || ''); // Keep in YYYY-MM-DD format
 
-         /*$('tr[data-id="userId"]') is a direct selection and faster than filtering through all rows.
-         The first method (filter(function() { return $(this).find('td:eq(1)').text() == userId; }))
-          requires checking each row manually, making it slower.
-          */
+          // Update user avatar preview if changed
+          if (response.avatar_path) {
+            $('#userAvatar').attr('src', response.avatar_path);
+          }
 
-         // Find the row corresponding to the user
-         var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
+          // Close the modal
+          $('#editUserModal').modal('hide');
 
-         if (userRow.length > 0) {
-           // Update the table row data dynamically
-           userRow.find('td:nth-child(3) h6').text(fullName);
-           userRow.find('td:nth-child(4)').text(role);
-           userRow.find('td:nth-child(5)').text(phone);
-           userRow.find('td:nth-child(6)').text(formatDate(response.joining_date));
+          // Find the row corresponding to the user using data-id
+          var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
 
-           // Update the avatar if a new one was uploaded
-           if (response.avatar_path) {
-             userRow.find('td:nth-child(3) img').attr('src', response.avatar_path);
-           }
-           // Apply green highlight
-           userRow.addClass('highlight-success');
+          if (userRow.length > 0) {
+            // Update table row
+            userRow.find('td:nth-child(3) h6').text(fullName);
+            userRow.find('td:nth-child(4)').text(role);
+            userRow.find('td:nth-child(5)').text(phone);
+            userRow.find('td:nth-child(6)').text(formatDate(response.joining_date));
 
-           // Remove highlight after 3 seconds
-           setTimeout(function () {
-             userRow.addClass('fade-out');
-             setTimeout(function () {
-               userRow.removeClass('highlight-success fade-out'); // Remove both classes
-             }, 1000); // Wait for fade-out animation before fully removing highlight
-           }, 3000);
-         } else {
-           console.warn('Row for user ID ' + userId + ' not found!');
-         }
-       } else {
-         alert('Failed to update user: ' + (response.error || 'Unknown error'));
-       }
-     },
-     error: function () {
-       alert('Error updating user. Please try again.');
-     },
-     complete: function () {
-       $this.html('Save Changes').prop('disabled', false); // Reset button
-     }
-   });
- });
+            // Update avatar if changed
+            if (response.avatar_path) {
+              userRow.find('td:nth-child(3) img').attr('src', response.avatar_path);
+            }
+
+            // Apply green highlight effect
+            userRow.addClass('highlight-success');
+
+            // Remove highlight after 3 seconds
+            setTimeout(function () {
+              userRow.addClass('fade-out');
+              setTimeout(function () {
+                userRow.removeClass('highlight-success fade-out');
+              }, 1000);
+            }, 3000);
+          } else {
+            console.warn('Row for user ID ' + userId + ' not found!');
+          }
+        } else {
+          alert('Failed to update user: ' + (response.error || 'Unknown error'));
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error('AJAX Error:', status, error);
+        alert('Error updating user. Please try again.');
+      },
+      complete: function () {
+        $this.html('Save Changes').prop('disabled', false); // Reset button
+      }
+    });
+  });
+
 
   // Handling Status Change (Activate, Suspend)
   $(document).on('click', '.userActivate', function () {
