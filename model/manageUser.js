@@ -499,12 +499,12 @@ $(document).ready(function () {
   }
 
   // Handel 'ViewButton' click event
-  $(document).on('click', '.viewButton', function () {
+  $(document).on('click', '.userView', function () {
     var userId = $(this).data('id');
     alert('View user profile:' + userId);
     });
 
-    
+
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
     var userId = $(this).data('id');
