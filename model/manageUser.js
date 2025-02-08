@@ -283,68 +283,57 @@ $(document).ready(function () {
     var $this = $(this);
     if ($this.prop('disabled')) return; // Prevent multiple clicks
 
-    // Show a loader inside the button instead of plain text
-    $this
-      .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...')
+    $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...')
       .prop('disabled', true);
 
-    // Collect form data efficiently
+    // Collect form data
     var formData = new FormData();
-    var userId = $('#userIdInput').val().trim();
+    var userId = $('#userIdInput').val();
 
-    // Store values in variables to reduce multiple DOM queries
-    var fullName = $('#fullNameInput').val().trim();
+    var fullName = $('#fullNameInput').val();
     var role = $('#roleSelect').val();
-    var phone = $('#phoneInput').val().trim();
-    var joiningDate = $('#joiningDateInput').val(); // Keep as YYYY-MM-DD for input fields
+    var phone = $('#phoneInput').val();
+    var joiningDate = formatDate($('#joiningDateInput').val());
 
-    // Append required fields
     formData.append('user_id', userId);
-    formData.append('full_name', fullName);
-    formData.append('qualification', $('#qualificationInput').val().trim());
-    formData.append('role', role);
-    formData.append('email', $('#emailInput').val().trim());
-    formData.append('phone', phone);
+    formData.append('full_name', $('#fullNameInput').val());
+    formData.append('qualification', $('#qualificationInput').val());
+    formData.append('role', $('#roleSelect').val());
+    formData.append('email', $('#emailInput').val());
+    formData.append('phone', $('#phoneInput').val());
     formData.append('dob', $('#dobDateInput').val());
-    formData.append('joining_date', joiningDate);
+    formData.append('joining_date', $('#joiningDateInput').val());
     formData.append('status', $('#statusSelect').val());
     formData.append('gender', $('#genderSelect').val());
-    formData.append('salary', $('#salaryInput').val().trim());
-    formData.append('aadhar', $('#aadharInput').val().trim());
-    formData.append('subject', $('#subjectInput').val().trim());
-    formData.append('user_address', $('#userAddress').val().trim());
-    formData.append('bank_name', $('#bankNameInput').val().trim());
-    formData.append('branch_name', $('#branchNameInput').val().trim());
-    formData.append('account_number', $('#accountNumberInput').val().trim());
-    formData.append('ifsc_code', $('#ifscCodeInput').val().trim());
+    formData.append('salary', $('#salaryInput').val());
+    formData.append('aadhar', $('#aadharInput').val());
+    formData.append('subject', $('#subjectInput').val());
+    formData.append('user_address', $('#userAddress').val());
+    formData.append('bank_name', $('#bankNameInput').val());
+    formData.append('branch_name', $('#branchNameInput').val());
+    formData.append('account_number', $('#accountNumberInput').val());
+    formData.append('ifsc_code', $('#ifscCodeInput').val());
     formData.append('account_type', $('#accountType').val());
 
-    // Handle avatar upload
     var avatarFile = $('#avatarUpload')[0].files[0];
     if (avatarFile) {
       formData.append('avatar', avatarFile);
     }
-
-    // Debugging: Log FormData (optional)
-    // console.log([...formData.entries()]);
-
+    // console.log([...formData.entries()]); // Check what's inside the formData
     // AJAX request to save data
     $.ajax({
       url: '/php/userRole/update_user_details.php',
       type: 'POST',
       data: formData,
       dataType: 'json',
-      processData: false,
-      contentType: false,
+      processData: false, // Required for file upload
+      contentType: false, // Required for file upload
       success: function (response) {
+        //  console.log('Server Response:', response); // Debugging
         if (response.success) {
           alert('User details updated successfully!');
 
-          // Update input fields safely
-          $('#dobDateInput').val(response.dob || '');
-          $('#joiningDateInput').val(response.joining_date || ''); // Keep in YYYY-MM-DD format
-
-          // Update user avatar preview if changed
+          // Update the user avatar preview in the modal
           if (response.avatar_path) {
             $('#userAvatar').attr('src', response.avatar_path);
           }
@@ -352,30 +341,29 @@ $(document).ready(function () {
           // Close the modal
           $('#editUserModal').modal('hide');
 
-          // Find the row corresponding to the user using data-id
+          // Find the row corresponding to the user
           var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
 
           if (userRow.length > 0) {
-            // Update table row
+            // Update the table row data dynamically
             userRow.find('td:nth-child(3) h6').text(fullName);
             userRow.find('td:nth-child(4)').text(role);
             userRow.find('td:nth-child(5)').text(phone);
-            userRow.find('td:nth-child(6)').text(formatDate(response.joining_date));
+            userRow.find('td:nth-child(6)').text(joiningDate);
 
-            // Update avatar if changed
+            // Update the avatar if a new one was uploaded
             if (response.avatar_path) {
               userRow.find('td:nth-child(3) img').attr('src', response.avatar_path);
             }
-
-            // Apply green highlight effect
+            // Apply green highlight
             userRow.addClass('highlight-success');
 
             // Remove highlight after 3 seconds
             setTimeout(function () {
               userRow.addClass('fade-out');
               setTimeout(function () {
-                userRow.removeClass('highlight-success fade-out');
-              }, 1000);
+                userRow.removeClass('highlight-success fade-out'); // Remove both classes
+              }, 1000); // Wait for fade-out animation before fully removing highlight
             }, 3000);
           } else {
             console.warn('Row for user ID ' + userId + ' not found!');
@@ -384,8 +372,7 @@ $(document).ready(function () {
           alert('Failed to update user: ' + (response.error || 'Unknown error'));
         }
       },
-      error: function (xhr, status, error) {
-        console.error('AJAX Error:', status, error);
+      error: function () {
         alert('Error updating user. Please try again.');
       },
       complete: function () {
@@ -393,7 +380,6 @@ $(document).ready(function () {
       }
     });
   });
-
 
   // Handling Status Change (Activate, Suspend)
   $(document).on('click', '.userActivate', function () {
