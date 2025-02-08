@@ -285,12 +285,21 @@ $(document).ready(function () {
  $(document).on('click', '#saveUserChanges', function () {
    var $this = $(this);
    if ($this.prop('disabled')) return; // Prevent multiple clicks
-    // $this.prop('disabled', true).text('Saving...');
-    $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+   // $this.prop('disabled', true).text('Saving...');
+   //$this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+   // Show a loader inside the button instead of plain text
+   $this
+     .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...')
+     .prop('disabled', true);
 
-
+   // Collect form data
    var formData = new FormData();
    var userId = $('#userIdInput').val();
+
+   var fullName = $('#fullNameInput').val();
+   var role = $('#roleSelect').val();
+   var phone = $('#phoneInput').val();
+   var joiningDate = formatDate($('#joiningDateInput').val());
 
    formData.append('user_id', userId);
    formData.append('full_name', $('#fullNameInput').val());
@@ -316,7 +325,7 @@ $(document).ready(function () {
    if (avatarFile) {
      formData.append('avatar', avatarFile);
    }
-  // console.log([...formData.entries()]); // Check what's inside the formData
+   // console.log([...formData.entries()]); // Check what's inside the formData
    // AJAX request to save data
    $.ajax({
      url: '/php/userRole/update_user_details.php',
@@ -326,7 +335,7 @@ $(document).ready(function () {
      processData: false, // Required for file upload
      contentType: false, // Required for file upload
      success: function (response) {
-     //  console.log('Server Response:', response); // Debugging
+       //  console.log('Server Response:', response); // Debugging
        if (response.success) {
          alert('User details updated successfully!');
 
@@ -354,11 +363,6 @@ $(document).ready(function () {
 
          if (userRow.length > 0) {
            // Update the table row data dynamically
-           var fullName = $('#fullNameInput').val();
-           var role = $('#roleSelect').val();
-           var phone = $('#phoneInput').val();
-           var joiningDate = formatDate($('#joiningDateInput').val());
-
            userRow.find('td:nth-child(3) h6').text(fullName);
            userRow.find('td:nth-child(4)').text(role);
            userRow.find('td:nth-child(5)').text(phone);
@@ -382,14 +386,14 @@ $(document).ready(function () {
            console.warn('Row for user ID ' + userId + ' not found!');
          }
        } else {
-         alert('Failed to update user: ' + (response.error || "Unknown error"));
+         alert('Failed to update user: ' + (response.error || 'Unknown error'));
        }
      },
      error: function () {
        alert('Error updating user. Please try again.');
      },
      complete: function () {
-       $this.prop('disabled', false).text('Save Changes'); // Re-enable button
+       $this.html('Save Changes').prop('disabled', false); // Reset button
      }
    });
  });
