@@ -339,6 +339,10 @@ $(document).ready(function () {
        if (response.success) {
          alert('User details updated successfully!');
 
+         // Update input fields safely
+         $('#dobDateInput').val(sanitizeDate(response.dob));
+         $('#joiningDateInput').val(sanitizeDate(response.joining_date));// Update joining date
+
          // Update the user avatar preview in the modal
          if (response.avatar_path) {
            $('#userAvatar').attr('src', response.avatar_path);
@@ -366,7 +370,7 @@ $(document).ready(function () {
            userRow.find('td:nth-child(3) h6').text(fullName);
            userRow.find('td:nth-child(4)').text(role);
            userRow.find('td:nth-child(5)').text(phone);
-           userRow.find('td:nth-child(6)').text(joiningDate);
+           userRow.find('td:nth-child(6)').text(formatDate(response.joining_date));
 
            // Update the avatar if a new one was uploaded
            if (response.avatar_path) {
