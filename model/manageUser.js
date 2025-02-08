@@ -499,7 +499,7 @@ $(document).ready(function () {
   }
 
   // Handel 'ViewButton' click event
-  $(document).on('click', '.userView', function () {
+  $(document).on('click', '#userView', function () {
     var userId = $(this).data('id');
     alert('View user profile:' + userId);
     });
