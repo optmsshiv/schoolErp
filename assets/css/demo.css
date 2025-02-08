@@ -1098,3 +1098,20 @@ td {
   transform: scale(1.1);
   border-color: #7700ff;
 }
+
+
+/*css loader for savinh button*/
+@keyframes highlight {
+  from {
+    background-color: #d4edda;
+  }
+
+  /* Light green */
+  to {
+    background-color: transparent;
+  }
+}
+
+.highlight-success {
+  animation: highlight 3s ease-in-out;
+}

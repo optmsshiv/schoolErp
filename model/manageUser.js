@@ -37,14 +37,16 @@ $(document).ready(function () {
   });
 
   // Function to format date
-  function formatDate(dateString) {
-    if (!dateString) return 'N/A'; // Handle empty dates
-    let date = new Date(dateString);
-    let day = String(date.getDate()).padStart(2, '0');
-    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-    let year = date.getFullYear();
-    return `${day}-${month}-${year}`;
-  }
+     function formatDate(dateString) {
+       if (!dateString || dateString === '0000-00-00') return 'N/A'; // Handle empty and invalid dates
+       let date = new Date(dateString);
+       if (isNaN(date.getTime())) return 'N/A'; // Ensure the date is valid
+       let day = String(date.getDate()).padStart(2, '0');
+       let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+       let year = date.getFullYear();
+       return `${day}-${month}-${year}`;
+     }
+
 
   // Fetch user data using AJAX
   $.ajax({
@@ -207,7 +209,7 @@ $(document).ready(function () {
     $('#userAvatar').attr('src', '/assets/img/avatars/default-avatar.png');
 
     // Show user ID in console for debugging
-    console.log('Edit User ID:', userId);
+    // console.log('Edit User ID:', userId);
     // Load the modal content dynamically
     $.ajax({
       url: '/html/model_user_edit/user_edit.html', // Adjust path based on your folder structure
@@ -236,7 +238,7 @@ $(document).ready(function () {
           success: function (response) {
             if (response.success) {
               var user = response.data;
-              console.log('User Data:', user); // Check if data exists
+            //  console.log('User Data:', user); // Check if data exists
 
               // Populate the form with user data
               $('#userIdInput').val(user.user_id);
@@ -282,7 +284,10 @@ $(document).ready(function () {
 
  $(document).on('click', '#saveUserChanges', function () {
    var $this = $(this);
-   $this.prop('disabled', true).text('Saving...');
+   if ($this.prop('disabled')) return; // Prevent multiple clicks
+    // $this.prop('disabled', true).text('Saving...');
+    $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+
 
    var formData = new FormData();
    var userId = $('#userIdInput').val();
@@ -321,7 +326,7 @@ $(document).ready(function () {
      processData: false, // Required for file upload
      contentType: false, // Required for file upload
      success: function (response) {
-       console.log('Server Response:', response); // Debugging
+     //  console.log('Server Response:', response); // Debugging
        if (response.success) {
          alert('User details updated successfully!');
 
@@ -349,10 +354,15 @@ $(document).ready(function () {
 
          if (userRow.length > 0) {
            // Update the table row data dynamically
-           userRow.find('td:nth-child(3) h6').text($('#fullNameInput').val());
-           userRow.find('td:nth-child(4)').text($('#roleSelect').val());
-           userRow.find('td:nth-child(5)').text($('#phoneInput').val());
-           userRow.find('td:nth-child(6)').text(formatDate($('#joiningDateInput').val())); // Apply formatting
+           var fullName = $('#fullNameInput').val();
+           var role = $('#roleSelect').val();
+           var phone = $('#phoneInput').val();
+           var joiningDate = formatDate($('#joiningDateInput').val());
+
+           userRow.find('td:nth-child(3) h6').text(fullName);
+           userRow.find('td:nth-child(4)').text(role);
+           userRow.find('td:nth-child(5)').text(phone);
+           userRow.find('td:nth-child(6)').text(joiningDate);
 
            // Update the avatar if a new one was uploaded
            if (response.avatar_path) {
