@@ -498,6 +498,13 @@ $(document).ready(function () {
     });
   }
 
+  // Handel 'ViewButton' click event
+  $(document).on('click', '.viewButton', function () {
+    var userId = $(this).data('id');
+    alert('View user profile:' + userId);
+    });
+
+    
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
     var userId = $(this).data('id');
@@ -506,35 +513,6 @@ $(document).ready(function () {
   });
 
   // Handle Delete function
-  /*
-    $(document).on('click', '#userDelete', function () {
-      var userId = $(this).data('id'); // Get the user ID from data attribute
-      var row = $(this).closest('tr'); // Get the table row containing the delete button
-
-      if (confirm('Are you sure you want to delete this user: ' + userId + '?')) {
-        $.ajax({
-          url: '../php/userRole/delete_user.php', // PHP file to handle deletion
-          type: 'POST',
-          data: { user_id: userId },
-          dataType: 'json',
-          success: function (response) {
-            if (response.success) {
-              alert('User deleted successfully!');
-              var table = $('#userTable').DataTable();
-              table.row(row).remove().draw(); // Remove row from DataTable
-              // refreshUserTable(); // Refresh the table after deletion
-            } else {
-              alert('Error: ' + response.message);
-            }
-          },
-          error: function (xhr, status, error) {
-            console.error('AJAX Error: ' + status + ': ' + error);
-          }
-        });
-      }
-    });
-  */
-
   $(document).on('click', '#userDelete', function () {
     var userId = $(this).data('id'); // Get the user ID
     var row = $(this).closest('tr'); // Get the table row containing the delete button
