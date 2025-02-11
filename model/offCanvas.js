@@ -1,5 +1,5 @@
 // Declare variables for Bearer Token and Phone Number ID
- const BEARER_TOKEN = '565986464565'; // Replace with your actual Bearer Token
+const BEARER_TOKEN = '565986464565'; // Replace with your actual Bearer Token
 
 // vanilla js (without JQuery)
 document.addEventListener('DOMContentLoaded', function () {
@@ -144,41 +144,55 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    var templateName = 'user_role'; // Replace with your actual template name
-    var fromName = 'OPTMS Tech'; // Change this to your organization's name or dynamic value
+    // Fetch credentials from backend
+    fetch('/php/whatsapp/get_whatsapp_credentials.php')
+      .then(response => response.json())
+      .then(credentials => {
+        if (!credentials.success) {
+          console.error('Error fetching WhatsApp credentials:', credentials.message);
+          return;
+        }
 
-    var messageData = {
-      messaging_product: 'whatsapp',
-      to: phone, // Automatically use the user's phone number
-      type: 'template',
-      template: {
-        name: templateName,
-        language: { code: 'en_US' },
-        components: [
-          {
-            type: 'body',
-            parameters: [
-              { type: 'text', text: fullname },
-              { type: 'text', text: userId },
-              { type: 'text', text: password },
-              { type: 'text', text: fromName }
+        const accessToken = credentials.access_token;
+        const phoneNumberId = credentials.phone_number_id;
+
+        var templateName = 'user_role'; // Replace with your actual template name
+        var fromName = 'OPTMS Tech'; // Change this to your organization's name or dynamic value
+
+        var messageData = {
+          messaging_product: 'whatsapp',
+          to: phone, // Automatically use the user's phone number
+          type: 'template',
+          template: {
+            name: templateName,
+            language: { code: 'en_US' },
+            components: [
+              {
+                type: 'body',
+                parameters: [
+                  { type: 'text', text: fullname },
+                  { type: 'text', text: userId },
+                  { type: 'text', text: password },
+                  { type: 'text', text: fromName }
+                ]
+              }
             ]
           }
-        ]
-      }
-    };
+        };
 
-    fetch('https://graph.facebook.com/v21.0/phonenumberID/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${BEARER_TOKEN}`
-      },
-      body: JSON.stringify(messageData)
-    })
-      .then(response => response.json())
-      .then(data => console.log('WhatsApp Message Sent:', data))
-      .catch(error => console.error('WhatsApp API Error:', error));
+        fetch('https://graph.facebook.com/v21.0/${phoneNumberId}/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`
+          },
+          body: JSON.stringify(messageData)
+        })
+          .then(response => response.json())
+          .then(data => console.log('WhatsApp Message Sent:', data))
+          .catch(error => console.error('WhatsApp API Error:', error));
+      })
+      .catch(error => console.error('Error fetching WhatsApp credentials:', error));
   }
 
   // Function to format date
@@ -196,25 +210,25 @@ document.addEventListener('DOMContentLoaded', function () {
     var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
     // Determine dropdown menu options based on user status
-            var dropdownMenu = '';
-            if (user.status === 'Pending') {
-              dropdownMenu = `
+    var dropdownMenu = '';
+    if (user.status === 'Pending') {
+      dropdownMenu = `
                             <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
                             <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                         `;
-            } else if (user.status === 'Active') {
-              dropdownMenu = `
+    } else if (user.status === 'Active') {
+      dropdownMenu = `
                             <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
                             <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
                             <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
                         `;
-            } else if (user.status === 'Suspended') {
-              dropdownMenu = `
+    } else if (user.status === 'Suspended') {
+      dropdownMenu = `
                             <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                         `;
-            }
+    }
 
-            var row = `
+    var row = `
               <tr data-id="${user.user_id}">
                 <td><input type="checkbox" class="row-select"></td>
                 <td>${user.user_id}</td>
@@ -231,16 +245,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${user.role}</td>
                 <td>${user.phone}</td>
                 <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
-                <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
-              user.status
-            }</span></td>
+                <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${user.status
+      }</span></td>
                 <td>
-                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
-                    user.user_id
-                  }"></a>
-                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
-                    user.user_id
-                  }"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${user.user_id
+      }"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${user.user_id
+      }"></a>
                      <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                      <div class="dropdown-menu dropdown-menu-end">
