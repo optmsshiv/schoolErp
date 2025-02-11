@@ -47,7 +47,6 @@ $(document).ready(function () {
     return `${day}-${month}-${year}`;
   }
 
-
   // Fetch user data using AJAX
   $.ajax({
     url: '../php/userRole/get_user_role.php', // The PHP file where user data is fetched
@@ -100,17 +99,20 @@ $(document).ready(function () {
               <td>${user.role}</td>
               <td>${user.phone}</td>
               <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
-              <td><span class="badge ${user.status === 'Active'
-              ? 'bg-label-success'
-              : user.status === 'Suspended'
-                ? 'bg-label-secondary'
-                : 'bg-label-warning'
-            }">${user.status}</span></td>
+              <td><span class="badge ${
+                user.status === 'Active'
+                  ? 'bg-label-success'
+                  : user.status === 'Suspended'
+                  ? 'bg-label-secondary'
+                  : 'bg-label-warning'
+              }">${user.status}</span></td>
               <td>
-                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${user.user_id
-            }" title="View User"></a>
-                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${user.user_id
-            }" title="Delete User"></a>
+                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
+                  user.user_id
+                }" title="View User"></a>
+                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
+                  user.user_id
+                }" title="Delete User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
                   ${dropdownMenu}
@@ -283,7 +285,8 @@ $(document).ready(function () {
     var $this = $(this);
     if ($this.prop('disabled')) return; // Prevent multiple clicks
 
-    $this.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...')
+    $this
+      .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...')
       .prop('disabled', true);
 
     // Collect form data
@@ -502,8 +505,7 @@ $(document).ready(function () {
   $(document).on('click', '#userView', function () {
     var userId = $(this).data('id');
     alert('View user profile:' + userId);
-    });
-
+  });
 
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
@@ -511,6 +513,25 @@ $(document).ready(function () {
     alert('Send credentials for User ID:' + userId);
     // Implement credential sending functionality (e.g., AJAX request to send credentials)
   });
+
+
+  // Handle bulk action for changing status will use later
+ /*
+  $('#applyBulkAction').click(function () {
+    var action = $('#bulkAction').val();
+    var selectedUsers = [];
+    $('.row-select:checked').each(function () {
+      selectedUsers.push($(this).data('id'));
+    });
+
+    if (selectedUsers.length > 0 && action) {
+      selectedUsers.forEach(function (userId) {
+        changeStatus(userId, action);
+      });
+    } else {
+      alert('Please select users and an action');
+    }
+  });  */
 
   // Handle Delete function
   $(document).on('click', '#userDelete', function () {
