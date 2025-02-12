@@ -159,6 +159,15 @@ document.addEventListener('DOMContentLoaded', function () {
         var templateName = 'user_role'; // Replace with your actual template name
         var fromName = 'OPTMS Tech'; // Change this to your organization's name or dynamic value
 
+        // Debug logs for parameters
+        console.log('Debug: Message Parameters:', {
+          fullname,
+          userId,
+          password,
+          phone,
+          fromName
+        });
+
         var messageData = {
           messaging_product: 'whatsapp',
           to: phone, // Automatically use the user's phone number
@@ -179,6 +188,9 @@ document.addEventListener('DOMContentLoaded', function () {
             ]
           }
         };
+
+        // Debug log before sending request
+        console.log('Debug: WhatsApp API Request Payload:', messageData);
 
         fetch(`https://graph.facebook.com/v21.0/${phoneNumberId}/messages`, {
           method: 'POST',
