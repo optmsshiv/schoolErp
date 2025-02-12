@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
           .then(response => response.json())
           .then(data => {
-            if (DEBUG) console.log('WhatsApp Message Sent:', data);
+            console.log('WhatsApp Message Sent:', data);
           })
           .catch(error => console.error('WhatsApp API Error:', error));
       })
