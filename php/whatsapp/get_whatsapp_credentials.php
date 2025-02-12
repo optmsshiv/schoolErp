@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include '/php/db_connection.php'; // Database connection
+include '../db_connection.php'; // Database connection
 
 header('Content-Type: application/json');
 
