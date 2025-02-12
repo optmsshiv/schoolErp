@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
             addNewUserToTable(data);
 
             // Send WhatsApp Message
-            sendWhatsAppMessage(data.fullname, data.userId, data.password, data.phone);
+            sendWhatsAppMessage(data.fullname, data.user_id, data.password, data.phone);
           });
         } else {
           // Hide loading Swal and show error message
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  function sendWhatsAppMessage(fullname, userId, password, phone) {
+  function sendWhatsAppMessage(fullname, user_id, password, phone) {
     if (!phone) {
       console.error('Phone number is missing.');
       return;
@@ -159,10 +159,10 @@ document.addEventListener('DOMContentLoaded', function () {
         var templateName = 'user_role'; // Replace with your actual template name
         var fromName = 'OPTMS Tech'; // Change this to your organization's name or dynamic value
 
-        // Debug logs for parameters
+
         console.log('Debug: Message Parameters:', {
           fullname,
-          userId,
+          user_id,
           password,
           phone,
           fromName
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 type: 'body',
                 parameters: [
                   { type: 'text', text: fullname },
-                  { type: 'text', text: userId },
+                  { type: 'text', text: user_id },
                   { type: 'text', text: password },
                   { type: 'text', text: fromName }
                 ]
@@ -188,9 +188,6 @@ document.addEventListener('DOMContentLoaded', function () {
             ]
           }
         };
-
-        // Debug log before sending request
-        console.log('Debug: WhatsApp API Request Payload:', messageData);
 
         fetch(`https://graph.facebook.com/v21.0/${phoneNumberId}/messages`, {
           method: 'POST',
