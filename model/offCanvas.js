@@ -138,11 +138,6 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-    if (process.env.NODE_ENV === 'production') {
-        console.log = function () {};
-        console.error = function () {};
-     }
-
   function sendWhatsAppMessage(fullname, user_id, password, phone) {
     if (!phone) {
       console.error('Phone number is missing.');
@@ -194,6 +189,8 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         };
 
+        const DEBUG = false; // Set to true for debugging
+
         fetch(`https://graph.facebook.com/v21.0/${phoneNumberId}/messages`, {
           method: 'POST',
           headers: {
@@ -203,15 +200,10 @@ document.addEventListener('DOMContentLoaded', function () {
           body: JSON.stringify(messageData)
         })
           .then(response => response.json())
-          .then(data =>{
-            if(process.env.NODE_ENV ==='development'){
-            console.log('WhatsApp Message Sent:', data);
-          }
-        })
-          .catch(error =>{
-            if (process.env.NODE_ENV ==='development'){
-            console.error('WhatsApp API Error:', error);
-          }
+          .then(data => {
+            if (DEBUG) console.log('WhatsApp Message Sent:', data);
+          })
+          .catch(error => console.error('WhatsApp API Error:', error));
       })
       .catch(error => console.error('Error fetching WhatsApp credentials:', error));
   }
