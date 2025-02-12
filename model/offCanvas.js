@@ -138,6 +138,11 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
+    if (process.env.NODE_ENV === 'production') {
+        console.log = function () {};
+        console.error = function () {};
+     }
+
   function sendWhatsAppMessage(fullname, user_id, password, phone) {
     if (!phone) {
       console.error('Phone number is missing.');
@@ -159,14 +164,14 @@ document.addEventListener('DOMContentLoaded', function () {
         var templateName = 'user_role'; // Replace with your actual template name
         var fromName = 'OPTMS Tech'; // Change this to your organization's name or dynamic value
 
-
+        /*
         console.log('Debug: Message Parameters:', {
           fullname,
           user_id,
           password,
           phone,
           fromName
-        });
+        });*/
 
         var messageData = {
           messaging_product: 'whatsapp',
@@ -198,8 +203,15 @@ document.addEventListener('DOMContentLoaded', function () {
           body: JSON.stringify(messageData)
         })
           .then(response => response.json())
-          .then(data => console.log('WhatsApp Message Sent:', data))
-          .catch(error => console.error('WhatsApp API Error:', error));
+          .then(data =>{
+            if(process.env.NODE_ENV ==='development'){
+            console.log('WhatsApp Message Sent:', data);
+          }
+        })
+          .catch(error =>{
+            if (process.env.NODE_ENV ==='development'){
+            console.error('WhatsApp API Error:', error);
+          }
       })
       .catch(error => console.error('Error fetching WhatsApp credentials:', error));
   }

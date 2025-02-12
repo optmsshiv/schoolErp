@@ -15,8 +15,9 @@ try {
     if ($credentials) {
         echo json_encode([
             'success' => true,
-            'access_token' => $credentials['access_token'],
-            'phone_number_id' => $credentials['phone_number_id']
+            'message' => 'Credentials fetched successfully',
+            'masked_token' => substr($credentials['access_token'], 0, 5) . '*****',
+            'masked_phone_id' => substr($credentials['phone_number_id'], 0, 3) . '*****'
         ]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Credentials not found']);
