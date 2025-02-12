@@ -189,8 +189,6 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         };
 
-        const DEBUG = false; // Set to true for debugging
-
         fetch(`https://graph.facebook.com/v21.0/${phoneNumberId}/messages`, {
           method: 'POST',
           headers: {
