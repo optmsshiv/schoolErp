@@ -510,28 +510,32 @@ $(function () {
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
     var userId = $(this).data('id');
-    var fullname = $(this).data('fullname'); // Get Full Name
+    var fullName = $(this).data('fullname'); // Get Full Name
     var password = $(this).data('password'); // Get Password
     var phone = $(this).data('phone'); // Get Phone Number
     // alert('Send credentials for User ID:' + userId);
     // Implement credential sending functionality (e.g., AJAX request to send credentials)
     alert(
       'Sending credentials for:\nUser ID: ' + userId +
-        '\nFull Name: ' + fullname +
+        '\nFull Name: ' + fullName +
         '\nPhone: ' + phone
     );
     $.ajax({
       url: '/php/whatsapp/get_whatsapp_credentials.php', // Replace with your backend script
       type: 'POST',
-      data: { user_id: userId,
-            fullname: fullname,
+      contentType: 'application/json', // Ensure JSON format
+      data: JSON.stringify ({
+            fullname: fullName,
+            user_id: userId,
             password: password,
             phone: phone
-       },
+       }),
       success: function (response) {
+        console.log('Success:', response);
         alert('Credentials sent successfully!');
       },
-      error: function () {
+      error: function (xhr) {
+        console.error('Error:', xhr.responseText);
         alert('Failed to send credentials.');
       }
     });
