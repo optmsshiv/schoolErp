@@ -510,16 +510,21 @@ $(function () {
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
     var userId = $(this).data('id');
-    var fullName = $(this).data('fullname'); // Get Full Name
-    var password = $(this).data('password'); // Get Password
-    var phone = $(this).data('phone'); // Get Phone Number
+    var fullName = $(this).attr('data-fullname'); // Use attr() instead of data()
+    var password = $(this).attr('data-password'); // Use attr()
+    var phone = $(this).attr('data-phone'); // Use attr()
     var fromName = 'OPTMS Tech';
 
     // Implement credential sending functionality (e.g., AJAX request to send credentials)
     alert(
-      'Sending credentials for:\nUser ID: ' + userId +
-        '\nFull Name: ' + fullName +
-        '\nPhone: ' + phone
+      'Sending credentials for:\nUser ID: ' +
+        userId +
+        '\nFull Name: ' +
+        fullName +
+        '\nPassword: ' +
+        password +
+        '\nPhone: ' +
+        phone
     );
     $.ajax({
       url: '/php/whatsapp/get_whatsapp_credentials.php', // Replace with your backend script
