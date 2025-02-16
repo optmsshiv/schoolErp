@@ -516,18 +516,15 @@ $(function () {
     // alert('Send credentials for User ID:' + userId);
     // Implement credential sending functionality (e.g., AJAX request to send credentials)
     alert(
-      'Sending credentials for:\nUser ID: ' +
-        userId +
-        '\nFull Name: ' +
-        fullName +
-        '\nPhone: ' +
-        phone
+      'Sending credentials for:\nUser ID: ' + userId +
+        '\nFull Name: ' + fullName +
+        '\nPhone: ' + phone
     );
     $.ajax({
       url: '/php/whatsapp/get_whatsapp_credentials.php', // Replace with your backend script
       type: 'POST',
       data: { user_id: userId,
-            full_name: fullName,
+            fullname: fullName,
             password: password,
             phone: phone
        },
