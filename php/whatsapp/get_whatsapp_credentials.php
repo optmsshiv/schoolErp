@@ -24,14 +24,14 @@ try {
     // Get user data from frontend (POST request)
     $data = json_decode(file_get_contents("php://input"), true);
 
-    if (!isset($data['fullname'], $data['userId'], $data['password'], $data['phone'])) {
+    if (!isset($data['fullname'], $data['user_id'], $data['password'], $data['phone'])) {
         echo json_encode(['success' => false, 'message' => 'Missing required fields']);
         exit;
     }
 
     // Extract user details
     $fullname = $data['fullname'];
-    $userId = $data['userId'];
+    $userId = $data['user_id'];
     $password = $data['password'];
     $phone = $data['phone'];
     $fromName = "OPTMS Tech"; // Modify as needed
