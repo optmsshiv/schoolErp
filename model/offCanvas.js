@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
       `;
     } else if (user.status === 'Active') {
       dropdownMenu = `
-        <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
+        <a class="dropdown-item border-bottom userEdit" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
         <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
         <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
       `;
