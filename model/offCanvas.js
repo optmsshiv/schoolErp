@@ -194,6 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }"></a>
         <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning dropdown-toggle"
            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+           <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
       </td>
     `;
 
