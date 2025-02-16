@@ -513,7 +513,8 @@ $(function () {
     var fullName = $(this).data('fullname'); // Get Full Name
     var password = $(this).data('password'); // Get Password
     var phone = $(this).data('phone'); // Get Phone Number
-    
+    var fromName = 'OPTMS Tech';
+
     // Implement credential sending functionality (e.g., AJAX request to send credentials)
     alert(
       'Sending credentials for:\nUser ID: ' + userId +
@@ -528,7 +529,8 @@ $(function () {
             fullname: fullName,
             user_id: userId,
             password: password,
-            phone: phone
+            phone: phone,
+            fromName: fromName
        }),
       success: function (response) {
         console.log('Success:', response);
