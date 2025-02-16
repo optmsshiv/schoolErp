@@ -609,5 +609,6 @@ $(document).ready(function () {
   $('#searchBox').on('keyup', function () {
     table.search(this.value).draw();
   });
+  
 });
 

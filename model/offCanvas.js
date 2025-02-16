@@ -1,6 +1,3 @@
-// Declare variables for Bearer Token and Phone Number ID
-const BEARER_TOKEN = '565986464565'; // Replace with your actual Bearer Token
-
 // vanilla js (without JQuery)
 document.addEventListener('DOMContentLoaded', function () {
   // Load off-canvas HTML dynamically
@@ -138,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
+  // Function to send whatsapp message
   function sendWhatsAppMessage(fullname, user_id, password, phone) {
     if (!phone) {
       console.error('Phone number is missing.');
@@ -153,7 +151,6 @@ document.addEventListener('DOMContentLoaded', function () {
      // .then(data => console.log('WhatsApp Response:', data))
       .catch(error => console.error('Error:', error));
   }
-
 
 
   // Function to format date
