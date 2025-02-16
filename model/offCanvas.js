@@ -144,67 +144,17 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // Fetch credentials from backend
-    fetch('/php/whatsapp/get_whatsapp_credentials.php')
+    fetch('/php/whatsapp/get_whatsapp_credentials.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fullname, user_id, password, phone })
+    })
       .then(response => response.json())
-      .then(credentials => {
-        if (!credentials.success) {
-          console.error('Error fetching WhatsApp credentials:', credentials.message);
-          return;
-        }
-
-        const accessToken = credentials.access_token;
-        const phoneNumberId = credentials.phone_number_id;
-
-        var templateName = 'user_role'; // Replace with your actual template name
-        var fromName = 'OPTMS Tech'; // Change this to your organization's name or dynamic value
-
-        /*
-        console.log('Debug: Message Parameters:', {
-          fullname,
-          user_id,
-          password,
-          phone,
-          fromName
-        });*/
-
-        var messageData = {
-          messaging_product: 'whatsapp',
-          to: phone, // Automatically use the user's phone number
-          type: 'template',
-          template: {
-            name: templateName,
-            language: { code: 'en_US' },
-            components: [
-              {
-                type: 'body',
-                parameters: [
-                  { type: 'text', text: fullname },
-                  { type: 'text', text: user_id },
-                  { type: 'text', text: password },
-                  { type: 'text', text: fromName }
-                ]
-              }
-            ]
-          }
-        };
-
-        fetch(`https://graph.facebook.com/v21.0/${phoneNumberId}/messages`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`
-          },
-          body: JSON.stringify(messageData)
-        })
-          .then(response => response.json())
-          .then(data => {
-            console.log('WhatsApp Message Sent:', data);
-          })
-          .catch(error => console.error('WhatsApp API Error:', error));
-      })
-      .catch(error => console.error('Error fetching WhatsApp credentials:', error));
+      .then(data => console.log('WhatsApp Response:', data))
+      .catch(error => console.error('Error:', error));
   }
+
+
 
   // Function to format date
   function formatDate(dateString) {
