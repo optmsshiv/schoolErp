@@ -513,7 +513,7 @@ $(function () {
     var fullName = $(this).data('fullname'); // Get Full Name
     var password = $(this).data('password'); // Get Password
     var phone = $(this).data('phone'); // Get Phone Number
-    // alert('Send credentials for User ID:' + userId);
+    
     // Implement credential sending functionality (e.g., AJAX request to send credentials)
     alert(
       'Sending credentials for:\nUser ID: ' + userId +
@@ -524,7 +524,7 @@ $(function () {
       url: '/php/whatsapp/get_whatsapp_credentials.php', // Replace with your backend script
       type: 'POST',
       contentType: 'application/json', // Ensure JSON format
-      data: JSON.stringify ({
+      data: JSON.stringify({
             fullname: fullName,
             user_id: userId,
             password: password,
