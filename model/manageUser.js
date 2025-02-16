@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
   // Initialize DataTable
   var table = $('#userTable').DataTable({
     dom: '<"row"<"col-md-6"l><"col-md-6"B>>' + 't' + '<"row"<"col-md-6"i><"col-md-6"p>>',
@@ -609,6 +609,6 @@ $(document).ready(function () {
   $('#searchBox').on('keyup', function () {
     table.search(this.value).draw();
   });
-  
+
 });
 
