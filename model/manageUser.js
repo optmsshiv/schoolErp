@@ -510,21 +510,21 @@ $(function () {
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
     var userId = $(this).data('id');
-    var fullName = $(this).data('fullname'); // Get Full Name
+    var fullname = $(this).data('fullname'); // Get Full Name
     var password = $(this).data('password'); // Get Password
     var phone = $(this).data('phone'); // Get Phone Number
     // alert('Send credentials for User ID:' + userId);
     // Implement credential sending functionality (e.g., AJAX request to send credentials)
     alert(
       'Sending credentials for:\nUser ID: ' + userId +
-        '\nFull Name: ' + fullName +
+        '\nFull Name: ' + fullname +
         '\nPhone: ' + phone
     );
     $.ajax({
       url: '/php/whatsapp/get_whatsapp_credentials.php', // Replace with your backend script
       type: 'POST',
       data: { user_id: userId,
-            fullname: fullName,
+            fullname: fullname,
             password: password,
             phone: phone
        },
