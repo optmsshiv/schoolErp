@@ -511,6 +511,8 @@ $(function () {
   $(document).on('click', '.userCredential', function () {
     var userId = $(this).data('id');
     var fullName = $(this).data('fullname');
+    var password = $(this).data('email');
+    var phone = $(this).data('phone');
     var fromName = 'OPTMS Tech';
 
     // Implement credential sending functionality (e.g., AJAX request to send credentials)
