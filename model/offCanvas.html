@@ -1,6 +1,5 @@
-
-    <!-- Your custom CSS -->
-    <link rel="stylesheet" href="../assets/css/canvas.css" />
+<!-- Your custom CSS -->
+<link rel="stylesheet" href="../assets/css/canvas.css" />
 
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="userAddCanvas" aria-labelledby="userAddCanvasLabel" inert>
@@ -11,21 +10,23 @@
 
   <div class="offcanvas-body flex-grow-1">
     <form id="addNewUser" class="add-new-record pt-0 row g-2 needs-validation" method="post">
-        <div class="col-sm-12">
-          <label class="form-label" for="fullname">Full Name</label>
-          <div class="input-group input-group-merge canvas">
-            <span class="input-group-text"><i class="bx bx-user"></i></span>
-            <input type="text" id="fullname" class="form-control dt-fullname" name="basicFullname" placeholder="John Doe" required />
-          </div>
-          <div class="valid-feedback"> Looks good! </div>
-          <div class="invalid-feedback">Please enter a valid full name (letters and spaces only).</div>
+      <div class="col-sm-12">
+        <label class="form-label" for="fullname">Full Name</label>
+        <div class="input-group input-group-merge canvas">
+          <span class="input-group-text"><i class="bx bx-user"></i></span>
+          <input type="text" id="fullname" class="form-control dt-fullname" name="basicFullname" placeholder="John Doe"
+            required />
         </div>
+        <div class="valid-feedback"> Looks good! </div>
+        <div class="invalid-feedback">Please enter a valid full name (letters and spaces only).</div>
+      </div>
 
       <div class="col-sm-12">
         <label class="form-label" for="basicPost">Profession</label>
         <div class="input-group input-group-merge canvas">
           <span class="input-group-text"><i class='bx bxs-briefcase'></i></span>
-          <input type="text" id="basicPost" name="basicPost" class="form-control dt-role" placeholder="Web Developer" required />
+          <input type="text" id="basicPost" name="basicPost" class="form-control dt-role" placeholder="Web Developer"
+            required />
         </div>
         <div class="valid-feedback"> Looks good! </div>
         <div class="invalid-feedback">Role is required.</div>
@@ -50,8 +51,8 @@
         <div class="input-group input-group-merge canvas">
           <span class="input-group-text"><i class='bx bx-mobile'></i></span>
           <input type="text" id="phoneNumber" name="phoneNumber" class="form-control dt-phone"
-            placeholder="Enter 10-digit mobile number" maxlength="10" pattern="\d{10}" oninput="validateMobileNumber(this)"
-            required/>
+            placeholder="Enter 10-digit mobile number" maxlength="10" pattern="\d{10}"
+            oninput="validateMobileNumber(this)" required />
         </div>
         <div class="valid-feedback"> Looks good! </div>
         <small id="phoneError" style="color: red; display: none;">Please enter a valid 10-digit number.</small>
@@ -61,7 +62,7 @@
         <label class="form-label" for="basicDate">Joining Date</label>
         <div class="input-group input-group-merge canvas">
           <span class="input-group-text"><i class='bx bx-calendar'></i></span>
-          <input type="date" class="form-control dt-date" id="basicDate" name="basicDate" required/>
+          <input type="date" class="form-control dt-date" id="basicDate" name="basicDate" required />
         </div>
         <div class="valid-feedback"> Looks good! </div>
         <div class="invalid-feedback">Please select a joining date.</div>
@@ -81,23 +82,22 @@
         <div class="invalid-feedback">Please select a status.</div>
       </div>
 
-        <div class="col-sm-12">
-          <label class="form-label" for="basicSalary">Salary</label>
-          <div class="input-group input-group-merge canvas">
-            <span class="input-group-text"><i class='bx bx-rupee'></i></span>
-            <input type="text" id="basicSalary" name="basicSalary" class="form-control dt-salary" placeholder="12000"
-              pattern="^\d+(\.\d{1,2})?$" required/>
-            </div>
-            <div class="valid-feedback"> Looks good! </div>
-            <div class="invalid-feedback">Please enter a valid salary amount.</div>
+      <div class="col-sm-12">
+        <label class="form-label" for="basicSalary">Salary</label>
+        <div class="input-group input-group-merge canvas">
+          <span class="input-group-text"><i class='bx bx-rupee'></i></span>
+          <input type="text" id="basicSalary" name="basicSalary" class="form-control dt-salary" placeholder="12000"
+            pattern="^\d+(\.\d{1,2})?$" required />
         </div>
+        <div class="valid-feedback"> Looks good! </div>
+        <div class="invalid-feedback">Please enter a valid salary amount.</div>
+      </div>
 
       <div class="col-sm-12 mt-5">
         <button type="submit" name="submitButton" class="btn btn-primary data-submit me-sm-4 me-1">Submit</button>
         <button type="reset" class="btn btn-outline-danger" data-bs-dismiss="offcanvas">Cancel</button>
       </div>
     </form>
+    
   </div>
 </div>
-
-
