@@ -510,9 +510,7 @@ $(function () {
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
     var userId = $(this).data('id');
-    var fullName = $(this).attr('data-fullname'); // Use attr() instead of data()
-    var password = $(this).attr('data-password'); // Use attr()
-    var phone = $(this).attr('data-phone'); // Use attr()
+    var fullName = $(this).data('fullname');
     var fromName = 'OPTMS Tech';
 
     // Implement credential sending functionality (e.g., AJAX request to send credentials)
@@ -531,7 +529,7 @@ $(function () {
       type: 'POST',
       contentType: 'application/json', // Ensure JSON format
       data: JSON.stringify({
-            fullname: fullName,
+            fullName: fullName,
             user_id: userId,
             password: password,
             phone: phone,
