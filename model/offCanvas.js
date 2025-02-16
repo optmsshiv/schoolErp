@@ -1,38 +1,29 @@
-// vanilla js (without JQuery)
 document.addEventListener('DOMContentLoaded', function () {
   // Load off-canvas HTML dynamically
   fetch('../model/offCanvas.html')
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to load offCanvas.html');
-      }
+      if (!response.ok) throw new Error('Failed to load offCanvas.html');
       return response.text();
     })
     .then(data => {
       document.getElementById('offcanvasAddUser').innerHTML = data;
-      initializeOffCanvas(); // Initialize offcanvas after loading
+      initializeOffCanvas();
     })
-    .catch(error => {
-      console.error('Error loading offCanvas.html:', error);
-    });
+    .catch(error => console.error('Error loading offCanvas.html:', error));
 
   function initializeOffCanvas() {
-    var offcanvasElement = document.getElementById('userAddCanvas');
+    let offcanvasElement = document.getElementById('userAddCanvas');
     if (!offcanvasElement) {
       console.error('Off-canvas element not found');
       return;
     }
 
     offcanvasElement.addEventListener('shown.bs.offcanvas', function () {
-      // console.log('Off-canvas shown');
-
-      var form = document.getElementById('addNewUser');
+      let form = document.getElementById('addNewUser');
       if (!form) {
         console.error('Form element not found');
         return;
       }
-
-      // console.log('Form found, adding event listener');
 
       // Prevent duplicate event listeners
       form.removeEventListener('submit', handleFormSubmit);
@@ -42,47 +33,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function handleFormSubmit(event) {
     event.preventDefault();
-    var form = event.target;
-    var submitButton = form.querySelector("button[type='submit']");
+    let form = event.target;
+    let submitButton = form.querySelector("button[type='submit']");
 
-    // Disable the submit button to prevent multiple clicks
-    if (submitButton) {
-      submitButton.disabled = true;
-    }
+    // Disable submit button to prevent multiple clicks
+    if (submitButton) submitButton.disabled = true;
 
-    // Show loading Swal immediately
     Swal.fire({
       title: 'Processing...',
       text: 'Please wait while we add the user...',
       allowOutsideClick: false,
       showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+      didOpen: () => Swal.showLoading()
     });
 
-    var formData = new FormData(form);
+    let formData = new FormData(form);
 
-    // Close the off-canvas immediately before sending the request
-    var offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('userAddCanvas'));
-    if (offcanvasInstance) {
-      offcanvasInstance.hide();
-    }
+    // Close the off-canvas before sending the request
+    let offcanvasElement = document.getElementById('userAddCanvas');
+    let offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
+    if (offcanvasInstance) offcanvasInstance.hide();
 
-    // Send the form data to the server
+    // Send form data to the server
     fetch('../php/canvaData.php', {
       method: 'POST',
       body: formData
     })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+        if (!response.ok) throw new Error('Network response was not ok');
         return response.json();
       })
       .then(data => {
         if (data.success) {
-          // Hide loading Swal and show success message
           Swal.fire({
             icon: 'success',
             title: 'Success!',
@@ -90,7 +72,8 @@ document.addEventListener('DOMContentLoaded', function () {
             text: `New user created successfully with User ID: ${data.user_id} and Password: ${data.password}`,
             confirmButtonText: 'OK'
           }).then(() => {
-            form.reset(); // Reset the form
+            form.reset(); // Reset form
+            form.querySelectorAll('input[type="hidden"]').forEach(input => (input.value = ''));
 
             // Add only the new user to the table
             addNewUserToTable(data);
@@ -99,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
             sendWhatsAppMessage(data.fullname, data.user_id, data.password, data.phone);
           });
         } else {
-          // Hide loading Swal and show error message
           Swal.fire({
             icon: 'error',
             position: 'top',
@@ -111,12 +93,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Re-enable submit button
-        if (submitButton) {
-          submitButton.disabled = false;
-        }
+        if (submitButton) submitButton.disabled = false;
       })
       .catch(error => {
-        // Hide loading Swal and show error message
         Swal.fire({
           icon: 'error',
           position: 'top',
@@ -128,14 +107,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         console.error('Fetch error:', error);
 
-        // Re-enable submit button
-        if (submitButton) {
-          submitButton.disabled = false;
-        }
+        if (submitButton) submitButton.disabled = false;
       });
   }
 
-  // Function to send whatsapp message
+  // Function to send WhatsApp message
   function sendWhatsAppMessage(fullname, user_id, password, phone) {
     if (!phone) {
       console.error('Phone number is missing.');
@@ -147,99 +123,87 @@ document.addEventListener('DOMContentLoaded', function () {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fullname, user_id, password, phone })
     })
-      .then(response => response.json())
-     // .then(data => console.log('WhatsApp Response:', data))
-      .catch(error => console.error('Error:', error));
+      .then(response => {
+        if (!response.ok) throw new Error('WhatsApp API response was not ok');
+        return response.json();
+      })
+      .catch(error => console.error('WhatsApp API Error:', error));
   }
-
 
   // Function to format date
   function formatDate(dateString) {
-    if (!dateString) return 'N/A'; // Handle empty dates
+    if (!dateString) return 'N/A';
     let date = new Date(dateString);
     let day = String(date.getDate()).padStart(2, '0');
-    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    let month = String(date.getMonth() + 1).padStart(2, '0');
     let year = date.getFullYear();
     return `${day}-${month}-${year}`;
   }
+
   // Function to refresh the user table
   function addNewUserToTable(user) {
-    var tableBody = $('#userTable tbody');
-    var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
+    let tableBody = document.querySelector('#userTable tbody');
+    if (!tableBody) return;
+
+    let avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
     // Determine dropdown menu options based on user status
-    var dropdownMenu = '';
+    let dropdownMenu = '';
     if (user.status === 'Pending') {
       dropdownMenu = `
-                            <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
-                            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-                        `;
+        <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
+        <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+      `;
     } else if (user.status === 'Active') {
       dropdownMenu = `
-                            <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
-                            <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
-                            <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
-                        `;
+        <a class="dropdown-item border-bottom" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
+        <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
+        <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
+      `;
     } else if (user.status === 'Suspended') {
-      dropdownMenu = `
-                            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-                        `;
+      dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
     }
 
-    var row = `
-              <tr data-id="${user.user_id}">
-                <td><input type="checkbox" class="row-select"></td>
-                <td>${user.user_id}</td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <div class="avatar avatar-sm">
-                      <img src="${avatar}" alt="avatar" class="rounded-circle" />
-                    </div>
-                    <div class="ms-2">
-                      <h6 class="mb-0 ms-2">${user.fullname}</h6>
-                    </div>
-                  </div>
-                </td>
-                <td>${user.role}</td>
-                <td>${user.phone}</td>
-                <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
-                <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${user.status
-      }</span></td>
-                <td>
-                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${user.user_id
-      }"></a>
-                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${user.user_id
-      }"></a>
-                     <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-                     <div class="dropdown-menu dropdown-menu-end">
-                       ${dropdownMenu}
-                     </div>
-                </td>
-              </tr>
-            `;
+    let row = document.createElement('tr');
+    row.setAttribute('data-id', user.user_id);
+    row.innerHTML = `
+      <td><input type="checkbox" class="row-select"></td>
+      <td>${user.user_id}</td>
+      <td>
+        <div class="d-flex align-items-center">
+          <div class="avatar avatar-sm">
+            <img src="${avatar}" alt="avatar" class="rounded-circle" />
+          </div>
+          <div class="ms-2">
+            <h6 class="mb-0 ms-2">${user.fullname}</h6>
+          </div>
+        </div>
+      </td>
+      <td>${user.role}</td>
+      <td>${user.phone}</td>
+      <td>${formatDate(user.joining_date)}</td>
+      <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
+      user.status
+    }</span></td>
+      <td>
+        <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
+          user.user_id
+        }"></a>
+        <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
+          user.user_id
+        }"></a>
+        <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning dropdown-toggle"
+           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+        <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
+      </td>
+    `;
 
-    // Append new user to the table
-    tableBody.append(row);
-
-    // Reinitialize DataTable to include the new row
-    $('#userTable').DataTable().row.add($(row)).draw();
+    tableBody.appendChild(row);
   }
-
-
 });
 
+// Function to validate mobile number
 function validateMobileNumber(input) {
-  // Remove non-numeric characters
   input.value = input.value.replace(/\D/g, '');
-
-  // Show error message if input is incomplete
-  const errorMsg = document.getElementById('phoneError');
-  if (input.value.length !== 10) {
-    errorMsg.style.display = 'block';
-  } else {
-    errorMsg.style.display = 'none';
-  }
+  document.getElementById('phoneError').style.display = /^\d{10}$/.test(input.value) ? 'none' : 'block';
 }
-
-
