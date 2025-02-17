@@ -53,7 +53,12 @@
       <button class="btn btn-outline-info" onclick="exportLogs('excel')">📥 Export Excel</button>
     </div>
 
-      <div id="alertBox" class="alert d-none" role="alert"></div>
+      <div id="alertBox" class="alert d-none mb-3" role="alert"></div>
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <canvas id="messageStatsChart" width="400" height="200"></canvas>
+        </div>
+      </div>
 
     <div class="table-responsive">
     <table class="table table-bordered table-striped mt-4">
@@ -65,7 +70,7 @@
                 <th>User ID</th>
                 <th>Status</th>
                 <th>Response</th>
-                <th>Pin</th>
+                <th>Actions</th>
                 <th>Timestamp</th>
             </tr>
         </thead>
@@ -75,7 +80,7 @@
     </table>
     </div>
 
-    <canvas id="messageStatsChart" width="400" height="150"></canvas>
+
 
 
     <!-- Response Modal -->
@@ -186,12 +191,12 @@
             sortedLogs.forEach(log => {
               const statusColor = log.message_status === 'sent' ? 'text-success' : 'text-danger';
               logsTable.innerHTML += `
-            <tr>
+            <tr${pinnedLogs.includes(log.id) ? ' style="background-color: #fff3cd;"' : ''}>
                 <td>${log.id}</td>
                 <td>${log.phone}</td>
                 <td>${log.fullname}</td>
                 <td>${log.userId}</td>
-                <td class="${statusColor}">${log.message_status}</td>
+                <td class="${log.message_status === 'success' ? 'text-success' : 'text-danger'}">${log.message_status}</td>
                 <td><button class="btn btn-sm btn-info" data-response='${JSON.stringify(log.response)}' onclick="showResponse(this)">View</button></td>
                 <td><button class="btn btn-warning btn-sm" onclick="pinLog('${log.id}')">📌 Pin</button></td>
                 <td>${log.created_at}</td>
