@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Generate user ID and password
         $userId = generateUserId($fullname);
-        $password = generatePassword(6);
+        $password = generatePassword(8);
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Insert query

