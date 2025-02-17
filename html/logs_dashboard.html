@@ -67,6 +67,7 @@
           <th>Full Name</th>
           <th>User ID</th>
           <th>Status</th>
+          <th>Message Preview</th>
           <th>Response</th>
           <th>Actions</th>
           <th>Timestamp</th>
@@ -211,6 +212,7 @@
                 <td>${log.fullname}</td>
                 <td>${log.userId}</td>
                 <td class="${statusColor}">${log.message_status}</td>
+                <td title="${log.message}">${log.message.substring(0, 30)}...</td>
                 <td><button class="btn btn-sm btn-info" data-response='${JSON.stringify(log.response)}' onclick="showResponse(this)">View</button></td>
                 <td><button class="btn btn-warning btn-sm" onclick="pinLog('${log.id}')">📌 Pin</button></td>
                 <td>${log.created_at}</td>
@@ -219,7 +221,7 @@
 
       // If no logs found, show a message
       if (data.success && data.logs.length === 0) {
-        logsTable.innerHTML = '<tr><td colspan="8" class="text-center">No logs found</td></tr>';
+        logsTable.innerHTML = '<tr><td colspan="9" class="text-center">No logs found</td></tr>';
       }
     }
 
