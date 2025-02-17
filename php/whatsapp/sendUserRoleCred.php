@@ -100,7 +100,7 @@ try {
     $messageStatus = ($httpCode == 200 || $httpCode == 201) ? 'success' : 'failed';
 
     // Log the response in the database
-    $logStmt = $pdo->prepare("INSERT INTO whatsapp_logs (phone, fullname, userId, message_status, response) VALUES (:phone, :fullname, :userId, :message_status, :response)");
+    $logStmt = $pdo->prepare("INSERT INTO whatsapp_log (phone, fullname, userId, message_status, response) VALUES (:phone, :fullname, :userId, :message_status, :response)");
     $logStmt->execute([
         ':phone' => $phone,
         ':fullname' => $fullName,
