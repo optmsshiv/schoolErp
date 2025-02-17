@@ -155,7 +155,8 @@
       fetch(url)
         .then(response => response.json())
         .then(data => {
-          
+          const logsTable = document.getElementById('logsTable');
+          logsTable.innerHTML = '';
           updateLogsTable(data);
           updateChart(data.logs);
           checkForFailedMessages(data.logs);
