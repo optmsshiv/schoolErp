@@ -215,7 +215,7 @@
             <td>${log.fullname}</td>
             <td>${log.userId}</td>
             <td class="${statusColor}">${log.message_status}</td>
-            <td title="${log.message}">${log.message.substring(0, 30)}...</td>
+            
             <td>
                 <button class="btn btn-sm btn-info" onclick="showResponse(this)" data-response='${encodeURIComponent(JSON.stringify(log.response))}'>
                     View
