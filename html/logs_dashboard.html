@@ -147,83 +147,100 @@
 
     // Fetch logs with optional filters
     function fetchLogs() {
-      let fromDate = document.getElementById("fromDate").value;
-      let toDate = document.getElementById("toDate").value;
-      let phoneFilter = document.getElementById("phoneFilter").value;
+        let fromDate = document.getElementById("fromDate").value;
+        let toDate = document.getElementById("toDate").value;
+        let phoneFilter = document.getElementById("phoneFilter").value;
 
-      let url = `/php/whatsapp/whatsapp_logs.php?from=${fromDate}&to=${toDate}&phone=${phoneFilter}`;
+        let url = `/php/whatsapp/whatsapp_logs.php?from=${fromDate}&to=${toDate}&phone=${phoneFilter}`;
 
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          const logsTable = document.getElementById('logsTable');
-          logsTable.innerHTML = '';
-          updateLogsTable(data);
-          updateChart(data.logs);
-          checkForFailedMessages(data.logs);
-        })
-        .catch(error => console.error("Error fetching logs:", error));
-    }
-
-    let pinnedLogs = JSON.parse(localStorage.getItem('pinnedLogs')) || [];
-    function pinLog(logId) {
-      logId = String(logId); // Ensure logId is treated as a string
-
-      // Toggle pin status
-      if (!pinnedLogs.includes(logId)) {
-        pinnedLogs.push(logId);
-      } else {
-        pinnedLogs = pinnedLogs.filter(id => id !== logId);
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            const logsTable = document.getElementById('logsTable');
+            logsTable.innerHTML = ''; // Clear table
+            updateLogsTable(data);
+          })
+          .catch(error => console.error("Error fetching logs:", error));
       }
-      // Save to localStorage and refresh the logs
-      localStorage.setItem('pinnedLogs', JSON.stringify(pinnedLogs));
 
-      // Find the row and change its background color immediately
-      let row = document.getElementById(`logRow-${logId}`);
-      if (row) {
+      // Retrieve pinned logs from localStorage
+      let pinnedLogs = JSON.parse(localStorage.getItem('pinnedLogs')) || [];
+
+      function pinLog(logId) {
+        logId = String(logId); // Ensure it's a string
+
+        // Toggle pin status
         if (pinnedLogs.includes(logId)) {
-          row.style.backgroundColor = "#fff3cd"; // Highlight pinned log
+          pinnedLogs = pinnedLogs.filter(id => id !== logId);
         } else {
-          row.style.backgroundColor = ""; // Reset background if unpinned
+          pinnedLogs.push(logId);
+        }
+
+        // Save to localStorage
+        localStorage.setItem('pinnedLogs', JSON.stringify(pinnedLogs));
+
+        // Refresh logs display
+        fetchLogs();
+      }
+
+      // Update the logs table
+      function updateLogsTable(data) {
+        let logsTable = document.getElementById('logsTable');
+        logsTable.innerHTML = '';
+
+        if (!data.success || data.logs.length === 0) {
+          logsTable.innerHTML = '<tr><td colspan="9" class="text-center">No logs found</td></tr>';
+          return;
+        }
+
+        // Separate pinned logs from regular logs
+        let pinned = data.logs.filter(log => pinnedLogs.includes(String(log.id)));
+        let regular = data.logs.filter(log => !pinnedLogs.includes(String(log.id)));
+
+        // Combine logs (pinned first)
+        let sortedLogs = [...pinned, ...regular];
+
+        sortedLogs.forEach(log => {
+          const statusColor = log.message_status === 'success' ? 'text-success' : 'text-danger';
+
+          let row = document.createElement('tr');
+          row.id = `logRow-${log.id}`;
+          if (pinnedLogs.includes(String(log.id))) {
+            row.style.backgroundColor = "#fff3cd"; // Highlight pinned logs
+          }
+
+          row.innerHTML = `
+            <td>${log.id}</td>
+            <td>${log.phone}</td>
+            <td>${log.fullname}</td>
+            <td>${log.userId}</td>
+            <td class="${statusColor}">${log.message_status}</td>
+            <td title="${log.message}">${log.message.substring(0, 30)}...</td>
+            <td>
+                <button class="btn btn-sm btn-info" onclick="showResponse(this)" data-response='${encodeURIComponent(JSON.stringify(log.response))}'>
+                    View
+                </button>
+            </td>
+            <td>
+                <button class="btn btn-warning btn-sm" onclick="pinLog('${log.id}')">📌 Pin</button>
+            </td>
+            <td>${log.created_at}</td>
+        `;
+
+          logsTable.appendChild(row);
+        });
+      }
+
+      // Show full response in an alert
+      function showResponse(button) {
+        let response = decodeURIComponent(button.getAttribute('data-response'));
+        try {
+          let formattedResponse = JSON.stringify(JSON.parse(response), null, 2);
+          alert("API Response:\n" + formattedResponse);
+        } catch (e) {
+          alert("Response:\n" + response);
         }
       }
-       fetchLogs();
-    }
-
-    // Update the logs table with data
-    function updateLogsTable(data) {
-      let logsTable = document.getElementById('logsTable');
-      logsTable.innerHTML = '';
-
-      // Separate pinned logs and regular logs
-      let pinned = data.logs.filter(log => pinnedLogs.includes(String(log.id)));
-      let regular = data.logs.filter(log => !pinnedLogs.includes(String(log.id)));
-
-      // Concatenate pinned logs first, followed by regular logs
-      let sortedLogs = [...pinned, ...regular];
-
-      // Render each log in the table
-      sortedLogs.forEach(log => {
-        const statusColor = log.message_status === 'success' ? 'text-success' : 'text-danger';
-        logsTable.innerHTML += `
-            <tr id="logRow-${log.id}" ${pinnedLogs.includes(String(log.id)) ? 'style="background-color: #eefc4e;"' : ''}>
-                <td>${log.id}</td>
-                <td>${log.phone}</td>
-                <td>${log.fullname}</td>
-                <td>${log.userId}</td>
-                <td class="${statusColor}">${log.message_status}</td>
-                <td title="${log.message}">${log.message.substring(0, 30)}...</td>
-                <td><button class="btn btn-sm btn-info" data-response='${JSON.stringify(log.response)}' onclick="showResponse(this)">View</button></td>
-                <td><button class="btn btn-warning btn-sm" onclick="pinLog('${log.id}')">📌 Pin</button></td>
-                <td>${log.created_at}</td>
-            </tr>`;
-      });
-
-      // If no logs found, show a message
-      if (data.success && data.logs.length === 0) {
-        logsTable.innerHTML = '<tr><td colspan="9" class="text-center">No logs found</td></tr>';
-      }
-    }
 
     // Check for failed messages and display alert
     function checkForFailedMessages(logs) {
@@ -260,7 +277,7 @@
     // Export logs as CSV or Excel
     function exportLogs(format) {
       let tableData = document.getElementById("logsTable").innerHTML;
-      let blob = new Blob([tableData], { type: format === 'csv' ? 'text/csv' : 'application/vnd.ms-excel' });
+      let blob = new Blob([tableData], { type: format === 'csv' ? 'text/csv' : 'application/vnd.ms-xlsx' });
       let link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = `whatsapp_logs.${format}`;

@@ -14,17 +14,17 @@ try {
     $phone = isset($_GET['phone']) ? $_GET['phone'] : null;
 
     // Base query
-    $query = "SELECT id, phone, fullname, userId, message_status, response, message, created_at FROM whatsapp_log WHERE 1";
+    $query = "SELECT id, phone, fullname, userId, message_status, response, message, created_at FROM whatsapp_log WHERE 1=1";
     $params = [];
 
-    // Apply date filters
+    // Apply date filters (ensure correct format)
     if (!empty($fromDate)) {
         $query .= " AND DATE(created_at) >= ?";
-        $params[] = $fromDate;
+        $params[] = date('Y-m-d', strtotime($fromDate));
     }
     if (!empty($toDate)) {
         $query .= " AND DATE(created_at) <= ?";
-        $params[] = $toDate;
+        $params[] = date('Y-m-d', strtotime($toDate));
     }
 
     // Apply phone filter
