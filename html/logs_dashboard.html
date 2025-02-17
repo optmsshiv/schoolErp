@@ -189,14 +189,14 @@
 
             // Render each log in the table
             sortedLogs.forEach(log => {
-              const statusColor = log.message_status === 'sent' ? 'text-success' : 'text-danger';
+              const statusColor = log.message_status === 'success' ? 'text-success' : 'text-danger';
               logsTable.innerHTML += `
             <tr${pinnedLogs.includes(log.id) ? ' style="background-color: #fff3cd;"' : ''}>
                 <td>${log.id}</td>
                 <td>${log.phone}</td>
                 <td>${log.fullname}</td>
                 <td>${log.userId}</td>
-                <td class="${log.message_status === 'success' ? 'text-success' : 'text-danger'}">${log.message_status}</td>
+                <td class="${statusColor}">${log.message_status}</td>
                 <td><button class="btn btn-sm btn-info" data-response='${JSON.stringify(log.response)}' onclick="showResponse(this)">View</button></td>
                 <td><button class="btn btn-warning btn-sm" onclick="pinLog('${log.id}')">📌 Pin</button></td>
                 <td>${log.created_at}</td>
