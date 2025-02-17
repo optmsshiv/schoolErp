@@ -65,6 +65,7 @@
                 <th>User ID</th>
                 <th>Status</th>
                 <th>Response</th>
+                <th>Pin</th>
                 <th>Timestamp</th>
             </tr>
         </thead>
@@ -113,7 +114,7 @@
         let messageChart;
 
           function updateChart(logs) {
-            let successCount = logs.filter(log => log.message_status === 'sent').length;
+            let successCount = logs.filter(log => log.message_status === 'success').length;
             let failedCount = logs.length - successCount;
 
             let ctx = document.getElementById('messageStatsChart').getContext('2d');
