@@ -9,6 +9,37 @@
 <body class="container mt-5">
 
     <h2 class="text-center">📊 WhatsApp Message Logs</h2>
+    <div class="d-flex justify-content-between mb-3">
+      <button class="btn btn-outline-primary" onclick="fetchLogs()">🔄 Refresh Logs</button>
+      <div>
+        <label class="me-2">Auto-Refresh:</label>
+        <input type="checkbox" id="autoRefreshToggle" checked onchange="toggleAutoRefresh()">
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label>📅 From Date:</label>
+        <input type="date" id="fromDate" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label>📅 To Date:</label>
+        <input type="date" id="toDate" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label>📞 Phone Number:</label>
+        <input type="text" id="phoneFilter" class="form-control" placeholder="Enter phone">
+      </div>
+    </div>
+    <button class="btn btn-success" onclick="fetchLogs()">🔍 Apply Filter</button>
+
+    <div class="mb-3">
+      <button class="btn btn-outline-success" onclick="exportLogs('csv')">📤 Export CSV</button>
+      <button class="btn btn-outline-info" onclick="exportLogs('excel')">📥 Export Excel</button>
+    </div>
+
+
+
     <table class="table table-bordered table-striped mt-4">
         <thead class="table-dark">
             <tr>
@@ -103,6 +134,15 @@
               });
           }
 
+          function exportLogs(format) {
+              let tableData = document.getElementById("logsTable").innerHTML;
+              let blob = new Blob([tableData], { type: format === 'csv' ? 'text/csv' : 'application/vnd.ms-excel' });
+              let link = document.createElement("a");
+              link.href = URL.createObjectURL(blob);
+              link.download = `whatsapp_logs.${format}`;
+              link.click();
+            }
+
 
           function copyResponse() {
               let text = document.getElementById('responseContent').innerText;
@@ -174,7 +214,17 @@
                 document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(highlightedResponse)}</code>`;
               }
 
+              let autoRefresh = true;
+                let refreshInterval;
 
+                function toggleAutoRefresh() {
+                  autoRefresh = document.getElementById("autoRefreshToggle").checked;
+                  if (autoRefresh) {
+                    refreshInterval = setInterval(fetchLogs, 30000);
+                  } else {
+                    clearInterval(refreshInterval);
+                  }
+                }
 
 
         fetchLogs();
