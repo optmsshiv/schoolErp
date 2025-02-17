@@ -93,14 +93,24 @@ try {
     curl_close($ch);
 
     // Log the response in the database
-    $logStmt = $pdo->prepare("INSERT INTO whatsapp_logs (user_id, phone, message, response, status, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+
+    $logStmt = $pdo->prepare("INSERT INTO whatsapp_logs (phone, fullname, userId, message_status, response) VALUES (:phone, :fullname, :userId, :message_status, :response)");
     $logStmt->execute([
-        $userId,
-        $phone,
-        json_encode($messageData),
-        json_encode($response),
-        ($httpCode == 200 || $httpCode == 201) ? 'success' : 'failed'
+        ':phone' => $phone,
+        ':fullname' => $fullname,
+        ':userId' => $userId,
+        ':message_status' => $messageStatus,
+        ':response' => json_encode($responseData)
     ]);
+
+   //$logStmt = $pdo->prepare("INSERT INTO whatsapp_logs (user_id, phone, message, response, status, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+   //$logStmt->execute([
+   //    $userId,
+   //    $phone,
+   //    json_encode($messageData),
+   //    json_encode($response),
+   //    ($httpCode == 200 || $httpCode == 201) ? 'success' : 'failed'
+   //]);
 
     if ($httpCode == 200 || $httpCode == 201) {
         echo json_encode(['success' => true, 'message' => 'WhatsApp message sent', 'response' => json_decode($response, true)]);
