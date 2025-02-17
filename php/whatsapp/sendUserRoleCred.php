@@ -32,7 +32,7 @@ try {
     // Extract user details
     $fullName = $data['fullName'];
     $userId = $data['user_id'];
-    $password = $data['password'];
+    $password = hex2bin($data['password']); // Decode the hex password to plain text
     $phone = $data['phone'];
     $fromName = "OPTMS Tech"; // Modify as needed
 
