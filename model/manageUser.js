@@ -510,40 +510,63 @@ $(function () {
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
     var userId = $(this).data('id');
-    var fullName = $(this).data('fullname');
-    var password = $(this).data('email');
-    var phone = $(this).data('phone');
-    var fromName = 'OPTMS Tech';
 
-    // Implement credential sending functionality (e.g., AJAX request to send credentials)
-    alert(
-      'Sending credentials for:\nUser ID: ' +
-        userId +
-        '\nFull Name: ' +
-        fullName +
-        '\nPassword: ' +
-        password +
-        '\nPhone: ' +
-        phone
-    );
+    // AJAX request to fetch user credentials from the server
     $.ajax({
-      url: '/php/whatsapp/get_whatsapp_credentials.php', // Replace with your backend script
+      url: '/php/whatsapp/getUserCredentials.php', // Backend script to fetch credentials
       type: 'POST',
-      contentType: 'application/json', // Ensure JSON format
-      data: JSON.stringify({
-            fullName: fullName,
-            user_id: userId,
-            password: password,
-            phone: phone,
-            fromName: fromName
-       }),
+      data: { user_id: userId }, // Send the user ID to the backend
+      dataType: 'json', // Expect JSON response
       success: function (response) {
-        console.log('Success:', response);
-        alert('Credentials sent successfully!');
+        if (response.success) {
+          var fullName = response.data.fullname;
+          var password = response.data.password;
+          var phone = response.data.phone;
+          var fromName = response.data.fromName;
+
+          // Display confirmation before sending credentials
+          if (
+            confirm(
+              'Send credentials to:\n' +
+                'Full Name: ' +
+                fullName +
+                '\n' +
+                'Phone: ' +
+                phone +
+                '\n' +
+                'Password: ' +
+                password
+            )
+          ) {
+            // Send credentials via WhatsApp API
+            $.ajax({
+              url: '/php/whatsapp/sendUserRoleCred.php', // Script to send via WhatsApp
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify({
+                fullName: fullName,
+                user_id: userId,
+                password: password,
+                phone: phone,
+                fromName: fromName
+              }),
+              success: function (sendResponse) {
+                console.log('Success:', sendResponse);
+                alert('Credentials sent successfully!');
+              },
+              error: function (xhr) {
+                console.error('Error:', xhr.responseText);
+                alert('Failed to send credentials.');
+              }
+            });
+          }
+        } else {
+          alert('User credentials not found.');
+        }
       },
       error: function (xhr) {
-        console.error('Error:', xhr.responseText);
-        alert('Failed to send credentials.');
+        console.error('Error fetching credentials:', xhr.responseText);
+        alert('Error retrieving user credentials.');
       }
     });
   });
