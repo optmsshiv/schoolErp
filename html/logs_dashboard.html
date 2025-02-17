@@ -151,7 +151,7 @@
 
           // Check for failed messages and display alert
           function checkForFailedMessages(logs) {
-            let failedMessages = logs.filter(log => log.message_status !== "sent");
+            let failedMessages = logs.filter(log => log.message_status !== "success");
             let alertBox = document.getElementById("alertBox");
 
             if (failedMessages.length > 0) {
