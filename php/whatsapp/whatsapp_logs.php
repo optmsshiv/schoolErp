@@ -14,10 +14,10 @@ try {
     $phone = isset($_GET['phone']) ? $_GET['phone'] : null;
 
     // Base query
-    $query = "SELECT id, phone, fullname, userId, message_status, response, created_at FROM whatsapp_log WHERE 1";
+    $query = "SELECT id, phone, fullname, userId, message_status, response, message, created_at FROM whatsapp_log WHERE 1";
     $params = [];
 
-    // Add date range filter
+    // Apply date filters
     if (!empty($fromDate)) {
         $query .= " AND DATE(created_at) >= ?";
         $params[] = $fromDate;
@@ -27,7 +27,7 @@ try {
         $params[] = $toDate;
     }
 
-    // Add phone number filter (partial match)
+    // Apply phone filter
     if (!empty($phone)) {
         $query .= " AND phone LIKE ?";
         $params[] = "%$phone%";
@@ -36,7 +36,7 @@ try {
     // Order by latest logs
     $query .= " ORDER BY created_at DESC";
 
-    // Execute query with filters
+    // Execute query
     $stmt = $pdo->prepare($query);
     $stmt->execute($params);
     $logs = $stmt->fetchAll(PDO::FETCH_ASSOC);
