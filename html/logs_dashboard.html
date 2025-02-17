@@ -156,37 +156,51 @@
           }
 
 
-          let pinnedLogs = JSON.parse(localStorage.getItem('pinnedLogs')) || [];
+         let pinnedLogs = JSON.parse(localStorage.getItem('pinnedLogs')) || [];
 
-            function pinLog(logId) {
-              if (!pinnedLogs.includes(logId)) {
-                pinnedLogs.push(logId);
-              } else {
-                pinnedLogs = pinnedLogs.filter(id => id !== logId);
-              }
-              localStorage.setItem('pinnedLogs', JSON.stringify(pinnedLogs));
-              fetchLogs();
+          function pinLog(logId) {
+            // Toggle pin status
+            if (!pinnedLogs.includes(logId)) {
+              pinnedLogs.push(logId);
+            } else {
+              pinnedLogs = pinnedLogs.filter(id => id !== logId);
             }
+            // Save to localStorage and refresh the logs
+            localStorage.setItem('pinnedLogs', JSON.stringify(pinnedLogs));
+            fetchLogs();
+          }
+
           // Update the logs table with data
           function updateLogsTable(data) {
-            const logsTable = document.getElementById('logsTable');
-            if (data.success && data.logs.length > 0) {
-              data.logs.forEach(log => {
-                const statusColor = log.message_status === 'sent' ? 'text-success' : 'text-danger';
-                logsTable.innerHTML += `
-                <tr>
-                  <td>${log.id}</td>
-                  <td>${log.phone}</td>
-                  <td>${log.fullname}</td>
-                  <td>${log.userId}</td>
-                  <td class="${statusColor}">${log.message_status}</td>
-                  <td><button class="btn btn-sm btn-info" data-response='${JSON.stringify(log.response)}' onclick="showResponse(this)">View</button></td>
-                  <td><button class="btn btn-warning btn-sm" onclick="pinLog('${log.id}')">📌 Pin</button></td>
-                  <td>${log.created_at}</td>
-                </tr>`;
-              });
-            } else {
-              logsTable.innerHTML = '<tr><td colspan="7" class="text-center">No logs found</td></tr>';
+            let logsTable = document.getElementById('logsTable');
+            logsTable.innerHTML = '';
+
+            // Separate pinned logs and regular logs
+            let pinned = data.logs.filter(log => pinnedLogs.includes(log.id));
+            let regular = data.logs.filter(log => !pinnedLogs.includes(log.id));
+
+            // Concatenate pinned logs first, followed by regular logs
+            let sortedLogs = [...pinned, ...regular];
+
+            // Render each log in the table
+            sortedLogs.forEach(log => {
+              const statusColor = log.message_status === 'sent' ? 'text-success' : 'text-danger';
+              logsTable.innerHTML += `
+            <tr>
+                <td>${log.id}</td>
+                <td>${log.phone}</td>
+                <td>${log.fullname}</td>
+                <td>${log.userId}</td>
+                <td class="${statusColor}">${log.message_status}</td>
+                <td><button class="btn btn-sm btn-info" data-response='${JSON.stringify(log.response)}' onclick="showResponse(this)">View</button></td>
+                <td><button class="btn btn-warning btn-sm" onclick="pinLog('${log.id}')">📌 Pin</button></td>
+                <td>${log.created_at}</td>
+            </tr>`;
+            });
+
+            // If no logs found, show a message
+            if (data.success && data.logs.length === 0) {
+              logsTable.innerHTML = '<tr><td colspan="8" class="text-center">No logs found</td></tr>';
             }
           }
 
