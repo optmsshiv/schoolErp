@@ -34,9 +34,19 @@
             <h5 class="modal-title" id="responseModalLabel">API Response</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="modal-body">
-            <pre id="responseContent" class="p-3 bg-dark text-light rounded border"></pre>
+
+          <!-- Search Bar -->
+          <div class="p-2">
+            <input type="text" id="searchInput" class="form-control" placeholder="🔍 Search in response..."
+              onkeyup="searchResponse()">
           </div>
+
+          <div class="modal-body">
+            <button class="btn btn-sm btn-secondary mb-2" onclick="toggleExpand()">🔽 Expand/Collapse</button>
+            <pre id="responseContent" class="p-3 bg-dark text-light rounded border"
+              style="max-height: 400px; overflow: auto;"></pre>
+          </div>
+
           <div class="modal-footer">
             <button class="btn btn-outline-primary" onclick="copyResponse()">📋 Copy</button>
             <button class="btn btn-outline-success" onclick="downloadResponse()">⬇ Download</button>
@@ -45,7 +55,6 @@
         </div>
       </div>
     </div>
-
 
 
     <script>
@@ -78,15 +87,11 @@
         }
 
         function highlightJSON(json) {
-            return json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") // Prevent XSS
+            return json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
               .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                let cls = "text-light"; // Default text color
+                let cls = "text-light";
                 if (/^"/.test(match)) {
-                  if (/:$/.test(match)) {
-                    cls = "text-warning"; // Keys
-                  } else {
-                    cls = "text-success"; // Strings
-                  }
+                  cls = /:$/.test(match) ? "text-warning" : "text-success"; // Keys and strings
                 } else if (/true|false/.test(match)) {
                   cls = "text-primary"; // Boolean
                 } else if (/null/.test(match)) {
@@ -98,14 +103,18 @@
               });
           }
 
+
           function copyResponse() {
               let text = document.getElementById('responseContent').innerText;
               navigator.clipboard.writeText(text).then(() => {
-                alert("Response copied to clipboard! 📋");
+                let copyButton = document.querySelector('.btn-outline-primary');
+                copyButton.innerText = "✅ Copied!";
+                setTimeout(() => copyButton.innerText = "📋 Copy", 2000);
               }).catch(err => {
                 console.error("Failed to copy:", err);
               });
             }
+
 
             function downloadResponse() {
                 let text = document.getElementById('responseContent').innerText;
@@ -120,17 +129,18 @@
 
 
 
+
+              let originalResponse = ""; // Store original response for search feature
         function showResponse(button) {
-            let response = button.getAttribute('data-response'); // Get response from button
+            let response = button.getAttribute('data-response');
 
             try {
-              let parsedResponse = JSON.parse(response); // Parse JSON safely
-              let formattedResponse = JSON.stringify(parsedResponse, null, 2); // Pretty-print JSON
+              let parsedResponse = JSON.parse(response);
+              originalResponse = JSON.stringify(parsedResponse, null, 2); // Store original response
 
-              // Highlight JSON syntax
-              document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(formattedResponse)}</code>`;
+              // Display formatted JSON with syntax highlighting
+              document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(originalResponse)}</code>`;
 
-              // Show modal
               new bootstrap.Modal(document.getElementById('responseModal')).show();
             } catch (error) {
               console.error("Invalid JSON:", response);
@@ -138,6 +148,33 @@
               new bootstrap.Modal(document.getElementById('responseModal')).show();
             }
           }
+
+          // toggle large JSON responses for better visibility
+          let expanded = false;
+
+            function toggleExpand() {
+              let responseContent = document.getElementById('responseContent');
+              if (expanded) {
+                responseContent.style.maxHeight = "400px";
+                responseContent.style.overflow = "auto";
+              } else {
+                responseContent.style.maxHeight = "none";
+                responseContent.style.overflow = "visible";
+              }
+              expanded = !expanded;
+            }
+
+            // quickly find specific data
+            function searchResponse() {
+                let searchInput = document.getElementById('searchInput').value.toLowerCase();
+                let highlightedResponse = originalResponse.replace(new RegExp(searchInput, "gi"), match => {
+                  return `<mark class="bg-warning text-dark">${match}</mark>`;
+                });
+
+                document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(highlightedResponse)}</code>`;
+              }
+
+
 
 
         fetchLogs();
