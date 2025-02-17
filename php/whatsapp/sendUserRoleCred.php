@@ -1,5 +1,5 @@
 <?php
-require '..db_connection.php'; // Include database connection
+require '../db_connection.php'; // Include database connection
 require '/php/whatsapp/get_whatsapp_credentials.php'; // Include WhatsApp API integration
 
 header('Content-Type: application/json');
