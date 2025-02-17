@@ -46,20 +46,17 @@
         <input type="text" id="phoneFilter" class="form-control" placeholder="Enter phone">
       </div>
     </div>
+    <div class="mb-3">
     <button class="btn btn-success" onclick="fetchLogs()">🔍 Apply Filter</button>
 
-    <div class="mb-3">
-      <button class="btn btn-outline-success" onclick="exportLogs('csv')">📤 Export CSV</button>
-      <button class="btn btn-outline-info" onclick="exportLogs('excel')">📥 Export Excel</button>
+
+      <button class="btn btn-outline-success ms-2" onclick="exportLogs('csv')">📤 Export CSV</button>
+      <button class="btn btn-outline-info ms-2" onclick="exportLogs('excel')">📥 Export Excel</button>
     </div>
 
       <div id="alertBox" class="alert d-none mb-3" role="alert"></div>
-      
-      <div class="row mb-4">
-        <div class="col-md-6">
-          <canvas id="messageStatsChart" width="40" height="20"></canvas>
-        </div>
-      </div>
+
+
 
     <div class="table-responsive">
     <table class="table table-bordered table-striped mt-4">
@@ -76,9 +73,15 @@
             </tr>
         </thead>
         <tbody id="logsTable">
-            <tr><td colspan="7" class="text-center">Loading logs...</td></tr>
+            <tr><td colspan="8" class="text-center">Loading logs...</td></tr>
         </tbody>
     </table>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <canvas id="messageStatsChart" width="400" height="200"></canvas>
+      </div>
     </div>
 
 
