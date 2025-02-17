@@ -74,6 +74,9 @@
     </table>
     </div>
 
+    <canvas id="messageStatsChart" width="400" height="150"></canvas>
+
+
     <!-- Response Modal -->
     <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -107,6 +110,29 @@
 
     <script>
         let originalResponse = ""; // Store original response for search feature
+        let messageChart;
+
+          function updateChart(logs) {
+            let successCount = logs.filter(log => log.message_status === 'sent').length;
+            let failedCount = logs.length - successCount;
+
+            let ctx = document.getElementById('messageStatsChart').getContext('2d');
+
+            if (messageChart) {
+              messageChart.destroy();
+            }
+
+            messageChart = new Chart(ctx, {
+              type: 'pie',
+              data: {
+                labels: ['Success', 'Failed'],
+                datasets: [{
+                  data: [successCount, failedCount],
+                  backgroundColor: ['#28a745', '#dc3545']
+                }]
+              }
+            });
+          }
 
           // Fetch logs with optional filters
           function fetchLogs() {
@@ -122,11 +148,24 @@
                 const logsTable = document.getElementById('logsTable');
                 logsTable.innerHTML = '';
                 updateLogsTable(data);
+                updateChart(data.logs);
                 checkForFailedMessages(data.logs);
               })
               .catch(error => console.error("Error fetching logs:", error));
           }
 
+
+          let pinnedLogs = JSON.parse(localStorage.getItem('pinnedLogs')) || [];
+
+            function pinLog(logId) {
+              if (!pinnedLogs.includes(logId)) {
+                pinnedLogs.push(logId);
+              } else {
+                pinnedLogs = pinnedLogs.filter(id => id !== logId);
+              }
+              localStorage.setItem('pinnedLogs', JSON.stringify(pinnedLogs));
+              fetchLogs();
+            }
           // Update the logs table with data
           function updateLogsTable(data) {
             const logsTable = document.getElementById('logsTable');
@@ -135,13 +174,14 @@
                 const statusColor = log.message_status === 'sent' ? 'text-success' : 'text-danger';
                 logsTable.innerHTML += `
                 <tr>
-                    <td>${log.id}</td>
-                    <td>${log.phone}</td>
-                    <td>${log.fullname}</td>
-                    <td>${log.userId}</td>
-                    <td class="${statusColor}">${log.message_status}</td>
-                    <td><button class="btn btn-sm btn-info" data-response='${JSON.stringify(log.response)}' onclick="showResponse(this)">View</button></td>
-                    <td>${log.created_at}</td>
+                  <td>${log.id}</td>
+                  <td>${log.phone}</td>
+                  <td>${log.fullname}</td>
+                  <td>${log.userId}</td>
+                  <td class="${statusColor}">${log.message_status}</td>
+                  <td><button class="btn btn-sm btn-info" data-response='${JSON.stringify(log.response)}' onclick="showResponse(this)">View</button></td>
+                  <td><button class="btn btn-warning btn-sm" onclick="pinLog('${log.id}')">📌 Pin</button></td>
+                  <td>${log.created_at}</td>
                 </tr>`;
               });
             } else {
@@ -276,6 +316,8 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 
 </body>
