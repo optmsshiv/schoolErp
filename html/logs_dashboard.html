@@ -176,6 +176,16 @@
       }
       // Save to localStorage and refresh the logs
       localStorage.setItem('pinnedLogs', JSON.stringify(pinnedLogs));
+
+      // Find the row and change its background color immediately
+      let row = document.getElementById(`logRow-${logId}`);
+      if (row) {
+        if (pinnedLogs.includes(logId)) {
+          row.style.backgroundColor = "#fff3cd"; // Highlight pinned log
+        } else {
+          row.style.backgroundColor = ""; // Reset background if unpinned
+        }
+      }
       fetchLogs();
     }
 
@@ -195,7 +205,7 @@
       sortedLogs.forEach(log => {
         const statusColor = log.message_status === 'success' ? 'text-success' : 'text-danger';
         logsTable.innerHTML += `
-            <tr${pinnedLogs.includes(log.id) ? ' style="background-color: #fff3cd;"' : ''}>
+            <trid="logRow-${log.id}" ${pinnedLogs.includes(log.id) ? 'style="background-color: #fff3cd;"' : ''}>
                 <td>${log.id}</td>
                 <td>${log.phone}</td>
                 <td>${log.fullname}</td>
