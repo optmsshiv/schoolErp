@@ -207,7 +207,7 @@
       sortedLogs.forEach(log => {
         const statusColor = log.message_status === 'success' ? 'text-success' : 'text-danger';
         logsTable.innerHTML += `
-            <tr id="logRow-${log.id}" ${pinnedLogs.includes(String(log.id)) ? 'style="background-color: #fff3cd;"' : ''}>
+            <tr id="logRow-${log.id}" ${pinnedLogs.includes(String(log.id)) ? 'style="background-color: #eefc4e;"' : ''}>
                 <td>${log.id}</td>
                 <td>${log.phone}</td>
                 <td>${log.fullname}</td>
