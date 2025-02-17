@@ -106,37 +106,51 @@
 
 
     <script>
-        function fetchLogs() {
-            fetch('/php/whatsapp/whatsapp_logs.php')
-                .then(response => response.json())
-                .then(data => {
-                    const logsTable = document.getElementById('logsTable');
-                    logsTable.innerHTML = '';
-                    updateLogsTable(data);
-                    checkForFailedMessages(data.logs);
+        let originalResponse = ""; // Store original response for search feature
 
-                    if (data.success && data.logs.length > 0) {
-                        data.logs.forEach(log => {
-                            const statusColor = log.message_status === 'sent' ? 'text-success' : 'text-danger';
-                            logsTable.innerHTML += `
-                                <tr>
-                                    <td>${log.id}</td>
-                                    <td>${log.phone}</td>
-                                    <td>${log.fullname}</td>
-                                    <td>${log.userId}</td>
-                                    <td class="${statusColor}">${log.message_status}</td>
-                                    <td><button class="btn btn-sm btn-info" data-response='${JSON.stringify(log.response)}' onclick="showResponse(this)">View</button></td>
-                                    <td>${log.created_at}</td>
-                                </tr>`;
-                        });
-                    } else {
-                        logsTable.innerHTML = '<tr><td colspan="7" class="text-center">No logs found</td></tr>';
-                    }
-                })
-                .catch(error => console.error('Error fetching logs:', error));
-        }
+          // Fetch logs with optional filters
+          function fetchLogs() {
+            let fromDate = document.getElementById("fromDate").value;
+            let toDate = document.getElementById("toDate").value;
+            let phoneFilter = document.getElementById("phoneFilter").value;
 
-        function checkForFailedMessages(logs) {
+            let url = `/php/whatsapp/whatsapp_logs.php?from=${fromDate}&to=${toDate}&phone=${phoneFilter}`;
+
+            fetch(url)
+              .then(response => response.json())
+              .then(data => {
+                const logsTable = document.getElementById('logsTable');
+                logsTable.innerHTML = '';
+                updateLogsTable(data);
+                checkForFailedMessages(data.logs);
+              })
+              .catch(error => console.error("Error fetching logs:", error));
+          }
+
+          // Update the logs table with data
+          function updateLogsTable(data) {
+            const logsTable = document.getElementById('logsTable');
+            if (data.success && data.logs.length > 0) {
+              data.logs.forEach(log => {
+                const statusColor = log.message_status === 'sent' ? 'text-success' : 'text-danger';
+                logsTable.innerHTML += `
+                <tr>
+                    <td>${log.id}</td>
+                    <td>${log.phone}</td>
+                    <td>${log.fullname}</td>
+                    <td>${log.userId}</td>
+                    <td class="${statusColor}">${log.message_status}</td>
+                    <td><button class="btn btn-sm btn-info" data-response='${JSON.stringify(log.response)}' onclick="showResponse(this)">View</button></td>
+                    <td>${log.created_at}</td>
+                </tr>`;
+              });
+            } else {
+              logsTable.innerHTML = '<tr><td colspan="7" class="text-center">No logs found</td></tr>';
+            }
+          }
+
+          // Check for failed messages and display alert
+          function checkForFailedMessages(logs) {
             let failedMessages = logs.filter(log => log.message_status !== "sent");
             let alertBox = document.getElementById("alertBox");
 
@@ -148,7 +162,9 @@
               alertBox.classList.add("d-none");
             }
           }
-        function highlightJSON(json) {
+
+          // Highlight JSON for better readability
+          function highlightJSON(json) {
             return json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
               .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
                 let cls = "text-light";
@@ -165,46 +181,43 @@
               });
           }
 
+          // Export logs as CSV or Excel
           function exportLogs(format) {
-              let tableData = document.getElementById("logsTable").innerHTML;
-              let blob = new Blob([tableData], { type: format === 'csv' ? 'text/csv' : 'application/vnd.ms-excel' });
-              let link = document.createElement("a");
-              link.href = URL.createObjectURL(blob);
-              link.download = `whatsapp_logs.${format}`;
-              link.click();
-            }
+            let tableData = document.getElementById("logsTable").innerHTML;
+            let blob = new Blob([tableData], { type: format === 'csv' ? 'text/csv' : 'application/vnd.ms-excel' });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `whatsapp_logs.${format}`;
+            link.click();
+          }
 
-
+          // Copy response to clipboard
           function copyResponse() {
-              let text = document.getElementById('responseContent').innerText;
-              navigator.clipboard.writeText(text).then(() => {
-                let copyButton = document.querySelector('.btn-outline-primary');
-                copyButton.innerText = "✅ Copied!";
-                setTimeout(() => copyButton.innerText = "📋 Copy", 2000);
-              }).catch(err => {
-                console.error("Failed to copy:", err);
-              });
-            }
+            let text = document.getElementById('responseContent').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+              let copyButton = document.querySelector('.btn-outline-primary');
+              copyButton.innerText = "✅ Copied!";
+              setTimeout(() => copyButton.innerText = "📋 Copy", 2000);
+            }).catch(err => {
+              console.error("Failed to copy:", err);
+            });
+          }
 
+          // Download response as JSON file
+          function downloadResponse() {
+            let text = document.getElementById('responseContent').innerText;
+            let blob = new Blob([text], { type: "application/json" });
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "whatsapp_api_response.json";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
 
-            function downloadResponse() {
-                let text = document.getElementById('responseContent').innerText;
-                let blob = new Blob([text], { type: "application/json" });
-                let link = document.createElement("a");
-                link.href = URL.createObjectURL(blob);
-                link.download = "whatsapp_api_response.json";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-              }
-
-
-
-
-              let originalResponse = ""; // Store original response for search feature
-        function showResponse(button) {
+          // Show the formatted response in a modal
+          function showResponse(button) {
             let response = button.getAttribute('data-response');
-
             try {
               let parsedResponse = JSON.parse(response);
               originalResponse = JSON.stringify(parsedResponse, null, 2); // Store original response
@@ -220,61 +233,46 @@
             }
           }
 
-          // toggle large JSON responses for better visibility
+          // Toggle large JSON responses for better visibility
           let expanded = false;
-
-            function toggleExpand() {
-              let responseContent = document.getElementById('responseContent');
-              if (expanded) {
-                responseContent.style.maxHeight = "400px";
-                responseContent.style.overflow = "auto";
-              } else {
-                responseContent.style.maxHeight = "none";
-                responseContent.style.overflow = "visible";
-              }
-              expanded = !expanded;
+          function toggleExpand() {
+            let responseContent = document.getElementById('responseContent');
+            if (expanded) {
+              responseContent.style.maxHeight = "400px";
+              responseContent.style.overflow = "auto";
+            } else {
+              responseContent.style.maxHeight = "none";
+              responseContent.style.overflow = "visible";
             }
+            expanded = !expanded;
+          }
 
-            // quickly find specific data
-            function searchResponse() {
-                let searchInput = document.getElementById('searchInput').value.toLowerCase();
-                let highlightedResponse = originalResponse.replace(new RegExp(searchInput, "gi"), match => {
-                  return `<mark class="bg-warning text-dark">${match}</mark>`;
-                });
+          // Quickly find specific data in response
+          function searchResponse() {
+            let searchInput = document.getElementById('searchInput').value.toLowerCase();
+            let highlightedResponse = originalResponse.replace(new RegExp(searchInput, "gi"), match => {
+              return `<mark class="bg-warning text-dark">${match}</mark>`;
+            });
 
-                document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(highlightedResponse)}</code>`;
-              }
+            document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(highlightedResponse)}</code>`;
+          }
 
-              // auto refresh
-                let autoRefresh = true;
-                let refreshInterval;
+          // Auto refresh logs
+          let autoRefresh = true;
+          let refreshInterval;
+          function toggleAutoRefresh() {
+            autoRefresh = document.getElementById("autoRefreshToggle").checked;
+            if (autoRefresh) {
+              refreshInterval = setInterval(fetchLogs, 30000);
+            } else {
+              clearInterval(refreshInterval);
+            }
+          }
 
-                function toggleAutoRefresh() {
-                  autoRefresh = document.getElementById("autoRefreshToggle").checked;
-                  if (autoRefresh) {
-                    refreshInterval = setInterval(fetchLogs, 30000);
-                  } else {
-                    clearInterval(refreshInterval);
-                  }
-                }
+          // Initial fetch and auto refresh setup
+          fetchLogs();
+          setInterval(fetchLogs, 30000);
 
-                function fetchLogs() {
-                    let fromDate = document.getElementById("fromDate").value;
-                    let toDate = document.getElementById("toDate").value;
-                    let phoneFilter = document.getElementById("phoneFilter").value;
-
-                    let url = `/php/whatsapp/whatsapp_logs.php?from=${fromDate}&to=${toDate}&phone=${phoneFilter}`;
-
-                    fetch(url)
-                      .then(response => response.json())
-                      .then(data => updateLogsTable(data))
-                      .catch(error => console.error("Error fetching logs:", error));
-                  }
-
-
-
-        fetchLogs();
-        setInterval(fetchLogs, 30000); // Refresh logs every 30 seconds
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
