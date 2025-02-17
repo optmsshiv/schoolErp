@@ -26,6 +26,7 @@
 <body class="container mt-5">
 
   <h2 class="text-center">📊 WhatsApp Message Logs</h2>
+
   <div class="d-flex justify-content-between mb-3">
     <button class="btn btn-outline-primary" onclick="fetchLogs()">🔄 Refresh Logs</button>
     <div>
@@ -48,17 +49,14 @@
       <input type="text" id="phoneFilter" class="form-control" placeholder="Enter phone">
     </div>
   </div>
+
   <div class="mb-3">
     <button class="btn btn-success" onclick="fetchLogs()">🔍 Apply Filter</button>
-
-
     <button class="btn btn-outline-success ms-2" onclick="exportLogs('csv')">📤 Export CSV</button>
     <button class="btn btn-outline-info ms-2" onclick="exportLogs('excel')">📥 Export Excel</button>
   </div>
 
   <div id="alertBox" class="alert d-none mb-3" role="alert"></div>
-
-
 
   <div class="table-responsive">
     <table class="table table-bordered table-striped mt-4">
@@ -111,7 +109,7 @@
         </div>
 
         <div class="modal-footer">
-          <button class="btn btn-outline-primary" onclick="copyResponse()">📋 Copy</button>
+          <button class="btn btn-primary" onclick="copyResponse()">📋 Copy</button>
           <button class="btn btn-outline-success" onclick="downloadResponse()">⬇ Download</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
@@ -261,7 +259,7 @@
     function copyResponse() {
       let text = document.getElementById('responseContent').innerText;
       navigator.clipboard.writeText(text).then(() => {
-        let copyButton = document.querySelector('.btn-outline-primary');
+        let copyButton = document.querySelector('.btn-primary');
         copyButton.innerText = "✅ Copied!";
         setTimeout(() => copyButton.innerText = "📋 Copy", 2000);
       }).catch(err => {
