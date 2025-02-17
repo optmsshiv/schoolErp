@@ -24,7 +24,7 @@ try {
     // Get user data from frontend (POST request)
     $data = json_decode(file_get_contents("php://input"), true);
 
-    if (!isset($data['fullName'], $data['user_id'], $data['password'], $data['phone'])) {
+    if (!isset($data['fullName'], $data['user_id'], $data['phone'])) {
         echo json_encode(['success' => false, 'message' => 'Missing required fields']);
         exit;
     }
@@ -32,9 +32,26 @@ try {
     // Extract user details
     $fullName = $data['fullName'];
     $userId = $data['user_id'];
-    $password = hex2bin($data['password']); // Decode the hex password to plain text
     $phone = $data['phone'];
     $fromName = "OPTMS Tech"; // Modify as needed
+
+    // Function to generate a random password
+    function generateRandomPassword($length = 8) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $password = '';
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[rand(0, strlen($characters) - 1)];
+        }
+        return $password;
+    }
+
+    // Generate a new password and hash it
+    $newPassword = generateRandomPassword();
+    $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT); // Secure password storage
+
+    // Update password in the database
+    $stmt = $pdo->prepare("UPDATE userRole SET password = ? WHERE user_id = ?");
+    $stmt->execute([$hashedPassword, $userId]);
 
     // Prepare WhatsApp API request payload
     $messageData = [
@@ -50,7 +67,7 @@ try {
                     "parameters" => [
                         ["type" => "text", "text" => $fullName],
                         ["type" => "text", "text" => $userId],
-                        ["type" => "text", "text" => $password],
+                        ["type" => "text", "text" => $newPassword], // Send the generated password
                         ["type" => "text", "text" => $fromName]
                     ]
                 ]
