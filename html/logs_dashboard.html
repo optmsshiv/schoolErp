@@ -1,198 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Logs Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      .table-responsive {
-        max-height: 500px;
-        overflow-y: auto;
-      }
 
-      thead th {
-        position: sticky;
-        top: 0;
-        background: #212529;
-        color: white;
-        z-index: 2;
-      }
-    </style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Logs Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .table-responsive {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #212529;
+      color: white;
+      z-index: 2;
+    }
+  </style>
 
 </head>
+
 <body class="container mt-5">
 
-    <h2 class="text-center">📊 WhatsApp Message Logs</h2>
-    <div class="d-flex justify-content-between mb-3">
-      <button class="btn btn-outline-primary" onclick="fetchLogs()">🔄 Refresh Logs</button>
-      <div>
-        <label class="me-2">Auto-Refresh:</label>
-        <input type="checkbox" id="autoRefreshToggle" checked onchange="toggleAutoRefresh()">
-      </div>
+  <h2 class="text-center">📊 WhatsApp Message Logs</h2>
+  <div class="d-flex justify-content-between mb-3">
+    <button class="btn btn-outline-primary" onclick="fetchLogs()">🔄 Refresh Logs</button>
+    <div>
+      <label class="me-2">Auto-Refresh:</label>
+      <input type="checkbox" id="autoRefreshToggle" checked onchange="toggleAutoRefresh()">
     </div>
+  </div>
 
-    <div class="row mb-3">
-      <div class="col-md-4">
-        <label>📅 From Date:</label>
-        <input type="date" id="fromDate" class="form-control">
-      </div>
-      <div class="col-md-4">
-        <label>📅 To Date:</label>
-        <input type="date" id="toDate" class="form-control">
-      </div>
-      <div class="col-md-4">
-        <label>📞 Phone Number:</label>
-        <input type="text" id="phoneFilter" class="form-control" placeholder="Enter phone">
-      </div>
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label>📅 From Date:</label>
+      <input type="date" id="fromDate" class="form-control">
     </div>
-    <div class="mb-3">
+    <div class="col-md-4">
+      <label>📅 To Date:</label>
+      <input type="date" id="toDate" class="form-control">
+    </div>
+    <div class="col-md-4">
+      <label>📞 Phone Number:</label>
+      <input type="text" id="phoneFilter" class="form-control" placeholder="Enter phone">
+    </div>
+  </div>
+  <div class="mb-3">
     <button class="btn btn-success" onclick="fetchLogs()">🔍 Apply Filter</button>
 
 
-      <button class="btn btn-outline-success ms-2" onclick="exportLogs('csv')">📤 Export CSV</button>
-      <button class="btn btn-outline-info ms-2" onclick="exportLogs('excel')">📥 Export Excel</button>
-    </div>
+    <button class="btn btn-outline-success ms-2" onclick="exportLogs('csv')">📤 Export CSV</button>
+    <button class="btn btn-outline-info ms-2" onclick="exportLogs('excel')">📥 Export Excel</button>
+  </div>
 
-      <div id="alertBox" class="alert d-none mb-3" role="alert"></div>
+  <div id="alertBox" class="alert d-none mb-3" role="alert"></div>
 
 
 
-    <div class="table-responsive">
+  <div class="table-responsive">
     <table class="table table-bordered table-striped mt-4">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Phone</th>
-                <th>Full Name</th>
-                <th>User ID</th>
-                <th>Status</th>
-                <th>Response</th>
-                <th>Actions</th>
-                <th>Timestamp</th>
-            </tr>
-        </thead>
-        <tbody id="logsTable">
-            <tr><td colspan="8" class="text-center">Loading logs...</td></tr>
-        </tbody>
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Phone</th>
+          <th>Full Name</th>
+          <th>User ID</th>
+          <th>Status</th>
+          <th>Response</th>
+          <th>Actions</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody id="logsTable">
+        <tr>
+          <td colspan="8" class="text-center">Loading logs...</td>
+        </tr>
+      </tbody>
     </table>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <canvas id="messageStatsChart" width="400" height="200"></canvas>
     </div>
-
-    <div class="row mb-3">
-      <div class="col-md-4">
-        <canvas id="messageStatsChart" width="400" height="200"></canvas>
-      </div>
-    </div>
+  </div>
 
 
-    <!-- Response Modal -->
-    <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="responseModalLabel">API Response</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
+  <!-- Response Modal -->
+  <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="responseModalLabel">API Response</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
 
-          <!-- Search Bar -->
-          <div class="p-2">
-            <input type="text" id="searchInput" class="form-control" placeholder="🔍 Search in response..."
-              onkeyup="searchResponse()">
-          </div>
+        <!-- Search Bar -->
+        <div class="p-2">
+          <input type="text" id="searchInput" class="form-control" placeholder="🔍 Search in response..."
+            onkeyup="searchResponse()">
+        </div>
 
-          <div class="modal-body">
-            <button class="btn btn-sm btn-secondary mb-2" onclick="toggleExpand()">🔽 Expand/Collapse</button>
-            <pre id="responseContent" class="p-3  text-light rounded border"
-              style="max-height: 400px; overflow: auto;"></pre>
-          </div>
+        <div class="modal-body">
+          <button class="btn btn-sm btn-secondary mb-2" onclick="toggleExpand()">🔽 Expand/Collapse</button>
+          <pre id="responseContent" class="p-3  text-light rounded border"
+            style="max-height: 400px; overflow: auto;"></pre>
+        </div>
 
-          <div class="modal-footer">
-            <button class="btn btn-outline-primary" onclick="copyResponse()">📋 Copy</button>
-            <button class="btn btn-outline-success" onclick="downloadResponse()">⬇ Download</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-primary" onclick="copyResponse()">📋 Copy</button>
+          <button class="btn btn-outline-success" onclick="downloadResponse()">⬇ Download</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
+  </div>
 
 
-    <script>
-        let originalResponse = ""; // Store original response for search feature
-        let messageChart;
+  <script>
+    let originalResponse = ""; // Store original response for search feature
+    let messageChart;
 
-          function updateChart(logs) {
-            let successCount = logs.filter(log => log.message_status === 'success').length;
-            let failedCount = logs.length - successCount;
+    function updateChart(logs) {
+      let successCount = logs.filter(log => log.message_status === 'success').length;
+      let failedCount = logs.length - successCount;
 
-            let ctx = document.getElementById('messageStatsChart').getContext('2d');
+      let ctx = document.getElementById('messageStatsChart').getContext('2d');
 
-            if (messageChart) {
-              messageChart.destroy();
-            }
+      if (messageChart) {
+        messageChart.destroy();
+      }
 
-            messageChart = new Chart(ctx, {
-              type: 'pie',
-              data: {
-                labels: ['Success', 'Failed'],
-                datasets: [{
-                  data: [successCount, failedCount],
-                  backgroundColor: ['#28a745', '#dc3545']
-                }]
-              }
-            });
-          }
+      messageChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Success', 'Failed'],
+          datasets: [{
+            data: [successCount, failedCount],
+            backgroundColor: ['#28a745', '#dc3545']
+          }]
+        }
+      });
+    }
 
-          // Fetch logs with optional filters
-          function fetchLogs() {
-            let fromDate = document.getElementById("fromDate").value;
-            let toDate = document.getElementById("toDate").value;
-            let phoneFilter = document.getElementById("phoneFilter").value;
+    // Fetch logs with optional filters
+    function fetchLogs() {
+      let fromDate = document.getElementById("fromDate").value;
+      let toDate = document.getElementById("toDate").value;
+      let phoneFilter = document.getElementById("phoneFilter").value;
 
-            let url = `/php/whatsapp/whatsapp_logs.php?from=${fromDate}&to=${toDate}&phone=${phoneFilter}`;
+      let url = `/php/whatsapp/whatsapp_logs.php?from=${fromDate}&to=${toDate}&phone=${phoneFilter}`;
 
-            fetch(url)
-              .then(response => response.json())
-              .then(data => {
-                const logsTable = document.getElementById('logsTable');
-                logsTable.innerHTML = '';
-                updateLogsTable(data);
-                updateChart(data.logs);
-                checkForFailedMessages(data.logs);
-              })
-              .catch(error => console.error("Error fetching logs:", error));
-          }
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const logsTable = document.getElementById('logsTable');
+          logsTable.innerHTML = '';
+          updateLogsTable(data);
+          updateChart(data.logs);
+          checkForFailedMessages(data.logs);
+        })
+        .catch(error => console.error("Error fetching logs:", error));
+    }
 
 
-         let pinnedLogs = JSON.parse(localStorage.getItem('pinnedLogs')) || [];
 
-          function pinLog(logId) {
-            // Toggle pin status
-            if (!pinnedLogs.includes(logId)) {
-              pinnedLogs.push(logId);
-            } else {
-              pinnedLogs = pinnedLogs.filter(id => id !== logId);
-            }
-            // Save to localStorage and refresh the logs
-            localStorage.setItem('pinnedLogs', JSON.stringify(pinnedLogs));
-            fetchLogs();
-          }
+    let pinnedLogs = JSON.parse(localStorage.getItem('pinnedLogs')) || [];
+    function pinLog(logId) {
+      // Toggle pin status
+      if (!pinnedLogs.includes(logId)) {
+        pinnedLogs.push(logId);
+      } else {
+        pinnedLogs = pinnedLogs.filter(id => id !== logId);
+      }
+      // Save to localStorage and refresh the logs
+      localStorage.setItem('pinnedLogs', JSON.stringify(pinnedLogs));
+      fetchLogs();
+    }
 
-          // Update the logs table with data
-          function updateLogsTable(data) {
-            let logsTable = document.getElementById('logsTable');
-            logsTable.innerHTML = '';
+    // Update the logs table with data
+    function updateLogsTable(data) {
+      let logsTable = document.getElementById('logsTable');
+      logsTable.innerHTML = '';
 
-            // Separate pinned logs and regular logs
-            let pinned = data.logs.filter(log => pinnedLogs.includes(log.id));
-            let regular = data.logs.filter(log => !pinnedLogs.includes(log.id));
+      // Separate pinned logs and regular logs
+      let pinned = data.logs.filter(log => pinnedLogs.includes(log.id));
+      let regular = data.logs.filter(log => !pinnedLogs.includes(log.id));
 
-            // Concatenate pinned logs first, followed by regular logs
-            let sortedLogs = [...pinned, ...regular];
+      // Concatenate pinned logs first, followed by regular logs
+      let sortedLogs = [...pinned, ...regular];
 
-            // Render each log in the table
-            sortedLogs.forEach(log => {
-              const statusColor = log.message_status === 'success' ? 'text-success' : 'text-danger';
-              logsTable.innerHTML += `
+      // Render each log in the table
+      sortedLogs.forEach(log => {
+        const statusColor = log.message_status === 'success' ? 'text-success' : 'text-danger';
+        logsTable.innerHTML += `
             <tr${pinnedLogs.includes(log.id) ? ' style="background-color: #fff3cd;"' : ''}>
                 <td>${log.id}</td>
                 <td>${log.phone}</td>
@@ -203,144 +207,145 @@
                 <td><button class="btn btn-warning btn-sm" onclick="pinLog('${log.id}')">📌 Pin</button></td>
                 <td>${log.created_at}</td>
             </tr>`;
-            });
+      });
 
-            // If no logs found, show a message
-            if (data.success && data.logs.length === 0) {
-              logsTable.innerHTML = '<tr><td colspan="8" class="text-center">No logs found</td></tr>';
-            }
+      // If no logs found, show a message
+      if (data.success && data.logs.length === 0) {
+        logsTable.innerHTML = '<tr><td colspan="8" class="text-center">No logs found</td></tr>';
+      }
+    }
+
+    // Check for failed messages and display alert
+    function checkForFailedMessages(logs) {
+      let failedMessages = logs.filter(log => log.message_status !== "success");
+      let alertBox = document.getElementById("alertBox");
+
+      if (failedMessages.length > 0) {
+        alertBox.className = "alert alert-danger";
+        alertBox.innerHTML = `⚠ ${failedMessages.length} messages failed! Check logs.`;
+        alertBox.classList.remove("d-none");
+      } else {
+        alertBox.classList.add("d-none");
+      }
+    }
+
+    // Highlight JSON for better readability
+    function highlightJSON(json) {
+      return json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+          let cls = "text-light";
+          if (/^"/.test(match)) {
+            cls = /:$/.test(match) ? "text-warning" : "text-success"; // Keys and strings
+          } else if (/true|false/.test(match)) {
+            cls = "text-primary"; // Boolean
+          } else if (/null/.test(match)) {
+            cls = "text-danger"; // Null
+          } else {
+            cls = "text-info"; // Numbers
           }
+          return `<span class="${cls}">${match}</span>`;
+        });
+    }
 
-          // Check for failed messages and display alert
-          function checkForFailedMessages(logs) {
-            let failedMessages = logs.filter(log => log.message_status !== "success");
-            let alertBox = document.getElementById("alertBox");
+    // Export logs as CSV or Excel
+    function exportLogs(format) {
+      let tableData = document.getElementById("logsTable").innerHTML;
+      let blob = new Blob([tableData], { type: format === 'csv' ? 'text/csv' : 'application/vnd.ms-excel' });
+      let link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `whatsapp_logs.${format}`;
+      link.click();
+    }
 
-            if (failedMessages.length > 0) {
-              alertBox.className = "alert alert-danger";
-              alertBox.innerHTML = `⚠ ${failedMessages.length} messages failed! Check logs.`;
-              alertBox.classList.remove("d-none");
-            } else {
-              alertBox.classList.add("d-none");
-            }
-          }
+    // Copy response to clipboard
+    function copyResponse() {
+      let text = document.getElementById('responseContent').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        let copyButton = document.querySelector('.btn-outline-primary');
+        copyButton.innerText = "✅ Copied!";
+        setTimeout(() => copyButton.innerText = "📋 Copy", 2000);
+      }).catch(err => {
+        console.error("Failed to copy:", err);
+      });
+    }
 
-          // Highlight JSON for better readability
-          function highlightJSON(json) {
-            return json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-              .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                let cls = "text-light";
-                if (/^"/.test(match)) {
-                  cls = /:$/.test(match) ? "text-warning" : "text-success"; // Keys and strings
-                } else if (/true|false/.test(match)) {
-                  cls = "text-primary"; // Boolean
-                } else if (/null/.test(match)) {
-                  cls = "text-danger"; // Null
-                } else {
-                  cls = "text-info"; // Numbers
-                }
-                return `<span class="${cls}">${match}</span>`;
-              });
-          }
+    // Download response as JSON file
+    function downloadResponse() {
+      let text = document.getElementById('responseContent').innerText;
+      let blob = new Blob([text], { type: "application/json" });
+      let link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "whatsapp_api_response.json";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
 
-          // Export logs as CSV or Excel
-          function exportLogs(format) {
-            let tableData = document.getElementById("logsTable").innerHTML;
-            let blob = new Blob([tableData], { type: format === 'csv' ? 'text/csv' : 'application/vnd.ms-excel' });
-            let link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `whatsapp_logs.${format}`;
-            link.click();
-          }
+    // Show the formatted response in a modal
+    function showResponse(button) {
+      let response = button.getAttribute('data-response');
+      try {
+        let parsedResponse = JSON.parse(response);
+        originalResponse = JSON.stringify(parsedResponse, null, 2); // Store original response
 
-          // Copy response to clipboard
-          function copyResponse() {
-            let text = document.getElementById('responseContent').innerText;
-            navigator.clipboard.writeText(text).then(() => {
-              let copyButton = document.querySelector('.btn-outline-primary');
-              copyButton.innerText = "✅ Copied!";
-              setTimeout(() => copyButton.innerText = "📋 Copy", 2000);
-            }).catch(err => {
-              console.error("Failed to copy:", err);
-            });
-          }
+        // Display formatted JSON with syntax highlighting
+        document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(originalResponse)}</code>`;
 
-          // Download response as JSON file
-          function downloadResponse() {
-            let text = document.getElementById('responseContent').innerText;
-            let blob = new Blob([text], { type: "application/json" });
-            let link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "whatsapp_api_response.json";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }
+        new bootstrap.Modal(document.getElementById('responseModal')).show();
+      } catch (error) {
+        console.error("Invalid JSON:", response);
+        document.getElementById('responseContent').innerHTML = "<span class='text-danger'>Invalid response data.</span>";
+        new bootstrap.Modal(document.getElementById('responseModal')).show();
+      }
+    }
 
-          // Show the formatted response in a modal
-          function showResponse(button) {
-            let response = button.getAttribute('data-response');
-            try {
-              let parsedResponse = JSON.parse(response);
-              originalResponse = JSON.stringify(parsedResponse, null, 2); // Store original response
+    // Toggle large JSON responses for better visibility
+    let expanded = false;
+    function toggleExpand() {
+      let responseContent = document.getElementById('responseContent');
+      if (expanded) {
+        responseContent.style.maxHeight = "400px";
+        responseContent.style.overflow = "auto";
+      } else {
+        responseContent.style.maxHeight = "none";
+        responseContent.style.overflow = "visible";
+      }
+      expanded = !expanded;
+    }
 
-              // Display formatted JSON with syntax highlighting
-              document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(originalResponse)}</code>`;
+    // Quickly find specific data in response
+    function searchResponse() {
+      let searchInput = document.getElementById('searchInput').value.toLowerCase();
+      let highlightedResponse = originalResponse.replace(new RegExp(searchInput, "gi"), match => {
+        return `<mark class="bg-warning text-dark">${match}</mark>`;
+      });
 
-              new bootstrap.Modal(document.getElementById('responseModal')).show();
-            } catch (error) {
-              console.error("Invalid JSON:", response);
-              document.getElementById('responseContent').innerHTML = "<span class='text-danger'>Invalid response data.</span>";
-              new bootstrap.Modal(document.getElementById('responseModal')).show();
-            }
-          }
+      document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(highlightedResponse)}</code>`;
+    }
 
-          // Toggle large JSON responses for better visibility
-          let expanded = false;
-          function toggleExpand() {
-            let responseContent = document.getElementById('responseContent');
-            if (expanded) {
-              responseContent.style.maxHeight = "400px";
-              responseContent.style.overflow = "auto";
-            } else {
-              responseContent.style.maxHeight = "none";
-              responseContent.style.overflow = "visible";
-            }
-            expanded = !expanded;
-          }
+    // Auto refresh logs
+    let autoRefresh = true;
+    let refreshInterval;
+    function toggleAutoRefresh() {
+      autoRefresh = document.getElementById("autoRefreshToggle").checked;
+      if (autoRefresh) {
+        refreshInterval = setInterval(fetchLogs, 30000);
+      } else {
+        clearInterval(refreshInterval);
+      }
+    }
 
-          // Quickly find specific data in response
-          function searchResponse() {
-            let searchInput = document.getElementById('searchInput').value.toLowerCase();
-            let highlightedResponse = originalResponse.replace(new RegExp(searchInput, "gi"), match => {
-              return `<mark class="bg-warning text-dark">${match}</mark>`;
-            });
+    // Initial fetch and auto refresh setup
+    fetchLogs();
+    setInterval(fetchLogs, 30000);
 
-            document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(highlightedResponse)}</code>`;
-          }
+  </script>
 
-          // Auto refresh logs
-          let autoRefresh = true;
-          let refreshInterval;
-          function toggleAutoRefresh() {
-            autoRefresh = document.getElementById("autoRefreshToggle").checked;
-            if (autoRefresh) {
-              refreshInterval = setInterval(fetchLogs, 30000);
-            } else {
-              clearInterval(refreshInterval);
-            }
-          }
-
-          // Initial fetch and auto refresh setup
-          fetchLogs();
-          setInterval(fetchLogs, 30000);
-
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 
 </body>
+
 </html>
