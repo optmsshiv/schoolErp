@@ -8,7 +8,7 @@ include '../db_connection.php'; // Database connection
 header('Content-Type: application/json');
 
 try {
-    // Fetch WhatsApp API credentials from database
+    // Fetch WhatsApp API credentials from the database
     $stmt = $pdo->prepare("SELECT access_token, phone_number_id FROM whatsapp_credentials WHERE service_name = 'whatsapp' LIMIT 1");
     $stmt->execute();
     $credentials = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -51,7 +51,10 @@ try {
 
     // Update password in the database
     $stmt = $pdo->prepare("UPDATE userRole SET password = ? WHERE user_id = ?");
-    $stmt->execute([$hashedPassword, $userId]);
+    if (!$stmt->execute([$hashedPassword, $userId])) {
+        echo json_encode(['success' => false, 'message' => 'Failed to update password']);
+        exit;
+    }
 
     // Prepare WhatsApp API request payload
     $messageData = [
@@ -92,34 +95,27 @@ try {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // Log the response in the database
+    // Decode response for logging
+    $responseData = json_decode($response, true);
+    $messageStatus = ($httpCode == 200 || $httpCode == 201) ? 'success' : 'failed';
 
+    // Log the response in the database
     $logStmt = $pdo->prepare("INSERT INTO whatsapp_logs (phone, fullname, userId, message_status, response) VALUES (:phone, :fullname, :userId, :message_status, :response)");
     $logStmt->execute([
         ':phone' => $phone,
-        ':fullname' => $fullname,
+        ':fullname' => $fullName,
         ':userId' => $userId,
         ':message_status' => $messageStatus,
         ':response' => json_encode($responseData)
     ]);
 
-   //$logStmt = $pdo->prepare("INSERT INTO whatsapp_logs (user_id, phone, message, response, status, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
-   //$logStmt->execute([
-   //    $userId,
-   //    $phone,
-   //    json_encode($messageData),
-   //    json_encode($response),
-   //    ($httpCode == 200 || $httpCode == 201) ? 'success' : 'failed'
-   //]);
-
-    if ($httpCode == 200 || $httpCode == 201) {
-        echo json_encode(['success' => true, 'message' => 'WhatsApp message sent', 'response' => json_decode($response, true)]);
+    if ($messageStatus === 'success') {
+        echo json_encode(['success' => true, 'message' => 'WhatsApp message sent', 'response' => $responseData]);
     } else {
-        echo json_encode(['success' => false, 'message' => 'WhatsApp API error', 'response' => json_decode($response, true)]);
+        echo json_encode(['success' => false, 'message' => 'WhatsApp API error', 'response' => $responseData]);
     }
 
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
 }
-
 ?>
