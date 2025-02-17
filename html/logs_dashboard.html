@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Logs Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .table-responsive {
+        max-height: 500px;
+        overflow-y: auto;
+      }
+
+      thead th {
+        position: sticky;
+        top: 0;
+        background: #212529;
+        color: white;
+        z-index: 2;
+      }
+    </style>
+
 </head>
 <body class="container mt-5">
 
@@ -38,8 +53,9 @@
       <button class="btn btn-outline-info" onclick="exportLogs('excel')">📥 Export Excel</button>
     </div>
 
+      <div id="alertBox" class="alert d-none" role="alert"></div>
 
-
+    <div class="table-responsive">
     <table class="table table-bordered table-striped mt-4">
         <thead class="table-dark">
             <tr>
@@ -56,6 +72,7 @@
             <tr><td colspan="7" class="text-center">Loading logs...</td></tr>
         </tbody>
     </table>
+    </div>
 
     <!-- Response Modal -->
     <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
@@ -95,6 +112,8 @@
                 .then(data => {
                     const logsTable = document.getElementById('logsTable');
                     logsTable.innerHTML = '';
+                    updateLogsTable(data);
+                    checkForFailedMessages(data.logs);
 
                     if (data.success && data.logs.length > 0) {
                         data.logs.forEach(log => {
@@ -117,6 +136,18 @@
                 .catch(error => console.error('Error fetching logs:', error));
         }
 
+        function checkForFailedMessages(logs) {
+            let failedMessages = logs.filter(log => log.message_status !== "sent");
+            let alertBox = document.getElementById("alertBox");
+
+            if (failedMessages.length > 0) {
+              alertBox.className = "alert alert-danger";
+              alertBox.innerHTML = `⚠ ${failedMessages.length} messages failed! Check logs.`;
+              alertBox.classList.remove("d-none");
+            } else {
+              alertBox.classList.add("d-none");
+            }
+          }
         function highlightJSON(json) {
             return json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
               .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
@@ -214,7 +245,8 @@
                 document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(highlightedResponse)}</code>`;
               }
 
-              let autoRefresh = true;
+              // auto refresh
+                let autoRefresh = true;
                 let refreshInterval;
 
                 function toggleAutoRefresh() {
@@ -225,6 +257,20 @@
                     clearInterval(refreshInterval);
                   }
                 }
+
+                function fetchLogs() {
+                    let fromDate = document.getElementById("fromDate").value;
+                    let toDate = document.getElementById("toDate").value;
+                    let phoneFilter = document.getElementById("phoneFilter").value;
+
+                    let url = `/php/whatsapp/whatsapp_logs.php?from=${fromDate}&to=${toDate}&phone=${phoneFilter}`;
+
+                    fetch(url)
+                      .then(response => response.json())
+                      .then(data => updateLogsTable(data))
+                      .catch(error => console.error("Error fetching logs:", error));
+                  }
+
 
 
         fetchLogs();
