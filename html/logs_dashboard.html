@@ -35,14 +35,17 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <pre id="responseContent" class="p-3 bg-light text-dark"></pre>
+            <pre id="responseContent" class="p-3 bg-dark text-light rounded border"></pre>
           </div>
           <div class="modal-footer">
+            <button class="btn btn-outline-primary" onclick="copyResponse()">📋 Copy</button>
+            <button class="btn btn-outline-success" onclick="downloadResponse()">⬇ Download</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
+
 
 
     <script>
@@ -74,22 +77,67 @@
                 .catch(error => console.error('Error fetching logs:', error));
         }
 
+        function highlightJSON(json) {
+            return json.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") // Prevent XSS
+              .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                let cls = "text-light"; // Default text color
+                if (/^"/.test(match)) {
+                  if (/:$/.test(match)) {
+                    cls = "text-warning"; // Keys
+                  } else {
+                    cls = "text-success"; // Strings
+                  }
+                } else if (/true|false/.test(match)) {
+                  cls = "text-primary"; // Boolean
+                } else if (/null/.test(match)) {
+                  cls = "text-danger"; // Null
+                } else {
+                  cls = "text-info"; // Numbers
+                }
+                return `<span class="${cls}">${match}</span>`;
+              });
+          }
+
+          function copyResponse() {
+              let text = document.getElementById('responseContent').innerText;
+              navigator.clipboard.writeText(text).then(() => {
+                alert("Response copied to clipboard! 📋");
+              }).catch(err => {
+                console.error("Failed to copy:", err);
+              });
+            }
+
+            function downloadResponse() {
+                let text = document.getElementById('responseContent').innerText;
+                let blob = new Blob([text], { type: "application/json" });
+                let link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "whatsapp_api_response.json";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }
+
+
+
         function showResponse(button) {
-            let response = button.getAttribute('data-response'); // Get response data
+            let response = button.getAttribute('data-response'); // Get response from button
 
             try {
               let parsedResponse = JSON.parse(response); // Parse JSON safely
               let formattedResponse = JSON.stringify(parsedResponse, null, 2); // Pretty-print JSON
 
-              document.getElementById('responseContent').innerText = formattedResponse; // Insert into modal
-              new bootstrap.Modal(document.getElementById('responseModal')).show(); // Show modal
+              // Highlight JSON syntax
+              document.getElementById('responseContent').innerHTML = `<code>${highlightJSON(formattedResponse)}</code>`;
+
+              // Show modal
+              new bootstrap.Modal(document.getElementById('responseModal')).show();
             } catch (error) {
               console.error("Invalid JSON:", response);
-              document.getElementById('responseContent').innerText = "Invalid response data.";
+              document.getElementById('responseContent').innerHTML = "<span class='text-danger'>Invalid response data.</span>";
               new bootstrap.Modal(document.getElementById('responseModal')).show();
             }
           }
-
 
 
         fetchLogs();
