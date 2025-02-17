@@ -14,7 +14,7 @@ try {
     $phone = isset($_GET['phone']) ? $_GET['phone'] : null;
 
     // Base query
-    $query = "SELECT id, phone, fullname, userId, message_status, response, message, created_at FROM whatsapp_log WHERE 1=1";
+    $query = "SELECT id, phone, fullname, userId, message_status, response, created_at FROM whatsapp_log WHERE 1=1";
     $params = [];
 
     // Apply date filters (ensure correct format)
