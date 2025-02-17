@@ -44,7 +44,9 @@
                                     <td>${log.fullname}</td>
                                     <td>${log.userId}</td>
                                     <td class="${statusColor}">${log.message_status}</td>
-                                    <td><button class="btn btn-sm btn-info" onclick="showResponse('${log.response}')">View</button></td>
+                                    
+                                    <td><button class="btn btn-sm btn-info" onclick="showResponse(${JSON.stringify(log.response)})">View</button></td>
+
                                     <td>${log.created_at}</td>
                                 </tr>`;
                         });
