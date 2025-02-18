@@ -630,6 +630,7 @@ $(function () {
     .on('click', '.userView', function () {
       let userId = $(this).data('id');
       console.log('View user:', userId);
+      alert('View user profile:' + userId);
       // Call your view user function here
     });
 
