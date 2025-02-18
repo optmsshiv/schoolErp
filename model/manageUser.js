@@ -594,6 +594,13 @@ $(function () {
             let row = $(`#userTable tbody tr[data-id="${userId}"]`);
             row.addClass('highlight');
             setTimeout(() => row.removeClass('highlight'), 5000);
+
+            // ✅ Highlight row
+            let rowNode = table.row(rowIndex[0]).node();
+            $(rowNode).addClass('highlight');
+
+            // ✅ Remove highlight after 5 seconds
+            setTimeout(() => $(rowNode).removeClass('highlight'), 5000);
           } else {
             console.error('Response format incorrect or success=false:', response);
             Swal.fire({
