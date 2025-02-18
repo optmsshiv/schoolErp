@@ -624,30 +624,11 @@ $(function () {
     });
   }
 
-  // Delegate View button click event
-  /*
-  $(document)
-    .off('click', '.userView')
-    .on('click', '.userView', function () {
-      let userId = $(this).data('id');
-      console.log('View user:', userId);
-      alert('View user profile:' + userId);
-      // Call your view user function here
-    });
-
   // Handel 'ViewButton' click event
 
   $(document).on('click', '#userView', function () {
     var userId = $(this).data('id');
     alert('View user profile:' + userId);
-  }); */
-
-  $(document).ready(function () {
-    // Attach event for user view button (works after reload & row update)
-    $('#userTable tbody').on('click', '.userView', function () {
-      var userId = $(this).data('id');
-      alert('View user profile: ' + userId);
-    });
   });
 
   // Handle 'Credential send' button click event
