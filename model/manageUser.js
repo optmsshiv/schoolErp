@@ -56,6 +56,7 @@ $(function () {
       // Check if data exists
       if (response && response.length > 0) {
         // var tableBody = $('#userTable tbody');
+        $('#userTable').DataTable().ajax.reload(null, false); // ✅ Refresh without losing pagination
         var table = $('#userTable').DataTable(); // Get DataTable instance
         table.clear().draw(); // Clear existing rows
         // tableBody.empty(); // Clear any existing rows
