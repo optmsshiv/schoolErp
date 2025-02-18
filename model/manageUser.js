@@ -580,23 +580,18 @@ $(function () {
                 `;
 
           // Update row in DataTable
-            table.row(rowIndex[0]).data(rowData).draw(false);
-
-            setTimeout(() => {
-              
-              $('.userView')
-                .off('click')
-                .on('click', function () {
-                  var userId = $(this).data('id');
-                  alert('View user profile: ' + userId);
-                });
-            }, 100);
-
+          table.row(rowIndex[0]).data(rowData).draw(false);
 
           // Reinitialize Bootstrap dropdown (🔥 FIXES action menu issue)
           setTimeout(() => {
             $('[data-bs-toggle="dropdown"]').dropdown();
           }, 100);
+
+          // Ensure 'userView' click event works on page load and after status changes
+          $(document).on('click', '.userView', function () {
+            var userId = $(this).data('id');
+            alert('View user profile: ' + userId);
+          });
 
           // Highlight row
           /*
