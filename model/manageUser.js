@@ -410,7 +410,7 @@ $(function () {
   function hideLoadingSpinner() {
     $('.loading-spinner').remove();
   }
-  
+
 /*
   function changeStatus(userId, newStatus) {
     showLoadingSpinner();
@@ -526,7 +526,6 @@ $(function () {
               timer: 2000
             });
 
-            // Get DataTable instance
             let table = $('#userTable').DataTable();
 
             // Find row index in DataTable
@@ -534,7 +533,7 @@ $(function () {
               .rows()
               .eq(0)
               .filter(function (rowIdx) {
-                return table.cell(rowIdx, 1).data() == userId; // Column index 1 is user_id
+                return table.cell(rowIdx, 1).data() == userId;
               });
 
             if (rowIndex.length === 0) {
@@ -556,7 +555,7 @@ $(function () {
 
             rowData[6] = statusBadge; // Assuming status column is at index 6
 
-            // Update dropdown menu options
+            // Update dropdown menu
             let dropdownMenu = '';
             if (newStatus === 'Pending') {
               dropdownMenu = `
@@ -570,12 +569,24 @@ $(function () {
             } else if (newStatus === 'Suspended') {
               dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
             }
-            rowData[7] = `<div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>`;
+
+            rowData[7] = `
+                    <div class="dropdown">
+                        <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                        <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
+                    </div>
+                `;
 
             // Update row in DataTable
             table.row(rowIndex[0]).data(rowData).draw(false);
 
-            // Highlight row temporarily
+            // Reinitialize Bootstrap dropdown (🔥 FIXES action menu issue)
+            setTimeout(() => {
+              $('[data-bs-toggle="dropdown"]').dropdown();
+            }, 100);
+
+            // Highlight row
             let row = $(`#userTable tbody tr[data-id="${userId}"]`);
             row.addClass('highlight');
             setTimeout(() => row.removeClass('highlight'), 5000);
@@ -600,6 +611,7 @@ $(function () {
         }
       });
     }
+
 
 
   // Handel 'ViewButton' click event
