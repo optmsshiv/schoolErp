@@ -587,8 +587,8 @@ $(function () {
 
           setTimeout(() => {
             $(document)
-              .off('click', '#userView')
-              .on('click', '#userView', function () {
+              .off('click', '.userView')
+              .on('click', '.userView', function () {
                 var userId = $(this).data('id');
                 alert('View user profile: ' + userId);
               });
@@ -636,7 +636,7 @@ $(function () {
 
   // Handel 'ViewButton' click event
 
-  $(document).on('click', '#userView', function () {
+  $(document).on('click', '.userView', function () {
     var userId = $(this).data('id');
     alert('View user profile:' + userId);
   });
