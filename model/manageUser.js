@@ -102,20 +102,17 @@ $(function () {
               <td>${user.role}</td>
               <td>${user.phone}</td>
               <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
-              <td><span class="badge ${
-                user.status === 'Active'
-                  ? 'bg-label-success'
-                  : user.status === 'Suspended'
-                  ? 'bg-label-secondary'
-                  : 'bg-label-warning'
-              }">${user.status}</span></td>
+              <td><span class="badge ${user.status === 'Active'
+              ? 'bg-label-success'
+              : user.status === 'Suspended'
+                ? 'bg-label-secondary'
+                : 'bg-label-warning'
+            }">${user.status}</span></td>
               <td>
-                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
-                  user.user_id
-                }" title="View User"></a>
-                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
-                  user.user_id
-                }" title="Delete User"></a>
+                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${user.user_id
+            }" title="View User"></a>
+                <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${user.user_id
+            }" title="Delete User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
                   ${dropdownMenu}
@@ -546,13 +543,12 @@ $(function () {
           let rowData = table.row(rowIndex[0]).data();
 
           // Update status badge
-          let statusBadge = `<span class="status-badge badge ${
-            newStatus === 'Active'
+          let statusBadge = `<span class="status-badge badge ${newStatus === 'Active'
               ? 'bg-label-success'
               : newStatus === 'Suspended'
-              ? 'bg-label-secondary'
-              : 'bg-label-warning'
-          }">${newStatus}</span>`;
+                ? 'bg-label-secondary'
+                : 'bg-label-warning'
+            }">${newStatus}</span>`;
 
           rowData[6] = statusBadge; // Assuming status column is at index 6
 
@@ -625,11 +621,17 @@ $(function () {
   }
 
   // Handel 'ViewButton' click event
+  /*
+    $(document).on('click', '#userView', function () {
+      var userId = $(this).data('id');
+      alert('View user profile:' + userId);
+    });
+  */
+  $(document).off('click', '.userView').on('click', '.userView', function () {
+      var userId = $(this).data('id');
+      alert('View user profile: ' + userId);
+    });
 
-  $(document).on('click', '#userView', function () {
-    var userId = $(this).data('id');
-    alert('View user profile:' + userId);
-  });
 
 
   // Handle 'Credential send' button click event
