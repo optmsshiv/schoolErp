@@ -581,7 +581,7 @@ $(function () {
 
           // Update row in DataTable
         //  table.row(rowIndex[0]).data(rowData).draw(false);
-            table.row(rowIndex[0]).invalidate().draw(false);
+
 
 
           // Reinitialize event listener (🔥 FIX)
@@ -594,6 +594,8 @@ $(function () {
                 alert('View user profile: ' + userId);
               });
           }, 100);
+          
+           table.row(rowIndex[0]).invalidate().draw(false);
 
           // Reinitialize Bootstrap dropdown (🔥 FIXES action menu issue)
           setTimeout(() => {
