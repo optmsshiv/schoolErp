@@ -58,7 +58,7 @@ $(function () {
         // var tableBody = $('#userTable tbody');
         var table = $('#userTable').DataTable(); // Get DataTable instance
         table.clear().draw(); // Clear existing rows
-       // tableBody.empty(); // Clear any existing rows
+        // tableBody.empty(); // Clear any existing rows
 
         // Loop through each user and append rows to the table
         response.forEach(function (user) {
@@ -124,11 +124,14 @@ $(function () {
           `;
           // ✅ Add new row properly using DataTables API
           table.row.add($(row)).draw().node();
-         // tableBody.append(row); // Add the new row to the table
+          // tableBody.append(row); // Add the new row to the table
         });
 
         // Reinitialize DataTable after adding rows dynamically
-       // table.rows.add($('#userTable tbody tr')).draw();
+        // table.rows.add($('#userTable tbody tr')).draw();
+
+        // ✅ Reload DataTable to reflect changes
+        table.ajax.reload(null, false); // This refreshes data without resetting pagination
       } else {
         alert('No users found!');
       }
