@@ -585,6 +585,16 @@ $(function () {
           // Update row in DataTable
           table.row(rowIndex[0]).data(rowData).draw(false);
 
+          setTimeout(() => {
+            $(document)
+              .off('click', '.userView')
+              .on('click', '.userView', function () {
+                var userId = $(this).data('id');
+                alert('View user profile: ' + userId);
+              });
+          }, 100);
+
+
           // Reinitialize Bootstrap dropdown (🔥 FIXES action menu issue)
           setTimeout(() => {
             $('[data-bs-toggle="dropdown"]').dropdown();
@@ -625,11 +635,22 @@ $(function () {
   }
 
   // Handel 'ViewButton' click event
-
+/*
   $(document).on('click', '#userView', function () {
     var userId = $(this).data('id');
     alert('View user profile:' + userId);
   });
+*/
+
+$(document)
+  .off('click', '.userView')
+  .on('click', '.userView', function () {
+    var userId = $(this).data('id');
+    alert('View user profile: ' + userId);
+  });
+
+
+
 
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
