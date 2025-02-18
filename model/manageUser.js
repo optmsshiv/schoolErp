@@ -571,10 +571,10 @@ $(function () {
             }
 
             rowData[7] = `
-                    <div class="d-flex align-items-center action-buttons">
+                    <div class="d-flex align-items-center">
                         <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView"
                            data-id="${userId}" title="View User"></a>
-                        <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete"
+                        <a href="javascript:;" class="tf-icons bx bx-trash bx-sm ms-2 text-danger userDelete"
                            data-id="${userId}" title="Delete User"></a>
                         <div class="dropdown">
                             <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
