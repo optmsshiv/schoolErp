@@ -27,6 +27,31 @@
 <body>
   <div class="container">
     <!-- Bulk Message Form -->
+    <!-- Message Stats -->
+    <div class="card mt-4">
+      <div class="card-header">
+        <h4>Message Sending Statistics</h4>
+      </div>
+      <div class="card-body">
+        <p id="messageStats">Sent: 0 | Failed: 0 | Pending: 0</p>
+      </div>
+    </div>
+
+    <!-- Retry Failed Messages -->
+    <div class="card mb-4 mt-3">
+      <div class="card-header">
+        <h4>Failed Messages</h4>
+      </div>
+      <div class="card-body">
+        <button class="btn btn-warning" id="retryFailedMessages">Retry Failed Messages</button>
+        <ul id="failedMessagesList">
+          <!-- List of failed messages will be displayed here -->
+        </ul>
+      </div>
+    </div>
+
+
+
     <div class="card">
       <div class="card-header">
         <h4>Send Bulk WhatsApp Messages</h4>
@@ -34,17 +59,22 @@
       <div class="card-body">
         <form id="bulkMessageForm">
           <div class="form-group">
+            <!---
+            <label for="messageTemplate">Message Template</label>
+            <textarea class="form-control" id="messageTemplate" rows="4" placeholder="Enter message template"
+              required></textarea> -->
             <label for="messageTemplate">Message Template</label>
             <select class="form-control" id="messageTemplate">
-              <option value="Welcome! Your order has been received.">Welcome Template</option>
-              <option value="Your payment was successfully processed.">Payment Success</option>
-              <option value="Your package is on the way!">Package Shipment</option>
+              <option value="Hello {{name}}, your order {{orderId}} has been received.">Order Received</option>
+              <option value="Hi {{name}}, your payment was successfully processed.">Payment Success</option>
+              <option value="Dear {{name}}, your package {{packageId}} is on the way!">Package Shipment</option>
             </select>
           </div>
           <div class="form-group">
             <label for="phoneNumbers">Phone Numbers (Comma separated)</label>
             <input type="text" class="form-control" id="phoneNumbers" placeholder="Enter phone numbers" required>
           </div>
+
           <div class="form-group">
             <label for="mediaFile">Attach Media (optional)</label>
             <input type="file" class="form-control" id="mediaFile">
@@ -58,7 +88,8 @@
       </div>
     </div>
 
-    <!-- Send Preview -->
+
+
     <div class="card mt-4">
       <div class="card-header">
         <h4>Message Preview</h4>
@@ -67,6 +98,39 @@
         <p><strong>Preview:</strong></p>
         <p id="messagePreview">Select a template to preview the message here.</p>
         <div class="media-preview" id="mediaPreview"></div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Section -->
+    <div class="card mt-4">
+      <div class="card-header">
+        <h4>Search and Filter Logs</h4>
+      </div>
+      <div class="card-body">
+        <div class="form-inline">
+          <label for="searchByPhone" class="mr-2">Phone:</label>
+          <input type="text" class="form-control mr-3" id="searchByPhone" placeholder="Search by phone number">
+
+          <label for="searchByStatus" class="mr-2">Status:</label>
+          <select class="form-control" id="searchByStatus">
+            <option value="">All</option>
+            <option value="Sent">Sent</option>
+            <option value="Failed">Failed</option>
+          </select>
+
+          <button class="btn btn-info ml-3" id="searchLogs">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export Buttons -->
+    <div class="card mt-4">
+      <div class="card-header">
+        <h4>Export Logs</h4>
+      </div>
+      <div class="card-body">
+        <button class="btn btn-success" id="exportCsv">Export CSV</button>
+        <button class="btn btn-warning ml-3" id="exportExcel">Export Excel</button>
       </div>
     </div>
 
@@ -99,17 +163,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Export Buttons -->
-    <div class="card mt-4">
-      <div class="card-header">
-        <h4>Export Logs</h4>
-      </div>
-      <div class="card-body">
-        <button class="btn btn-success" id="exportCsv">Export CSV</button>
-        <button class="btn btn-warning ml-3" id="exportExcel">Export Excel</button>
-      </div>
-    </div>
   </div>
 
   <!-- Bootstrap JS & jQuery -->
@@ -121,13 +174,52 @@
   <script>
     $(document).ready(function () {
       let logData = []; // Store message logs
+      let failedMessages = []; // Store failed message logs
       let currentPage = 1;
       const itemsPerPage = 5;
+      let sentCount = 0;
+      let failedCount = 0;
 
-      // Preview Message Template
-      $('#messageTemplate').on('change', function () {
-        const selectedTemplate = $(this).val();
-        $('#messagePreview').text(selectedTemplate);
+      // Message Personalization: Replace placeholders with actual data
+      function personalizeMessage(template, phone) {
+        const name = phone; // For example, phone is used as name
+        const orderId = Math.floor(Math.random() * 1000); // Simulate order ID
+        const personalizedMessage = template.replace("{{name}}", name)
+          .replace("{{orderId}}", orderId)
+          .replace("{{packageId}}", orderId);
+        return personalizedMessage;
+      }
+
+      // Simulate sending a message and adding to logs
+      $('#bulkMessageForm').on('submit', function (e) {
+        e.preventDefault();
+
+        // Get form data
+        var messageTemplate = $('#messageTemplate').val();
+        var phoneNumbers = $('#phoneNumbers').val().split(',');
+        const mediaFile = $('#mediaFile')[0].files[0];
+        const sendAt = $('#sendAt').val();
+        const status = 'Sent';
+
+        phoneNumbers.forEach(function (phone) {
+          var logEntry = {
+            phone: phone.trim(),
+            status: 'Sent',
+            timestamp: new Date().toLocaleString()
+          };
+          logData.push(logEntry);
+        });
+
+        // Reset form
+        $('#messageTemplate').val('');
+        $('#phoneNumbers').val('');
+        $('#mediaFile').val('');
+        $('#sendAt').val('');
+
+        // Update logs
+        updateLogTable();
+        updatePagination();
+        updateFailedMessages();
       });
 
       // Preview Media
@@ -140,38 +232,6 @@
         if (file) {
           reader.readAsDataURL(file);
         }
-      });
-
-      // Simulate sending a message and adding to logs
-      $('#bulkMessageForm').on('submit', function (e) {
-        e.preventDefault();
-
-        const messageTemplate = $('#messageTemplate').val();
-        const phoneNumbers = $('#phoneNumbers').val().split(',');
-        const mediaFile = $('#mediaFile')[0].files[0];
-        const sendAt = $('#sendAt').val();
-        const status = 'Sent';
-
-        phoneNumbers.forEach(function (phone) {
-          const logEntry = {
-            phone: phone.trim(),
-            message: messageTemplate,
-            status: status,
-            timestamp: new Date().toLocaleString(),
-            media: mediaFile ? mediaFile.name : 'None',
-            sendAt: sendAt || 'Immediate'
-          };
-          logData.push(logEntry);
-        });
-
-        // Reset form
-        $('#phoneNumbers').val('');
-        $('#mediaFile').val('');
-        $('#sendAt').val('');
-
-        // Update logs
-        updateLogTable();
-        updatePagination();
       });
 
       // Update the message logs table based on pagination
@@ -194,6 +254,23 @@
           $('#messageLogs').append(logRow);
         });
       }
+
+      // Update failed messages list
+      function updateFailedMessages() {
+        $('#failedMessagesList').empty();
+        failedMessages.forEach(function (failed) {
+          const failedItem = `<li>${failed.phone}: ${failed.message} <button class="btn btn-sm btn-warning retry" data-phone="${failed.phone}">Retry</button></li>`;
+          $('#failedMessagesList').append(failedItem);
+        });
+      }
+
+      // Retry failed messages
+      $(document).on('click', '.retry', function () {
+        const phone = $(this).data('phone');
+        alert(`Retrying message for ${phone}`);
+        // Implement message retry logic here
+      });
+
 
       // Update pagination controls
       function updatePagination() {
@@ -218,11 +295,29 @@
         updatePagination();
       });
 
+      // Filter search functionality
+      $('#searchLogs').on('click', function () {
+        const phoneSearch = $('#searchByPhone').val().toLowerCase();
+        const statusSearch = $('#searchByStatus').val();
+
+        const filteredLogs = logData.filter(log => {
+          const matchesPhone = log.phone.toLowerCase().includes(phoneSearch);
+          const matchesStatus = statusSearch ? log.status === statusSearch : true;
+          return matchesPhone && matchesStatus;
+        });
+
+        // Update table with filtered logs
+        logData = filteredLogs;
+        currentPage = 1; // Reset to first page
+        updateLogTable();
+        updatePagination();
+      });
+
       // Export logs as CSV
       $('#exportCsv').on('click', function () {
-        let csvContent = 'Phone Number,Message Status,Sent At,Media,Send At\n';
+        let csvContent = 'Phone Number,Message Status,Sent At\n';
         logData.forEach(function (log) {
-          csvContent += `${log.phone},${log.status},${log.timestamp},${log.media},${log.sendAt}\n`;
+          csvContent += `${log.phone},${log.status},${log.timestamp}\n`;
         });
 
         const blob = new Blob([csvContent], { type: 'text/csv' });

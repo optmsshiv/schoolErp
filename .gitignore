@@ -6,6 +6,7 @@
 # API
 .env
 path.html
+path2.html
 
 # Extra html page
 custome_code.html

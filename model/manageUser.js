@@ -55,8 +55,10 @@ $(function () {
     success: function (response) {
       // Check if data exists
       if (response && response.length > 0) {
-        var tableBody = $('#userTable tbody');
-        tableBody.empty(); // Clear any existing rows
+        // var tableBody = $('#userTable tbody');
+        var table = $('#userTable').DataTable(); // Get DataTable instance
+        table.clear().draw(); // Clear existing rows
+       // tableBody.empty(); // Clear any existing rows
 
         // Loop through each user and append rows to the table
         response.forEach(function (user) {
@@ -124,7 +126,9 @@ $(function () {
         });
 
         // Reinitialize DataTable after adding rows dynamically
-        table.rows.add($('#userTable tbody tr')).draw();
+        // table.rows.add($('#userTable tbody tr')).draw();
+        // ✅ Add new row properly using DataTables API
+        table.row.add($(row)).draw().node();
       } else {
         alert('No users found!');
       }
@@ -532,7 +536,7 @@ $(function () {
                 fullName +
                 '\n' +
                 'Phone: ' +
-                phone 
+                phone
             )
           ) {
             // Send credentials via WhatsApp API

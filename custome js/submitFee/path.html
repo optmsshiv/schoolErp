@@ -1,1 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Messaging Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+
+<body>
+  <div class="container mt-4">
+    <h2 class="text-center">WhatsApp Messaging Dashboard</h2>
+
+    <!-- Notifications -->
+    <div id="notificationArea" class="alert alert-info d-none"></div>
+
+    <!-- Message Templates -->
+    <div class="card p-3 mb-4">
+      <h4>Message Templates</h4>
+      <input type="text" id="templateName" class="form-control mb-2" placeholder="Template Name">
+      <textarea id="templateMessage" class="form-control mb-2" rows="2" placeholder="Template Message"></textarea>
+      <button id="addTemplate" class="btn btn-success">Save Template</button>
+      <ul id="templateList" class="list-group mt-2"></ul>
+    </div>
+
+    <!-- Bulk Messaging Form -->
+    <div class="card p-3 mb-4">
+      <h4>Send Bulk Messages</h4>
+      <form id="bulkMessageForm">
+        <div class="mb-3">
+          <label class="form-label">Phone Numbers (Comma-separated)</label>
+          <input type="text" id="phoneNumbers" class="form-control" placeholder="e.g., 1234567890, 9876543210">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Select Template</label>
+          <select id="selectTemplate" class="form-control mb-2">
+            <option value="">None</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Message</label>
+          <textarea id="messageText" class="form-control" rows="3" placeholder="Type your message..."></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Schedule Message</label>
+          <input type="datetime-local" id="scheduleTime" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Send Messages</button>
+      </form>
+    </div>
+
+    <!-- Contact Groups -->
+    <div class="card p-3 mb-4">
+      <h4>Manage Contact Groups</h4>
+      <input type="text" id="groupName" class="form-control mb-2" placeholder="Group Name">
+      <button id="addGroup" class="btn btn-success">Create Group</button>
+      <ul id="groupList" class="list-group mt-2"></ul>
+    </div>
+
+    <!-- Filter & Search Logs -->
+    <div class="card p-3 mb-4">
+      <h4>Search Message Logs</h4>
+      <input type="text" id="searchLogs" class="form-control mb-2" placeholder="Search by Phone Number or Message">
+    </div>
+
+    <!-- Message Logs Table -->
+    <div class="card p-3">
+      <h4>Message Logs</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Timestamp</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="messageLogs"></tbody>
+      </table>
+      <button id="exportCsv" class="btn btn-success">Export CSV</button>
+      <button id="exportExcel" class="btn btn-success">Export Excel</button>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function () {
+      let logData = [];
+      let templates = [];
+
+      $('#bulkMessageForm').submit(function (e) {
+        e.preventDefault();
+        const phones = $('#phoneNumbers').val().split(',').map(p => p.trim());
+        const message = $('#messageText').val();
+        const scheduleTime = $('#scheduleTime').val();
+
+        phones.forEach((phone) => {
+          logData.push({ phone, status: 'Scheduled', timestamp: scheduleTime || new Date().toLocaleString() });
+        });
+        updateLogTable();
+      });
+
+      function updateLogTable() {
+        $('#messageLogs').empty();
+        logData.forEach((log, index) => {
+          $('#messageLogs').append(`<tr>
+                        <td>${index + 1}</td>
+                        <td>${log.phone}</td>
+                        <td>${log.status}</td>
+                        <td>${log.timestamp}</td>
+                        <td><button class="btn btn-info btn-sm">View</button></td>
+                    </tr>`);
+        });
+      }
+
+      $('#addTemplate').click(function () {
+        const name = $('#templateName').val();
+        const message = $('#templateMessage').val();
+        if (name && message) {
+          templates.push({ name, message });
+          $('#templateList').append(`<li class="list-group-item">${name}</li>`);
+          $('#selectTemplate').append(`<option value="${message}">${name}</option>`);
+        }
+      });
+
+      $('#selectTemplate').change(function () {
+        $('#messageText').val($(this).val());
+      });
+
+      $('#searchLogs').on('input', function () {
+        const query = $(this).val().toLowerCase();
+        $('#messageLogs tr').each(function () {
+          const rowText = $(this).text().toLowerCase();
+          $(this).toggle(rowText.includes(query));
+        });
+      });
+
+      $('#exportCsv').click(function () {
+        let csvContent = 'Phone,Status,Timestamp\n';
+        logData.forEach(log => {
+          csvContent += `${log.phone},${log.status},${log.timestamp}\n`;
+        });
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'message_logs.csv';
+        link.click();
+      });
+
+      $('#exportExcel').click(function () {
+        const ws = XLSX.utils.json_to_sheet(logData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Logs');
+        XLSX.writeFile(wb, 'message_logs.xlsx');
+      });
+    });
+  </script>
+</body>
+
+</html>
