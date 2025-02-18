@@ -122,13 +122,13 @@ $(function () {
               </td>
             </tr>
           `;
-          tableBody.append(row); // Add the new row to the table
+          // ✅ Add new row properly using DataTables API
+          table.row.add($(row)).draw().node();
+         // tableBody.append(row); // Add the new row to the table
         });
 
         // Reinitialize DataTable after adding rows dynamically
-        // table.rows.add($('#userTable tbody tr')).draw();
-        // ✅ Add new row properly using DataTables API
-        table.row.add($(row)).draw().node();
+       // table.rows.add($('#userTable tbody tr')).draw();
       } else {
         alert('No users found!');
       }
