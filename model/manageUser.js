@@ -572,12 +572,12 @@ $(function () {
 
             rowData[7] = `
                     <div class="d-flex align-items-center">
-                        <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-3 text-info userView"
+                        <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView"
                            data-id="${userId}" title="View User"></a>
                         <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete"
                            data-id="${userId}" title="Delete User"></a>
                         <div class="dropdown">
-                            <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
+                            <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                             <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
                         </div>
