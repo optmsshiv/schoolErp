@@ -543,12 +543,13 @@ $(function () {
           let rowData = table.row(rowIndex[0]).data();
 
           // Update status badge
-          let statusBadge = `<span class="status-badge badge ${newStatus === 'Active'
+          let statusBadge = `<span class="status-badge badge ${
+            newStatus === 'Active'
               ? 'bg-label-success'
               : newStatus === 'Suspended'
-                ? 'bg-label-secondary'
-                : 'bg-label-warning'
-            }">${newStatus}</span>`;
+              ? 'bg-label-secondary'
+              : 'bg-label-warning'
+          }">${newStatus}</span>`;
 
           rowData[6] = statusBadge; // Assuming status column is at index 6
 
@@ -580,6 +581,16 @@ $(function () {
 
           // Update row in DataTable
           table.row(rowIndex[0]).data(rowData).draw(false);
+
+          // Reinitialize event listener (🔥 FIX)
+          setTimeout(() => {
+            $(document)
+              .off('click', '.userView')
+              .on('click', '.userView', function () {
+                var userId = $(this).data('id');
+                alert('View user profile: ' + userId);
+              });
+          }, 100);
 
           // Reinitialize Bootstrap dropdown (🔥 FIXES action menu issue)
           setTimeout(() => {
@@ -621,17 +632,11 @@ $(function () {
   }
 
   // Handel 'ViewButton' click event
-  /*
+
     $(document).on('click', '#userView', function () {
       var userId = $(this).data('id');
       alert('View user profile:' + userId);
     });
-  */
-  $(document).off('click', '.userView').on('click', '.userView', function () {
-      var userId = $(this).data('id');
-      alert('View user profile: ' + userId);
-    });
-
 
 
   // Handle 'Credential send' button click event
