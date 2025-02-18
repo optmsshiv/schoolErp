@@ -626,8 +626,8 @@ $(function () {
 
   // Delegate View button click event
   $(document)
-    .off('click', '.userView')
-    .on('click', '.userView', function () {
+    .off('click', '#userView')
+    .on('click', '#userView', function () {
       let userId = $(this).data('id');
       console.log('View user:', userId);
       alert('View user profile:' + userId);
