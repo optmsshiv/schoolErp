@@ -1116,24 +1116,3 @@ td {
   animation: highlight 3s ease-in-out;
 }
 
-
-/* Make sure action column is displayed in a flexbox */
-#userTable .action-buttons {
-  display: flex;
-  align-items: center;
-  /* Vertically align buttons */
-  justify-content: flex-start;
-  /* Align to the left, ensure no shifting */
-}
-
-/* Ensure proper spacing between action buttons */
-#userTable .action-buttons .tf-icons {
-  margin-right: 10px;
-  /* Space between icons */
-}
-
-/* Ensure dropdown menu has consistent width */
-#userTable .dropdown-menu {
-  min-width: 120px;
-  /* Optional, adjust if needed */
-}
