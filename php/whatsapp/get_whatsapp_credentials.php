@@ -44,7 +44,7 @@ try {
         "to" => $phone,
         "type" => "template",
         "template" => [
-            "name" => "user_role",
+            "name" => "user_role_status",
             "language" => ["code" => "en_US"],
             "components" => [
                 [
