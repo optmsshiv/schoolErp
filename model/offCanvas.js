@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
           user.status
         }</span>`,
         `
-        <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${user.user_id}" title="View User"></a>
+        <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${user.user_id}" title="View User"></a>
         <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${user.user_id}" title="Delete User"></a>
         <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
         <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>

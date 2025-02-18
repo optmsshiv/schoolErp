@@ -110,7 +110,7 @@ $(function () {
                   : 'bg-label-warning'
               }">${user.status}</span></td>
               <td>
-                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
+                <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${
                   user.user_id
                 }" title="View User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
