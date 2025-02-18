@@ -55,8 +55,11 @@ $(function () {
     success: function (response) {
       // Check if data exists
       if (response && response.length > 0) {
-        var tableBody = $('#userTable tbody');
-        tableBody.empty(); // Clear any existing rows
+        // var tableBody = $('#userTable tbody');
+        // tableBody.empty(); // Clear any existing rows
+
+        var table = $('#userTable').DataTable(); // Get the DataTable instance
+        table.clear().draw(); // Clear existing table data
 
         // Loop through each user and append rows to the table
         response.forEach(function (user) {
@@ -120,11 +123,12 @@ $(function () {
               </td>
             </tr>
           `;
-          tableBody.append(row); // Add the new row to the table
+          // tableBody.append(row); // Add the new row to the table
+          table.row.add($(row)).draw(false); // ✅ Correctly add new rows
         });
 
         // Reinitialize DataTable after adding rows dynamically
-        table.rows.add($('#userTable tbody tr')).draw();
+      //  table.rows.add($('#userTable tbody tr')).draw();
       } else {
         alert('No users found!');
       }
