@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
             addNewUserToTable(data);
 
             // Send WhatsApp Message
-            sendWhatsAppMessage(data.fullname, data.user_id, data.password, data.phone);
+            sendWhatsAppMessage(data.fullname, data.user_id, data.password, data.phone, data.role, data.status);
           });
         } else {
           Swal.fire({
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Function to send WhatsApp message
-  function sendWhatsAppMessage(fullname, user_id, password, phone) {
+  function sendWhatsAppMessage(fullname, user_id, password, phone, role, status) {
     if (!phone) {
       console.error('Phone number is missing.');
       return;
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('/php/whatsapp/get_whatsapp_credentials.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fullname, user_id, password, phone })
+      body: JSON.stringify({ fullname, user_id, password, phone, role, status })
     })
       .then(response => {
         if (!response.ok) throw new Error('WhatsApp API response was not ok');

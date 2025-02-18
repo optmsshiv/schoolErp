@@ -24,13 +24,15 @@ try {
     // Get user data from frontend (POST request)
     $data = json_decode(file_get_contents("php://input"), true);
 
-    if (!isset($data['fullname'], $data['user_id'], $data['password'], $data['phone'])) {
+    if (!isset($data['fullname'], $data['user_id'], $data['password'], $data['phone'], $data['role'], $data['status'])) {
         echo json_encode(['success' => false, 'message' => 'Missing required fields']);
         exit;
     }
 
     // Extract user details
     $fullname = $data['fullname'];
+    $role= $data['role'];
+    $status = $data['status'];
     $userId = $data['user_id'];
     $password = $data['password'];
     $phone = $data['phone'];
@@ -49,8 +51,11 @@ try {
                     "type" => "body",
                     "parameters" => [
                         ["type" => "text", "text" => $fullname],
+                        ["type" => "text", "text" => $role],
+                        ["type" => "text", "text" => $status],
                         ["type" => "text", "text" => $userId],
                         ["type" => "text", "text" => $password],
+                        ["type" => "text", "text" => $phone],
                         ["type" => "text", "text" => $fromName]
                     ]
                 ]

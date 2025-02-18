@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Dashboard</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .container {
+      margin-top: 30px;
+    }
+
+    .table-container {
+      margin-top: 20px;
+    }
+
+    .media-preview img {
+      max-width: 100px;
+      max-height: 100px;
+    }
+  </style>
+  <!-- Add SheetJS Library for Excel Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Bulk Message Form -->
+    <div class="card">
+      <div class="card-header">
+        <h4>Send Bulk WhatsApp Messages</h4>
+      </div>
+      <div class="card-body">
+        <form id="bulkMessageForm">
+          <div class="form-group">
+            <label for="messageTemplate">Message Template</label>
+            <select class="form-control" id="messageTemplate">
+              <option value="Welcome! Your order has been received.">Welcome Template</option>
+              <option value="Your payment was successfully processed.">Payment Success</option>
+              <option value="Your package is on the way!">Package Shipment</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="phoneNumbers">Phone Numbers (Comma separated)</label>
+            <input type="text" class="form-control" id="phoneNumbers" placeholder="Enter phone numbers" required>
+          </div>
+          <div class="form-group">
+            <label for="mediaFile">Attach Media (optional)</label>
+            <input type="file" class="form-control" id="mediaFile">
+          </div>
+          <div class="form-group">
+            <label for="sendAt">Schedule Sending (optional)</label>
+            <input type="datetime-local" class="form-control" id="sendAt">
+          </div>
+          <button type="submit" class="btn btn-primary">Send Messages</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Send Preview -->
+    <div class="card mt-4">
+      <div class="card-header">
+        <h4>Message Preview</h4>
+      </div>
+      <div class="card-body">
+        <p><strong>Preview:</strong></p>
+        <p id="messagePreview">Select a template to preview the message here.</p>
+        <div class="media-preview" id="mediaPreview"></div>
+      </div>
+    </div>
+
+    <!-- Message Logs Table -->
+    <div class="table-container">
+      <div class="card">
+        <div class="card-header">
+          <h4>Message Logs</h4>
+        </div>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Phone Number</th>
+                <th>Message Status</th>
+                <th>Sent At</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="messageLogs">
+              <!-- Dynamic logs will be appended here -->
+            </tbody>
+          </table>
+          <nav>
+            <ul class="pagination" id="pagination">
+              <!-- Pagination will be dynamically added -->
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export Buttons -->
+    <div class="card mt-4">
+      <div class="card-header">
+        <h4>Export Logs</h4>
+      </div>
+      <div class="card-body">
+        <button class="btn btn-success" id="exportCsv">Export CSV</button>
+        <button class="btn btn-warning ml-3" id="exportExcel">Export Excel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS & jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- Custom JS for handling form and logs -->
+  <script>
+    $(document).ready(function () {
+      let logData = []; // Store message logs
+      let currentPage = 1;
+      const itemsPerPage = 5;
+
+      // Preview Message Template
+      $('#messageTemplate').on('change', function () {
+        const selectedTemplate = $(this).val();
+        $('#messagePreview').text(selectedTemplate);
+      });
+
+      // Preview Media
+      $('#mediaFile').on('change', function () {
+        const file = this.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          $('#mediaPreview').html('<img src="' + e.target.result + '" alt="Media Preview" />');
+        };
+        if (file) {
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Simulate sending a message and adding to logs
+      $('#bulkMessageForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const messageTemplate = $('#messageTemplate').val();
+        const phoneNumbers = $('#phoneNumbers').val().split(',');
+        const mediaFile = $('#mediaFile')[0].files[0];
+        const sendAt = $('#sendAt').val();
+        const status = 'Sent';
+
+        phoneNumbers.forEach(function (phone) {
+          const logEntry = {
+            phone: phone.trim(),
+            message: messageTemplate,
+            status: status,
+            timestamp: new Date().toLocaleString(),
+            media: mediaFile ? mediaFile.name : 'None',
+            sendAt: sendAt || 'Immediate'
+          };
+          logData.push(logEntry);
+        });
+
+        // Reset form
+        $('#phoneNumbers').val('');
+        $('#mediaFile').val('');
+        $('#sendAt').val('');
+
+        // Update logs
+        updateLogTable();
+        updatePagination();
+      });
+
+      // Update the message logs table based on pagination
+      function updateLogTable() {
+        $('#messageLogs').empty();
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const logsToShow = logData.slice(start, end);
+
+        logsToShow.forEach((log, index) => {
+          const logRow = `
+                        <tr>
+                            <td>${start + index + 1}</td>
+                            <td>${log.phone}</td>
+                            <td>${log.status}</td>
+                            <td>${log.timestamp}</td>
+                            <td><button class="btn btn-info btn-sm">View</button></td>
+                        </tr>
+                    `;
+          $('#messageLogs').append(logRow);
+        });
+      }
+
+      // Update pagination controls
+      function updatePagination() {
+        const totalPages = Math.ceil(logData.length / itemsPerPage);
+        $('#pagination').empty();
+
+        for (let i = 1; i <= totalPages; i++) {
+          const paginationItem = `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="#" data-page="${i}">${i}</a>
+                        </li>
+                    `;
+          $('#pagination').append(paginationItem);
+        }
+      }
+
+      // Handle pagination clicks
+      $('#pagination').on('click', '.page-link', function (e) {
+        e.preventDefault();
+        currentPage = $(this).data('page');
+        updateLogTable();
+        updatePagination();
+      });
+
+      // Export logs as CSV
+      $('#exportCsv').on('click', function () {
+        let csvContent = 'Phone Number,Message Status,Sent At,Media,Send At\n';
+        logData.forEach(function (log) {
+          csvContent += `${log.phone},${log.status},${log.timestamp},${log.media},${log.sendAt}\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'message_logs.csv';
+        link.click();
+      });
+
+      // Export logs as Excel
+      $('#exportExcel').on('click', function () {
+        const ws = XLSX.utils.json_to_sheet(logData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Logs');
+        XLSX.writeFile(wb, 'message_logs.xlsx');
+      });
+    });
+  </script>
+</body>
+
+</html>
