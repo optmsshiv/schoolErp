@@ -580,9 +580,12 @@ $(function () {
                 `;
 
           // Update row in DataTable
-          table.row(rowIndex[0]).data(rowData).draw(false);
+        //  table.row(rowIndex[0]).data(rowData).draw(false);
+        table.row(rowIndex[0]).invalidate().draw(false);
+
 
           // Reinitialize event listener (🔥 FIX)
+          /*
           setTimeout(() => {
             $(document)
               .off('click', '.userView')
@@ -590,7 +593,7 @@ $(function () {
                 var userId = $(this).data('id');
                 alert('View user profile: ' + userId);
               });
-          }, 100);
+          }, 100);*/
 
           // Reinitialize Bootstrap dropdown (🔥 FIXES action menu issue)
           setTimeout(() => {
