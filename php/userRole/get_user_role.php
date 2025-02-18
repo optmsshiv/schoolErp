@@ -1,5 +1,6 @@
 <?php
 // fetch_users.php
+header('Content-Type: application/json'); // ✅ Ensure correct JSON output
 include_once '../db_connection.php';
 
 $query = "SELECT * FROM userRole";
