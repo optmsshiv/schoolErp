@@ -622,6 +622,7 @@ $(function () {
   }
 
   // Handel 'ViewButton' click event
+  /*
   $(document).on('click', '.userView', function () {
     var userId = $(this).data('id');
     alert('View user profile:' + userId);
@@ -629,6 +630,19 @@ $(function () {
     $(document).on('click', '#userView', function () {
       var userId = $(this).data('id');
       alert('View user profile:' + userId);
+    });
+*/
+
+    $('#userTable').DataTable({
+      rowCallback: function (row, data) {
+        $(row)
+          .find('.userView')
+          .off('click')
+          .on('click', function () {
+            var userId = $(this).data('id');
+            alert('View user profile: ' + userId);
+          });
+      }
     });
 
 
