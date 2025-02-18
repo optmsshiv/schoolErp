@@ -131,8 +131,6 @@ $(function () {
         // Reinitialize DataTable after adding rows dynamically
         // table.rows.add($('#userTable tbody tr')).draw();
 
-        // ✅ Reload DataTable to reflect changes
-        table.ajax.reload(null, false); // This refreshes data without resetting pagination
       } else {
         alert('No users found!');
       }
