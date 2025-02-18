@@ -584,6 +584,13 @@ $(function () {
             // Update row in DataTable
             table.row(rowIndex[0]).data(rowData).draw(false);
 
+            // ✅ Wait a bit & reapply highlight class (Fixes disappearing highlight issue)
+                setTimeout(() => {
+                    let row = $(`#userTable tbody tr[data-id="${userId}"]`);
+                    row.addClass('highlight'); // Apply highlight
+                    setTimeout(() => row.removeClass('highlight'), 5000); // Remove highlight after 5 sec
+                }, 100);
+
             // Reinitialize Bootstrap dropdown (🔥 FIXES action menu issue)
             setTimeout(() => {
               $('[data-bs-toggle="dropdown"]').dropdown();
