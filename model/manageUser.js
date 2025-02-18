@@ -55,11 +55,8 @@ $(function () {
     success: function (response) {
       // Check if data exists
       if (response && response.length > 0) {
-        // var tableBody = $('#userTable tbody');
-        $('#userTable').DataTable().ajax.reload(null, false); // ✅ Refresh without losing pagination
-        var table = $('#userTable').DataTable(); // Get DataTable instance
-        table.clear().draw(); // Clear existing rows
-        // tableBody.empty(); // Clear any existing rows
+        var tableBody = $('#userTable tbody');
+        tableBody.empty(); // Clear any existing rows
 
         // Loop through each user and append rows to the table
         response.forEach(function (user) {
@@ -123,14 +120,11 @@ $(function () {
               </td>
             </tr>
           `;
-          // ✅ Add new row properly using DataTables API
-          table.row.add($(row)).draw().node();
-          // tableBody.append(row); // Add the new row to the table
+          tableBody.append(row); // Add the new row to the table
         });
 
         // Reinitialize DataTable after adding rows dynamically
-        // table.rows.add($('#userTable tbody tr')).draw();
-
+        table.rows.add($('#userTable tbody tr')).draw();
       } else {
         alert('No users found!');
       }
