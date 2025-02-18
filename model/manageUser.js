@@ -625,6 +625,7 @@ $(function () {
   }
 
   // Delegate View button click event
+  /*
   $(document)
     .off('click', '.userView')
     .on('click', '.userView', function () {
@@ -639,7 +640,13 @@ $(function () {
   $(document).on('click', '#userView', function () {
     var userId = $(this).data('id');
     alert('View user profile:' + userId);
-  });
+  }); */
+
+  $(document).on('click', '#userTable tbody .userView', function () {
+    var userId = $(this).data('id');
+    alert('View user profile: ' + userId);
+});
+
 
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
