@@ -128,7 +128,7 @@ $(function () {
         });
 
         // Reinitialize DataTable after adding rows dynamically
-      //  table.rows.add($('#userTable tbody tr')).draw();
+        //  table.rows.add($('#userTable tbody tr')).draw();
       } else {
         alert('No users found!');
       }
@@ -411,7 +411,7 @@ $(function () {
     $('.loading-spinner').remove();
   }
 
-/*
+  /*
   function changeStatus(userId, newStatus) {
     showLoadingSpinner();
     $.ajax({
@@ -506,72 +506,72 @@ $(function () {
     });
   } */
 
-    function changeStatus(userId, newStatus) {
-      showLoadingSpinner();
+  function changeStatus(userId, newStatus) {
+    showLoadingSpinner();
 
-      $.ajax({
-        url: '../php/userRole/update_user_status.php',
-        type: 'POST',
-        data: { user_id: userId, status: newStatus },
-        dataType: 'json',
-        success: function (response) {
-          hideLoadingSpinner();
+    $.ajax({
+      url: '../php/userRole/update_user_status.php',
+      type: 'POST',
+      data: { user_id: userId, status: newStatus },
+      dataType: 'json',
+      success: function (response) {
+        hideLoadingSpinner();
 
-         // console.log('Server Response:', response);
+        // console.log('Server Response:', response);
 
-          if (response && response.success) {
-            Swal.fire({
-              icon: 'success',
-              title: `User status changed to ${newStatus}`,
-              toast: true,
-              timer: 2000
+        if (response && response.success) {
+          Swal.fire({
+            icon: 'success',
+            title: `User status changed to ${newStatus}`,
+            toast: true,
+            timer: 2000
+          });
+
+          let table = $('#userTable').DataTable();
+
+          // Find row index in DataTable
+          let rowIndex = table
+            .rows()
+            .eq(0)
+            .filter(function (rowIdx) {
+              return table.cell(rowIdx, 1).data() == userId;
             });
 
-            let table = $('#userTable').DataTable();
+          if (rowIndex.length === 0) {
+            console.error('Row not found for user ID:', userId);
+            return;
+          }
 
-            // Find row index in DataTable
-            let rowIndex = table
-              .rows()
-              .eq(0)
-              .filter(function (rowIdx) {
-                return table.cell(rowIdx, 1).data() == userId;
-              });
+          // Get current row data
+          let rowData = table.row(rowIndex[0]).data();
 
-            if (rowIndex.length === 0) {
-              console.error('Row not found for user ID:', userId);
-              return;
-            }
+          // Update status badge
+          let statusBadge = `<span class="status-badge badge ${
+            newStatus === 'Active'
+              ? 'bg-label-success'
+              : newStatus === 'Suspended'
+              ? 'bg-label-secondary'
+              : 'bg-label-warning'
+          }">${newStatus}</span>`;
 
-            // Get current row data
-            let rowData = table.row(rowIndex[0]).data();
+          rowData[6] = statusBadge; // Assuming status column is at index 6
 
-            // Update status badge
-            let statusBadge = `<span class="status-badge badge ${
-              newStatus === 'Active'
-                ? 'bg-label-success'
-                : newStatus === 'Suspended'
-                ? 'bg-label-secondary'
-                : 'bg-label-warning'
-            }">${newStatus}</span>`;
-
-            rowData[6] = statusBadge; // Assuming status column is at index 6
-
-            // Update dropdown menu
-            let dropdownMenu = '';
-            if (newStatus === 'Pending') {
-              dropdownMenu = `
+          // Update dropdown menu
+          let dropdownMenu = '';
+          if (newStatus === 'Pending') {
+            dropdownMenu = `
                         <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${userId}">Edit</a>
                         <a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
-            } else if (newStatus === 'Active') {
-              dropdownMenu = `
+          } else if (newStatus === 'Active') {
+            dropdownMenu = `
                         <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${userId}">Edit</a>
                         <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${userId}">Suspend</a>
                         <a class="dropdown-item userCredential" href="javascript:;" data-id="${userId}">Send Credential</a>`;
-            } else if (newStatus === 'Suspended') {
-              dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
-            }
+          } else if (newStatus === 'Suspended') {
+            dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
+          }
 
-            rowData[7] = `
+          rowData[7] = `
                         <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView"
                            data-id="${userId}" title="View User"></a>
                         <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete"
@@ -582,54 +582,63 @@ $(function () {
                             <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
                 `;
 
-            // Update row in DataTable
-            table.row(rowIndex[0]).data(rowData).draw(false);
+          // Update row in DataTable
+          table.row(rowIndex[0]).data(rowData).draw(false);
 
-            // Reinitialize Bootstrap dropdown (🔥 FIXES action menu issue)
-            setTimeout(() => {
-              $('[data-bs-toggle="dropdown"]').dropdown();
-            }, 100);
+          // Reinitialize Bootstrap dropdown (🔥 FIXES action menu issue)
+          setTimeout(() => {
+            $('[data-bs-toggle="dropdown"]').dropdown();
+          }, 100);
 
-            // Highlight row
+          // Highlight row
+          /*
             let row = $(`#userTable tbody tr[data-id="${userId}"]`);
             row.addClass('highlight');
-            setTimeout(() => row.removeClass('highlight'), 5000);
+            setTimeout(() => row.removeClass('highlight'), 5000);*/
 
-            // ✅ Highlight row
-            let rowNode = table.row(rowIndex[0]).node();
-            $(rowNode).addClass('highlighted-row');
+          // ✅ Highlight row
+          let rowNode = table.row(rowIndex[0]).node();
+          $(rowNode).addClass('highlighted-row');
 
-            // ✅ Remove highlight after 5 seconds
-            setTimeout(() => $(rowNode).removeClass('highlighted-row'), 5000);
-          } else {
-            console.error('Response format incorrect or success=false:', response);
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: 'Failed to change status!',
-              confirmButtonText: 'OK'
-            });
-          }
-        },
-        error: function (xhr, status, error) {
-          console.error('AJAX error:', xhr.responseText);
+          // ✅ Remove highlight after 5 seconds
+          setTimeout(() => $(rowNode).removeClass('highlighted-row'), 5000);
+        } else {
+          console.error('Response format incorrect or success=false:', response);
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'Something went wrong. Please try again.',
+            text: 'Failed to change status!',
             confirmButtonText: 'OK'
           });
         }
-      });
-    }
+      },
+      error: function (xhr, status, error) {
+        console.error('AJAX error:', xhr.responseText);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong. Please try again.',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+  }
 
-
+  // Delegate View button click event
+  $(document)
+    .off('click', '.userView')
+    .on('click', '.userView', function () {
+      let userId = $(this).data('id');
+      console.log('View user:', userId);
+      // Call your view user function here
+    });
 
   // Handel 'ViewButton' click event
+  /*
   $(document).on('click', '#userView', function () {
     var userId = $(this).data('id');
     alert('View user profile:' + userId);
-  });
+  });*/
 
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
@@ -649,16 +658,7 @@ $(function () {
           var fromName = response.data.fromName;
 
           // Display confirmation before sending credentials
-          if (
-            confirm(
-              'Send credentials to:\n' +
-                'Full Name: ' +
-                fullName +
-                '\n' +
-                'Phone: ' +
-                phone
-            )
-          ) {
+          if (confirm('Send credentials to:\n' + 'Full Name: ' + fullName + '\n' + 'Phone: ' + phone)) {
             // Send credentials via WhatsApp API
             $.ajax({
               url: '/php/whatsapp/sendUserRoleCred.php', // Script to send via WhatsApp
@@ -692,9 +692,8 @@ $(function () {
     });
   });
 
-
   // Handle bulk action for changing status will use later
- /*
+  /*
   $('#applyBulkAction').click(function () {
     var action = $('#bulkAction').val();
     var selectedUsers = [];
@@ -787,6 +786,5 @@ $(function () {
   $('#searchBox').on('keyup', function () {
     table.search(this.value).draw();
   });
-
 });
 
