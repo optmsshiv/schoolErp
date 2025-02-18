@@ -597,10 +597,10 @@ $(function () {
 
             // ✅ Highlight row
             let rowNode = table.row(rowIndex[0]).node();
-            $(rowNode).addClass('highlight');
+            $(rowNode).addClass('highlighted-row');
 
             // ✅ Remove highlight after 5 seconds
-            setTimeout(() => $(rowNode).removeClass('highlight'), 5000);
+            setTimeout(() => $(rowNode).removeClass('highlighted-row'), 5000);
           } else {
             console.error('Response format incorrect or success=false:', response);
             Swal.fire({

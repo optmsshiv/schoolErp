@@ -1116,3 +1116,8 @@ td {
   animation: highlight 3s ease-in-out;
 }
 
+.highlighted-row {
+  background-color: #ffeeba !important;
+  /* Light yellow */
+  transition: background-color 1s ease-in-out;
+}
