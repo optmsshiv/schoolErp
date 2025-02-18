@@ -410,7 +410,8 @@ $(function () {
   function hideLoadingSpinner() {
     $('.loading-spinner').remove();
   }
-
+  
+/*
   function changeStatus(userId, newStatus) {
     showLoadingSpinner();
     $.ajax({
@@ -432,10 +433,10 @@ $(function () {
           });
 
           // Find the row for the updated user
-          /*
-          var row = $(`#userTable tbody tr`).filter(function () {
-            return $(this).find('td:eq(1)').text().trim() == userId;
-          });*/
+
+          //var row = $(`#userTable tbody tr`).filter(function () {
+          //  return $(this).find('td:eq(1)').text().trim() == userId;
+          //});
           var row = $('#userTable').find('tr[data-id="' + userId + '"]');
 
           if (row.length === 0) {
@@ -503,7 +504,103 @@ $(function () {
         });
       }
     });
-  }
+  } */
+
+    function changeStatus(userId, newStatus) {
+      showLoadingSpinner();
+
+      $.ajax({
+        url: '../php/userRole/update_user_status.php',
+        type: 'POST',
+        data: { user_id: userId, status: newStatus },
+        dataType: 'json',
+        success: function (response) {
+          hideLoadingSpinner();
+          console.log('Server Response:', response);
+
+          if (response && response.success) {
+            Swal.fire({
+              icon: 'success',
+              title: `User status changed to ${newStatus}`,
+              toast: true,
+              timer: 2000
+            });
+
+            // Get DataTable instance
+            let table = $('#userTable').DataTable();
+
+            // Find row index in DataTable
+            let rowIndex = table
+              .rows()
+              .eq(0)
+              .filter(function (rowIdx) {
+                return table.cell(rowIdx, 1).data() == userId; // Column index 1 is user_id
+              });
+
+            if (rowIndex.length === 0) {
+              console.error('Row not found for user ID:', userId);
+              return;
+            }
+
+            // Get current row data
+            let rowData = table.row(rowIndex[0]).data();
+
+            // Update status badge
+            let statusBadge = `<span class="status-badge badge ${
+              newStatus === 'Active'
+                ? 'bg-label-success'
+                : newStatus === 'Suspended'
+                ? 'bg-label-secondary'
+                : 'bg-label-warning'
+            }">${newStatus}</span>`;
+
+            rowData[6] = statusBadge; // Assuming status column is at index 6
+
+            // Update dropdown menu options
+            let dropdownMenu = '';
+            if (newStatus === 'Pending') {
+              dropdownMenu = `
+                        <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${userId}">Edit</a>
+                        <a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
+            } else if (newStatus === 'Active') {
+              dropdownMenu = `
+                        <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${userId}">Edit</a>
+                        <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${userId}">Suspend</a>
+                        <a class="dropdown-item userCredential" href="javascript:;" data-id="${userId}">Send Credential</a>`;
+            } else if (newStatus === 'Suspended') {
+              dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
+            }
+            rowData[7] = `<div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>`;
+
+            // Update row in DataTable
+            table.row(rowIndex[0]).data(rowData).draw(false);
+
+            // Highlight row temporarily
+            let row = $(`#userTable tbody tr[data-id="${userId}"]`);
+            row.addClass('highlight');
+            setTimeout(() => row.removeClass('highlight'), 5000);
+          } else {
+            console.error('Response format incorrect or success=false:', response);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Failed to change status!',
+              confirmButtonText: 'OK'
+            });
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('AJAX error:', xhr.responseText);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong. Please try again.',
+            confirmButtonText: 'OK'
+          });
+        }
+      });
+    }
+
 
   // Handel 'ViewButton' click event
   $(document).on('click', '#userView', function () {
