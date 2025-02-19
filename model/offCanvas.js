@@ -25,8 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      // Prevent duplicate event listeners
-      form.removeEventListener('submit', handleFormSubmit);
+      form.removeEventListener('submit', handleFormSubmit); // Remove existing listener
       form.addEventListener('submit', handleFormSubmit);
     });
   }
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Close the off-canvas before sending the request
     let offcanvasElement = document.getElementById('userAddCanvas');
-    let offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
+    let offcanvasInstance = bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement);
     if (offcanvasInstance) offcanvasInstance.hide();
 
     // Send form data to the server
@@ -59,10 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
       method: 'POST',
       body: formData
     })
-      .then(response => {
-        if (!response.ok) throw new Error('Network response was not ok');
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
         if (data.success) {
           Swal.fire({
@@ -123,10 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ fullname, user_id, password, phone, role, status })
     })
-      .then(response => {
-        if (!response.ok) throw new Error('WhatsApp API response was not ok');
-        return response.json();
-      })
+      .then(response => response.json())
       .catch(error => console.error('WhatsApp API Error:', error));
   }
 
@@ -134,73 +127,8 @@ document.addEventListener('DOMContentLoaded', function () {
   function formatDate(dateString) {
     if (!dateString) return 'N/A';
     let date = new Date(dateString);
-    let day = String(date.getDate()).padStart(2, '0');
-    let month = String(date.getMonth() + 1).padStart(2, '0');
-    let year = date.getFullYear();
-    return `${day}-${month}-${year}`;
+    return date.toLocaleDateString('en-GB'); // DD/MM/YYYY format
   }
-
-  // Function to refresh the user table
-  /*
-  function addNewUserToTable(user) {
-    let tableBody = document.querySelector('#userTable tbody');
-    if (!tableBody) return;
-
-    let avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
-
-    // Determine dropdown menu options based on user status
-    let dropdownMenu = '';
-    if (user.status === 'Pending') {
-      dropdownMenu = `
-        <a class="dropdown-item border-bottom userEdit" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
-        <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-      `;
-    } else if (user.status === 'Active') {
-      dropdownMenu = `
-        <a class="dropdown-item border-bottom userEdit" href="javascript:;" id="userEdit" data-id="${user.user_id}">Edit</a>
-        <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
-        <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
-      `;
-    } else if (user.status === 'Suspended') {
-      dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
-    }
-
-    let row = document.createElement('tr');
-    row.setAttribute('data-id', user.user_id);
-    row.innerHTML = `
-      <td><input type="checkbox" class="row-select"></td>
-      <td>${user.user_id}</td>
-      <td>
-        <div class="d-flex align-items-center">
-          <div class="avatar avatar-sm">
-            <img src="${avatar}" alt="avatar" class="rounded-circle" />
-          </div>
-          <div class="ms-2">
-            <h6 class="mb-0 ms-2">${user.fullname}</h6>
-          </div>
-        </div>
-      </td>
-      <td>${user.role}</td>
-      <td>${user.phone}</td>
-      <td>${formatDate(user.joining_date)}</td>
-      <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
-      user.status
-    }</span></td>
-      <td>
-        <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info" id="userView" data-id="${
-          user.user_id
-        }"></a>
-        <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger" id="userDelete" data-id="${
-          user.user_id
-        }"></a>
-        <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
-           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-           <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
-      </td>
-    `;
-
-    tableBody.appendChild(row);
-  }*/
 
   function addNewUserToTable(user) {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
@@ -211,15 +139,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let dropdownMenu = '';
     if (user.status === 'Pending') {
       dropdownMenu = `
-            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-        `;
+        <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+        <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+      `;
     } else if (user.status === 'Active') {
       dropdownMenu = `
-            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-            <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
-            <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
-        `;
+        <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+        <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
+        <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
+      `;
     } else if (user.status === 'Suspended') {
       dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
     }
@@ -246,20 +174,19 @@ document.addEventListener('DOMContentLoaded', function () {
           user.status
         }</span>`,
         `
-        <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${user.user_id}" title="View User"></a>
-        <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${user.user_id}" title="Delete User"></a>
+        <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${user.user_id}" title="View User"></a>
+        <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${user.user_id}" title="Delete User"></a>
         <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
         <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
         `
       ])
-      .draw(false); // ✅ Ensure DataTables recognizes the new row
+      .draw(false);
   }
-
-    
 });
 
 // Function to validate mobile number
 function validateMobileNumber(input) {
-  input.value = input.value.replace(/\D/g, '');
-  document.getElementById('phoneError').style.display = /^\d{10}$/.test(input.value) ? 'none' : 'block';
+  input.value = input.value.replace(/\D/g, ''); // Remove non-digits
+  let isValid = /^\d{10}$/.test(input.value);
+  document.getElementById('phoneError').style.display = isValid ? 'none' : 'block';
 }
