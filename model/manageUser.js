@@ -293,61 +293,78 @@ $(function () {
       .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...')
       .prop('disabled', true);
 
-    // Collect form data
     var formData = new FormData();
     var userId = $('#userIdInput').val();
     var fullName = $('#fullNameInput').val();
     var role = $('#roleSelect').val();
     var phone = $('#phoneInput').val();
+    var email = $('#emailInput').val();
+    var dob = $('#dobDateInput').val();
     var joiningDate = formatDate($('#joiningDateInput').val());
+    var status = $('#statusSelect').val();
+    var gender = $('#genderSelect').val();
+    var salary = $('#salaryInput').val();
+    var aadhar = $('#aadharInput').val();
+    var subject = $('#subjectInput').val();
+    var userAddress = $('#userAddress').val();
+    var bankName = $('#bankNameInput').val();
+    var branchName = $('#branchNameInput').val();
+    var accountNumber = $('#accountNumberInput').val();
+    var ifscCode = $('#ifscCodeInput').val();
+    var accountType = $('#accountType').val();
     var avatarFile = $('#avatarUpload')[0].files[0];
 
+    // Append form fields
     formData.append('user_id', userId);
-    formData.append('full_name', $('#fullNameInput').val());
-    formData.append('qualification', $('#qualificationInput').val());
-    formData.append('role', $('#roleSelect').val());
-    formData.append('email', $('#emailInput').val());
-    formData.append('phone', $('#phoneInput').val());
-    formData.append('dob', $('#dobDateInput').val());
-    formData.append('joining_date', $('#joiningDateInput').val());
-    formData.append('status', $('#statusSelect').val());
-    formData.append('gender', $('#genderSelect').val());
-    formData.append('salary', $('#salaryInput').val());
-    formData.append('aadhar', $('#aadharInput').val());
-    formData.append('subject', $('#subjectInput').val());
-    formData.append('user_address', $('#userAddress').val());
-    formData.append('bank_name', $('#bankNameInput').val());
-    formData.append('branch_name', $('#branchNameInput').val());
-    formData.append('account_number', $('#accountNumberInput').val());
-    formData.append('ifsc_code', $('#ifscCodeInput').val());
-    formData.append('account_type', $('#accountType').val());
+    formData.append('full_name', fullName);
+    formData.append('role', role);
+    formData.append('phone', phone);
+    formData.append('email', email);
+    formData.append('dob', dob);
+    formData.append('joining_date', joiningDate);
+    formData.append('status', status);
+    formData.append('gender', gender);
+    formData.append('salary', salary);
+    formData.append('aadhar', aadhar);
+    formData.append('subject', subject);
+    formData.append('user_address', userAddress);
+    formData.append('bank_name', bankName);
+    formData.append('branch_name', branchName);
+    formData.append('account_number', accountNumber);
+    formData.append('ifsc_code', ifscCode);
+    formData.append('account_type', accountType);
 
     if (avatarFile) {
       formData.append('avatar', avatarFile);
     }
-    // console.log([...formData.entries()]); // Check what's inside the formData
-    // AJAX request to save data
+
     $.ajax({
       url: '/php/userRole/update_user_details.php',
       type: 'POST',
       data: formData,
       dataType: 'json',
-      processData: false, // Required for file upload
-      contentType: false, // Required for file upload
+      processData: false,
+      contentType: false,
       success: function (response) {
         if (response.success) {
-          alert('User details updated successfully!');
+          Swal.fire({
+            icon: 'success',
+            title: 'User details updated successfully!',
+            toast: true,
+            timer: 2000
+          });
 
-          // Update the user avatar preview in the modal
+          // ✅ Update the user avatar preview in the modal
           if (response.avatar_path) {
             $('#userAvatar').attr('src', response.avatar_path);
           }
 
-          // Close the modal
+          // ✅ Close the modal
           $('#editUserModal').modal('hide');
 
-          // ✅ Update the DataTable row instead of just modifying the DOM
           var table = $('#userTable').DataTable();
+
+          // ✅ Find the row index using user_id
           var rowIndex = table
             .rows()
             .eq(0)
@@ -358,21 +375,33 @@ $(function () {
             return;
           }
 
-          // Get current row data from DataTables
           var rowData = table.row(rowIndex[0]).data();
 
-          // Update only the relevant columns
-          rowData[2] = `<h6 class="mb-0">${fullName}</h6>`;
-          rowData[3] = role;
-          rowData[4] = phone;
-          rowData[5] = joiningDate;
-
-          // Update avatar if changed
+          // ✅ Preserve the avatar if it exists, update details
+          var currentAvatar = rowData[2].includes('img') ? rowData[2] : `<h6 class="mb-0">${fullName}</h6>`;
           if (response.avatar_path) {
-            rowData[2] = `<img src="${response.avatar_path}" class="avatar-img"> <h6 class="mb-0">${fullName}</h6>`;
+            currentAvatar = `<img src="${response.avatar_path}" class="avatar-img"> <h6 class="mb-0">${fullName}</h6>`;
           }
 
-          // ✅ Update DataTables with new data
+          rowData[2] = currentAvatar; // Avatar & Name
+          rowData[3] = role;
+          rowData[4] = phone;
+          rowData[5] = email;
+          rowData[6] = dob;
+          rowData[7] = joiningDate;
+          rowData[8] = status;
+          rowData[9] = gender;
+          rowData[10] = salary;
+          rowData[11] = aadhar;
+          rowData[12] = subject;
+          rowData[13] = userAddress;
+          rowData[14] = bankName;
+          rowData[15] = branchName;
+          rowData[16] = accountNumber;
+          rowData[17] = ifscCode;
+          rowData[18] = accountType;
+
+          // ✅ Update DataTable with new data
           table.row(rowIndex[0]).data(rowData).draw(false);
 
           // ✅ Highlight row after edit
@@ -385,17 +414,28 @@ $(function () {
             setTimeout(() => $(rowNode).removeClass('highlight-success fade-out'), 1000);
           }, 3000);
         } else {
-          alert('Failed to update user: ' + (response.error || 'Unknown error'));
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to update user!',
+            text: response.error || 'Unknown error',
+            confirmButtonText: 'OK'
+          });
         }
       },
       error: function () {
-        alert('Error updating user. Please try again.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong. Please try again.',
+          confirmButtonText: 'OK'
+        });
       },
       complete: function () {
         $this.html('Save Changes').prop('disabled', false); // Reset button
       }
     });
   });
+
 
   // Handling Status Change (Activate, Suspend)
   $(document).on('click', '.userActivate', function () {
