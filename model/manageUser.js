@@ -439,9 +439,9 @@ $(function () {
 
               setTimeout(function () {
                 updatedRow.removeClass('highlight-success');
-              }, 1000);
+              }, 3000);
             }
-          }, 3000);
+          }, 200);
         } else {
             console.warn('Row for user ID ' + userId + ' not found!');
           }
