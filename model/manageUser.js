@@ -418,8 +418,7 @@ $(function () {
           // Update row in DataTable
           table.row(rowIndex[0]).data(rowData).draw(false);
 
-          // **Ensure the updated row is visible by going to its page**
-          table.page(table.row(rowIndex[0]).index() / table.page.len()).draw(false);
+
 
           /*****************************
 
@@ -430,16 +429,19 @@ $(function () {
             */
           // Apply smooth highlight effect
 
-          let userRow = $('#userTable tbody tr').eq(rowIndex[0]);
-
-          userRow.addClass('highlight-success');
-
           setTimeout(function () {
-            userRow.addClass('fade-out');
-            setTimeout(function () {
-              userRow.removeClass('highlight-success fade-out');
-            }, 1000);
-          }, 3000);
+            let updatedRow = $('#userTable tbody tr').filter(function () {
+              return $(this).find('td:nth-child(2)').text().trim() == userId;
+            });
+
+            if (updatedRow.length > 0) {
+              updatedRow.addClass('highlight-success');
+
+              setTimeout(function () {
+                updatedRow.removeClass('highlight-success');
+              }, 1000);
+            }
+          }, 300);
         } else {
             console.warn('Row for user ID ' + userId + ' not found!');
           }
