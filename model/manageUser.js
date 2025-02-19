@@ -552,6 +552,7 @@ $(function () {
           });
 
           let table = $('#userTable').DataTable();
+          table.ajax.reload(null, false); // Reload without resetting pagination
 
           // Find row index in DataTable
           let rowIndex = table
@@ -807,5 +808,7 @@ $(function () {
   $('#searchBox').on('keyup', function () {
     table.search(this.value).draw();
   });
+
+
 });
 
