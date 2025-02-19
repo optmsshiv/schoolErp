@@ -570,7 +570,21 @@ $(function () {
           let rowData = table.row(rowIndex[0]).data();
 
           // ✅ Preserve the avatar & name (Assuming it's stored in column index 2)
-          let currentAvatar = rowData[2];
+          // let currentAvatar = rowData[2];
+
+          // ✅ Fetch latest data from table cells (instead of old rowData)
+         // let rowNode = table.row(rowIndex[0]).node();
+          let updatedFullName = $(rowNode).find('td:nth-child(3) h6').text();
+          let updatedRole = $(rowNode).find('td:nth-child(4)').text();
+          let updatedPhone = $(rowNode).find('td:nth-child(5)').text();
+          let updatedJoiningDate = $(rowNode).find('td:nth-child(6)').text();
+          let currentAvatar = $(rowNode).find('td:nth-child(3) img').attr('src');
+
+          // ✅ Preserve updated data
+          rowData[2] = `<img src="${currentAvatar}" alt="Avatar" class="avatar"><h6>${updatedFullName}</h6>`;
+          rowData[3] = updatedRole;
+          rowData[4] = updatedPhone;
+          rowData[5] = updatedJoiningDate;
 
           // Update status badge
           let statusBadge = `<span class="status-badge badge ${

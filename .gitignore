@@ -9,7 +9,7 @@ path.html
 path2.html
 
 # Extra html page
-custome_code.html
+
 
 # Thumbnails
 ._*
@@ -65,6 +65,7 @@ gulpfile.tmp.*
 # HTML files
 !/html/*
 /html-demo
+/custome_code.html
 /html-starter-demo
 /html/vertical-menu-template/*
 /html/horizontal-menu-template/*
