@@ -427,16 +427,16 @@ $(function () {
             */
           // Apply smooth highlight effect
 
+          let userRow = $('#userTable tbody tr').eq(rowIndex[0]);
+
+          userRow.addClass('highlight-success');
+
           setTimeout(function () {
-            let updatedRow = $('#userTable tbody tr').eq(rowIndex[0]);
-
-            // Apply highlight effect
-            updatedRow.addClass('highlight-success');
-
+            userRow.addClass('fade-out');
             setTimeout(function () {
-              updatedRow.removeClass('highlight-success');
-            }, 2000); // Remove highlight after 2 seconds
-          }, 200);
+              userRow.removeClass('highlight-success fade-out');
+            }, 1000);
+          }, 3000);
         } else {
             console.warn('Row for user ID ' + userId + ' not found!');
           }
