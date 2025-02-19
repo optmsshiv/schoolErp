@@ -430,9 +430,7 @@ $(function () {
           // Apply smooth highlight effect
 
           let userRow = $('#userTable tbody tr').eq(rowIndex[0]);
-
           userRow.addClass('highlight-success');
-
           setTimeout(function () {
             userRow.addClass('fade-out');
             setTimeout(function () {
