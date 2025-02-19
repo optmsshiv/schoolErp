@@ -386,20 +386,9 @@ $(function () {
           rowData[2] = currentAvatar; // Avatar & Name
           rowData[3] = role;
           rowData[4] = phone;
-          rowData[6] = dob;
-          rowData[7] = joiningDate;
-          rowData[8] = status;
-          rowData[9] = gender;
-          rowData[10] = salary;
-          rowData[11] = aadhar;
-          rowData[12] = subject;
-          rowData[13] = userAddress;
-          rowData[14] = bankName;
-          rowData[15] = branchName;
-          rowData[16] = accountNumber;
-          rowData[17] = ifscCode;
-          rowData[18] = accountType;
-
+          rowData[5] = joiningDate;
+          rowData[6] = status;
+          
           // ✅ Update DataTable with new data
           table.row(rowIndex[0]).data(rowData).draw(false);
 
