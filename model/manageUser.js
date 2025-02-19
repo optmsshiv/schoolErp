@@ -361,22 +361,16 @@ $(function () {
           // Get current row data from DataTables
           var rowData = table.row(rowIndex[0]).data();
 
-          // ✅ Preserve avatar image if updated
-          if (response.avatar_path) {
-            rowData[2] = `<img src="${response.avatar_path}" class="avatar-img" alt="Avatar"> <h6>${fullName}</h6>`;
-          } else {
-            rowData[2] = rowData[2]; // Keep existing avatar if not changed
-          }
-
+          // Update only the relevant columns
+          rowData[2] = `<h6 class="mb-0">${fullName}</h6>`;
           rowData[3] = role;
           rowData[4] = phone;
           rowData[5] = joiningDate;
 
           // Update avatar if changed
-          /*
           if (response.avatar_path) {
             rowData[2] = `<img src="${response.avatar_path}" class="avatar-img"> <h6 class="mb-0">${fullName}</h6>`;
-          } */
+          }
 
           // ✅ Update DataTables with new data
           table.row(rowIndex[0]).data(rowData).draw(false);
