@@ -300,7 +300,6 @@ $(function () {
     var role = $('#roleSelect').val();
     var phone = $('#phoneInput').val();
     var joiningDate = formatDate($('#joiningDateInput').val());
-    var status = $('#statusSelect').val();
     var avatarFile = $('#avatarUpload')[0].files[0];
 
     formData.append('user_id', userId);
@@ -360,23 +359,18 @@ $(function () {
           }
 
           // Get current row data from DataTables
-          // ✅ Preserve avatar (only update if new one is uploaded)
-          var avatarHtml = response.avatar_path
-            ? `<img src="${response.avatar_path}" class="avatar-img" alt="Avatar"> <h6>${fullName}</h6>`
-            : rowData[2];
+          var rowData = table.row(rowIndex[0]).data();
 
-          // ✅ Update other row data
-          rowData[2] = avatarHtml; // Avatar + Name
+          // ✅ Preserve avatar image if updated
+          if (response.avatar_path) {
+            rowData[2] = `<img src="${response.avatar_path}" class="avatar-img" alt="Avatar"> <h6>${fullName}</h6>`;
+          } else {
+            rowData[2] = rowData[2]; // Keep existing avatar if not changed
+          }
+
           rowData[3] = role;
           rowData[4] = phone;
           rowData[5] = joiningDate;
-          rowData[6] = `<span class="status-badge badge ${
-            status === 'Active'
-              ? 'bg-label-success'
-              : status === 'Suspended'
-              ? 'bg-label-secondary'
-              : 'bg-label-warning'
-          }">${status}</span>`;
 
           // Update avatar if changed
           /*
