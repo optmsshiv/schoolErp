@@ -394,18 +394,22 @@ $(function () {
         if (rowIndex.length > 0) {
           let rowData = table.row(rowIndex[0]).data();
 
+          // Extract the current avatar image URL from the existing row data
+          let existingAvatar = $(rowData[2]).find('img').attr('src') || '../assets/img/avatars/default-avatar.png';
+
+          // Use the new avatar if uploaded, otherwise keep the existing one
+          let avatar = response.avatar_path ? response.avatar_path : existingAvatar;
+
           // Update relevant fields in row data
           rowData[2] = `
                 <div class="d-flex align-items-center">
-                    <div class="avatar avatar-sm">
-                        <img src="${
-                          response.avatar_path ? response.avatar_path : rowData[2]
-                        }" alt="avatar" class="rounded-circle" />
-                    </div>
-                    <div class="ms-2">
-                        <h6 class="mb-0 ms-2">${fullName}</h6>
-                    </div>
-                </div>
+        <div class="avatar avatar-sm">
+            <img src="${avatar}" alt="avatar" class="rounded-circle" />
+        </div>
+        <div class="ms-2">
+            <h6 class="mb-0 ms-2">${fullName}</h6>
+        </div>
+             </div>
             `;
           rowData[3] = role;
           rowData[4] = phone;
