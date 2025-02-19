@@ -124,11 +124,24 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Function to format date
+  /***
   function formatDate(dateString) {
     if (!dateString) return 'N/A';
     let date = new Date(dateString);
     return date.toLocaleDateString('en-GB'); // DD/MM/YYYY format
-  }
+  }*/
+
+    function formatDate(dateString) {
+      if (!dateString) return 'N/A';
+      let date = new Date(dateString);
+
+      // Get day, month, and year
+      let day = String(date.getDate()).padStart(2, '0'); // Add leading zero if needed
+      let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+      let year = date.getFullYear();
+
+      return `${day}-${month}-${year}`; // Return in DD-MM-YYYY format
+    }
 
   function addNewUserToTable(user) {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
