@@ -336,7 +336,6 @@ $(function () {
       processData: false, // Required for file upload
       contentType: false, // Required for file upload
       success: function (response) {
-        //  console.log('Server Response:', response); // Debugging
         if (response.success) {
           alert('User details updated successfully!');
 
@@ -348,33 +347,44 @@ $(function () {
           // Close the modal
           $('#editUserModal').modal('hide');
 
-          // Find the row corresponding to the user
-          var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
+          // ✅ Update the DataTable row instead of just modifying the DOM
+          let table = $('#userTable').DataTable();
+          let rowIndex = table
+            .rows()
+            .eq(0)
+            .filter(rowIdx => table.cell(rowIdx, 1).data() == userId);
 
-          if (userRow.length > 0) {
-            // Update the table row data dynamically
-            userRow.find('td:nth-child(3) h6').text(fullName);
-            userRow.find('td:nth-child(4)').text(role);
-            userRow.find('td:nth-child(5)').text(phone);
-            userRow.find('td:nth-child(6)').text(joiningDate);
-
-            // Update the avatar if a new one was uploaded
-            if (response.avatar_path) {
-              userRow.find('td:nth-child(3) img').attr('src', response.avatar_path);
-            }
-            // Apply green highlight
-            userRow.addClass('highlight-success');
-
-            // Remove highlight after 3 seconds
-            setTimeout(function () {
-              userRow.addClass('fade-out');
-              setTimeout(function () {
-                userRow.removeClass('highlight-success fade-out'); // Remove both classes
-              }, 1000); // Wait for fade-out animation before fully removing highlight
-            }, 3000);
-          } else {
+          if (rowIndex.length === 0) {
             console.warn('Row for user ID ' + userId + ' not found!');
+            return;
           }
+
+          // Get current row data from DataTables
+          let rowData = table.row(rowIndex[0]).data();
+
+          // Update only the relevant columns
+          rowData[2] = `<h6 class="mb-0">${fullName}</h6>`;
+          rowData[3] = role;
+          rowData[4] = phone;
+          rowData[5] = joiningDate;
+
+          // Update avatar if changed
+          if (response.avatar_path) {
+            rowData[2] = `<img src="${response.avatar_path}" class="avatar-img"> <h6 class="mb-0">${fullName}</h6>`;
+          }
+
+          // ✅ Update DataTables with new data
+          table.row(rowIndex[0]).data(rowData).draw(false);
+
+          // ✅ Highlight row after edit
+          let rowNode = table.row(rowIndex[0]).node();
+          $(rowNode).addClass('highlight-success');
+
+          // ✅ Remove highlight after 3 seconds
+          setTimeout(() => {
+            $(rowNode).addClass('fade-out');
+            setTimeout(() => $(rowNode).removeClass('highlight-success fade-out'), 1000);
+          }, 3000);
         } else {
           alert('Failed to update user: ' + (response.error || 'Unknown error'));
         }

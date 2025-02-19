@@ -1,3 +1,46 @@
 
+success: function (response) {
+// console.log('Server Response:', response); // Debugging
+if (response.success) {
+alert('User details updated successfully!');
 
+// Update the user avatar preview in the modal
+if (response.avatar_path) {
+$('#userAvatar').attr('src', response.avatar_path);
+}
+
+// Close the modal
+$('#editUserModal').modal('hide');
+
+// Find the row corresponding to the user
+var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
+
+if (userRow.length > 0) {
+// Update the table row data dynamically
+userRow.find('td:nth-child(3) h6').text(fullName);
+userRow.find('td:nth-child(4)').text(role);
+userRow.find('td:nth-child(5)').text(phone);
+userRow.find('td:nth-child(6)').text(joiningDate);
+
+// Update the avatar if a new one was uploaded
+if (response.avatar_path) {
+userRow.find('td:nth-child(3) img').attr('src', response.avatar_path);
+}
+// Apply green highlight
+userRow.addClass('highlight-success');
+
+// Remove highlight after 3 seconds
+setTimeout(function () {
+userRow.addClass('fade-out');
+setTimeout(function () {
+userRow.removeClass('highlight-success fade-out'); // Remove both classes
+}, 1000); // Wait for fade-out animation before fully removing highlight
+}, 3000);
+} else {
+console.warn('Row for user ID ' + userId + ' not found!');
+}
+} else {
+alert('Failed to update user: ' + (response.error || 'Unknown error'));
+}
+}
 
