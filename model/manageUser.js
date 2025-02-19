@@ -325,6 +325,11 @@ $(function () {
     if (avatarFile) {
       formData.append('avatar', avatarFile);
     }
+
+    // Show progress bar
+    $('#uploadProgressContainer').show();
+    $('#uploadProgressBar').css('width', '0%').text('0%');
+    
     // console.log([...formData.entries()]); // Check what's inside the formData
     // AJAX request to save data
     $.ajax({
