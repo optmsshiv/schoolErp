@@ -295,16 +295,15 @@ $(function () {
 
     // Collect form data
     var formData = new FormData();
-    var userId = $('#userIdInput').val();
-    var fullName = $('#fullNameInput').val();
+    var userId = $('#userIdInput').val().trim();
+    var fullName = $('#fullNameInput').val().trim();
     var role = $('#roleSelect').val();
-    var phone = $('#phoneInput').val();
+    var phone = $('#phoneInput').val().trim();
     var joiningDate = formatDate($('#joiningDateInput').val());
-    var avatarFile = $('#avatarUpload')[0].files[0];
 
     formData.append('user_id', userId);
     formData.append('full_name', $('#fullNameInput').val());
-    formData.append('qualification', $('#qualificationInput').val());
+    formData.append('qualification', $('#qualificationInput').val().trim());
     formData.append('role', $('#roleSelect').val());
     formData.append('email', $('#emailInput').val());
     formData.append('phone', $('#phoneInput').val());
@@ -312,20 +311,28 @@ $(function () {
     formData.append('joining_date', $('#joiningDateInput').val());
     formData.append('status', $('#statusSelect').val());
     formData.append('gender', $('#genderSelect').val());
-    formData.append('salary', $('#salaryInput').val());
-    formData.append('aadhar', $('#aadharInput').val());
-    formData.append('subject', $('#subjectInput').val());
-    formData.append('user_address', $('#userAddress').val());
-    formData.append('bank_name', $('#bankNameInput').val());
-    formData.append('branch_name', $('#branchNameInput').val());
-    formData.append('account_number', $('#accountNumberInput').val());
-    formData.append('ifsc_code', $('#ifscCodeInput').val());
+    formData.append('salary', $('#salaryInput').val().trim());
+    formData.append('aadhar', $('#aadharInput').val().trim());
+    formData.append('subject', $('#subjectInput').val().trim());
+    formData.append('user_address', $('#userAddress').val().trim());
+    formData.append('bank_name', $('#bankNameInput').val().trim());
+    formData.append('branch_name', $('#branchNameInput').val().trim());
+    formData.append('account_number', $('#accountNumberInput').val().trim());
+    formData.append('ifsc_code', $('#ifscCodeInput').val().trim());
     formData.append('account_type', $('#accountType').val());
 
+    // Handle avatar upload
+    var avatarFile = $('#avatarUpload')[0].files[0];
     if (avatarFile) {
       formData.append('avatar', avatarFile);
     }
+
+    // Show progress bar
+    $('#uploadProgressContainer').show();
+    $('#uploadProgressBar').css('width', '0%').text('0%');
+
     // console.log([...formData.entries()]); // Check what's inside the formData
+
     // AJAX request to save data
     $.ajax({
       url: '/php/userRole/update_user_details.php',
@@ -334,6 +341,24 @@ $(function () {
       dataType: 'json',
       processData: false, // Required for file upload
       contentType: false, // Required for file upload
+
+      xhr: function () {
+        var xhr = new window.XMLHttpRequest();
+        xhr.upload.addEventListener(
+          'progress',
+          function (e) {
+            if (e.lengthComputable) {
+              var percentComplete = Math.round((e.loaded / e.total) * 100);
+              $('#uploadProgressBar')
+                .css('width', percentComplete + '%')
+                .text(percentComplete + '%');
+            }
+          },
+          false
+        );
+        return xhr;
+      },
+
       success: function (response) {
         if (response.success) {
           alert('User details updated successfully!');
@@ -346,53 +371,43 @@ $(function () {
           // Close the modal
           $('#editUserModal').modal('hide');
 
-          // ✅ Update the DataTable row instead of just modifying the DOM
-          let table = $('#userTable').DataTable();
-          let rowIndex = table
-            .rows()
-            .eq(0)
-            .filter(rowIdx => table.cell(rowIdx, 1).data() == userId);
+          // Find the row corresponding to the user
+          var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
 
-          if (rowIndex.length === 0) {
+          if (userRow.length > 0) {
+            userRow.find('td:nth-child(3) h6').text(fullName);
+            userRow.find('td:nth-child(4)').text(role);
+            userRow.find('td:nth-child(5)').text(phone);
+            userRow.find('td:nth-child(6)').text(joiningDate);
+
+            // Update avatar if changed
+            if (response.avatar_path) {
+              userRow.find('td:nth-child(3) img').attr('src', response.avatar_path);
+            }
+
+            // Apply smooth highlight effect
+            userRow.addClass('highlight-success');
+
+            setTimeout(function () {
+              userRow.addClass('fade-out');
+              setTimeout(function () {
+                userRow.removeClass('highlight-success fade-out');
+              }, 1000);
+            }, 3000);
+          } else {
             console.warn('Row for user ID ' + userId + ' not found!');
-            return;
           }
-
-          // Get current row data from DataTables
-          let rowData = table.row(rowIndex[0]).data();
-
-          // Update only the relevant columns
-          rowData[2] = `<h6 class="mb-0">${fullName}</h6>`;
-          rowData[3] = role;
-          rowData[4] = phone;
-          rowData[5] = joiningDate;
-
-          // Update avatar if changed
-          if (response.avatar_path) {
-            rowData[2] = `<img src="${response.avatar_path}" class="avatar-img"> <h6 class="mb-0">${fullName}</h6>`;
-          }
-
-          // ✅ Update DataTables with new data
-          table.row(rowIndex[0]).data(rowData).draw(false);
-
-          // ✅ Highlight row after edit
-          let rowNode = table.row(rowIndex[0]).node();
-          $(rowNode).addClass('highlight-success');
-
-          // ✅ Remove highlight after 3 seconds
-          setTimeout(() => {
-            $(rowNode).addClass('fade-out');
-            setTimeout(() => $(rowNode).removeClass('highlight-success fade-out'), 1000);
-          }, 3000);
         } else {
           alert('Failed to update user: ' + (response.error || 'Unknown error'));
         }
       },
-      error: function () {
+      error: function (xhr, status, error) {
+        console.error('AJAX Error:', status, error);
         alert('Error updating user. Please try again.');
       },
       complete: function () {
-        $this.html('Save Changes').prop('disabled', false); // Reset button
+        $this.prop('disabled', false).text('Save Changes');
+        $('#uploadProgressContainer').hide(); // Hide progress bar after upload
       }
     });
   });
