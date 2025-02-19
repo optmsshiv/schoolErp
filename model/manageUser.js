@@ -441,7 +441,7 @@ $(function () {
                 updatedRow.removeClass('highlight-success');
               }, 1000);
             }
-          }, 300);
+          }, 3000);
         } else {
             console.warn('Row for user ID ' + userId + ' not found!');
           }
