@@ -386,7 +386,6 @@ $(function () {
           rowData[2] = currentAvatar; // Avatar & Name
           rowData[3] = role;
           rowData[4] = phone;
-          rowData[5] = email;
           rowData[6] = dob;
           rowData[7] = joiningDate;
           rowData[8] = status;
