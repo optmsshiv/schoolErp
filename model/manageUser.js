@@ -426,8 +426,7 @@ $(function () {
             }
             */
           // Apply smooth highlight effect
-          // Wait a moment to ensure row is drawn, then apply highlight effect
-            setTimeout(function () {
+          
           let userRow = $('#userTable tbody tr').eq(rowIndex[0]);
 
           userRow.addClass('highlight-success');
@@ -438,7 +437,6 @@ $(function () {
               userRow.removeClass('highlight-success fade-out');
             }, 1000);
           }, 3000);
-        }, 100);
         } else {
             console.warn('Row for user ID ' + userId + ' not found!');
           }
