@@ -382,7 +382,8 @@ $(function () {
             userRow.find('td:nth-child(6)').text(joiningDate);
             */
 
-          / Get the DataTable instance
+         // Get the DataTable instance
+         
         let table = $('#userTable').DataTable();
 
         // Find the row index based on user ID
