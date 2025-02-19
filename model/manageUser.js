@@ -372,6 +372,7 @@ $(function () {
           $('#editUserModal').modal('hide');
 
           // Find the row corresponding to the user
+          /*
           var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
 
           if (userRow.length > 0) {
@@ -379,6 +380,41 @@ $(function () {
             userRow.find('td:nth-child(4)').text(role);
             userRow.find('td:nth-child(5)').text(phone);
             userRow.find('td:nth-child(6)').text(joiningDate);
+            */
+
+          // Get the DataTable instance
+        let table = $('#userTable').DataTable();
+
+        // Find the row index based on user ID
+        let rowIndex = table
+            .rows()
+            .indexes()
+            .filter((index) => table.row(index).data()[1] == userId);
+
+        if (rowIndex.length > 0) {
+            let rowData = table.row(rowIndex[0]).data();
+
+            // Update relevant fields in row data
+            rowData[2] = `
+                <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm">
+                        <img src="${response.avatar_path ? response.avatar_path : rowData[2]}" alt="avatar" class="rounded-circle" />
+                    </div>
+                    <div class="ms-2">
+                        <h6 class="mb-0 ms-2">${fullName}</h6>
+                    </div>
+                </div>
+            `;
+            rowData[3] = role;
+            rowData[4] = phone;
+            rowData[5] = joiningDate;
+
+            // Update row in DataTable
+            table.row(rowIndex[0]).data(rowData).draw(false);
+
+
+
+
 
             // Update avatar if changed
             if (response.avatar_path) {

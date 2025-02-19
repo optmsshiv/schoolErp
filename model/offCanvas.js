@@ -195,6 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
       ])
       .draw(false);
   }
+  
 });
 
 // Function to validate mobile number
