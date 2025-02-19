@@ -296,11 +296,11 @@ $(function () {
     // Collect form data
     var formData = new FormData();
     var userId = $('#userIdInput').val();
-
     var fullName = $('#fullNameInput').val();
     var role = $('#roleSelect').val();
     var phone = $('#phoneInput').val();
     var joiningDate = formatDate($('#joiningDateInput').val());
+    var avatarFile = $('#avatarUpload')[0].files[0];
 
     formData.append('user_id', userId);
     formData.append('full_name', $('#fullNameInput').val());
@@ -322,7 +322,6 @@ $(function () {
     formData.append('ifsc_code', $('#ifscCodeInput').val());
     formData.append('account_type', $('#accountType').val());
 
-    var avatarFile = $('#avatarUpload')[0].files[0];
     if (avatarFile) {
       formData.append('avatar', avatarFile);
     }
@@ -348,8 +347,8 @@ $(function () {
           $('#editUserModal').modal('hide');
 
           // ✅ Update the DataTable row instead of just modifying the DOM
-          let table = $('#userTable').DataTable();
-          let rowIndex = table
+          var table = $('#userTable').DataTable();
+          var rowIndex = table
             .rows()
             .eq(0)
             .filter(rowIdx => table.cell(rowIdx, 1).data() == userId);
@@ -360,18 +359,24 @@ $(function () {
           }
 
           // Get current row data from DataTables
-          let rowData = table.row(rowIndex[0]).data();
+          var rowData = table.row(rowIndex[0]).data();
 
-          // Update only the relevant columns
-          rowData[2] = `<h6 class="mb-0">${fullName}</h6>`;
+          // ✅ Preserve avatar image if updated
+          if (response.avatar_path) {
+            rowData[2] = `<img src="${response.avatar_path}" class="avatar-img" alt="Avatar"> <h6>${fullName}</h6>`;
+          } else {
+            rowData[2] = rowData[2]; // Keep existing avatar if not changed
+          }
+
           rowData[3] = role;
           rowData[4] = phone;
           rowData[5] = joiningDate;
 
           // Update avatar if changed
+          /*
           if (response.avatar_path) {
             rowData[2] = `<img src="${response.avatar_path}" class="avatar-img"> <h6 class="mb-0">${fullName}</h6>`;
-          }
+          } */
 
           // ✅ Update DataTables with new data
           table.row(rowIndex[0]).data(rowData).draw(false);
@@ -592,10 +597,9 @@ $(function () {
                            data-id="${userId}" title="View User"></a>
                         <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete"
                            data-id="${userId}" title="Delete User"></a>
-
-                            <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
-                               data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-                            <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
+                        <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                          <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
                 `;
 
           // Update row in DataTable
