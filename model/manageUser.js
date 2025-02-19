@@ -541,8 +541,6 @@ $(function () {
       success: function (response) {
         hideLoadingSpinner();
 
-        // console.log('Server Response:', response);
-
         if (response && response.success) {
           Swal.fire({
             icon: 'success',
@@ -552,7 +550,6 @@ $(function () {
           });
 
           let table = $('#userTable').DataTable();
-          table.ajax.reload(null, false); // Reload without resetting pagination
 
           // Find row index in DataTable
           let rowIndex = table
@@ -567,13 +564,13 @@ $(function () {
             return;
           }
 
-          // Get current row data
+          // Fetch the latest row data to prevent stale data issues
           let rowData = table.row(rowIndex[0]).data();
 
-          // ✅ Preserve the avatar & name (Assuming it's stored in column index 2)
+          // Preserve the avatar & name (Assuming it's stored in column index 2)
           let currentAvatar = rowData[2];
 
-          // Update status badge
+          // ✅ Update status badge dynamically
           let statusBadge = `<span class="status-badge badge ${
             newStatus === 'Active'
               ? 'bg-label-success'
@@ -583,11 +580,9 @@ $(function () {
           }">${newStatus}</span>`;
 
           rowData[6] = statusBadge; // Assuming status column is at index 6
+          rowData[2] = currentAvatar; // Keep avatar & name
 
-          // ✅ Keep the existing avatar & name
-          rowData[2] = currentAvatar;
-
-          // Update dropdown menu
+          // ✅ Update dropdown menu options based on status
           let dropdownMenu = '';
           if (newStatus === 'Pending') {
             dropdownMenu = `
@@ -602,35 +597,29 @@ $(function () {
             dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
           }
 
+          // ✅ Update row data including action buttons
           rowData[7] = `
-                        <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView"
-                           data-id="${userId}" title="View User"></a>
-                        <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete"
-                           data-id="${userId}" title="Delete User"></a>
-                        <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
-                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-                          <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
+                    <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView"
+                       data-id="${userId}" title="View User"></a>
+                    <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete"
+                       data-id="${userId}" title="Delete User"></a>
+                    <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
+                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                      <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
                 `;
 
-          // Update row in DataTable
+          // ✅ Update the row in DataTable properly
           table.row(rowIndex[0]).data(rowData).draw(false);
 
-          // Reinitialize Bootstrap dropdown (🔥 FIXES action menu issue)
+          // ✅ Fix Bootstrap dropdown issue
           setTimeout(() => {
             $('[data-bs-toggle="dropdown"]').dropdown();
           }, 100);
 
-          // Highlight row
-          /*
-            let row = $(`#userTable tbody tr[data-id="${userId}"]`);
-            row.addClass('highlight');
-            setTimeout(() => row.removeClass('highlight'), 5000);*/
-
-          // ✅ Highlight row
+          // ✅ Highlight row temporarily
           let rowNode = table.row(rowIndex[0]).node();
           $(rowNode).addClass('highlighted-row');
 
-          // ✅ Remove highlight after 5 seconds
           setTimeout(() => $(rowNode).removeClass('highlighted-row'), 5000);
         } else {
           console.error('Response format incorrect or success=false:', response);
@@ -642,7 +631,7 @@ $(function () {
           });
         }
       },
-      error: function (xhr, status, error) {
+      error: function (xhr) {
         console.error('AJAX error:', xhr.responseText);
         Swal.fire({
           icon: 'error',
@@ -653,6 +642,7 @@ $(function () {
       }
     });
   }
+
 
   // Handel 'ViewButton' click event
     $(document).on('click', '.userView', function () {
