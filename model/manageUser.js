@@ -418,6 +418,9 @@ $(function () {
           // Update row in DataTable
           table.row(rowIndex[0]).data(rowData).draw(false);
 
+          // **Ensure the updated row is visible by going to its page**
+          table.page(table.row(rowIndex[0]).index() / table.page.len()).draw(false);
+
           /*****************************
 
             // Update avatar if changed
