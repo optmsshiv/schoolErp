@@ -290,20 +290,20 @@ $(function () {
     if ($this.prop('disabled')) return; // Prevent multiple clicks
 
     $this
-      .html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...')
+      .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...')
       .prop('disabled', true);
 
     // Collect form data
     var formData = new FormData();
-    var userId = $('#userIdInput').val();
-    var fullName = $('#fullNameInput').val();
+    var userId = $('#userIdInput').val().trim();
+    var fullName = $('#fullNameInput').val().trim();
     var role = $('#roleSelect').val();
-    var phone = $('#phoneInput').val();
+    var phone = $('#phoneInput').val().trim();
     var joiningDate = formatDate($('#joiningDateInput').val());
 
     formData.append('user_id', userId);
     formData.append('full_name', $('#fullNameInput').val());
-    formData.append('qualification', $('#qualificationInput').val());
+    formData.append('qualification', $('#qualificationInput').val().trim());
     formData.append('role', $('#roleSelect').val());
     formData.append('email', $('#emailInput').val());
     formData.append('phone', $('#phoneInput').val());
@@ -311,16 +311,17 @@ $(function () {
     formData.append('joining_date', $('#joiningDateInput').val());
     formData.append('status', $('#statusSelect').val());
     formData.append('gender', $('#genderSelect').val());
-    formData.append('salary', $('#salaryInput').val());
-    formData.append('aadhar', $('#aadharInput').val());
-    formData.append('subject', $('#subjectInput').val());
-    formData.append('user_address', $('#userAddress').val());
-    formData.append('bank_name', $('#bankNameInput').val());
-    formData.append('branch_name', $('#branchNameInput').val());
-    formData.append('account_number', $('#accountNumberInput').val());
-    formData.append('ifsc_code', $('#ifscCodeInput').val());
+    formData.append('salary', $('#salaryInput').val().trim());
+    formData.append('aadhar', $('#aadharInput').val().trim());
+    formData.append('subject', $('#subjectInput').val().trim());
+    formData.append('user_address', $('#userAddress').val().trim());
+    formData.append('bank_name', $('#bankNameInput').val().trim());
+    formData.append('branch_name', $('#branchNameInput').val().trim());
+    formData.append('account_number', $('#accountNumberInput').val().trim());
+    formData.append('ifsc_code', $('#ifscCodeInput').val().trim());
     formData.append('account_type', $('#accountType').val());
 
+    // Handle avatar upload
     var avatarFile = $('#avatarUpload')[0].files[0];
     if (avatarFile) {
       formData.append('avatar', avatarFile);
@@ -331,6 +332,7 @@ $(function () {
     $('#uploadProgressBar').css('width', '0%').text('0%');
 
     // console.log([...formData.entries()]); // Check what's inside the formData
+
     // AJAX request to save data
     $.ajax({
       url: '/php/userRole/update_user_details.php',
@@ -371,30 +373,36 @@ $(function () {
 
           // Find the row corresponding to the user
           var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
-          if (userRow.length > 0) {
-            userRow.find('td:nth-child(3) h6').text($('#fullNameInput').val());
-            userRow.find('td:nth-child(4)').text($('#roleSelect').val());
-            userRow.find('td:nth-child(5)').text($('#phoneInput').val());
-            userRow.find('td:nth-child(6)').text(formatDate($('#joiningDateInput').val()));
 
+          if (userRow.length > 0) {
+            userRow.find('td:nth-child(3) h6').text(fullName);
+            userRow.find('td:nth-child(4)').text(role);
+            userRow.find('td:nth-child(5)').text(phone);
+            userRow.find('td:nth-child(6)').text(joiningDate);
+
+            // Update avatar if changed
             if (response.avatar_path) {
               userRow.find('td:nth-child(3) img').attr('src', response.avatar_path);
             }
 
-            // Highlight row
+            // Apply smooth highlight effect
             userRow.addClass('highlight-success');
+
             setTimeout(function () {
               userRow.addClass('fade-out');
               setTimeout(function () {
                 userRow.removeClass('highlight-success fade-out');
               }, 1000);
             }, 3000);
+          } else {
+            console.warn('Row for user ID ' + userId + ' not found!');
           }
         } else {
           alert('Failed to update user: ' + (response.error || 'Unknown error'));
         }
       },
-      error: function () {
+      error: function (xhr, status, error) {
+        console.error('AJAX Error:', status, error);
         alert('Error updating user. Please try again.');
       },
       complete: function () {
