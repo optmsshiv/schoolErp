@@ -255,6 +255,11 @@ document.addEventListener('DOMContentLoaded', function () {
       .draw(false); // ✅ Ensure DataTables recognizes the new row
   }
 
+    $(document).on('click', '.userView', function () {
+      var userId = $(this).data('id');
+      alert('View user profile:' + userId);
+    });
+
 
 });
 

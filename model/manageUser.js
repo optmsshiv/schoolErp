@@ -587,11 +587,6 @@ $(function () {
             $('[data-bs-toggle="dropdown"]').dropdown();
           }, 100);
 
-          // Ensure 'userView' click event works on page load and after status changes
-          $(document).on('click', '.userView', function () {
-            var userId = $(this).data('id');
-            alert('View user profile: ' + userId);
-          });
 
           // Highlight row
           /*
@@ -628,17 +623,12 @@ $(function () {
   }
 
   // Handel 'ViewButton' click event
-  /*
-  $(document).on('click', '.userView', function () {
-    var userId = $(this).data('id');
-    alert('View user profile:' + userId);
-  });
+
+
     $(document).on('click', '#userView', function () {
       var userId = $(this).data('id');
       alert('View user profile:' + userId);
     });
-*/
-
 
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
