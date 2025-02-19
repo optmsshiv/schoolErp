@@ -551,24 +551,20 @@ $(function () {
 
           let table = $('#userTable').DataTable();
 
-          // Find row index in DataTable
-          let rowIndex = table
-            .rows()
-            .eq(0)
-            .filter(function (rowIdx) {
-              return table.cell(rowIdx, 1).data() == userId;
-            });
+          // 🔥 Get the latest row from DOM instead of DataTable cache
+          let rowNode = $(`#userTable tbody tr:has(td:contains(${userId}))`);
 
-          if (rowIndex.length === 0) {
+          if (rowNode.length === 0) {
             console.error('Row not found for user ID:', userId);
             return;
           }
 
-          // Fetch the latest row data to prevent stale data issues
-          let rowData = table.row(rowIndex[0]).data();
+          // 🔥 Extract fresh row data from the DOM
+          let rowIndex = table.row(rowNode).index();
+          let rowData = table.row(rowIndex).data();
 
-          // Preserve the avatar & name (Assuming it's stored in column index 2)
-          let currentAvatar = rowData[2];
+          // ✅ Preserve the avatar & name (Assuming it's stored in column index 2)
+          let currentAvatar = rowNode.find('td:eq(2)').html();
 
           // ✅ Update status badge dynamically
           let statusBadge = `<span class="status-badge badge ${
@@ -597,7 +593,7 @@ $(function () {
             dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
           }
 
-          // ✅ Update row data including action buttons
+          // ✅ Update action buttons
           rowData[7] = `
                     <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView"
                        data-id="${userId}" title="View User"></a>
@@ -608,8 +604,8 @@ $(function () {
                       <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
                 `;
 
-          // ✅ Update the row in DataTable properly
-          table.row(rowIndex[0]).data(rowData).draw(false);
+          // ✅ Force update in DataTable & refresh DOM
+          table.row(rowIndex).data(rowData).invalidate().draw(false);
 
           // ✅ Fix Bootstrap dropdown issue
           setTimeout(() => {
@@ -617,9 +613,7 @@ $(function () {
           }, 100);
 
           // ✅ Highlight row temporarily
-          let rowNode = table.row(rowIndex[0]).node();
           $(rowNode).addClass('highlighted-row');
-
           setTimeout(() => $(rowNode).removeClass('highlighted-row'), 5000);
         } else {
           console.error('Response format incorrect or success=false:', response);
@@ -642,6 +636,7 @@ $(function () {
       }
     });
   }
+
 
 
   // Handel 'ViewButton' click event
