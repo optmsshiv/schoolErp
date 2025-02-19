@@ -371,24 +371,19 @@ $(function () {
           // Close the modal
           $('#editUserModal').modal('hide');
 
-          let table = $('#userTable').DataTable();
-          let rowIndex = table
-            .rows()
-            .eq(0)
-            .filter(rowIdx => table.cell(rowIdx, 1).data() == userId);
+          // Find the row corresponding to the user
+          var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
 
-          if (rowIndex.length > 0) {
-            let rowData = table.row(rowIndex[0]).data();
-            let newAvatar = response.avatar_path
-              ? `<img src="${response.avatar_path}" class="avatar"> <h6>${fullName}</h6>`
-              : rowData[2];
+          if (userRow.length > 0) {
+            userRow.find('td:nth-child(3) h6').text(fullName);
+            userRow.find('td:nth-child(4)').text(role);
+            userRow.find('td:nth-child(5)').text(phone);
+            userRow.find('td:nth-child(6)').text(joiningDate);
 
-            rowData[2] = newAvatar;
-            rowData[3] = role;
-            rowData[4] = phone;
-            rowData[5] = joiningDate;
-
-            table.row(rowIndex[0]).data(rowData).draw(false);
+            // Update avatar if changed
+            if (response.avatar_path) {
+              userRow.find('td:nth-child(3) img').attr('src', response.avatar_path);
+            }
 
             // Apply smooth highlight effect
             userRow.addClass('highlight-success');
@@ -574,17 +569,8 @@ $(function () {
           // Get current row data
           let rowData = table.row(rowIndex[0]).data();
 
-          // ✅ Preserve user details (Name, Avatar, Role, Phone, Joining Date)
-          let currentAvatar = $(table.row(rowIndex[0]).node()).find('td:nth-child(3) img').attr('src');
-          let updatedFullName = $(table.row(rowIndex[0]).node()).find('td:nth-child(3) h6').text();
-          let updatedRole = rowData[3];
-          let updatedPhone = rowData[4];
-          let updatedJoiningDate = rowData[5];
-
-          rowData[2] = `<img src="${currentAvatar}" class="avatar"> <h6>${updatedFullName}</h6>`;
-          rowData[3] = updatedRole;
-          rowData[4] = updatedPhone;
-          rowData[5] = updatedJoiningDate;
+          // ✅ Preserve the avatar & name (Assuming it's stored in column index 2)
+          let currentAvatar = rowData[2];
 
           // Update status badge
           let statusBadge = `<span class="status-badge badge ${
@@ -667,13 +653,11 @@ $(function () {
     });
   }
 
-
   // Handel 'ViewButton' click event
-    $(document).on('click', '.userView', function () {
-      var userId = $(this).data('id');
-      alert('View user profile:' + userId);
-    });
-
+  $(document).on('click', '.userView', function () {
+    var userId = $(this).data('id');
+    alert('View user profile:' + userId);
+  });
 
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
@@ -822,4 +806,3 @@ $(function () {
     table.search(this.value).draw();
   });
 });
-
