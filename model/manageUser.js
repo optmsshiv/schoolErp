@@ -573,7 +573,7 @@ $(function () {
           // let currentAvatar = rowData[2];
 
           // ✅ Fetch latest data from table cells (instead of old rowData)
-         // let rowNode = table.row(rowIndex[0]).node();
+          let rowNode = table.row(rowIndex[0]).node();
           let updatedFullName = $(rowNode).find('td:nth-child(3) h6').text();
           let updatedRole = $(rowNode).find('td:nth-child(4)').text();
           let updatedPhone = $(rowNode).find('td:nth-child(5)').text();
@@ -640,7 +640,7 @@ $(function () {
             setTimeout(() => row.removeClass('highlight'), 5000);*/
 
           // ✅ Highlight row
-          let rowNode = table.row(rowIndex[0]).node();
+         // let rowNode = table.row(rowIndex[0]).node();
           $(rowNode).addClass('highlighted-row');
 
           // ✅ Remove highlight after 5 seconds
