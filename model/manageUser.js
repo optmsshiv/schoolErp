@@ -377,7 +377,7 @@ $(function () {
 
           // Update avatar if changed
           if (response.avatar_path) {
-            rowData[2] = `<img src="${response.avatar_path}" class="avatar-img"> <h6 class="mb-0">${fullName}</h6>`;
+            rowData[2] = `<img src="${response.avatar_path}" class="rounded-circle"> <h6 class="mb-0">${fullName}</h6>`;
           }
 
           // ✅ Update DataTables with new data
