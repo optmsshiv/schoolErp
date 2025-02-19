@@ -365,7 +365,7 @@ $(function () {
           let currentAvatar = $(rowData[2]).find('img').attr('src') || 'default-avatar.png';
 
           // ✅ Ensure avatar remains in the row
-          rowData[2] = `<img src="${currentAvatar}" class="rounded-circle"> <h6 class="mb-0">${
+          rowData[2] = `<img src="${currentAvatar}" class="avatar-img"> <h6 class="mb-0">${
             rowData[2].split('</h6>')[1] || ''
           }</h6>`;
 
