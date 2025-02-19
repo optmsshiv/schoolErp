@@ -704,7 +704,7 @@ $(function () {
   });  */
 
   // Handle Delete function
-  $(document).on('click', '#userDelete', function () {
+  $(document).on('click', '.userDelete', function () {
     var userId = $(this).data('id'); // Get the user ID
     var row = $(this).closest('tr'); // Get the table row containing the delete button
 
