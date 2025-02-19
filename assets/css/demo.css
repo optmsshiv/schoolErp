@@ -1121,3 +1121,14 @@ td {
   /* Light yellow */
   transition: background-color 1s ease-in-out;
 }
+
+.avatar-img {
+  width: 40px;
+  /* Adjust size */
+  height: 40px;
+  /* Keep it square */
+  border-radius: 50%;
+  /* Circular shape */
+  object-fit: cover;
+  /* Prevent distortion */
+}

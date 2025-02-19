@@ -361,6 +361,14 @@ $(function () {
           // Get current row data from DataTables
           let rowData = table.row(rowIndex[0]).data();
 
+          // ✅ Preserve avatar by extracting existing image
+          let currentAvatar = $(rowData[2]).find('img').attr('src') || 'default-avatar.png';
+
+          // ✅ Ensure avatar remains in the row
+          rowData[2] = `<img src="${currentAvatar}" class="avatar-img"> <h6 class="mb-0">${
+            rowData[2].split('</h6>')[1] || ''
+          }</h6>`;
+
           // Update only the relevant columns
           rowData[2] = `<h6 class="mb-0">${fullName}</h6>`;
           rowData[3] = role;
