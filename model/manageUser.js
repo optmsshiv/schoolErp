@@ -613,6 +613,8 @@ $(function () {
 
           // Update row in DataTable
           table.row(rowIndex[0]).data(rowData).draw(false);
+          // **Ensure DataTable is refreshed properly**
+          table.draw();
 
           // Reinitialize Bootstrap dropdown (🔥 FIXES action menu issue)
           setTimeout(() => {
