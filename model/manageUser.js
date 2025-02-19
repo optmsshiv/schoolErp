@@ -290,7 +290,7 @@ $(function () {
     if ($this.prop('disabled')) return; // Prevent multiple clicks
 
     $this
-      .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...')
+      .html('<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Saving...')
       .prop('disabled', true);
 
     // Collect form data
@@ -329,7 +329,7 @@ $(function () {
     // Show progress bar
     $('#uploadProgressContainer').show();
     $('#uploadProgressBar').css('width', '0%').text('0%');
-    
+
     // console.log([...formData.entries()]); // Check what's inside the formData
     // AJAX request to save data
     $.ajax({
