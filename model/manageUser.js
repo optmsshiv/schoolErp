@@ -555,6 +555,9 @@ $(function () {
           // Get current row data
           let rowData = table.row(rowIndex[0]).data();
 
+          // ✅ Preserve the avatar & name (Assuming it's stored in column index 2)
+          let currentAvatar = rowData[2];
+
           // Update status badge
           let statusBadge = `<span class="status-badge badge ${
             newStatus === 'Active'
@@ -565,6 +568,9 @@ $(function () {
           }">${newStatus}</span>`;
 
           rowData[6] = statusBadge; // Assuming status column is at index 6
+
+          // ✅ Keep the existing avatar & name
+          rowData[2] = currentAvatar;
 
           // Update dropdown menu
           let dropdownMenu = '';
@@ -599,7 +605,6 @@ $(function () {
           setTimeout(() => {
             $('[data-bs-toggle="dropdown"]').dropdown();
           }, 100);
-
 
           // Highlight row
           /*
