@@ -122,13 +122,21 @@ document.addEventListener('DOMContentLoaded', function () {
   function updateUserInTable(user) {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
 
-    // Find the row with the matching user ID
-    let row = table.row(`[data-id="${user.user_id}"]`);
+    // Find the correct row using user_id
+    let rowIndex = table
+      .rows()
+      .eq(0)
+      .filter(function (index) {
+        return table.cell(index, 1).data() == user.user_id;
+      });
 
-    if (row.length) {
+    if (rowIndex.length) {
+      let rowNode = table.row(rowIndex[0]).node();
 
-      // Update the row data
       let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
+
+      // Update the avatar explicitly
+      $(rowNode).find('img').attr('src', avatar);
 
       let dropdownMenu = '';
       if (user.status === 'Pending') {
@@ -143,7 +151,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       // Update the row data
-      row
+      table
+        .row(rowIndex[0])
         .data([
           `<input type="checkbox" class="row-select">`,
           user.user_id,
