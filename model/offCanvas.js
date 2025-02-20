@@ -126,15 +126,14 @@ document.addEventListener('DOMContentLoaded', function () {
     let row = table.row(`[data-id="${user.user_id}"]`);
 
     if (row.length) {
-
       // Update the row data
-     // let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
+      // let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
 
-     let avatar =
-       user.user_role_avatar && user.user_role_avatar.trim() !== ''
-         ? user.user_role_avatar
-         : '../assets/img/avatars/default-avatar.png';
-
+      let avatar =
+        user.user_role_avatar && user.user_role_avatar.trim() !== ''
+          ? user.user_role_avatar
+          : '../assets/img/avatars/default-avatar.png';
+      console.log('Avatar Used:', avatar); // Debugging line
 
       let dropdownMenu = '';
       if (user.status === 'Pending') {
@@ -149,8 +148,9 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       // Update the row data
-      row
-        .data([
+      table.row(row).remove().draw(false); // Remove the row first
+      table.row
+        .add([
           `<input type="checkbox" class="row-select">`,
           user.user_id,
           `<div class="d-flex align-items-center">
