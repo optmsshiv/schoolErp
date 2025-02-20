@@ -123,12 +123,16 @@ document.addEventListener('DOMContentLoaded', function () {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
 
     // Find the row with the matching user ID
-    let row = table.row(`[data-id="${user.user_id}"]`);
+   //  let row = table.row(`[data-id="${user.user_id}"]`);
+      let rowNode = table.row(`:last`).node();
 
-    if (row.length) {
+   // if (row.length) {
 
       // Update the row data
-      let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
+     // let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
+
+     if (rowNode) {
+      $(rowNode).find("img").attr("src", user.user_role_avatar || '../assets/img/avatars/default-avatar.png');
 
       let dropdownMenu = '';
       if (user.status === 'Pending') {
