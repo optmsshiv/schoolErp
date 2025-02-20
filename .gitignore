@@ -65,6 +65,7 @@ gulpfile.tmp.*
 # HTML files
 !/html/*
 /html-demo
+/backup
 /custome_code.html
 /html-starter-demo
 /html/vertical-menu-template/*

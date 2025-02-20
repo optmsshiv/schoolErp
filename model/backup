@@ -1,0 +1,76 @@
+function handleFormSubmit(event) {
+    event.preventDefault();
+    let form = event.target;
+    let submitButton = form.querySelector("button[type='submit']");
+
+    // Disable submit button to prevent multiple clicks
+    if (submitButton) submitButton.disabled = true;
+
+    Swal.fire({
+      title: 'Processing...',
+      text: 'Please wait while we add the user...',
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      didOpen: () => Swal.showLoading()
+    });
+
+    let formData = new FormData(form);
+
+    // Close the off-canvas before sending the request
+    let offcanvasElement = document.getElementById('userAddCanvas');
+    let offcanvasInstance = bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement);
+    if (offcanvasInstance) offcanvasInstance.hide();
+
+    // Send form data to the server
+    fetch('../php/canvaData.php', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            toast: true,
+            text: `New user created successfully with User ID: ${data.user_id} and Password: ${data.password}`,
+            confirmButtonText: 'OK'
+          }).then(() => {
+            form.reset(); // Reset form
+            form.querySelectorAll('input[type="hidden"]').forEach(input => (input.value = ''));
+
+            // Add only the new user to the table
+            addNewUserToTable(data);
+
+            // Send WhatsApp Message
+            sendWhatsAppMessage(data.fullname, data.user_id, data.password, data.phone, data.role, data.status);
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            position: 'top',
+            toast: true,
+            title: 'Oops...',
+            text: data.message || 'Something went wrong. Please try again.',
+            confirmButtonText: 'OK'
+          });
+        }
+
+        // Re-enable submit button
+        if (submitButton) submitButton.disabled = false;
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          position: 'top',
+          toast: true,
+          title: 'Oops...',
+          text: 'Something went wrong. Please try again.',
+          confirmButtonText: 'OK'
+        });
+
+        console.error('Fetch error:', error);
+
+        if (submitButton) submitButton.disabled = false;
+      });
+  }

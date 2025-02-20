@@ -637,8 +637,6 @@ $(function () {
     });
   }
 
-
-
   // Handel 'ViewButton' click event
     $(document).on('click', '.userView', function () {
       var userId = $(this).data('id');
