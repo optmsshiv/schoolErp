@@ -128,7 +128,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (row.length) {
 
       // Update the row data
-      let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
+     // let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
+
+     let avatar =
+       user.user_role_avatar && user.user_role_avatar.trim() !== ''
+         ? user.user_role_avatar
+         : '../assets/img/avatars/default-avatar.png';
+
 
       let dropdownMenu = '';
       if (user.status === 'Pending') {
