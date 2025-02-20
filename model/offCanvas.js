@@ -126,10 +126,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let row = table.row(`[data-id="${user.user_id}"]`);
 
     if (row.length) {
-      // Get the existing avatar from the row (if the server doesn't return it)
-    let existingAvatar = row.nodes().to$().find('.avatar img').attr('src');
+
       // Update the row data
-      let avatar = user.user_role_avatar || existingAvatar || '../assets/img/avatars/default-avatar.png';
+      let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
 
       let dropdownMenu = '';
       if (user.status === 'Pending') {
