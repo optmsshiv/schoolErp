@@ -123,35 +123,42 @@ document.addEventListener('DOMContentLoaded', function () {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
 
     // Find the row with the matching user ID
-   //  let row = table.row(`[data-id="${user.user_id}"]`);
-      let rowNode = table.row(`:last`).node();
+   // let row = table.row(`[data-id="${user.user_id}"]`);
 
    // if (row.length) {
 
-      // Update the row data
-     // let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
+   let rowIndex = table
+     .rows()
+     .eq(0)
+     .filter(function (index) {
+       return table.row(index).data()[1] == user.user_id; // Compare with user_id column (assuming it's the second column)
+     });
 
-     if (rowNode) {
-      $(rowNode).find("img").attr("src", user.user_role_avatar || '../assets/img/avatars/default-avatar.png');
+   // Ensure rowIndex is valid before updating
+   if (rowIndex.length) {
+     let row = table.row(rowIndex[0]);
 
-      let dropdownMenu = '';
-      if (user.status === 'Pending') {
-        dropdownMenu = `<a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+     // Update the row data
+     let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
+
+     let dropdownMenu = '';
+     if (user.status === 'Pending') {
+       dropdownMenu = `<a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
          <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
-      } else if (user.status === 'Active') {
-        dropdownMenu = `<a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+     } else if (user.status === 'Active') {
+       dropdownMenu = `<a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
          <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
          <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>`;
-      } else if (user.status === 'Suspended') {
-        dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
-      }
+     } else if (user.status === 'Suspended') {
+       dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
+     }
 
-      // Update the row data
-      row
-        .data([
-          `<input type="checkbox" class="row-select">`,
-          user.user_id,
-          `<div class="d-flex align-items-center">
+     // Update the row data
+     row
+       .data([
+         `<input type="checkbox" class="row-select">`,
+         user.user_id,
+         `<div class="d-flex align-items-center">
          <div class="avatar avatar-sm">
            <img src="${avatar}" alt="avatar" class="rounded-circle" />
          </div>
@@ -159,21 +166,21 @@ document.addEventListener('DOMContentLoaded', function () {
            <h6 class="mb-0 ms-2">${user.fullname}</h6>
          </div>
        </div>`,
-          user.role,
-          user.phone,
-          formatDate(user.joining_date),
-          `<span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
-            user.status
-          }</span>`,
-          `<a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${user.user_id}" title="View User"></a>
+         user.role,
+         user.phone,
+         formatDate(user.joining_date),
+         `<span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
+           user.status
+         }</span>`,
+         `<a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${user.user_id}" title="View User"></a>
        <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${user.user_id}" title="Delete User"></a>
        <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
        <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>`
-        ])
-        .draw(false); // Redraw the table to reflect changes
-    } else {
-      console.error('Row not found for user ID:', user.user_id);
-    }
+       ])
+       .draw(false); // Redraw the table to reflect changes
+   } else {
+     console.error('Row not found for user ID:', user.user_id);
+   }
   }
 /*
   function handleFormSubmit(event) {
