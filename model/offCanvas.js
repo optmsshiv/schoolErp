@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Find the row with the matching user ID
     let row = table.row(`[data-id="${user.user_id}"]`);
 
-    if (row) {
+    if (row.length) {
       // Update the row data
       let avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
@@ -141,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
         dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
       }
 
+      // Update the row data
       row
         .data([
           `<input type="checkbox" class="row-select">`,
@@ -164,7 +165,9 @@ document.addEventListener('DOMContentLoaded', function () {
        <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
        <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>`
         ])
-        .draw(false);
+        .draw(false); // Redraw the table to reflect changes
+    } else {
+      console.error('Row not found for user ID:', user.user_id);
     }
   }
 /*
@@ -332,6 +335,11 @@ document.addEventListener('DOMContentLoaded', function () {
         `
       ])
       .draw(false);
+    // Add data-id attribute to the row for future reference
+    let rowNode = table.row(`:last`).node();
+    if (rowNode) {
+      rowNode.setAttribute('data-id', user.user_id);
+    }
   }
 
 });
