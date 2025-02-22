@@ -41,14 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $currentAvatar = $stmt->fetchColumn(); // Get current avatar path
 
-        // Initialize avatar path
-        $avatarPath = $currentAvatar; // Default to existing avatar
+        // Initialize avatar path with existing avatar
+        $avatarPath = $currentAvatar;
 
         // Handle file upload
-        if (!empty($_FILES['avatar']['name'])) {
-            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/avatars/"; // Ensure this directory exists
+        if (!empty($_FILES['avatar']['name']) && $_FILES['avatar']['error'] == 0) {
+            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/avatars/";
             if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true); // Create the directory if it doesn't exist
+                mkdir($uploadDir, 0777, true);
             }
 
             $fileExt = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
@@ -81,9 +81,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             branch_name = :branch_name,
             account_number = :account_number,
             ifsc_code = :ifsc_code,
-            account_type = :account_type,
-            user_role_avatar = :avatarPath
-        WHERE user_id = :user_id";
+            account_type = :account_type";
+
+        // Only update avatar if a new file is uploaded
+        if (!empty($_FILES['avatar']['name'])) {
+            $query .= ", user_role_avatar = :avatarPath";
+        }
+
+        $query .= " WHERE user_id = :user_id";
 
         $stmt = $pdo->prepare($query);
 
@@ -106,8 +111,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':account_number', $account_number);
         $stmt->bindParam(':ifsc_code', $ifsc_code);
         $stmt->bindParam(':account_type', $account_type);
-        $stmt->bindParam(':avatarPath', $avatarPath);
         $stmt->bindParam(':user_id', $user_id);
+
+        if (!empty($_FILES['avatar']['name'])) {
+            $stmt->bindParam(':avatarPath', $avatarPath);
+        }
 
         // Execute query
         if ($stmt->execute()) {
