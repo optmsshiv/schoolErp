@@ -292,7 +292,7 @@ $.ajax({
           alert('User details updated successfully!');
 
           // Update the user avatar preview in the modal
-          if (response.avatar_path) {
+          if (response.avatar_path && avatarFile) {
             $('#userAvatar').attr('src', response.avatar_path);
           }
 
