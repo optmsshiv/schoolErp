@@ -35,8 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("User ID is required.");
         }
 
+        // Fetch current avatar from the database
+        $stmt = $pdo->prepare("SELECT user_role_avatar FROM userRole WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        $currentAvatar = $stmt->fetchColumn(); // Get current avatar path
+
         // Initialize avatar path
-        $avatarPath = '';
+        $avatarPath = $currentAvatar; // Default to existing avatar
 
         // Handle file upload
         if (!empty($_FILES['avatar']['name'])) {
@@ -50,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $targetFilePath = $uploadDir . $fileName;
 
             if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFilePath)) {
-                $avatarPath = "/assets/img/avatars/" . $fileName; // Public URL path
+                $avatarPath = "/assets/img/avatars/" . $fileName; // Update avatar path
             } else {
                 throw new Exception("Failed to upload the file.");
             }
@@ -75,13 +81,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             branch_name = :branch_name,
             account_number = :account_number,
             ifsc_code = :ifsc_code,
-            account_type = :account_type";
-
-        if ($avatarPath) {
-            $query .= ", user_role_avatar = :avatarPath";
-        }
-
-        $query .= " WHERE user_id = :user_id";
+            account_type = :account_type,
+            user_role_avatar = :avatarPath
+        WHERE user_id = :user_id";
 
         $stmt = $pdo->prepare($query);
 
@@ -104,28 +106,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':account_number', $account_number);
         $stmt->bindParam(':ifsc_code', $ifsc_code);
         $stmt->bindParam(':account_type', $account_type);
+        $stmt->bindParam(':avatarPath', $avatarPath);
         $stmt->bindParam(':user_id', $user_id);
-
-        if ($avatarPath) {
-            $stmt->bindParam(':avatarPath', $avatarPath);
-        }
 
         // Execute query
         if ($stmt->execute()) {
             $response['success'] = true;
             $response['message'] = "User updated successfully!";
-            if ($avatarPath) {
-                $response['avatar_path'] = $avatarPath;
-            }
+            $response['avatar_path'] = $avatarPath;
         } else {
             throw new Exception("Database update failed.");
         }
-     } catch (PDOException $e) {
-          $response['error'] = "Database error: " . $e->getMessage();
+    } catch (PDOException $e) {
+        $response['error'] = "Database error: " . $e->getMessage();
     } catch (Exception $e) {
-          $response['error'] = "Error: " . $e->getMessage();
-  }
-
+        $response['error'] = "Error: " . $e->getMessage();
+    }
 }
 
 // Return JSON response
