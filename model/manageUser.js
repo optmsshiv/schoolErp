@@ -1,3 +1,5 @@
+import { addNewUserToTable } from '../model/offCanvas.js';
+
 $(function () {
   // Initialize DataTable
   var table = $('#userTable').DataTable({
@@ -48,18 +50,18 @@ $(function () {
   }
 
   // Fetch user data using AJAX
-   $.ajax({
-     url: '../php/userRole/get_user_role.php',
-     type: 'GET',
-     dataType: 'json',
-     success: function (response) {
-       table.clear().draw(); // Clear the table before adding new rows
-       response.forEach(user => addNewUserToTable(user)); // Add users to the table
-     },
-     error: function (xhr, status, error) {
-       console.error('AJAX error:', status, error);
-     }
-   });
+  $.ajax({
+    url: '../php/userRole/get_user_role.php',
+    type: 'GET',
+    dataType: 'json',
+    success: function (response) {
+      table.clear().draw(); // Clear the table before adding new rows
+      response.forEach(user => addNewUserToTable(user)); // Add users to the table
+    },
+    error: function (xhr, status, error) {
+      console.error('AJAX error:', status, error);
+    }
+  });
 
   // Handle 'Select All' checkbox behavior
   $('#select-all').on('click', function () {
@@ -131,7 +133,6 @@ $(function () {
   // Handle 'Edit' button click event
 
   $(document).on('click', '.userEdit', function () {
-
     var userId = $(this).data('id');
 
     $('#userAvatar').attr('src', '/assets/img/avatars/default-avatar.png');
@@ -563,12 +564,10 @@ $(function () {
   }
 
   // Handel 'ViewButton' click event
-    $(document).on('click', '.userView', function () {
-      var userId = $(this).data('id');
-      alert('View user profile:' + userId);
-    });
-
-
+  $(document).on('click', '.userView', function () {
+    var userId = $(this).data('id');
+    alert('View user profile:' + userId);
+  });
 
   // Handle 'Credential send' button click event
   $(document).on('click', '.userCredential', function () {
@@ -716,7 +715,4 @@ $(function () {
   $('#searchBox').on('keyup', function () {
     table.search(this.value).draw();
   });
-
-
 });
-
