@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addNewUserToTable = function (user) {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
 
-    // let avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
+    let avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
 
     // Determine dropdown menu options based on user status
     /*
@@ -340,44 +340,36 @@ document.addEventListener('DOMContentLoaded', function () {
     }*/
 
     // Add new row to DataTable correctly
-    let rowNode = table.row
-      .add([
-        `<input type="checkbox" class="row-select">`,
-        user.user_id,
-        `
-        <div class="d-flex align-items-center">
+    let rowData = [
+      `<input type="checkbox" class="row-select">`,
+      user.user_id,
+      `<div class="d-flex align-items-center">
             <div class="avatar avatar-sm">
-                <img src="${
-                  user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png'
-                }" alt="avatar" class="rounded-circle" />
+                <img src="${avatar}" alt="avatar" class="rounded-circle" />
             </div>
             <div class="ms-2">
                 <h6 class="mb-0 ms-2">${user.fullname}</h6>
             </div>
-        </div>
-        `,
-        user.role,
-        user.phone,
-        formatDate(user.joining_date),
-        `<span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
-          user.status
-        }</span>`,
-        `
-        <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${
-          user.user_id
-        }" title="View User"></a>
+        </div>`,
+      user.role,
+      user.phone,
+      formatDate(user.joining_date),
+      `<span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${user.status}</span>`,
+      `<a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${
+        user.user_id
+      }" title="View User"></a>
         <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${
           user.user_id
         }" title="Delete User"></a>
         <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
         <div class="dropdown-menu dropdown-menu-end">${getDropdownMenu(user)}</div>
         `
-      ])
-      .draw(false).node;
-    // Add data-id attribute to the row for future reference
+    ];
+    let newRow = table.row.add(rowData).draw(false); // Add row & draw
+    let rowNode = table.row(newRow).node(); // Get the correct row node
 
     if (rowNode) {
-      rowNode.setAttribute('data-id', user.user_id);
+      $(rowNode).attr('data-id', user.user_id); // Safe way to set attributes
     }
   };
 
