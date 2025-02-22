@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $avatarPath = '';
 
         // Handle file upload
-        if (!empty($_FILES['avatar']['name'])) {
+        if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === 0) {
             $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/avatars/"; // Ensure this directory exists
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true); // Create the directory if it doesn't exist
