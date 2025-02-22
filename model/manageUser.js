@@ -230,11 +230,11 @@ $.ajax({
     var joiningDate = formatDate($('#joiningDateInput').val());
 
     formData.append('user_id', userId);
-    formData.append('full_name', fullName);
+    formData.append('full_name', $('#fullNameInput').val());
     formData.append('qualification', $('#qualificationInput').val().trim());
-    formData.append('role', role);
+    formData.append('role', $('#roleSelect').val());
     formData.append('email', $('#emailInput').val());
-    formData.append('phone', phone);
+    formData.append('phone', $('#phoneInput').val());
     formData.append('dob', $('#dobDateInput').val());
     formData.append('joining_date', $('#joiningDateInput').val());
     formData.append('status', $('#statusSelect').val());
@@ -258,6 +258,8 @@ $.ajax({
     // Show progress bar
     $('#uploadProgressContainer').show();
     $('#uploadProgressBar').css('width', '0%').text('0%');
+
+    // console.log([...formData.entries()]); // Check what's inside the formData
 
     // AJAX request to save data
     $.ajax({
@@ -297,43 +299,27 @@ $.ajax({
           // Close the modal
           $('#editUserModal').modal('hide');
 
-          // ✅ Find the row in the table
-          let table = $('#userTable').DataTable();
-          let rowIndex = table
-            .rows()
-            .indexes()
-            .toArray()
-            .find(index => {
-              return $(table.row(index).node()).attr('data-id') == userId;
-            });
+          // Find the row corresponding to the user
+          var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
 
-          if (rowIndex !== undefined) {
-            let avatar = response.avatar_path ? response.avatar_path : '../assets/img/avatars/default-avatar.png';
+          if (userRow.length > 0) {
+            userRow.find('td:nth-child(3) h6').text(fullName);
+            userRow.find('td:nth-child(4)').text(role);
+            userRow.find('td:nth-child(5)').text(phone);
+            userRow.find('td:nth-child(6)').text(joiningDate);
 
-            // ✅ Update row data in DataTable
-            table
-              .row(rowIndex)
-              .data([
-                '<td><img src="' +
-                  avatar +
-                  '" class="avatar img-fluid" style="width:40px; height:40px; border-radius:50%;"> <h6 class="d-inline">' +
-                  fullName +
-                  '</h6></td>',
-                role,
-                phone,
-                joiningDate,
-                '<td><button class="btn btn-sm btn-primary edit-user" data-id="' + userId + '">Edit</button></td>'
-              ])
-              .draw(false);
+            // Update avatar if changed
+            if (response.avatar_path) {
+              userRow.find('td:nth-child(3) img').attr('src', response.avatar_path);
+            }
 
             // Apply smooth highlight effect
-            let rowNode = table.row(rowIndex).node();
-            $(rowNode).addClass('highlight-success');
+            userRow.addClass('highlight-success');
 
             setTimeout(function () {
-              $(rowNode).addClass('fade-out');
+              userRow.addClass('fade-out');
               setTimeout(function () {
-                $(rowNode).removeClass('highlight-success fade-out');
+                userRow.removeClass('highlight-success fade-out');
               }, 1000);
             }, 3000);
           } else {
@@ -353,7 +339,6 @@ $.ajax({
       }
     });
   });
-
 
   // Handling Status Change (Activate, Suspend)
   $(document).on('click', '.userActivate', function () {
