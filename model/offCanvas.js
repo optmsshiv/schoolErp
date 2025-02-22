@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (submitButton) submitButton.disabled = false;
       });
   }
-
+/*
   function updateUserInTable(user) {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
     let row = table.row(`[data-id="${user.user_id}"]`); // Find the row with the matching user ID
@@ -147,54 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
         dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
       }
 
-      let updatedRow = `
-        <td><input type="checkbox" class="row-select"></td>
-        <td>${user.user_id}</td>
-        <td>
-            <div class="d-flex align-items-center">
-                <div class="avatar avatar-sm">
-                    <img src="${avatar}" alt="avatar" class="rounded-circle" />
-                </div>
-                <div class="ms-2">
-                    <h6 class="mb-0 ms-2">${user.fullname}</h6>
-                </div>
-            </div>
-        </td>
-        <td>${user.role}</td>
-        <td>${user.phone}</td>
-        <td>${formatDate(user.joining_date)}</td>
-        <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
-        user.status
-      }</span></td>
-        <td>
-            <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${
-              user.user_id
-            }" title="View User"></a>
-            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${
-              user.user_id
-            }" title="Delete User"></a>
-            <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-            <div class="dropdown-menu dropdown-menu-end">
-                ${
-                  user.status === 'Pending'
-                    ? `
-                    <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-                    <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-                `
-                    : `
-                    <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-                    <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
-                    <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
-                `
-                }
-            </div>
-        </td>
-    `;
-
-      // Update the row in DataTable
-      table.row(row).data($(updatedRow)).draw(false);
       // Update the row data
-      /*
       row
         .data([
           `<input type="checkbox" class="row-select">`,
@@ -218,11 +171,15 @@ document.addEventListener('DOMContentLoaded', function () {
        <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
        <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>`
         ])
-        .draw(false); */// Redraw the table to reflect changes
+        .draw(false); // Redraw the table to reflect changes
     } else {
       console.error('Row not found for user ID:', user.user_id);
     }
   }
+
+
+*/
+
 /*
   function handleFormSubmit(event) {
     event.preventDefault();
