@@ -128,10 +128,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (row.length) {
       // Update the row data
       // let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
-      let avatar =
-        user.user_role_avatar && user.user_role_avatar !== ''
-          ? user.user_role_avatar // Use updated avatar if available
-          : '../assets/img/avatars/default-avatar.png'; // Keep default if not updated
+      let avatar = user.user_role_avatar ?? $('[data-id="' + user.user_id + '"] img').attr('src');
+
 
       let dropdownMenu = '';
       if (user.status === 'Pending') {
