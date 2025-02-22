@@ -126,20 +126,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let row = table.row(`[data-id="${user.user_id}"]`);
 
     if (row.length) {
-
       // Update the row data
-     // let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
-
-     let currentData = row.data();
-
-     // Preserve the existing avatar if it's not updated
-     let existingAvatar = currentData[2].match(/src="([^"]+)"/);
-     let avatar =
-       user.user_role_avatar && user.user_role_avatar !== ''
-         ? user.user_role_avatar
-         : existingAvatar
-         ? existingAvatar[1]
-         : '../assets/img/avatars/default-avatar.png';
+      // let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
+      let avatar =
+        user.user_role_avatar && user.user_role_avatar !== ''
+          ? user.user_role_avatar // Use updated avatar if available
+          : '../assets/img/avatars/default-avatar.png'; // Keep default if not updated
 
       let dropdownMenu = '';
       if (user.status === 'Pending') {
