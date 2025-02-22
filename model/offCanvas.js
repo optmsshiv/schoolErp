@@ -258,7 +258,10 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 */
-  // Function to send WhatsApp message
+
+
+
+// Function to send WhatsApp message
   function sendWhatsAppMessage(fullname, user_id, password, phone, role, status) {
     if (!phone) {
       console.error('Phone number is missing.');

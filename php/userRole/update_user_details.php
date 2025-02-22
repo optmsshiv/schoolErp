@@ -35,8 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("User ID is required.");
         }
 
+        // Fetch existing avatar from database
+        $stmt = $pdo->prepare("SELECT user_role_avatar FROM userRole WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        $existingAvatar = $stmt->fetchColumn();
+
         // Initialize avatar path
-        $avatarPath = '';
+        $avatarPath = $existingAvatar;
 
         // Handle file upload
         if (!empty($_FILES['avatar']['name'])) {
@@ -77,7 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ifsc_code = :ifsc_code,
             account_type = :account_type";
 
-        if ($avatarPath) {
+        // Only update the avatar if a new file is uploaded
+        if (!empty($_FILES['avatar']['name'])) {
             $query .= ", user_role_avatar = :avatarPath";
         }
 
@@ -106,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':account_type', $account_type);
         $stmt->bindParam(':user_id', $user_id);
 
-        if ($avatarPath) {
+        if (!empty($_FILES['avatar']['name'])) {
             $stmt->bindParam(':avatarPath', $avatarPath);
         }
 
@@ -114,18 +121,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->execute()) {
             $response['success'] = true;
             $response['message'] = "User updated successfully!";
-            if ($avatarPath) {
-                $response['avatar_path'] = $avatarPath;
-            }
+            $response['avatar_path'] = $avatarPath;
         } else {
             throw new Exception("Database update failed.");
         }
-     } catch (PDOException $e) {
-          $response['error'] = "Database error: " . $e->getMessage();
+    } catch (PDOException $e) {
+        $response['error'] = "Database error: " . $e->getMessage();
     } catch (Exception $e) {
-          $response['error'] = "Error: " . $e->getMessage();
-  }
-
+        $response['error'] = "Error: " . $e->getMessage();
+    }
 }
 
 // Return JSON response
