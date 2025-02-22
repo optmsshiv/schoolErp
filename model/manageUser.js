@@ -50,18 +50,20 @@ $(function () {
   }
 
   // Fetch user data using AJAX
-  $.ajax({
-    url: '../php/userRole/get_user_role.php',
-    type: 'GET',
-    dataType: 'json',
-    success: function (response) {
-      table.clear().draw(); // Clear the table before adding new rows
-      response.forEach(user => window.addNewUserToTable(user)); // Add users to the table
-    },
-    error: function (xhr, status, error) {
-      console.error('AJAX error:', status, error);
-    }
-  });
+$.ajax({
+  url: '../php/userRole/get_user_role.php',
+  type: 'GET',
+  dataType: 'json',
+  success: function (response) {
+    let table = $('#userTable').DataTable();
+    table.clear().draw();
+    response.forEach(user => window.addNewUserToTable(user));
+  },
+  error: function (xhr, status, error) {
+    console.error('AJAX error:', status, error);
+  }
+});
+
 
   // Handle 'Select All' checkbox behavior
   $('#select-all').on('click', function () {
