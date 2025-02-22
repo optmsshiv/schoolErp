@@ -121,14 +121,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateUserInTable(user) {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
-
-    // Find the row with the matching user ID
-    let row = table.row(`[data-id="${user.user_id}"]`);
+    let row = table.row(`[data-id="${user.user_id}"]`); // Find the row with the matching user ID
 
     if (row.length) {
       // Update the row data
       // let avatar = user.user_role_avatar || '../assets/img/avatars/default-avatar.png';
-      let avatar = user.user_role_avatar ? user.user_role_avatar : null;
+      // Get the existing avatar from the row (which was set from the frontend)
+      let existingAvatar = row.find('.avatar img').attr('src');
+
+      // Use the existing avatar if no new one is provided, otherwise use the new one
+      let avatar =
+        user.user_role_avatar && user.user_role_avatar !== 'null'
+          ? user.user_role_avatar
+          : existingAvatar || '../assets/img/avatars/default-avatar.png'; // ✅ Fallback to frontend default
 
       let dropdownMenu = '';
       if (user.status === 'Pending') {
@@ -142,7 +147,54 @@ document.addEventListener('DOMContentLoaded', function () {
         dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
       }
 
+      let updatedRow = `
+        <td><input type="checkbox" class="row-select"></td>
+        <td>${user.user_id}</td>
+        <td>
+            <div class="d-flex align-items-center">
+                <div class="avatar avatar-sm">
+                    <img src="${avatar}" alt="avatar" class="rounded-circle" />
+                </div>
+                <div class="ms-2">
+                    <h6 class="mb-0 ms-2">${user.fullname}</h6>
+                </div>
+            </div>
+        </td>
+        <td>${user.role}</td>
+        <td>${user.phone}</td>
+        <td>${formatDate(user.joining_date)}</td>
+        <td><span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${
+        user.status
+      }</span></td>
+        <td>
+            <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${
+              user.user_id
+            }" title="View User"></a>
+            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${
+              user.user_id
+            }" title="Delete User"></a>
+            <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+            <div class="dropdown-menu dropdown-menu-end">
+                ${
+                  user.status === 'Pending'
+                    ? `
+                    <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+                    <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+                `
+                    : `
+                    <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+                    <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
+                    <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
+                `
+                }
+            </div>
+        </td>
+    `;
+
+      // Update the row in DataTable
+      table.row(row).data($(updatedRow)).draw(false);
       // Update the row data
+      /*
       row
         .data([
           `<input type="checkbox" class="row-select">`,
@@ -166,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
        <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
        <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>`
         ])
-        .draw(false); // Redraw the table to reflect changes
+        .draw(false); */// Redraw the table to reflect changes
     } else {
       console.error('Row not found for user ID:', user.user_id);
     }
