@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 
 header('Content-Type: application/json'); // Ensure JSON response
 
-$response = ['success' => false];
+$response = ['success' => false, 'debug' => []];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
@@ -41,12 +41,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute();
         $currentAvatar = $stmt->fetchColumn(); // Get current avatar path
 
-        // Initialize avatar path with existing avatar
+        $response['debug']['current_avatar'] = $currentAvatar;
+
+        // Default to existing avatar
         $avatarPath = $currentAvatar;
 
-        // Handle file upload
+        // Handle file upload if a new avatar is provided
         if (!empty($_FILES['avatar']['name']) && $_FILES['avatar']['error'] == 0) {
             $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/avatars/";
+
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -57,9 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFilePath)) {
                 $avatarPath = "/assets/img/avatars/" . $fileName; // Update avatar path
+                $response['debug']['new_avatar_uploaded'] = $avatarPath;
             } else {
                 throw new Exception("Failed to upload the file.");
             }
+        } else {
+            $response['debug']['avatar_update'] = "No new avatar uploaded, keeping existing one.";
         }
 
         // Prepare SQL statement
@@ -83,8 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ifsc_code = :ifsc_code,
             account_type = :account_type";
 
-        // Only update avatar if a new file is uploaded
-        if (!empty($_FILES['avatar']['name'])) {
+        // Only update avatar if a new file was uploaded
+        if (!empty($_FILES['avatar']['name']) && $_FILES['avatar']['error'] == 0) {
             $query .= ", user_role_avatar = :avatarPath";
         }
 
@@ -113,7 +119,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':account_type', $account_type);
         $stmt->bindParam(':user_id', $user_id);
 
-        if (!empty($_FILES['avatar']['name'])) {
+        // Only bind avatar if it's actually being updated
+        if (!empty($_FILES['avatar']['name']) && $_FILES['avatar']['error'] == 0) {
             $stmt->bindParam(':avatarPath', $avatarPath);
         }
 
