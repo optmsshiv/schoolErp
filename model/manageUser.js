@@ -230,11 +230,11 @@ $.ajax({
     var joiningDate = formatDate($('#joiningDateInput').val());
 
     formData.append('user_id', userId);
-    formData.append('full_name', $('#fullNameInput').val());
+    formData.append('full_name', fullName);
     formData.append('qualification', $('#qualificationInput').val().trim());
-    formData.append('role', $('#roleSelect').val());
+    formData.append('role', role);
     formData.append('email', $('#emailInput').val());
-    formData.append('phone', $('#phoneInput').val());
+    formData.append('phone', phone);
     formData.append('dob', $('#dobDateInput').val());
     formData.append('joining_date', $('#joiningDateInput').val());
     formData.append('status', $('#statusSelect').val());
@@ -258,8 +258,6 @@ $.ajax({
     // Show progress bar
     $('#uploadProgressContainer').show();
     $('#uploadProgressBar').css('width', '0%').text('0%');
-
-    // console.log([...formData.entries()]); // Check what's inside the formData
 
     // AJAX request to save data
     $.ajax({
@@ -299,29 +297,43 @@ $.ajax({
           // Close the modal
           $('#editUserModal').modal('hide');
 
-          // Find the row corresponding to the user
-          var userRow = $('#userTable tbody').find('tr[data-id="' + userId + '"]');
+          // Get DataTable instance
+          let table = $('#userTable').DataTable();
 
-          if (userRow.length > 0) {
-            userRow.find('td:nth-child(3) h6').text(fullName);
-            userRow.find('td:nth-child(4)').text(role);
-            userRow.find('td:nth-child(5)').text(phone);
-            userRow.find('td:nth-child(6)').text(joiningDate);
+          // Find the row in DataTable
+          let rowIndex = table
+            .rows()
+            .nodes()
+            .toArray()
+            .findIndex(row => {
+              return $(row).attr('data-id') == userId;
+            });
 
-            // Update avatar if changed
-            if (response.avatar_path) {
-              userRow.find('td:nth-child(3) img').attr('src', response.avatar_path);
-            }
+          if (rowIndex !== -1) {
+            let rowNode = table.row(rowIndex).node();
+            let avatar = response.avatar_path ? response.avatar_path : '../assets/img/avatars/default-avatar.png';
+
+            // Update table data
+            $(rowNode).find('td:nth-child(3) h6').text(fullName);
+            $(rowNode).find('td:nth-child(4)').text(role);
+            $(rowNode).find('td:nth-child(5)').text(phone);
+            $(rowNode).find('td:nth-child(6)').text(joiningDate);
+
+            // ✅ Update avatar ONLY for this row
+            $(rowNode).find('.avatar img').attr('src', avatar);
 
             // Apply smooth highlight effect
-            userRow.addClass('highlight-success');
+            $(rowNode).addClass('highlight-success');
 
             setTimeout(function () {
-              userRow.addClass('fade-out');
+              $(rowNode).addClass('fade-out');
               setTimeout(function () {
-                userRow.removeClass('highlight-success fade-out');
+                $(rowNode).removeClass('highlight-success fade-out');
               }, 1000);
             }, 3000);
+
+            // ✅ Refresh only this row in DataTable
+            table.row(rowIndex).invalidate().draw(false);
           } else {
             console.warn('Row for user ID ' + userId + ' not found!');
           }
@@ -339,6 +351,7 @@ $.ajax({
       }
     });
   });
+
 
   // Handling Status Change (Activate, Suspend)
   $(document).on('click', '.userActivate', function () {
