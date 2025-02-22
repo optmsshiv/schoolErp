@@ -35,6 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("User ID is required.");
         }
 
+        // Debug log before executing the query
+            error_log("Updating user_id: $user_id with avatar: " . ($avatarPath ?? 'NULL'));
+
         // Fetch existing avatar from database
         $stmt = $pdo->prepare("SELECT user_role_avatar FROM userRole WHERE user_id = :user_id");
         $stmt->bindParam(':user_id', $user_id);
