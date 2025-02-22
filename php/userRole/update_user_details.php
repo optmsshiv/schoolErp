@@ -79,10 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($avatarPath) {
             $query .= ", user_role_avatar = :avatarPath";
-        }  else {
-    // Keep the existing avatar instead of replacing it with null
-    $query .= ", user_role_avatar = user_role_avatar";
-}
+        }
 
         $query .= " WHERE user_id = :user_id";
 
