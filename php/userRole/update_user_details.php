@@ -79,14 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($avatarPath) {
             $query .= ", user_role_avatar = :avatarPath";
-        } else {
-    // Fetch existing avatar if not updating
-    $stmtAvatar = $pdo->prepare("SELECT user_role_avatar FROM userRole WHERE user_id = :user_id");
-    $stmtAvatar->bindParam(':user_id', $user_id);
-    $stmtAvatar->execute();
-    $existingAvatar = $stmtAvatar->fetchColumn();
-    $avatarPath = $existingAvatar; // Keep the existing avatar
-}
+        }
 
         $query .= " WHERE user_id = :user_id";
 
