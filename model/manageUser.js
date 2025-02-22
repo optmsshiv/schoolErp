@@ -1,5 +1,5 @@
-import { addNewUserToTable } from '../model/offCanvas.js';
 
+// import { addNewUserToTable } from '../model/offCanvas.js';
 $(function () {
   // Initialize DataTable
   var table = $('#userTable').DataTable({
@@ -56,7 +56,7 @@ $(function () {
     dataType: 'json',
     success: function (response) {
       table.clear().draw(); // Clear the table before adding new rows
-      response.forEach(user => addNewUserToTable(user)); // Add users to the table
+      response.forEach(user => window.addNewUserToTable(user)); // Add users to the table
     },
     error: function (xhr, status, error) {
       console.error('AJAX error:', status, error);
