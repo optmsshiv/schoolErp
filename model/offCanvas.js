@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
         tbody.appendChild(fragment); // Append all rows at once (performance boost)
 
         // ✅ Update total user count in footer
-        document.getElementById('totalRecords').textContent = users.length;
+        document.getElementById('totalRecords').textContent = data.total;
 
         // ✅ Update pagination
         updatePaginationControls(totalPages);
