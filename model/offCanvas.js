@@ -29,7 +29,89 @@ document.addEventListener('DOMContentLoaded', function () {
       form.addEventListener('submit', handleFormSubmit);
     });
   }
-  fetchUserList(); // Fetch and populate the user table when the page loads
+  // fetchUserList(); // Fetch and populate the user table when the page loads
+
+  addNewUserToTable(data);
+
+  function addNewUserToTable(user) {
+    let userTable = document.getElementById('userTable');
+    let tbody = userTable.querySelector('tbody');
+    if (!tbody) {
+      tbody = document.createElement('tbody');
+      userTable.appendChild(tbody);
+    }
+
+    let avatar =
+      user.user_role_avatar && user.user_role_avatar.trim() !== ''
+        ? user.user_role_avatar
+        : '../assets/img/avatars/default-avatar.png';
+
+    let dropdownMenu = '';
+    if (user.status === 'Pending') {
+      dropdownMenu = `
+            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+        `;
+    } else if (user.status === 'Active') {
+      dropdownMenu = `
+            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+            <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
+            <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
+        `;
+    } else if (user.status === 'Suspended') {
+      dropdownMenu = `
+            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+        `;
+    }
+
+    let row = document.createElement('tr');
+    row.innerHTML = `
+        <td><input type="checkbox" class="row-select"></td>
+        <td>${user.user_id}</td>
+        <td>
+            <div class="d-flex align-items-center">
+                <div class="avatar avatar-sm">
+                    <img src="${avatar}" alt="avatar" class="rounded-circle" loading="lazy" />
+                </div>
+                <div class="ms-2">
+                    <h6 class="mb-0 ms-2">${user.fullname}</h6>
+                </div>
+            </div>
+        </td>
+        <td>${user.role}</td>
+        <td>${user.phone}</td>
+        <td>${formatDate(user.joining_date)}</td>
+        <td>
+            <span class="badge ${
+              user.status === 'Active'
+                ? 'bg-label-success'
+                : user.status === 'Suspended'
+                ? 'bg-label-secondary'
+                : 'bg-label-warning'
+            }">
+                ${user.status}
+            </span>
+        </td>
+        <td>
+            <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${
+              user.user_id
+            }" title="View User"></a>
+            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${
+              user.user_id
+            }" title="Delete User"></a>
+
+                <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                <div class="dropdown-menu dropdown-menu-end">
+                    ${dropdownMenu}
+                </div>
+            
+        </td>
+    `;
+
+    tbody.appendChild(row);
+  }
+
 
   function handleFormSubmit(event) {
     event.preventDefault();
@@ -409,81 +491,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     return `${day}-${month}-${year}`; // Return in DD-MM-YYYY format
   }
-
-  function getDropdownMenu(user) {
-    if (user.status === 'Pending') {
-      return `
-            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-        `;
-    } else if (user.status === 'Active') {
-      return `
-            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-            <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
-            <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
-        `;
-    } else if (user.status === 'Suspended') {
-      return `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
-    }
-    return ''; // Return empty if no status matches
-  }
-
-  window.addNewUserToTable = function (user) {
-    let table = $('#userTable').DataTable(); // Get the DataTable instance
-
-    let avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
-
-    // Determine dropdown menu options based on user status
-    /*
-    let dropdownMenu = '';
-    if (user.status === 'Pending') {
-      dropdownMenu = `
-        <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-        <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-      `;
-    } else if (user.status === 'Active') {
-      dropdownMenu = `
-        <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-        <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
-        <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
-      `;
-    } else if (user.status === 'Suspended') {
-      dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
-    }*/
-
-    // Add new row to DataTable correctly
-    let rowData = [
-      `<input type="checkbox" class="row-select">`,
-      user.user_id,
-      `<div class="d-flex align-items-center">
-            <div class="avatar avatar-sm">
-                <img src="${avatar}" alt="avatar" class="rounded-circle" />
-            </div>
-            <div class="ms-2">
-                <h6 class="mb-0 ms-2">${user.fullname}</h6>
-            </div>
-        </div>`,
-      user.role,
-      user.phone,
-      formatDate(user.joining_date),
-      `<span class="badge ${user.status === 'Active' ? 'bg-label-success' : 'bg-label-warning'}">${user.status}</span>`,
-      `<a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${
-        user.user_id
-      }" title="View User"></a>
-        <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${
-          user.user_id
-        }" title="Delete User"></a>
-        <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-        <div class="dropdown-menu dropdown-menu-end">${getDropdownMenu(user)}</div>
-        `
-    ];
-    let newRow = table.row.add(rowData).draw(false); // Add row & draw
-    let rowNode = table.row(newRow).node(); // Get the correct row node
-
-    if (rowNode) {
-      $(rowNode).attr('data-id', user.user_id); // Safe way to set attributes
-    }
-  };
 });
 
 // Function to validate mobile number
