@@ -83,10 +83,12 @@ document.addEventListener('DOMContentLoaded', function () {
               updateUserInTable(data);
             } else {
               // Add the new user to the table
-              addNewUserToTable(data);
+             // addNewUserToTable(data);
 
               // Send WhatsApp Message
               sendWhatsAppMessage(data.fullname, data.user_id, data.password, data.phone, data.role, data.status);
+              // Refresh the user list
+              fetchUserList();
             }
           });
         } else {
@@ -118,6 +120,34 @@ document.addEventListener('DOMContentLoaded', function () {
         if (submitButton) submitButton.disabled = false;
       });
   }
+
+  function fetchUserList() {
+    fetch('../php/userRole/get_user_role.php') // Replace with your actual API endpoint
+      .then(response => response.json())
+      .then(users => {
+        let userTableBody = document.getElementById('userTableBody'); // Your table body ID
+        userTableBody.innerHTML = ''; // Clear existing table data
+
+        users.forEach(user => {
+          let row = `<tr>
+                <td>${user.id}</td>
+                <td>${user.fullname}</td>
+                <td>${user.email}</td>
+                <td>${user.phone}</td>
+                <td>${user.role}</td>
+                <td>${user.status}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="editUser(${user.id})">Edit</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Delete</button>
+                </td>
+            </tr>`;
+          userTableBody.innerHTML += row;
+        });
+      })
+      .catch(error => console.error('Error fetching user list:', error));
+  }
+
+
 /*
   function updateUserInTable(user) {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
