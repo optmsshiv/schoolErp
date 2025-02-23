@@ -122,53 +122,59 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function fetchUserList() {
+    let userTable = document.getElementById('userTable');
+    let tbody = userTable.querySelector('tbody');
+
+    // Show a loading message while fetching data
+    if (!tbody) {
+      tbody = document.createElement('tbody');
+      userTable.appendChild(tbody);
+    }
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
+
     fetch('/php/userRole/get_user_role.php') // Replace with your actual API endpoint
       .then(response => response.json())
       .then(users => {
-        let userTable = document.getElementById('userTable');
+        // Clear existing rows
+        tbody.innerHTML = '';
 
-        // Clear existing rows except the header
-        userTable.querySelectorAll('tbody').forEach(tbody => tbody.remove());
+        users.forEach(user => {
+          let avatar =
+            user.user_role_avatar && user.user_role_avatar.trim() !== ''
+              ? user.user_role_avatar
+              : '../assets/img/avatars/default-avatar.png';
 
-        // Create a new tbody
-        let tbody = document.createElement('tbody');
+          // console.log(avatar); // Output: '../assets/img/avatars/default-avatar.png'
 
-          users.forEach(user => {
-          //  let user = { user_role_avatar: '' }; // Simulating an empty avatar
-            let avatar =
-              user.user_role_avatar && user.user_role_avatar.trim() !== ''
-                ? user.user_role_avatar
-                : '../assets/img/avatars/default-avatar.png';
-
-           // console.log(avatar); // Output: '../assets/img/avatars/default-avatar.png'
-
-            // Determine dropdown menu options based on user status
-            let dropdownMenu = '';
-            if (user.status === 'Pending') {
-              dropdownMenu = `
+          // Determine dropdown menu options based on user status
+          let dropdownMenu = '';
+          if (user.status === 'Pending') {
+            dropdownMenu = `
                          <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
                          <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                          `;
-            } else if (user.status === 'Active') {
-              dropdownMenu = `
+          } else if (user.status === 'Active') {
+            dropdownMenu = `
                          <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
                          <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
                          <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
                          `;
-            } else if (user.status === 'Suspended') {
-              dropdownMenu = `
+          } else if (user.status === 'Suspended') {
+            dropdownMenu = `
                          <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                         `;
-            }
+          }
 
-            let row = document.createElement('tr');
-            row.innerHTML = `
+          // Create row for user
+
+          let row = document.createElement('tr');
+          row.innerHTML = `
                 <td><input type="checkbox" class="row-select"></td>
                 <td>${user.user_id}</td>
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="avatar avatar-sm">
-                      <img src="${avatar}" alt="avatar" class="rounded-circle" />
+                      <img src="${avatar}" alt="avatar" class="rounded-circle" loading="lazy" />
                     </div>
                     <div class="ms-2">
                       <h6 class="mb-0 ms-2">${user.fullname}</h6>
@@ -197,13 +203,35 @@ document.addEventListener('DOMContentLoaded', function () {
                   <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
                 </td>
             `;
-            tbody.appendChild(row);
-          });
-
-        userTable.appendChild(tbody);
+          tbody.appendChild(row);
+        });
       })
-      .catch(error => console.error('Error fetching user list:', error));
+      .catch(error => {
+        console.error('Error fetching user list:', error);
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Failed to load data</td></tr>`;
+      });
   }
+
+  // ✅ Event Delegation for Efficient Event Handling
+  document.getElementById('userTable').addEventListener('click', function (e) {
+    let target = e.target;
+    let userId = target.dataset.id;
+
+    if (target.classList.contains('userEdit')) {
+      editUser(userId);
+    } else if (target.classList.contains('userDelete')) {
+      deleteUser(userId);
+    } else if (target.classList.contains('userActivate')) {
+      activateUser(userId);
+    } else if (target.classList.contains('userSuspend')) {
+      suspendUser(userId);
+    } else if (target.classList.contains('userCredential')) {
+      sendUserCredential(userId);
+    }
+  });
+
+  // ✅ Auto Fetch Data on Page Load
+  document.addEventListener('DOMContentLoaded', fetchUserList);
 
   /*
   function updateUserInTable(user) {
