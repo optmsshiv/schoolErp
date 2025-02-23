@@ -320,6 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
 
     let avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
+    
 
     // Determine dropdown menu options based on user status
     /*

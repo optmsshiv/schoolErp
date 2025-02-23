@@ -121,7 +121,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->execute()) {
             $response['success'] = true;
             $response['message'] = "User updated successfully!";
-            $response['avatar_path'] = $avatarPath;
+           // $response['avatar_path'] = $avatarPath;
+
+           if (!empty($_FILES['avatar']['name'])) {
+    $response['avatar_path'] = $targetFilePath;  // ✅ Only include when a file is uploaded
+}
+
         } else {
             throw new Exception("Database update failed.");
         }

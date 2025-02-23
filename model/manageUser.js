@@ -141,6 +141,7 @@ $.ajax({
 
     // Show user ID in console for debugging
     // console.log('Edit User ID:', userId);
+
     // Load the modal content dynamically
     $.ajax({
       url: '/html/model_user_edit/user_edit.html', // Adjust path based on your folder structure
@@ -341,6 +342,7 @@ $.ajax({
   });
 
   // Handling Status Change (Activate, Suspend)
+  
   $(document).on('click', '.userActivate', function () {
     var userId = $(this).data('id');
     if (confirm('Are you sure you want to activate this user?')) {
