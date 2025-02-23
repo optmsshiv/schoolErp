@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
       form.addEventListener('submit', handleFormSubmit);
     });
   }
-  // fetchUserList(); // Fetch and populate the user table when the page loads
+   fetchUserList(); // Fetch and populate the user table when the page loads
 
   addNewUserToTable(data);
 
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="dropdown-menu dropdown-menu-end">
                     ${dropdownMenu}
                 </div>
-            
+
         </td>
     `;
 
