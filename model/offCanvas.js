@@ -132,6 +132,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Create a new tbody
         let tbody = document.createElement('tbody');
+        let user = { user_role_avatar: '' }; // Simulating an empty avatar
+        var avatar =
+          user.user_role_avatar && user.user_role_avatar.trim() !== ''
+            ? user.user_role_avatar
+            : '../assets/img/avatars/default-avatar.png';
+
+        console.log(avatar); // Output: '../assets/img/avatars/default-avatar.png'
 
         users.forEach(user => {
           let row = document.createElement('tr');
