@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
           let row = document.createElement('tr');
           row.innerHTML = `
-                <td><input type="checkbox" class="row-select" class="form-check-input"></td>
+                <td><input type="checkbox" class="form-check-input"></td>
                 <td>${user.user_id}</td>
                 <td>
                   <div class="d-flex align-items-center">
