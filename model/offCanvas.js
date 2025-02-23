@@ -146,37 +146,40 @@ document.addEventListener('DOMContentLoaded', function () {
         tbody.innerHTML = '';
 
         users.forEach(user => {
-          let avatar = user.user_role_avatar?.trim()? user.user_role_avatar: '../assets/img/avatars/default-avatar.png';
+          let avatar = user.user_role_avatar?.trim()
+            ? user.user_role_avatar
+            : '../assets/img/avatars/default-avatar.png';
 
           // console.log(avatar); // Output: '../assets/img/avatars/default-avatar.png'
 
           // Determine dropdown menu options based on user status
           let dropdownMenu = '';
-            switch (user.status) {
-              case 'Pending':
-                dropdownMenu = `
+          switch (user.status) {
+            case 'Pending':
+              dropdownMenu = `
                             <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
                             <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
-                break;
-              case 'Active':
-                dropdownMenu = `
+              break;
+            case 'Active':
+              dropdownMenu = `
                             <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
                             <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
                             <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>`;
-                break;
-              case 'Suspended':
-                dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
-                break;
-            }
+              break;
+            case 'Suspended':
+              dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
+              break;
+          }
 
           // Create row for user
 
           let row = document.createElement('tr');
+          row.classList.add('text-center', 'align-middle'); // ✅ Ensure row remains centered
           row.innerHTML = `
                 <td><input type="checkbox" class="row-select"></td>
                 <td>${user.user_id}</td>
                 <td>
-                  <div class="d-flex align-items-left justify-content-center">
+                  <div class="d-flex align-items-center justify-content-center">
                     <div class="avatar avatar-sm">
                       <img src="${avatar}" alt="avatar" class="rounded-circle" loading="lazy" />
                     </div>
