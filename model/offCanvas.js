@@ -1,5 +1,5 @@
 let currentPage = 1;
-let rowsPerPage = parseInt(document.getElementById('customLength').value, 10) || 10; // Default value
+let rowsPerPage = parseInt(document.getElementById('customLength').value); // Default value
 
 document.addEventListener('DOMContentLoaded', function () {
   // Load off-canvas HTML dynamically
@@ -33,14 +33,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  let selectedValue = parseInt(this.value, 10);
-   if (!isNaN(selectedValue)) {
-        rowsPerPage = selectedValue;
-        currentPage = 1; // Reset to first page when changing rows per page
-        fetchUserList(currentPage, rowsPerPage);
-    } else {
-        console.error("Invalid rowsPerPage value:", this.value);
-    }
+   document.getElementById('customLength').addEventListener('change', function () {
+     rowsPerPage = parseInt(this.value);
+     currentPage = 1; // Reset to the first page when changing rows per page
+     fetchUserList(currentPage, rowsPerPage);
+   });
 
   function handleFormSubmit(event) {
     event.preventDefault();
