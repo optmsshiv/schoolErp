@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let userTable = document.getElementById('userTable');
         // Clear existing rows
-        tbody.innerHTML = '';
+      //  tbody.innerHTML = '';
 
         // Create a new tbody
         let tbody = document.createElement('tbody');
