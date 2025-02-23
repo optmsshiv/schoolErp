@@ -129,10 +129,12 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('/php/userRole/get_user_role.php') // Replace with your actual API endpoint
       .then(response => response.json())
       .then(users => {
-
         let userTable = document.getElementById('userTable');
+
+        // Remove old tbody if exists
+        userTable.querySelectorAll('tbody').forEach(tbody => tbody.remove());
         // Clear existing rows
-      //  tbody.innerHTML = '';
+        //  tbody.innerHTML = '';
 
         // Create a new tbody
         let tbody = document.createElement('tbody');
