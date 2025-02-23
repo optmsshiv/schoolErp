@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
       form.addEventListener('submit', handleFormSubmit);
     });
   }
-
+  fetchUserList(); // Fetch and populate the user table when the page loads
 
   function handleFormSubmit(event) {
     event.preventDefault();
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
               updateUserInTable(data);
             } else {
               // Add the new user to the table
-             // addNewUserToTable(data);
+              // addNewUserToTable(data);
 
               // Send WhatsApp Message
               sendWhatsAppMessage(data.fullname, data.user_id, data.password, data.phone, data.role, data.status);
@@ -162,8 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch(error => console.error('Error fetching user list:', error));
   }
 
-
-/*
+  /*
   function updateUserInTable(user) {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
     let row = table.row(`[data-id="${user.user_id}"]`); // Find the row with the matching user ID
@@ -225,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 */
 
-/*
+  /*
   function handleFormSubmit(event) {
     event.preventDefault();
     let form = event.target;
@@ -304,8 +303,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 */
 
-
-// Function to send WhatsApp message
+  // Function to send WhatsApp message
   function sendWhatsAppMessage(fullname, user_id, password, phone, role, status) {
     if (!phone) {
       console.error('Phone number is missing.');
@@ -329,42 +327,40 @@ document.addEventListener('DOMContentLoaded', function () {
     return date.toLocaleDateString('en-GB'); // DD/MM/YYYY format
   }*/
 
-    function formatDate(dateString) {
-      if (!dateString) return 'N/A';
-      let date = new Date(dateString);
+  function formatDate(dateString) {
+    if (!dateString) return 'N/A';
+    let date = new Date(dateString);
 
-      // Get day, month, and year
-      let day = String(date.getDate()).padStart(2, '0'); // Add leading zero if needed
-      let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-      let year = date.getFullYear();
+    // Get day, month, and year
+    let day = String(date.getDate()).padStart(2, '0'); // Add leading zero if needed
+    let month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    let year = date.getFullYear();
 
-      return `${day}-${month}-${year}`; // Return in DD-MM-YYYY format
-    }
+    return `${day}-${month}-${year}`; // Return in DD-MM-YYYY format
+  }
 
-    function getDropdownMenu(user) {
-      if (user.status === 'Pending') {
-        return `
+  function getDropdownMenu(user) {
+    if (user.status === 'Pending') {
+      return `
             <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
             <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
         `;
-      } else if (user.status === 'Active') {
-        return `
+    } else if (user.status === 'Active') {
+      return `
             <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
             <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
             <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
         `;
-      } else if (user.status === 'Suspended') {
-        return `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
-      }
-      return ''; // Return empty if no status matches
+    } else if (user.status === 'Suspended') {
+      return `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
     }
-
+    return ''; // Return empty if no status matches
+  }
 
   window.addNewUserToTable = function (user) {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
 
     let avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
-
 
     // Determine dropdown menu options based on user status
     /*
@@ -417,7 +413,6 @@ document.addEventListener('DOMContentLoaded', function () {
       $(rowNode).attr('data-id', user.user_id); // Safe way to set attributes
     }
   };
-
 });
 
 // Function to validate mobile number
