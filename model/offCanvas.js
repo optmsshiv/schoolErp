@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function fetchUserList() {
-    fetch('../php/userRole/get_user_role.php') // Replace with your actual API endpoint
+    fetch('/php/userRole/get_user_role.php') // Replace with your actual API endpoint
       .then(response => response.json())
       .then(users => {
         let userTable = document.getElementById('userTable');
