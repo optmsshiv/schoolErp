@@ -1,3 +1,5 @@
+let currentPage = 1;
+const rowsPerPage = 10;
 document.addEventListener('DOMContentLoaded', function () {
   // Load off-canvas HTML dynamically
   fetch('../model/offCanvas.html')
@@ -114,9 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (submitButton) submitButton.disabled = false;
       });
   }
-
-  let currentPage = 1;
-  const rowsPerPage = 10;
 
   function fetchUserList(page = 1) {
     let userTable = document.getElementById('userTable');
