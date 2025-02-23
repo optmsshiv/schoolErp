@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
 
-    fetch(`/php/userRole/get_user_role.php?page=${page}&limit=${usersPerPage}`) // Replace with your actual API endpoint
+    fetch(`/php/userRole/get_user_role.php?page=${page}&limit=${rowsPerPage}`) // Replace with your actual API endpoint
       .then(response => {
         loadingBar.style.width = '50%'; // Halfway progress
         return response.json();
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       .then(data => {
         let users = data.users;
-        let totalPages = data.totalPages;
+        let totalPages = Math.ceil(data.total / rowsPerPage);
 
         tbody.innerHTML = ''; // Clear previous rows
         let fragment = document.createDocumentFragment();
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function () {
         tbody.appendChild(fragment); // Append all rows at once (performance boost)
 
         // ✅ Update total user count in footer
-        document.getElementById('totalRecords').textContent = data.total;
+        document.getElementById('totalRecords').textContent = users.length;
 
         // ✅ Update pagination
         updatePaginationControls(totalPages);
