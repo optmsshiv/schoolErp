@@ -33,9 +33,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-   rowsPerPage = parseInt(this.value);
-   currentPage = 1; // Reset to the first page when changing rows per page
-   fetchUserList(currentPage, rowsPerPage); // Fetch and populate the user table when the page loads
+  let selectedValue = parseInt(this.value, 10);
+   if (!isNaN(selectedValue)) {
+        rowsPerPage = selectedValue;
+        currentPage = 1; // Reset to first page when changing rows per page
+        fetchUserList(currentPage, rowsPerPage);
+    } else {
+        console.error("Invalid rowsPerPage value:", this.value);
+    }
 
   function handleFormSubmit(event) {
     event.preventDefault();
