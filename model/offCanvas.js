@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div></div>
                 </td>
             `;
-          fragment.appendChild(fragment);
+          fragment.appendChild(row);
         });
         tbody.appendChild(fragment); // Append all rows at once (performance boost)
 
