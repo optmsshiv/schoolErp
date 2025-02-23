@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-     fetchUserList(); // Fetch and populate the user table when the page loads
+  fetchUserList(); // Fetch and populate the user table when the page loads
 
   function handleFormSubmit(event) {
     event.preventDefault();
@@ -79,12 +79,11 @@ document.addEventListener('DOMContentLoaded', function () {
             form.reset(); // Reset form
             form.querySelectorAll('input[type="hidden"]').forEach(input => (input.value = ''));
 
-             // add new user row into the table
-             addNewUserToTable(data);
+            // add new user row into the table
+            addNewUserToTable(data);
 
-              // Send WhatsApp Message
+            // Send WhatsApp Message
             //  sendWhatsAppMessage(data.fullname, data.user_id, data.password, data.phone, data.role, data.status);
-
           });
         } else {
           Swal.fire({
@@ -116,10 +115,12 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  function fetchUserList() {
+  let currentPage = 1;
+  const rowsPerPage = 10;
+
+  function fetchUserList(page = 1) {
     let userTable = document.getElementById('userTable');
     let tbody = userTable.querySelector('tbody');
-
 
     let loadingBarContainer = document.getElementById('loadingBarContainer');
     let loadingBar = document.getElementById('loadingBar');
@@ -141,9 +142,12 @@ document.addEventListener('DOMContentLoaded', function () {
         return response.json();
       })
 
-      .then(users => {
-        // Clear existing rows
-        tbody.innerHTML = '';
+      .then(data => {
+        let users = data.users;
+        let totalPages = Math.ceil(data.total / rowsPerPage);
+
+        tbody.innerHTML = ''; // Clear previous rows
+        let fragment = document.createDocumentFragment();
 
         users.forEach(user => {
           let avatar = user.user_role_avatar?.trim()
@@ -174,6 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
           // Create row for user
 
           let row = document.createElement('tr');
+          row.classList.add('tr-animate'); // Add animation class
           row.innerHTML = `
                 <td><input type="checkbox" class="form-check-input"></td>
                 <td>${user.user_id}</td>
@@ -212,7 +217,13 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
           tbody.appendChild(row);
         });
+        tbody.appendChild(fragment); // Append all rows at once (performance boost)
 
+        // ✅ Update total user count in footer
+        document.getElementById('totalRecords').textContent = users.length;
+
+        // ✅ Update pagination
+        updatePaginationControls(totalPages);
 
         //  userTable.appendChild(tbody);
         loadingBar.style.width = '100%'; // Complete progress
@@ -226,6 +237,37 @@ document.addEventListener('DOMContentLoaded', function () {
         loadingBarContainer.style.display = 'none'; // Hide loading bar on error
       });
   }
+
+  // ✅ Pagination Controls
+  function updatePaginationControls(totalPages) {
+    let paginationDiv = document.getElementById('paginationControls');
+    paginationDiv.innerHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+      let button = document.createElement('button');
+      button.className = `btn btn-sm btn-primary mx-1 ${i === currentPage ? 'active' : ''}`;
+      button.innerText = i;
+      button.addEventListener('click', () => {
+        currentPage = i;
+        fetchUserList(i);
+      });
+      paginationDiv.appendChild(button);
+    }
+  }
+
+  // ✅ Search Filter
+  document.getElementById('searchInput').addEventListener('input', function () {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll('#userTable tbody tr');
+
+    rows.forEach(row => {
+      let userName = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+      row.style.display = userName.includes(filter) ? '' : 'none';
+    });
+  });
+
+  // ✅ Auto Refresh Every 30s
+  setInterval(() => fetchUserList(currentPage), 100000);
 
   // ✅ Event Delegation for Efficient Event Handling
   document.getElementById('userTable').addEventListener('click', function (e) {
@@ -245,8 +287,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // ✅ Auto Fetch Data on Page Load
-  document.addEventListener('DOMContentLoaded', fetchUserList);
+  // ✅ Load Data on Page Load
+  document.addEventListener('DOMContentLoaded', () => fetchUserList());
 
   // add new user to table row
 
