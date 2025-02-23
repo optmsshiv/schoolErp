@@ -145,35 +145,29 @@ document.addEventListener('DOMContentLoaded', function () {
         // Clear existing rows
         tbody.innerHTML = '';
 
-        // Create a new tbody
-        // let tbody = document.createElement('tbody');
-
         users.forEach(user => {
-          let avatar =
-            user.user_role_avatar && user.user_role_avatar.trim() !== ''
-              ? user.user_role_avatar
-              : '../assets/img/avatars/default-avatar.png';
+          let avatar = user.user_role_avatar?.trim()? user.user_role_avatar: '../assets/img/avatars/default-avatar.png';
 
           // console.log(avatar); // Output: '../assets/img/avatars/default-avatar.png'
 
           // Determine dropdown menu options based on user status
           let dropdownMenu = '';
-          if (user.status === 'Pending') {
-            dropdownMenu = `
-                         <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-                         <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-                         `;
-          } else if (user.status === 'Active') {
-            dropdownMenu = `
-                         <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-                         <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
-                         <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
-                         `;
-          } else if (user.status === 'Suspended') {
-            dropdownMenu = `
-                         <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-                        `;
-          }
+            switch (user.status) {
+              case 'Pending':
+                dropdownMenu = `
+                            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+                            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
+                break;
+              case 'Active':
+                dropdownMenu = `
+                            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+                            <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
+                            <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>`;
+                break;
+              case 'Suspended':
+                dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
+                break;
+            }
 
           // Create row for user
 
@@ -208,9 +202,10 @@ document.addEventListener('DOMContentLoaded', function () {
                   <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${
                     user.user_id
                   }" title="Delete User"></a>
+                  <div class="dropdown d-inline">
                   <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-                  <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
+                  <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div></div>
                 </td>
             `;
           tbody.appendChild(row);
@@ -224,6 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
       .catch(error => {
         console.error('Error fetching user list:', error);
         tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Failed to load data</td></tr>`;
+        loadingBarContainer.style.display = 'none'; // Hide loading bar on error
       });
   }
 
