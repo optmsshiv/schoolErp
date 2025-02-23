@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
 
-    fetch(`/php/userRole/get_user_role.php?page=${page}&limit=${rowsPerPage}`) // Replace with your actual API endpoint
+    fetch(`/php/userRole/get_user_role.php?page=${page}&limit=${usersPerPage}`) // Replace with your actual API endpoint
       .then(response => {
         loadingBar.style.width = '50%'; // Halfway progress
         return response.json();
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       .then(data => {
         let users = data.users;
-        let totalPages = Math.ceil(data.total / rowsPerPage);
+        let totalPages = data.totalPages;
 
         tbody.innerHTML = ''; // Clear previous rows
         let fragment = document.createDocumentFragment();
