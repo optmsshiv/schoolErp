@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function fetchUserList() {
 
-   // let tbody = userTable.querySelector('tbody');
+    let tbody = userTable.querySelector('tbody');
 
     // Show a loading message while fetching data
     if (!tbody) {
