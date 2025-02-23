@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function getDropdownMenu(user) {
       if (user.status === 'Pending') {
         return `
-            <a class="dropdown-item border-bottom userEdi" href="javascript:;" data-id="${user.user_id}">Edit</a>
+            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
             <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
         `;
       } else if (user.status === 'Active') {
