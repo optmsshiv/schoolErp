@@ -125,24 +125,39 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('../php/userRole/get_user_role.php') // Replace with your actual API endpoint
       .then(response => response.json())
       .then(users => {
-        let userTableBody = document.getElementById('userTableBody'); // Your table body ID
-        userTableBody.innerHTML = ''; // Clear existing table data
+        let userTable = document.getElementById('userTable');
+
+        // Clear existing rows except the header
+        userTable.querySelectorAll('tbody').forEach(tbody => tbody.remove());
+
+        // Create a new tbody
+        let tbody = document.createElement('tbody');
 
         users.forEach(user => {
-          let row = `<tr>
-                <td>${user.id}</td>
+          let row = document.createElement('tr');
+          row.innerHTML = `
+                <td style="text-align: center;"><input type="checkbox" class="select-user" data-user-id="${
+                  user.id
+                }"></td>
+                <td style="text-align: center;">${user.id}</td>
                 <td>${user.fullname}</td>
-                <td>${user.email}</td>
-                <td>${user.phone}</td>
                 <td>${user.role}</td>
-                <td>${user.status}</td>
+                <td>${user.phone}</td>
+                <td>${user.join_date}</td>
                 <td>
+                    <span class="badge ${user.status === 'Active' ? 'bg-success' : 'bg-danger'}">
+                        ${user.status}
+                    </span>
+                </td>
+                <td style="text-align: center;">
                     <button class="btn btn-warning btn-sm" onclick="editUser(${user.id})">Edit</button>
                     <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Delete</button>
                 </td>
-            </tr>`;
-          userTableBody.innerHTML += row;
+            `;
+          tbody.appendChild(row);
         });
+
+        userTable.appendChild(tbody);
       })
       .catch(error => console.error('Error fetching user list:', error));
   }
