@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   // fetchUserList(); // Fetch and populate the user table when the page loads
 
-  addNewUserToTable(data);
-
+ // addNewUserToTable(data);
+/*
   function addNewUserToTable(user) {
     let userTable = document.getElementById('userTable');
     let tbody = userTable.querySelector('tbody');
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
     tbody.appendChild(row);
   }
 
-
+*/
   function handleFormSubmit(event) {
     event.preventDefault();
     let form = event.target;
@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="dropdown-menu dropdown-menu-end">
                     ${dropdownMenu}
                 </div>
-            
+
         </td>
     `;
 
