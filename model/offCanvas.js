@@ -136,8 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
 
-    fetch('/php/userRole/get_user_role.php?page=${page}&limit=${usersPerPage}') // Replace with your actual API endpoint
-      /*
+    fetch('/php/userRole/get_user_role.php?page=${page}&limit=${rowsPerPage}') // Replace with your actual API endpoint
       .then(response => {
         loadingBar.style.width = '50%'; // Halfway progress
         return response.json();
@@ -145,12 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       .then(data => {
         let users = data.users;
-        let totalPages = Math.ceil(data.total / rowsPerPage);*/
-
-      .then(response => response.json())
-      .then(data => {
-        let users = data.users;
-        let totalPages = data.totalPages;
+        let totalPages = Math.ceil(data.total / rowsPerPage);
 
         tbody.innerHTML = ''; // Clear previous rows
         let fragment = document.createDocumentFragment();
@@ -247,13 +241,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // ✅ Pagination Controls
   function updatePaginationControls(totalPages) {
     let paginationDiv = document.getElementById('paginationControls');
-
-    // ✅ Ensure the element exists
-    if (!paginationDiv) {
-      console.error('Pagination controls container not found!');
-      return;
-    }
-
     paginationDiv.innerHTML = '';
 
     for (let i = 1; i <= totalPages; i++) {
