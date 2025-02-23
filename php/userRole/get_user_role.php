@@ -9,5 +9,6 @@ $stmt->execute();
 
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-echo json_encode($users);
+// echo json_encode($users);
+echo json_encode(["users" => $users]);
 ?>
