@@ -176,14 +176,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td><input type="checkbox" class="row-select"></td>
                 <td>${user.user_id}</td>
                 <td>
-                  <div class="d-flex align-items-center">
                     <div class="avatar avatar-sm">
                       <img src="${avatar}" alt="avatar" class="rounded-circle" loading="lazy" />
                     </div>
                     <div class="ms-2">
                       <h6 class="mb-0 ms-2">${user.fullname}</h6>
                     </div>
-                  </div>
                 </td>
                 <td>${user.role}</td>
                 <td>${user.phone}</td>
@@ -211,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
           tbody.appendChild(row);
         });
 
-        
+
         //  userTable.appendChild(tbody);
         loadingBar.style.width = '100%'; // Complete progress
         setTimeout(() => {
