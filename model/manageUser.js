@@ -293,7 +293,7 @@ $.ajax({
           alert('User details updated successfully!');
 
           // Update the user avatar preview in the modal
-          if (response.avatar_path && avatarFile) {
+          if (response.avatar_path) {
             $('#userAvatar').attr('src', response.avatar_path);
           }
 
@@ -342,7 +342,7 @@ $.ajax({
   });
 
   // Handling Status Change (Activate, Suspend)
-  
+
   $(document).on('click', '.userActivate', function () {
     var userId = $(this).data('id');
     if (confirm('Are you sure you want to activate this user?')) {
