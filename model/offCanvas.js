@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
       form.addEventListener('submit', handleFormSubmit);
     });
   }
-  fetchUserList(); // Fetch and populate the user table when the page loads
+  
+     fetchUserList(); // Fetch and populate the user table when the page loads
 
   function handleFormSubmit(event) {
     event.preventDefault();
@@ -87,8 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
               // Send WhatsApp Message
               sendWhatsAppMessage(data.fullname, data.user_id, data.password, data.phone, data.role, data.status);
-              // Refresh the user list
-              fetchUserList();
+
             }
           });
         } else {
