@@ -132,36 +132,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Create a new tbody
         let tbody = document.createElement('tbody');
-        let user = { user_role_avatar: '' }; // Simulating an empty avatar
-        var avatar =
-          user.user_role_avatar && user.user_role_avatar.trim() !== ''
-            ? user.user_role_avatar
-            : '../assets/img/avatars/default-avatar.png';
 
-        console.log(avatar); // Output: '../assets/img/avatars/default-avatar.png'
+          users.forEach(user => {
+          //  let user = { user_role_avatar: '' }; // Simulating an empty avatar
+            let avatar =
+              user.user_role_avatar && user.user_role_avatar.trim() !== ''
+                ? user.user_role_avatar
+                : '../assets/img/avatars/default-avatar.png';
 
-        // Determine dropdown menu options based on user status
-        let dropdownMenu = '';
-        if (user.status === 'Pending') {
-          dropdownMenu = `
+           // console.log(avatar); // Output: '../assets/img/avatars/default-avatar.png'
+
+            // Determine dropdown menu options based on user status
+            let dropdownMenu = '';
+            if (user.status === 'Pending') {
+              dropdownMenu = `
                          <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
                          <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                          `;
-                } else if (user.status === 'Active') {
-                dropdownMenu = `
+            } else if (user.status === 'Active') {
+              dropdownMenu = `
                          <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
                          <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
                          <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
                          `;
-                 } else if (user.status === 'Suspended') {
-                 dropdownMenu = `
+            } else if (user.status === 'Suspended') {
+              dropdownMenu = `
                          <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                         `;
-        }
+            }
 
-        users.forEach(user => {
-          let row = document.createElement('tr');
-          row.innerHTML = `
+            let row = document.createElement('tr');
+            row.innerHTML = `
                 <td><input type="checkbox" class="row-select"></td>
                 <td>${user.user_id}</td>
                 <td>
@@ -196,8 +197,8 @@ document.addEventListener('DOMContentLoaded', function () {
                   <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
                 </td>
             `;
-          tbody.appendChild(row);
-        });
+            tbody.appendChild(row);
+          });
 
         userTable.appendChild(tbody);
       })

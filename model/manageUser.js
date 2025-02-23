@@ -50,6 +50,7 @@ $(function () {
   }
 
   // Fetch user data using AJAX
+  /*
 $.ajax({
   url: '../php/userRole/get_user_role.php',
   type: 'GET',
@@ -61,6 +62,97 @@ $.ajax({
   },
   error: function (xhr, status, error) {
     console.error('AJAX error:', status, error);
+  }
+});*/
+
+$.ajax({
+  url: '../php/userRole/get_user_role.php', // The PHP file where user data is fetched
+  type: 'GET',
+  dataType: 'json',
+  success: function (response) {
+    // Check if data exists
+    if (response && response.length > 0) {
+      // var tableBody = $('#userTable tbody');
+      // tableBody.empty(); // Clear any existing rows
+
+      var table = $('#userTable').DataTable(); // Get the DataTable instance
+      table.clear().draw(); // Clear existing table data
+
+      // Loop through each user and append rows to the table
+      response.forEach(function (user) {
+        // Default avatar if not available
+        var avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
+
+        // Determine dropdown menu options based on user status
+        var dropdownMenu = '';
+        if (user.status === 'Pending') {
+          dropdownMenu = `
+<a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+`;
+        } else if (user.status === 'Active') {
+          dropdownMenu = `
+<a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+<a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
+<a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
+`;
+        } else if (user.status === 'Suspended') {
+          dropdownMenu = `
+<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
+`;
+        }
+
+        var row = `
+<tr data-id="${user.user_id}">
+  <td><input type="checkbox" class="row-select"></td>
+  <td>${user.user_id}</td>
+  <td>
+    <div class="d-flex align-items-center">
+      <div class="avatar avatar-sm">
+        <img src="${avatar}" alt="avatar" class="rounded-circle" />
+      </div>
+      <div class="ms-2">
+        <h6 class="mb-0 ms-2">${user.fullname}</h6>
+      </div>
+    </div>
+  </td>
+  <td>${user.role}</td>
+  <td>${user.phone}</td>
+  <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
+  <td><span class="badge ${
+    user.status === 'Active'
+      ? 'bg-label-success'
+      : user.status === 'Suspended'
+      ? 'bg-label-secondary'
+      : 'bg-label-warning'
+  }">${user.status}</span></td>
+  <td>
+    <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${
+      user.user_id
+    }" title="View User"></a>
+    <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${
+      user.user_id
+    }" title="Delete User"></a>
+    <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
+      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+    <div class="dropdown-menu dropdown-menu-end">
+      ${dropdownMenu}
+    </div>
+  </td>
+</tr>
+`;
+        // tableBody.append(row); // Add the new row to the table
+        table.row.add($(row)).draw(false); // ✅ Correctly add new rows
+      });
+
+      // Reinitialize DataTable after adding rows dynamically
+      // table.rows.add($('#userTable tbody tr')).draw();
+    } else {
+      alert('No users found!');
+    }
+  },
+  error: function (xhr, status, error) {
+    console.error('AJAX error: ' + status + ': ' + error);
   }
 });
 
@@ -141,7 +233,6 @@ $.ajax({
 
     // Show user ID in console for debugging
     // console.log('Edit User ID:', userId);
-
     // Load the modal content dynamically
     $.ajax({
       url: '/html/model_user_edit/user_edit.html', // Adjust path based on your folder structure
@@ -293,7 +384,7 @@ $.ajax({
           alert('User details updated successfully!');
 
           // Update the user avatar preview in the modal
-          if (response.avatar_path) {
+          if (response.avatar_path && avatarFile) {
             $('#userAvatar').attr('src', response.avatar_path);
           }
 
@@ -342,7 +433,6 @@ $.ajax({
   });
 
   // Handling Status Change (Activate, Suspend)
-
   $(document).on('click', '.userActivate', function () {
     var userId = $(this).data('id');
     if (confirm('Are you sure you want to activate this user?')) {
