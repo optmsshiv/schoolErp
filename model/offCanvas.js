@@ -79,8 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
             form.reset(); // Reset form
             form.querySelectorAll('input[type="hidden"]').forEach(input => (input.value = ''));
 
-
-             // fetchUserList(); // Fetch and populate the user table when the page loads
+             // add new user row into the table
              addNewUserToTable(data);
 
               // Send WhatsApp Message
@@ -118,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function fetchUserList() {
-
+    let userTable = document.getElementById('userTable');
     let tbody = userTable.querySelector('tbody');
 
     // Show a loading message while fetching data
@@ -131,15 +130,12 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('/php/userRole/get_user_role.php') // Replace with your actual API endpoint
       .then(response => response.json())
       .then(users => {
-        let userTable = document.getElementById('userTable');
 
-        // Remove old tbody if exists
-        userTable.querySelectorAll('tbody').forEach(tbody => tbody.remove());
         // Clear existing rows
-        //  tbody.innerHTML = '';
+          tbody.innerHTML = '';
 
         // Create a new tbody
-        let tbody = document.createElement('tbody');
+       // let tbody = document.createElement('tbody');
 
         users.forEach(user => {
           let avatar =
@@ -215,6 +211,29 @@ document.addEventListener('DOMContentLoaded', function () {
         tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Failed to load data</td></tr>`;
       });
   }
+
+  // ✅ Event Delegation for Efficient Event Handling
+  document.getElementById('userTable').addEventListener('click', function (e) {
+    let target = e.target;
+    let userId = target.dataset.id;
+
+    if (target.classList.contains('userEdit')) {
+      editUser(userId);
+    } else if (target.classList.contains('userDelete')) {
+      deleteUser(userId);
+    } else if (target.classList.contains('userActivate')) {
+      activateUser(userId);
+    } else if (target.classList.contains('userSuspend')) {
+      suspendUser(userId);
+    } else if (target.classList.contains('userCredential')) {
+      sendUserCredential(userId);
+    }
+  });
+
+  // ✅ Auto Fetch Data on Page Load
+  document.addEventListener('DOMContentLoaded', fetchUserList);
+
+  // add new user to table row
 
   function addNewUserToTable(user) {
     let userTable = document.getElementById('userTable');
@@ -293,28 +312,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     tbody.appendChild(row);
   }
-
-
-  // ✅ Event Delegation for Efficient Event Handling
-  document.getElementById('userTable').addEventListener('click', function (e) {
-    let target = e.target;
-    let userId = target.dataset.id;
-
-    if (target.classList.contains('userEdit')) {
-      editUser(userId);
-    } else if (target.classList.contains('userDelete')) {
-      deleteUser(userId);
-    } else if (target.classList.contains('userActivate')) {
-      activateUser(userId);
-    } else if (target.classList.contains('userSuspend')) {
-      suspendUser(userId);
-    } else if (target.classList.contains('userCredential')) {
-      sendUserCredential(userId);
-    }
-  });
-
-  // ✅ Auto Fetch Data on Page Load
-  document.addEventListener('DOMContentLoaded', fetchUserList);
 
   /*
   function updateUserInTable(user) {
