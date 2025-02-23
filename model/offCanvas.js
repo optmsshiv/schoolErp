@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  fetchUserList(1); // Fetch and populate the user table when the page loads
+  fetchUserList(page = 1); // Fetch and populate the user table when the page loads
 
   function handleFormSubmit(event) {
     event.preventDefault();
