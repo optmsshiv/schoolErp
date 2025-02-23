@@ -1,5 +1,5 @@
 let currentPage = 1;
-let rowsPerPage = parseInt(document.getElementById('customLength').value); // Default value
+let rowsPerPage = parseInt(document.getElementById('customLength').value, 10) || 10; // Default value
 
 document.addEventListener('DOMContentLoaded', function () {
   // Load off-canvas HTML dynamically
