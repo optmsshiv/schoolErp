@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
       form.addEventListener('submit', handleFormSubmit);
     });
   }
-  // fetchUserList(); // Fetch and populate the user table when the page loads
+   fetchUserList(); // Fetch and populate the user table when the page loads
 
  // addNewUserToTable(data);
 /*
