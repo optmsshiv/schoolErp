@@ -116,8 +116,8 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function fetchUserList() {
-    let userTable = document.getElementById('userTable');
-    let tbody = userTable.querySelector('tbody');
+
+   // let tbody = userTable.querySelector('tbody');
 
     // Show a loading message while fetching data
     if (!tbody) {
@@ -129,6 +129,8 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch('/php/userRole/get_user_role.php') // Replace with your actual API endpoint
       .then(response => response.json())
       .then(users => {
+
+        let userTable = document.getElementById('userTable');
         // Clear existing rows
         tbody.innerHTML = '';
 
