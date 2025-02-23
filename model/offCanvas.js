@@ -1,5 +1,6 @@
 let currentPage = 1;
-const rowsPerPage = 10;
+let rowsPerPage = parseInt(document.getElementById('customLength').value); // Default value
+
 document.addEventListener('DOMContentLoaded', function () {
   // Load off-canvas HTML dynamically
   fetch('../model/offCanvas.html')
@@ -32,7 +33,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  fetchUserList(1); // Fetch and populate the user table when the page loads
+   rowsPerPage = parseInt(this.value);
+   currentPage = 1; // Reset to the first page when changing rows per page
+   fetchUserList(currentPage, rowsPerPage); // Fetch and populate the user table when the page loads
 
   function handleFormSubmit(event) {
     event.preventDefault();
@@ -117,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  function fetchUserList(page = 1) {
+  function fetchUserList(page = 1, limit = rowsPerPage) {
     let userTable = document.getElementById('userTable');
     let tbody = userTable.querySelector('tbody');
 
@@ -135,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
 
-    fetch(`/php/userRole/get_user_role.php?page=${page}&limit=${rowsPerPage}`) // Replace with your actual API endpoint
+    fetch(`/php/userRole/get_user_role.php?page=${page}&limit=${limit}`) // Replace with your actual API endpoint
       .then(response => {
         loadingBar.style.width = '50%'; // Halfway progress
         return response.json();
@@ -143,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       .then(data => {
         let users = data.users;
-        let totalPages = Math.ceil(data.total / rowsPerPage);
+        let totalPages = Math.ceil(data.total / limit);
 
         tbody.innerHTML = ''; // Clear previous rows
         let fragment = document.createDocumentFragment();
