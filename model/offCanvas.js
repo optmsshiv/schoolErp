@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       return `${day}-${month}-${year}`; // Return in DD-MM-YYYY format
     }
-
+/*
     function getDropdownMenu(user) {
       if (user.status === 'Pending') {
         return `
@@ -314,13 +314,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       return ''; // Return empty if no status matches
     }
-
-
+*/
+/*
   window.addNewUserToTable = function (user) {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
 
     let avatar = user.user_role_avatar ? user.user_role_avatar : '../assets/img/avatars/default-avatar.png';
-    
+
 
     // Determine dropdown menu options based on user status
     /*
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (user.status === 'Suspended') {
       dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
     }*/
-
+/*
     // Add new row to DataTable correctly
     let rowData = [
       `<input type="checkbox" class="row-select">`,
@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (rowNode) {
       $(rowNode).attr('data-id', user.user_id); // Safe way to set attributes
     }
-  };
+  };*/
 
 });
 
