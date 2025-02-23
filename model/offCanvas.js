@@ -210,6 +210,8 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
           tbody.appendChild(row);
         });
+
+        
         //  userTable.appendChild(tbody);
         loadingBar.style.width = '100%'; // Complete progress
         setTimeout(() => {
