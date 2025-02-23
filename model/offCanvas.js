@@ -120,6 +120,14 @@ document.addEventListener('DOMContentLoaded', function () {
     let userTable = document.getElementById('userTable');
     let tbody = userTable.querySelector('tbody');
 
+
+    let loadingBarContainer = document.getElementById('loadingBarContainer');
+    let loadingBar = document.getElementById('loadingBar');
+
+    // Show the loading bar
+    loadingBarContainer.style.display = 'block';
+    loadingBar.style.width = '10%';
+
     // Show a loading message while fetching data
     if (!tbody) {
       tbody = document.createElement('tbody');
@@ -128,14 +136,17 @@ document.addEventListener('DOMContentLoaded', function () {
     tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
 
     fetch('/php/userRole/get_user_role.php') // Replace with your actual API endpoint
-      .then(response => response.json())
-      .then(users => {
+      .then(response => {
+        loadingBar.style.width = '50%'; // Halfway progress
+        return response.json();
+      })
 
+      .then(users => {
         // Clear existing rows
-          tbody.innerHTML = '';
+        tbody.innerHTML = '';
 
         // Create a new tbody
-       // let tbody = document.createElement('tbody');
+        // let tbody = document.createElement('tbody');
 
         users.forEach(user => {
           let avatar =
@@ -204,7 +215,11 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
           tbody.appendChild(row);
         });
-      //  userTable.appendChild(tbody);
+        //  userTable.appendChild(tbody);
+        loadingBar.style.width = '100%'; // Complete progress
+        setTimeout(() => {
+          loadingBarContainer.style.display = 'none'; // Hide after 500ms
+        }, 500);
       })
       .catch(error => {
         console.error('Error fetching user list:', error);
