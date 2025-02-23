@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
 
-    fetch('/php/userRole/get_user_role.php') // Replace with your actual API endpoint
+    fetch('/php/userRole/get_user_role.php?page=${page}&limit=${rowsPerPage}') // Replace with your actual API endpoint
       .then(response => {
         loadingBar.style.width = '50%'; // Halfway progress
         return response.json();
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div></div>
                 </td>
             `;
-          tbody.appendChild(row);
+          fragment.appendChild(fragment);
         });
         tbody.appendChild(fragment); // Append all rows at once (performance boost)
 
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ✅ Search Filter
-  document.getElementById('searchInput').addEventListener('input', function () {
+  document.getElementById('searchBox').addEventListener('input', function () {
     let filter = this.value.toLowerCase();
     let rows = document.querySelectorAll('#userTable tbody tr');
 
