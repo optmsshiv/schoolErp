@@ -139,11 +139,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td style="text-align: center;"><input type="checkbox" class="select-user" data-user-id="${
                   user.id
                 }"></td>
-                <td style="text-align: center;">${user.id}</td>
+                <td style="text-align: center;">${user.user_id}</td>
                 <td>${user.fullname}</td>
                 <td>${user.role}</td>
                 <td>${user.phone}</td>
-                <td>${user.join_date}</td>
+                <td>${formatDate(user.joining_date)}</td>
                 <td>
                     <span class="badge ${user.status === 'Active' ? 'bg-success' : 'bg-danger'}">
                         ${user.status}
