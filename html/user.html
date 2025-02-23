@@ -899,10 +899,34 @@
                       </tbody>
                     </table>
                     <div class="table-light text-center align-middle mt-3"> <!-- ✅ Table footer -->
-                      <tr>
+                      
                         <td colspan="8">Showing <span id="totalRecords">0</span> users</td>
-                      </tr>
+
                       <div id="paginationControls" class="d-flex justify-content-center mt-3"></div>
+
+                      <div class="pagination pagination-rounded">
+                        <button id="first-page" class="btn btn-outline-primary" title="First">
+                          <i class="fas fa-angle-double-left"></i>
+                        </button>
+                        <button id="prev-page" class="btn btn-outline-primary ms-1" title="Previous">
+                          <i class="fas fa-angle-left"></i>
+                        </button>
+
+                        <div class="page-numbers mx-2" id="page-numbers">
+                          <button class="btn btn-primary">1</button>
+                          <button class="btn btn-outline-primary">2</button>
+                          <button class="btn btn-outline-primary">3</button>
+                          <span class="btn btn-outline-primary disabled">...</span>
+                          <button class="btn btn-outline-primary">10</button>
+                        </div>
+
+                        <button id="next-page" class="btn btn-outline-primary" title="Next">
+                          <i class="fas fa-angle-right"></i>
+                        </button>
+                        <button id="last-page" class="btn btn-outline-primary ms-1" title="Last">
+                          <i class="fas fa-angle-double-right"></i>
+                        </button>
+                      </div>
 
                     </div>
                 </div>
