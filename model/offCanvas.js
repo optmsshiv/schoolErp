@@ -141,22 +141,22 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log(avatar); // Output: '../assets/img/avatars/default-avatar.png'
 
         // Determine dropdown menu options based on user status
-        var dropdownMenu = '';
+        let dropdownMenu = '';
         if (user.status === 'Pending') {
           dropdownMenu = `
                          <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
                          <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
                          `;
-                                 } else if (user.status === 'Active') {
-                                   dropdownMenu = `
+                } else if (user.status === 'Active') {
+                dropdownMenu = `
                          <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
                          <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
                          <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
                          `;
-                                 } else if (user.status === 'Suspended') {
-                                   dropdownMenu = `
+                 } else if (user.status === 'Suspended') {
+                 dropdownMenu = `
                          <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-                         `;
+                        `;
         }
 
         users.forEach(user => {
@@ -191,11 +191,10 @@ document.addEventListener('DOMContentLoaded', function () {
                   <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${
                     user.user_id
                   }" title="Delete User"></a>
+
                   <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-                  <div class="dropdown-menu dropdown-menu-end">
-                    ${dropdownMenu}
-                  </div>
+                  <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
                 </td>
             `;
           tbody.appendChild(row);
