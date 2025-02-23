@@ -136,22 +136,40 @@ document.addEventListener('DOMContentLoaded', function () {
         users.forEach(user => {
           let row = document.createElement('tr');
           row.innerHTML = `
-                <td style="text-align: center;"><input type="checkbox" class="select-user" data-user-id="${
-                  user.id
-                }"></td>
-                <td style="text-align: center;">${user.user_id}</td>
-                <td>${user.fullname}</td>
+                <td><input type="checkbox" class="row-select"></td>
+                <td>${user.user_id}</td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm">
+                      <img src="${avatar}" alt="avatar" class="rounded-circle" />
+                    </div>
+                    <div class="ms-2">
+                      <h6 class="mb-0 ms-2">${user.fullname}</h6>
+                    </div>
+                  </div>
+                </td>
                 <td>${user.role}</td>
                 <td>${user.phone}</td>
-                <td>${formatDate(user.joining_date)}</td>
+                <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
+                <td><span class="badge ${
+                  user.status === 'Active'
+                    ? 'bg-label-success'
+                    : user.status === 'Suspended'
+                    ? 'bg-label-secondary'
+                    : 'bg-label-warning'
+                }">${user.status}</span></td>
                 <td>
-                    <span class="badge ${user.status === 'Active' ? 'bg-success' : 'bg-warning'}">
-                        ${user.status}
-                    </span>
-                </td>
-                <td style="text-align: center;">
-                    <button class="btn btn-warning btn-sm" onclick="editUser(${user.id})">Edit</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Delete</button>
+                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${
+                    user.user_id
+                  }" title="View User"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${
+                    user.user_id
+                  }" title="Delete User"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                  <div class="dropdown-menu dropdown-menu-end">
+                    ${dropdownMenu}
+                  </div>
                 </td>
             `;
           tbody.appendChild(row);
