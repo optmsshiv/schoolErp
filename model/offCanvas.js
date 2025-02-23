@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-    // fetchUserList(); // Fetch and populate the user table when the page loads
+     fetchUserList(); // Fetch and populate the user table when the page loads
 
   function handleFormSubmit(event) {
     event.preventDefault();
@@ -79,16 +79,11 @@ document.addEventListener('DOMContentLoaded', function () {
             form.reset(); // Reset form
             form.querySelectorAll('input[type="hidden"]').forEach(input => (input.value = ''));
 
-            if (isEdit) {
-              // Update the existing user in the table
-              updateUserInTable(data);
-            } else {
-              // Add the new user to the table
-              // addNewUserToTable(data);
+
               fetchUserList(); // Fetch and populate the user table when the page loads
               // Send WhatsApp Message
               sendWhatsAppMessage(data.fullname, data.user_id, data.password, data.phone, data.role, data.status);
-            }
+
           });
         } else {
           Swal.fire({
@@ -136,6 +131,9 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(users => {
         // Clear existing rows
         tbody.innerHTML = '';
+
+        // Create a new tbody
+        let tbody = document.createElement('tbody');
 
         users.forEach(user => {
           let avatar =
@@ -204,6 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
           tbody.appendChild(row);
         });
+        userTable.appendChild(tbody);
       })
       .catch(error => {
         console.error('Error fetching user list:', error);
