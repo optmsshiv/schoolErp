@@ -174,12 +174,11 @@ document.addEventListener('DOMContentLoaded', function () {
           // Create row for user
 
           let row = document.createElement('tr');
-          row.classList.add('text-center', 'align-middle'); // ✅ Ensure row remains centered
           row.innerHTML = `
                 <td><input type="checkbox" class="row-select"></td>
                 <td>${user.user_id}</td>
                 <td>
-                  <div class="d-flex align-items-center justify-content-center">
+                  <div class="d-flex align-items-center justify-content-start">
                     <div class="avatar avatar-sm">
                       <img src="${avatar}" alt="avatar" class="rounded-circle" loading="lazy" />
                     </div>
