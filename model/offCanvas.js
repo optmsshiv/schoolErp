@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     ? 'bg-label-secondary'
                     : 'bg-label-warning'
                 }">${user.status}</span></td>
-                <td>
+                <td class="position-relative">
                   <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${
                     user.user_id
                   }" title="View User"></a>
