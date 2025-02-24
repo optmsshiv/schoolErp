@@ -162,7 +162,6 @@ document.addEventListener('DOMContentLoaded', function () {
     <div id="loadingSpinner" class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
-    Loading...
     </td></tr>`;
 
     fetch(`/php/userRole/get_user_role.php?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`) // Replace with your actual API endpoint
