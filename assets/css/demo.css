@@ -1159,11 +1159,10 @@ td {
   transition: width 0.5s ease-in-out;
 }
 
-.fade-in {
+/* Apply fade-in effect only to table rows, NOT dropdowns */
+tr.fade-in {
   opacity: 0;
   animation: fadeIn 0.5s ease-in-out forwards;
-  display: table-row;
-    /* Ensures table structure remains intact */
 }
 
 @keyframes fadeIn {
@@ -1174,4 +1173,11 @@ td {
   to {
     opacity: 1;
   }
+}
+
+/* Ensure dropdown menus are not affected */
+.dropdown-menu {
+  opacity: 1 !important;
+  transition: none !important;
+  transform: translateY(0) !important;
 }
