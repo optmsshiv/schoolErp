@@ -231,20 +231,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${user.role}</td>
                 <td>${user.phone}</td>
                 <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
-                <td><span class="badge ${user.status === 'Active'
-                ? 'bg-label-success'
-                : user.status === 'Suspended'
-                  ? 'bg-label-secondary'
-                  : 'bg-label-warning'
-              }">${user.status}</span></td>
+                <td><span class="badge ${
+                  user.status === 'Active'
+                    ? 'bg-label-success'
+                    : user.status === 'Suspended'
+                    ? 'bg-label-secondary'
+                    : 'bg-label-warning'
+                }">${user.status}</span></td>
                 <td>
-                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${user.user_id
-              }" title="View User"></a>
-                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${user.user_id
-              }" title="Delete User"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${
+                    user.user_id
+                  }" title="View User"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${
+                    user.user_id
+                  }" title="Delete User"></a>
 
                   <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
-                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
+                    data-bs-toggle="dropdown" data-bs-container="body" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                   <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
                 </td>
             `;
