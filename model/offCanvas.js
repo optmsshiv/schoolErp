@@ -1,6 +1,7 @@
 let currentPage = 1;
 let rowsPerPage = parseInt(document.getElementById('customLength').value); // Default value
 let isFetching = false; // ✅ Prevent multiple simultaneous requests
+let searchQuery = ""; // Store search query globally
 
 document.addEventListener('DOMContentLoaded', function () {
   // Load off-canvas HTML dynamically
@@ -129,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  function fetchUserList(page = 1, limit = rowsPerPage, search = '') {
+  function fetchUserList(page = 1, limit = rowsPerPage, search = searchQuery) {
     if (isFetching) return; // ✅ Prevent duplicate calls
     isFetching = true;
 
