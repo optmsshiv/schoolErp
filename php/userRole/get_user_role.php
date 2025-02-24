@@ -8,8 +8,15 @@ $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 
 $offset = ($page - 1) * $limit;
 
-// Use a single query to fetch filtered users and total count
-$query = "SELECT SQL_CALC_FOUND_ROWS * FROM userRole WHERE first_name LIKE :search LIMIT :limit OFFSET :offset";
+// Get total user count with search filter
+$totalQuery = "SELECT COUNT(*) as total FROM userRole WHERE first_name LIKE :search";
+$totalStmt = $pdo->prepare($totalQuery);
+$totalStmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+$totalStmt->execute();
+$total = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+// Get paginated users with search filter
+$query = "SELECT * FROM userRole WHERE first_name LIKE :search LIMIT :limit OFFSET :offset";
 $stmt = $pdo->prepare($query);
 $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
 $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -17,10 +24,6 @@ $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
 
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Fetch total count (avoiding duplicate query execution)
-$totalStmt = $pdo->query("SELECT FOUND_ROWS() AS total");
-$total = $totalStmt->fetch(PDO::FETCH_ASSOC)['total'];
 
 echo json_encode([
     'users' => $users,
