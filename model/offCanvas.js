@@ -489,13 +489,13 @@ document.addEventListener('click', function (event) {
 
   // Activate User
   if (target.classList.contains('userActivate')) {
-    let userId = target.dataset.id;
+    let userId = target.getAttribute('data-id');
     updateUserStatus(userId, 'Active', target);
   }
 
   // Suspend User
   if (target.classList.contains('userSuspend')) {
-    let userId = target.dataset.id;
+    let userId = target.getAttribute('data-id');
     updateUserStatus(userId, 'Suspended', target);
   }
 });
