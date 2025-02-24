@@ -215,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
             row.classList.add('fade-in'); // Add animation class
             row.classList.add('tr-animate'); // Add animation class
             row.innerHTML = `
+            <tr>
                 <td><input type="checkbox" class="form-check-input"></td>
                 <td>${user.user_id}</td>
                 <td>
@@ -250,6 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                   <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div></div>
                 </td>
+                </tr>
             `;
             fragment.appendChild(row);
           });
