@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function () {
       userTable.appendChild(tbody);
     }
     tbody.innerHTML = `<tr><td colspan="8" class="text-center">
-    <div id="loadingSpinner" class="spinner-border text-primary" role="status" style="display: none;">
+    <div id="loadingSpinner" class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
     Loading...
