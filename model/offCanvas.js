@@ -35,17 +35,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-   fetchUserList(currentPage, rowsPerPage);
+  //fetch form backened
+  fetchUserList(currentPage, rowsPerPage);
 
-   // ✅ Update rows per page when changed
-   const customLengthElement = document.getElementById('customLength');
-   if (customLengthElement) {
-     customLengthElement.addEventListener('change', function () {
-       rowsPerPage = parseInt(this.value, 10) || 10;
-       currentPage = 1; // Reset to the first page when changing rows per page
-       fetchUserList(currentPage, rowsPerPage);
-     });
-   }
+  // ✅ Update rows per page when changed
+  const customLengthElement = document.getElementById('customLength');
+  if (customLengthElement) {
+    customLengthElement.addEventListener('change', function () {
+      rowsPerPage = parseInt(this.value, 10) || 10;
+      currentPage = 1; // Reset to the first page when changing rows per page
+      fetchUserList(currentPage, rowsPerPage, searchQuery);
+    });
+  }
 
   function handleFormSubmit(event) {
     event.preventDefault();
@@ -230,20 +231,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${user.role}</td>
                 <td>${user.phone}</td>
                 <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
-                <td><span class="badge ${
-                  user.status === 'Active'
-                    ? 'bg-label-success'
-                    : user.status === 'Suspended'
-                    ? 'bg-label-secondary'
-                    : 'bg-label-warning'
-                }">${user.status}</span></td>
-                <td class="position-relative">
-                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${
-                    user.user_id
-                  }" title="View User"></a>
-                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${
-                    user.user_id
-                  }" title="Delete User"></a>
+                <td><span class="badge ${user.status === 'Active'
+                ? 'bg-label-success'
+                : user.status === 'Suspended'
+                  ? 'bg-label-secondary'
+                  : 'bg-label-warning'
+              }">${user.status}</span></td>
+                <td>
+                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${user.user_id
+              }" title="View User"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${user.user_id
+              }" title="Delete User"></a>
 
                   <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
@@ -276,6 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
       .finally(() => {
         isFetching = false;
       });
+
   }
 
   // ✅ Pagination Controls
@@ -336,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('searchBox').addEventListener('input', function () {
     clearTimeout(searchTimeout); // Clear previous timer
 
-    let searchQuery = this.value.trim().toLowerCase();
+    searchQuery = this.value.trim().toLowerCase();
     currentPage = 1; // Reset to first page when searching
 
     searchTimeout = setTimeout(() => {
@@ -345,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // ✅ Auto Refresh Every 5m
-  setInterval(() => fetchUserList(currentPage), 500000);
+  setInterval(() => fetchUserList(currentPage, rowsPerPage, searchQuery), 500000);
 
   // ✅ Event Delegation for Efficient Event Handling
   document.getElementById('userTable').addEventListener('click', function (e) {
@@ -366,7 +365,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // ✅ Load Data on Page Load
- //  document.addEventListener('DOMContentLoaded', () => fetchUserList(currentPage, rowsPerPage));
+  //  document.addEventListener('DOMContentLoaded', () => fetchUserList(currentPage, rowsPerPage));
 
   // add new user to table row
 
@@ -419,23 +418,20 @@ document.addEventListener('DOMContentLoaded', function () {
         <td>${user.phone}</td>
         <td>${formatDate(user.joining_date)}</td>
         <td>
-            <span class="badge ${
-              user.status === 'Active'
-                ? 'bg-label-success'
-                : user.status === 'Suspended'
-                ? 'bg-label-secondary'
-                : 'bg-label-warning'
-            }">
+            <span class="badge ${user.status === 'Active'
+        ? 'bg-label-success'
+        : user.status === 'Suspended'
+          ? 'bg-label-secondary'
+          : 'bg-label-warning'
+      }">
                 ${user.status}
             </span>
         </td>
         <td>
-            <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${
-              user.user_id
-            }" title="View User"></a>
-            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${
-              user.user_id
-            }" title="Delete User"></a>
+            <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${user.user_id
+      }" title="View User"></a>
+            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${user.user_id
+      }" title="Delete User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
