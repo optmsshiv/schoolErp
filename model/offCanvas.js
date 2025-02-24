@@ -180,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (users.length === 0) {
           tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">No users found.</td></tr>`;
+          return; // Stop further execution
         } else {
           let fragment = document.createDocumentFragment();
 
