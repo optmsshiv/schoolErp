@@ -250,6 +250,11 @@ document.addEventListener('DOMContentLoaded', function () {
             fragment.appendChild(row);
           });
           tbody.appendChild(fragment); // Append all rows at once (performance boost)
+
+          document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(dropdown => {
+            new bootstrap.Dropdown(dropdown);
+        });
+
         }
         // ✅ Update total user count in footer
         document.getElementById('totalRecords').textContent = users.length;
