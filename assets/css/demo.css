@@ -1162,7 +1162,7 @@ td {
 /* Apply fade-in effect only to table rows, NOT dropdowns */
 .fade-in {
     opacity: 0;
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.8s ease-in-out forwards;
 }
 
 @keyframes fadeIn {
