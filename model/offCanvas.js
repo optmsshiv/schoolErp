@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let row = document.createElement('tr');
             row.classList.add('fade-in'); // Add animation class
-            row.classList.add('tr-animate'); // Add animation class
+           // row.classList.add('tr-animate'); // Add animation class
             row.innerHTML = `
                 <td><input type="checkbox" class="form-check-input"></td>
                 <td>${user.user_id}</td>
