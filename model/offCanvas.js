@@ -140,14 +140,17 @@ document.addEventListener('DOMContentLoaded', function () {
     let paginationInfo = document.getElementById('paginationInfo'); // ✅ Element for pagination info
     let loadingBarContainer = document.getElementById('loadingBarContainer');
     let loadingBar = document.getElementById('loadingBar');
+    let loadingSpinner = document.getElementById('loadingSpinner');
 
     document.getElementById('customLength').disabled = true;
     paginationDiv.innerHTML = '';
     paginationInfo.innerHTML = 'Loading...'; // ✅ Show loading text
 
     // Show the loading bar
+    loadingSpinner.style.display = 'inline-block';
     loadingBarContainer.style.display = 'block';
     loadingBar.style.width = '10%';
+    loadingBar.style.animation = 'progressBar 1.5s ease-in-out infinite';
 
     // Show a loading message while fetching data
     if (!tbody) {
@@ -204,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Create row for user
 
             let row = document.createElement('tr');
+            row.classList.add('fade-in'); // Add animation class
             row.classList.add('tr-animate'); // Add animation class
             row.innerHTML = `
                 <td><input type="checkbox" class="form-check-input"></td>
@@ -253,6 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
         loadingBar.style.width = '100%'; // Complete progress
         setTimeout(() => {
           loadingBarContainer.style.display = 'none'; // Hide after 500ms
+          loadingSpinner.style.display = 'none';
         }, 500);
 
         document.getElementById('customLength').disabled = false;
@@ -261,6 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Error fetching user list:', error);
         tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Failed to load data</td></tr>`;
         loadingBarContainer.style.display = 'none'; // Hide loading bar on error
+        loadingSpinner.style.display = 'none';
       })
       .finally(() => {
         isFetching = false;

@@ -1137,3 +1137,39 @@ td {
 .tr-animate {
   animation: fadeIn 0.3s ease-in-out;
 }
+
+/* Improve loading bar animation */
+@keyframes progressBar {
+  0% {
+    width: 10%;
+  }
+
+  50% {
+    width: 50%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+.loading-bar {
+  height: 4px;
+  background-color: #007bff;
+  transition: width 0.5s ease-in-out;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
