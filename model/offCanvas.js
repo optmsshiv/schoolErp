@@ -176,12 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let totalPages = Math.ceil(data.total / limit);
         let start = (page - 1) * limit + 1;
         let end = Math.min(page * limit, totalRecords);
-        // tbody.innerHTML = ''; // Clear previous rows
-
-        // Check if the first row is "No users found" and remove it
-        if (tbody.querySelector('.no-users-row')) {
-          tbody.innerHTML = ''; // Remove existing message
-        }
+        tbody.innerHTML = ''; // Clear previous rows
 
         if (users.length === 0) {
           tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">No users found.</td></tr>`;
@@ -217,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Create row for user
 
             let row = document.createElement('tr');
-            // row.classList.add('fade-in'); // Add animation class
+           // row.classList.add('fade-in'); // Add animation class
             row.classList.add('tr-animate'); // Add animation class
             row.innerHTML = `
                 <td><input type="checkbox" class="form-check-input"></td>
@@ -235,20 +230,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${user.role}</td>
                 <td>${user.phone}</td>
                 <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
-                <td><span class="badge ${
-                  user.status === 'Active'
-                    ? 'bg-label-success'
-                    : user.status === 'Suspended'
-                    ? 'bg-label-secondary'
-                    : 'bg-label-warning'
-                }">${user.status}</span></td>
+                <td><span class="badge ${user.status === 'Active'
+                ? 'bg-label-success'
+                : user.status === 'Suspended'
+                  ? 'bg-label-secondary'
+                  : 'bg-label-warning'
+              }">${user.status}</span></td>
                 <td>
-                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${
-                    user.user_id
-                  }" title="View User"></a>
-                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${
-                    user.user_id
-                  }" title="Delete User"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${user.user_id
+              }" title="View User"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${user.user_id
+              }" title="Delete User"></a>
 
                   <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
