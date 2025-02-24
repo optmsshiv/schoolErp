@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
   }
 
-  function fetchUserList(page = 1, limit = rowsPerPage) {
+  function fetchUserList(page = 1, limit = rowsPerPage, search = '') {
     if (isFetching) return; // ✅ Prevent duplicate calls
     isFetching = true;
 
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
 
-    fetch(`/php/userRole/get_user_role.php?page=${page}&limit=${limit}`) // Replace with your actual API endpoint
+    fetch(`/php/userRole/get_user_role.php?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`) // Replace with your actual API endpoint
       .then(response => {
         loadingBar.style.width = '50%'; // Halfway progress
         return response.json();
@@ -248,7 +248,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('totalRecords').textContent = users.length;
         updatePaginationControls(totalPages, totalRecords, start, end);
 
-
         //  userTable.appendChild(tbody);
         loadingBar.style.width = '100%'; // Complete progress
         setTimeout(() => {
@@ -256,7 +255,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 500);
 
         document.getElementById('customLength').disabled = false;
-
       })
       .catch(error => {
         console.error('Error fetching user list:', error);
@@ -321,14 +319,17 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ✅ Search Filter
-  document.getElementById('searchBox').addEventListener('input', function () {
-    let filter = this.value.toLowerCase();
-    let rows = document.querySelectorAll('#userTable tbody tr');
+  let searchTimeout;
 
-    rows.forEach(row => {
-      let userName = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-      row.style.display = userName.includes(filter) ? '' : 'none';
-    });
+  document.getElementById('searchBox').addEventListener('input', function () {
+    clearTimeout(searchTimeout); // Clear previous timer
+
+    let searchQuery = this.value.trim().toLowerCase();
+    currentPage = 1; // Reset to first page when searching
+
+    searchTimeout = setTimeout(() => {
+      fetchUserList(currentPage, rowsPerPage, searchQuery);
+    }, 300); // Debounce to wait 300ms after typing stops
   });
 
   // ✅ Auto Refresh Every 30s
