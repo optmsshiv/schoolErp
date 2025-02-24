@@ -162,6 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       .then(data => {
         let users = data.users;
+        let totalRecords = data.total;
         let totalPages = Math.ceil(data.total / limit);
         let start = (page - 1) * limit + 1;
         let end = Math.min(page * limit, totalRecords);
@@ -246,15 +247,15 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('totalRecords').textContent = users.length;
         updatePaginationControls(totalPages, totalRecords, start, end);
 
-        // ✅ Update pagination
-        updatePaginationControls(totalPages);
 
         //  userTable.appendChild(tbody);
         loadingBar.style.width = '100%'; // Complete progress
         setTimeout(() => {
           loadingBarContainer.style.display = 'none'; // Hide after 500ms
         }, 500);
+
         document.getElementById('customLength').disabled = false;
+
       })
       .catch(error => {
         console.error('Error fetching user list:', error);
@@ -267,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ✅ Pagination Controls
-  function updatePaginationControls(totalPages) {
+  function updatePaginationControls(totalPages, totalRecords, start, end) {
     let paginationDiv = document.getElementById('paginationControls');
     let paginationInfo = document.getElementById('paginationInfo'); // ✅ Create an element for pagination info
 
