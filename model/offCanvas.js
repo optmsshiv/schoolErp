@@ -1,5 +1,6 @@
 let currentPage = 1;
 let rowsPerPage = parseInt(document.getElementById('customLength').value); // Default value
+let isFetching = false; // ✅ Prevent multiple simultaneous requests
 
 document.addEventListener('DOMContentLoaded', function () {
   // Load off-canvas HTML dynamically
@@ -32,6 +33,11 @@ document.addEventListener('DOMContentLoaded', function () {
       form.addEventListener('submit', handleFormSubmit);
     });
   }
+
+     // ✅ Load the user list when the page loads
+       document.addEventListener("DOMContentLoaded", function () {
+         fetchUserList(currentPage, rowsPerPage);
+       });
 
    document.getElementById('customLength').addEventListener('change', function () {
      rowsPerPage = parseInt(this.value);
@@ -123,11 +129,18 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function fetchUserList(page = 1, limit = rowsPerPage) {
+
+    if (isFetching) return; // ✅ Prevent duplicate calls
+    isFetching = true;
+
     let userTable = document.getElementById('userTable');
     let tbody = userTable.querySelector('tbody');
 
     let loadingBarContainer = document.getElementById('loadingBarContainer');
     let loadingBar = document.getElementById('loadingBar');
+
+    document.getElementById('customLength').disabled = true;
+    paginationDiv.innerHTML = '';
 
     // Show the loading bar
     loadingBarContainer.style.display = 'block';
