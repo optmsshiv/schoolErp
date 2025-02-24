@@ -454,6 +454,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // script to listen for clicks on Activate and Suspend actions
+  /*
     document.addEventListener('click', function (event) {
       let target = event.target;
 
@@ -481,7 +482,69 @@ document.addEventListener('DOMContentLoaded', function () {
       let spinner = document.querySelector('.loading-spinner');
       if (spinner) spinner.remove();
     }
+*/
 
+document.addEventListener('click', function (event) {
+  let target = event.target;
+
+  // Activate User
+  if (target.classList.contains('userActivate')) {
+    let userId = target.dataset.id;
+    updateUserStatus(userId, 'Active', target);
+  }
+
+  // Suspend User
+  if (target.classList.contains('userSuspend')) {
+    let userId = target.dataset.id;
+    updateUserStatus(userId, 'Suspended', target);
+  }
+});
+
+function updateUserStatus(userId, newStatus, targetElement) {
+  fetch('../php/userRole/update_user_status.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: userId, status: newStatus })
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Update the UI
+        let row = targetElement.closest('tr');
+        let statusBadge = row.querySelector('td span.badge');
+        let dropdownMenu = row.querySelector('.dropdown-menu');
+
+        // Change badge color and text
+        statusBadge.textContent = newStatus;
+        statusBadge.className = `badge ${
+          newStatus === 'Active'
+            ? 'bg-label-success'
+            : newStatus === 'Suspended'
+            ? 'bg-label-secondary'
+            : 'bg-label-warning'
+        }`;
+
+        // Update dropdown options based on new status
+        let newDropdownMenu = '';
+        if (newStatus === 'Active') {
+          newDropdownMenu = `
+                    <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${userId}">Edit</a>
+                    <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${userId}">Suspend</a>
+                    <a class="dropdown-item userCredential" href="javascript:;" data-id="${userId}">Send Credential</a>
+                `;
+        } else if (newStatus === 'Suspended') {
+          newDropdownMenu = `
+                    <a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>
+                `;
+        }
+
+        dropdownMenu.innerHTML = newDropdownMenu; // Replace dropdown options dynamically
+      } else {
+        alert('Failed to update status.');
+      }
+    })
+    .catch(error => console.error('Error:', error));
+}
 
   /*
   function updateUserInTable(user) {
