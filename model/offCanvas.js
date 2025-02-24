@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
         tbody.innerHTML = ''; // Clear previous rows
 
         if (users.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">No users found.</td></tr>`;
+          tbody.innerHTML = `<tr class="no-users-row"><td colspan="8" class="text-center text-muted">No users found.</td></tr>`;
         } else {
           let fragment = document.createDocumentFragment();
 
@@ -373,15 +373,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let userTable = document.getElementById('userTable');
     let tbody = userTable.querySelector('tbody');
 
+    let noUsersRow = tbody.querySelector('tr.no-users-row');
+    if (noUsersRow) {
+      noUsersRow.remove();
+    }
+
+
     if (!tbody) {
       tbody = document.createElement('tbody');
       userTable.appendChild(tbody);
-    }
-
-    // ✅ Remove "No users found" row if it exists
-    let noUsersRow = tbody.querySelector('.no-users-row');
-    if (noUsersRow) {
-      noUsersRow.remove();
     }
 
     let avatar =
@@ -425,23 +425,20 @@ document.addEventListener('DOMContentLoaded', function () {
         <td>${user.phone}</td>
         <td>${formatDate(user.joining_date)}</td>
         <td>
-            <span class="badge ${
-              user.status === 'Active'
-                ? 'bg-label-success'
-                : user.status === 'Suspended'
-                ? 'bg-label-secondary'
-                : 'bg-label-warning'
-            }">
+            <span class="badge ${user.status === 'Active'
+        ? 'bg-label-success'
+        : user.status === 'Suspended'
+          ? 'bg-label-secondary'
+          : 'bg-label-warning'
+      }">
                 ${user.status}
             </span>
         </td>
         <td>
-            <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${
-              user.user_id
-            }" title="View User"></a>
-            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${
-              user.user_id
-            }" title="Delete User"></a>
+            <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${user.user_id
+      }" title="View User"></a>
+            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${user.user_id
+      }" title="Delete User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
