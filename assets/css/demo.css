@@ -1173,3 +1173,6 @@ td {
     opacity: 1;
   }
 }
+#userTable {
+  overflow: visible !important;
+}
