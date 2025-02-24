@@ -344,8 +344,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 300); // Debounce to wait 300ms after typing stops
   });
 
-  // ✅ Auto Refresh Every 30s
-  setInterval(() => fetchUserList(currentPage), 100000);
+  // ✅ Auto Refresh Every 5m
+  setInterval(() => fetchUserList(currentPage), 500000);
 
   // ✅ Event Delegation for Efficient Event Handling
   document.getElementById('userTable').addEventListener('click', function (e) {
