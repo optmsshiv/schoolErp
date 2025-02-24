@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
       form.addEventListener('submit', handleFormSubmit);
     });
   }
-
+/*
      // ✅ Load the user list when the page loads
        document.addEventListener("DOMContentLoaded", function () {
          fetchUserList(currentPage, rowsPerPage);
@@ -43,7 +43,19 @@ document.addEventListener('DOMContentLoaded', function () {
      rowsPerPage = parseInt(this.value,10);
      currentPage = 1; // Reset to the first page when changing rows per page
      fetchUserList(currentPage, rowsPerPage);
-   });
+   }); */
+
+   fetchUserList(currentPage, rowsPerPage);
+
+   // ✅ Update rows per page when changed
+   const customLengthElement = document.getElementById('customLength');
+   if (customLengthElement) {
+     customLengthElement.addEventListener('change', function () {
+       rowsPerPage = parseInt(this.value, 10) || 10;
+       currentPage = 1; // Reset to the first page when changing rows per page
+       fetchUserList(currentPage, rowsPerPage);
+     });
+   }
 
   function handleFormSubmit(event) {
     event.preventDefault();
