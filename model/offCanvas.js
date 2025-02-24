@@ -245,10 +245,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     user.user_id
                   }" title="Delete User"></a>
 
-
+                  <div class="dropdown d-inline">
                   <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-                  <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
+                  <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div></div>
                 </td>
             `;
             fragment.appendChild(row);
