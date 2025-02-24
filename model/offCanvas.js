@@ -379,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ✅ Remove "No users found" row if it exists
-    let noUsersRow = tbody.querySelector('#no-users-row');
+    let noUsersRow = tbody.querySelector('.no-users-row');
     if (noUsersRow) {
       noUsersRow.remove();
     }
