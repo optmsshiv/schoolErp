@@ -216,44 +216,36 @@ document.addEventListener('DOMContentLoaded', function () {
             row.classList.add('tr-animate'); // Add animation class
             row.innerHTML = `
                 <td><input type="checkbox" class="form-check-input"></td>
-        <td>${user.user_id}</td>
-        <td>
-            <div class="d-flex align-items-center">
-                <div class="avatar avatar-sm">
-                    <img src="${avatar}" alt="avatar" class="rounded-circle" loading="lazy" />
-                </div>
-                <div class="ms-2">
-                    <h6 class="mb-0 ms-2">${user.fullname}</h6>
-                </div>
-            </div>
-        </td>
-        <td>${user.role}</td>
-        <td>${user.phone}</td>
-        <td>${formatDate(user.joining_date)}</td>
-        <td>
-            <span class="badge ${
-              user.status === 'Active'
+                <td>${user.user_id}</td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm">
+                      <img src="${avatar}" alt="avatar" class="rounded-circle" loading="lazy" />
+                    </div>
+                    <div class="ms-2">
+                      <h6 class="mb-0 ms-2">${user.fullname}</h6>
+                    </div>
+                  </div>
+                </td>
+                <td>${user.role}</td>
+                <td>${user.phone}</td>
+                <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
+                <td><span class="badge ${user.status === 'Active'
                 ? 'bg-label-success'
                 : user.status === 'Suspended'
-                ? 'bg-label-secondary'
-                : 'bg-label-warning'
-            }">
-                ${user.status}
-            </span>
-        </td>
-        <td>
-            <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${
-              user.user_id
-            }" title="View User"></a>
-            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${
-              user.user_id
-            }" title="Delete User"></a>
-                <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
+                  ? 'bg-label-secondary'
+                  : 'bg-label-warning'
+              }">${user.status}</span></td>
+                <td>
+                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${user.user_id
+              }" title="View User"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${user.user_id
+              }" title="Delete User"></a>
+
+                  <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm me-2 text-warning"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
-                <div class="dropdown-menu dropdown-menu-end">
-                    ${dropdownMenu}
-                </div>
-        </td>
+                  <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
+                </td>
             `;
             fragment.appendChild(row);
           });
