@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
        });
 
    document.getElementById('customLength').addEventListener('change', function () {
-     rowsPerPage = parseInt(this.value);
+     rowsPerPage = parseInt(this.value,10);
      currentPage = 1; // Reset to the first page when changing rows per page
      fetchUserList(currentPage, rowsPerPage);
    });
