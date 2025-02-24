@@ -33,17 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
       form.addEventListener('submit', handleFormSubmit);
     });
   }
-/*
-     // ✅ Load the user list when the page loads
-       document.addEventListener("DOMContentLoaded", function () {
-         fetchUserList(currentPage, rowsPerPage);
-       });
-
-   document.getElementById('customLength').addEventListener('change', function () {
-     rowsPerPage = parseInt(this.value,10);
-     currentPage = 1; // Reset to the first page when changing rows per page
-     fetchUserList(currentPage, rowsPerPage);
-   }); */
 
    fetchUserList(currentPage, rowsPerPage);
 
