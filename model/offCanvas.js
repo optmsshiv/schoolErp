@@ -162,8 +162,11 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(data => {
         let users = data.users;
         let totalPages = Math.ceil(data.total / limit);
-
         tbody.innerHTML = ''; // Clear previous rows
+
+        if (users.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">No users found.</td></tr>`;
+            } else {
         let fragment = document.createDocumentFragment();
 
         users.forEach(user => {
