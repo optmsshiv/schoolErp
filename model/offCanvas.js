@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Create row for user
 
             let row = document.createElement('tr');
-           // row.classList.add('fade-in'); // Add animation class
+            row.classList.add('fade-in'); // Add animation class
             row.classList.add('tr-animate'); // Add animation class
             row.innerHTML = `
                 <td><input type="checkbox" class="form-check-input"></td>
@@ -231,17 +231,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${user.role}</td>
                 <td>${user.phone}</td>
                 <td>${formatDate(user.joining_date)}</td> <!-- ✅ Formatted Date -->
-                <td><span class="badge ${user.status === 'Active'
-                ? 'bg-label-success'
-                : user.status === 'Suspended'
-                  ? 'bg-label-secondary'
-                  : 'bg-label-warning'
-              }">${user.status}</span></td>
+                <td><span class="badge ${
+                  user.status === 'Active'
+                    ? 'bg-label-success'
+                    : user.status === 'Suspended'
+                    ? 'bg-label-secondary'
+                    : 'bg-label-warning'
+                }">${user.status}</span></td>
                 <td>
-                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${user.user_id
-              }" title="View User"></a>
-                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${user.user_id
-              }" title="Delete User"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" id="userView" data-id="${
+                    user.user_id
+                  }" title="View User"></a>
+                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" id="userDelete" data-id="${
+                    user.user_id
+                  }" title="Delete User"></a>
                   <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                   <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div>
@@ -273,7 +276,6 @@ document.addEventListener('DOMContentLoaded', function () {
       .finally(() => {
         isFetching = false;
       });
-
   }
 
   // ✅ Pagination Controls
@@ -377,7 +379,6 @@ document.addEventListener('DOMContentLoaded', function () {
       noUsersRow.remove();
     }
 
-
     if (!tbody) {
       tbody = document.createElement('tbody');
       userTable.appendChild(tbody);
@@ -424,20 +425,23 @@ document.addEventListener('DOMContentLoaded', function () {
         <td>${user.phone}</td>
         <td>${formatDate(user.joining_date)}</td>
         <td>
-            <span class="badge ${user.status === 'Active'
-        ? 'bg-label-success'
-        : user.status === 'Suspended'
-          ? 'bg-label-secondary'
-          : 'bg-label-warning'
-      }">
+            <span class="badge ${
+              user.status === 'Active'
+                ? 'bg-label-success'
+                : user.status === 'Suspended'
+                ? 'bg-label-secondary'
+                : 'bg-label-warning'
+            }">
                 ${user.status}
             </span>
         </td>
         <td>
-            <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${user.user_id
-      }" title="View User"></a>
-            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${user.user_id
-      }" title="Delete User"></a>
+            <a href="javascript:;" class="tf-icons bx bx-show bx-sm me-2 text-info userView" data-id="${
+              user.user_id
+            }" title="View User"></a>
+            <a href="javascript:;" class="tf-icons bx bx-trash bx-sm me-2 text-danger userDelete" data-id="${
+              user.user_id
+            }" title="Delete User"></a>
                 <a href="javascript:;" class="tf-icons bx bx-dots-vertical-rounded bx-sm text-warning"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="More Options"></a>
                 <div class="dropdown-menu dropdown-menu-end">
@@ -448,6 +452,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
     tbody.appendChild(row);
   }
+
+  // script to listen for clicks on Activate and Suspend actions
+    document.addEventListener('click', function (event) {
+      let target = event.target;
+
+      if (target.classList.contains('userActivate')) {
+        let userId = target.getAttribute('data-id');
+        if (confirm('Are you sure you want to activate this user?')) {
+          changeStatus(userId, 'Active');
+        }
+      } else if (target.classList.contains('userSuspend')) {
+        let userId = target.getAttribute('data-id');
+        if (confirm('Are you sure you want to suspend this user?')) {
+          changeStatus(userId, 'Suspended');
+        }
+      }
+    });
+
+    function showLoadingSpinner() {
+      let spinner = document.createElement('div');
+      spinner.classList.add('loading-spinner');
+      spinner.textContent = 'Loading...';
+      document.body.appendChild(spinner);
+    }
+
+    function hideLoadingSpinner() {
+      let spinner = document.querySelector('.loading-spinner');
+      if (spinner) spinner.remove();
+    }
+
 
   /*
   function updateUserInTable(user) {
