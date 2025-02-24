@@ -1135,7 +1135,7 @@ td {
 }
 
 .tr-animate {
-  animation: fadeIn 0.3s ease-in-out forwards;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 /* Improve loading bar animation */
@@ -1162,7 +1162,7 @@ td {
 /* Apply fade-in effect only to table rows, NOT dropdowns */
 .fade-in {
     opacity: 0;
-    animation: fadeIn 0.8s ease-in-out forwards;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
