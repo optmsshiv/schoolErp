@@ -193,21 +193,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Determine dropdown menu options based on user status
             let dropdownMenu = '';
-            if (user.status === 'Pending') {
-              dropdownMenu = `
-            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-        `;
-            } else if (user.status === 'Active') {
-              dropdownMenu = `
-            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
-            <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
-            <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>
-        `;
-            } else if (user.status === 'Suspended') {
-              dropdownMenu = `
-            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>
-        `;
+            switch (user.status) {
+              case 'Pending':
+                dropdownMenu = `
+                            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+                            <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
+                break;
+              case 'Active':
+                dropdownMenu = `
+                            <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
+                            <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
+                            <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>`;
+                break;
+              case 'Suspended':
+                dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
+                break;
             }
 
             // Create row for user
