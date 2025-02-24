@@ -1162,6 +1162,8 @@ td {
 .fade-in {
   opacity: 0;
   animation: fadeIn 0.5s ease-in-out forwards;
+  display: table-row;
+    /* Ensures table structure remains intact */
 }
 
 @keyframes fadeIn {
