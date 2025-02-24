@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // ✅ Load Data on Page Load
-  document.addEventListener('DOMContentLoaded', () => fetchUserList());
+  // document.addEventListener('DOMContentLoaded', () => fetchUserList());
 
   // add new user to table row
 
