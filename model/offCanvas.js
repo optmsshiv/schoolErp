@@ -129,18 +129,19 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function fetchUserList(page = 1, limit = rowsPerPage) {
-
     if (isFetching) return; // ✅ Prevent duplicate calls
     isFetching = true;
 
     let userTable = document.getElementById('userTable');
     let tbody = userTable.querySelector('tbody');
-
+    let paginationDiv = document.getElementById('paginationControls');
+    let paginationInfo = document.getElementById('paginationInfo'); // ✅ Element for pagination info
     let loadingBarContainer = document.getElementById('loadingBarContainer');
     let loadingBar = document.getElementById('loadingBar');
 
     document.getElementById('customLength').disabled = true;
     paginationDiv.innerHTML = '';
+    paginationInfo.innerHTML = 'Loading...'; // ✅ Show loading text
 
     // Show the loading bar
     loadingBarContainer.style.display = 'block';
@@ -162,44 +163,46 @@ document.addEventListener('DOMContentLoaded', function () {
       .then(data => {
         let users = data.users;
         let totalPages = Math.ceil(data.total / limit);
+        let start = (page - 1) * limit + 1;
+        let end = Math.min(page * limit, totalRecords);
         tbody.innerHTML = ''; // Clear previous rows
 
         if (users.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">No users found.</td></tr>`;
-            } else {
-        let fragment = document.createDocumentFragment();
+          tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">No users found.</td></tr>`;
+        } else {
+          let fragment = document.createDocumentFragment();
 
-        users.forEach(user => {
-          let avatar = user.user_role_avatar?.trim()
-            ? user.user_role_avatar
-            : '../assets/img/avatars/default-avatar.png';
+          users.forEach(user => {
+            let avatar = user.user_role_avatar?.trim()
+              ? user.user_role_avatar
+              : '../assets/img/avatars/default-avatar.png';
 
-          // console.log(avatar); // Output: '../assets/img/avatars/default-avatar.png'
+            // console.log(avatar); // Output: '../assets/img/avatars/default-avatar.png'
 
-          // Determine dropdown menu options based on user status
-          let dropdownMenu = '';
-          switch (user.status) {
-            case 'Pending':
-              dropdownMenu = `
+            // Determine dropdown menu options based on user status
+            let dropdownMenu = '';
+            switch (user.status) {
+              case 'Pending':
+                dropdownMenu = `
                             <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
                             <a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
-              break;
-            case 'Active':
-              dropdownMenu = `
+                break;
+              case 'Active':
+                dropdownMenu = `
                             <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${user.user_id}">Edit</a>
                             <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${user.user_id}">Suspend</a>
                             <a class="dropdown-item userCredential" href="javascript:;" data-id="${user.user_id}">Send Credential</a>`;
-              break;
-            case 'Suspended':
-              dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
-              break;
-          }
+                break;
+              case 'Suspended':
+                dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${user.user_id}">Activate</a>`;
+                break;
+            }
 
-          // Create row for user
+            // Create row for user
 
-          let row = document.createElement('tr');
-          row.classList.add('tr-animate'); // Add animation class
-          row.innerHTML = `
+            let row = document.createElement('tr');
+            row.classList.add('tr-animate'); // Add animation class
+            row.innerHTML = `
                 <td><input type="checkbox" class="form-check-input"></td>
                 <td>${user.user_id}</td>
                 <td>
@@ -235,12 +238,13 @@ document.addEventListener('DOMContentLoaded', function () {
                   <div class="dropdown-menu dropdown-menu-end">${dropdownMenu}</div></div>
                 </td>
             `;
-          fragment.appendChild(row);
-        });
-        tbody.appendChild(fragment); // Append all rows at once (performance boost)
-
+            fragment.appendChild(row);
+          });
+          tbody.appendChild(fragment); // Append all rows at once (performance boost)
+        }
         // ✅ Update total user count in footer
         document.getElementById('totalRecords').textContent = users.length;
+        updatePaginationControls(totalPages, totalRecords, start, end);
 
         // ✅ Update pagination
         updatePaginationControls(totalPages);
@@ -250,17 +254,22 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
           loadingBarContainer.style.display = 'none'; // Hide after 500ms
         }, 500);
+        document.getElementById('customLength').disabled = false;
       })
       .catch(error => {
         console.error('Error fetching user list:', error);
         tbody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Failed to load data</td></tr>`;
         loadingBarContainer.style.display = 'none'; // Hide loading bar on error
+      })
+      .finally(() => {
+        isFetching = false;
       });
   }
 
   // ✅ Pagination Controls
   function updatePaginationControls(totalPages) {
     let paginationDiv = document.getElementById('paginationControls');
+    let paginationInfo = document.getElementById('paginationInfo'); // ✅ Create an element for pagination info
 
     if (!paginationDiv) {
       console.error('Pagination controls container not found!');
@@ -268,6 +277,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     paginationDiv.innerHTML = ''; // Clear previous buttons
+    // ✅ Update pagination info text
+    paginationInfo.innerHTML = `Showing ${start} to ${end} of ${totalRecords} entries`;
 
     // Previous Button
     let prevButton = document.createElement('button');
