@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let totalPages = Math.ceil(data.total / limit);
         let start = (page - 1) * limit + 1;
         let end = Math.min(page * limit, totalRecords);
+        
         tbody.innerHTML = ''; // Clear previous rows
 
         if (users.length === 0) {
