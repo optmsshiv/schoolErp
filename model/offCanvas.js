@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
     paginationInfo.innerHTML = 'Loading...'; // ✅ Show loading text
 
     // Show the loading bar
-    loadingSpinner.style.display = 'inline-block';
+   // loadingSpinner.style.display = 'inline-block'; //use this when to show the html spinner
     loadingBarContainer.style.display = 'block';
     loadingBar.style.width = '10%';
     loadingBar.style.animation = 'progressBar 1.5s ease-in-out infinite';
@@ -158,14 +158,16 @@ document.addEventListener('DOMContentLoaded', function () {
       tbody = document.createElement('tbody');
       userTable.appendChild(tbody);
     }
-    tbody.innerHTML = `<tr><td colspan="8" class="text-center">
+    tbody.innerHTML = `<tr>
+                        <td colspan="8" class="text-center">
                         <div class="d-flex justify-content-center align-items-center">
                            <div class="spinner-border text-primary me-2" role="status">
                              <span class="visually-hidden">Loading...</span>
                            </div>
                            <span>Loading...</span>
-                          /div>
-                        </td></tr>`;
+                          </div>
+                        </td>
+                        </tr>`;
 
 
     fetch(`/php/userRole/get_user_role.php?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`) // Replace with your actual API endpoint
