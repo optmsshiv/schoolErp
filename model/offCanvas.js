@@ -524,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       setTimeout(() => {
         // Step 2: Apply final background and glow effect
-        row.style.opacity = '1'; // Fade effect
+        row.style.opacity = '0.5'; // Fade effect
 
         if (newStatus === 'Active') {
           row.style.backgroundColor = '#d4edda'; // Light green
@@ -539,6 +539,13 @@ document.addEventListener('DOMContentLoaded', function () {
           row.style.backgroundColor = '';
           row.style.boxShadow = '';
           row.style.transform = 'translateX(0)'; // Reset position
+
+          // 🔥 Ensure dropdown is fully visible and functional
+            let dropdown = row.querySelector('.dropdown-menu');
+            if (dropdown) {
+                dropdown.style.opacity = '1';
+                dropdown.style.pointerEvents = 'auto'; // Ensure clicks work
+            }
         }, 800);
       }, 400);
 
@@ -567,6 +574,10 @@ document.addEventListener('DOMContentLoaded', function () {
       let dropdown = row.querySelector('.dropdown-menu');
       if (dropdown) {
         dropdown.innerHTML = dropdownMenu;
+
+        // 🔥 Ensure dropdown remains active after status change
+        dropdown.style.opacity = '1';
+        dropdown.style.pointerEvents = 'auto';
       }
     }
 
