@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     // Handle avatar upload
     $avatarFileName = null;
     if (!empty($_FILES['avatar']['name'])) {
-        $targetDir = "/assets/img/avatars/";
+        $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/avatars/";;
         $avatarFileName = time() . "_" . basename($_FILES["avatar"]["name"]);
         $targetFilePath = $targetDir . $avatarFileName;
         $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
