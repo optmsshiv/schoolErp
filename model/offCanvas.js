@@ -519,18 +519,23 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!row) return;
 
       // Add transition effect
-      row.style.transition = 'background-color 0.5s ease-in-out';
+      row.style.transition = 'background-color 0.5s ease-in-out, opacity 0.5s ease-in-out, box-shadow 0.5s ease-in-out';
+      row.style.opacity = '0.5'; // Fade effect
 
-      // Change row background color based on status
+      // Apply background color and glow effect
       if (newStatus === 'Active') {
         row.style.backgroundColor = '#d4edda'; // Light green for active
+        row.style.boxShadow = '0px 0px 10px rgba(40, 167, 69, 0.8)'; // Green glow
       } else if (newStatus === 'Suspended') {
         row.style.backgroundColor = '#f8d7da'; // Light red for suspended
+        row.style.boxShadow = '0px 0px 10px rgba(220, 53, 69, 0.8)'; // Red glow
       }
 
-      // Reset to default after effect
+      // Restore row opacity and remove glow after effect
       setTimeout(() => {
+        row.style.opacity = '1';
         row.style.backgroundColor = '';
+        row.style.boxShadow = '';
       }, 1000);
 
       // Update status badge
