@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
         $avatarFileName = time() . "_" . basename($_FILES["avatar"]["name"]);
         $targetFilePath = $targetDir . $avatarFileName;
         $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+        $targetFile = $uploadDir . $fileName;
 
         // Validate file type (only allow images)
         $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
@@ -38,7 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
         }
 
         // Move file to upload folder
-        if (!move_uploaded_file($_FILES["avatar"]["tmp_name"], $targetFilePath)) {
+        if (move_uploaded_file($_FILES["avatar"]["tmp_name"], $targetFilePath)) {
+            $avatarFilePath = "/assets/img/avatars/" . $fileName; // Store relative path
+        } else {
             echo json_encode(['success' => false, 'message' => 'Error uploading file.']);
             exit;
         }
@@ -95,8 +98,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
             ':user_id' => $userId
         ];
 
-        if ($avatarFileName) {
-            $params[':avatar'] = $avatarFileName;
+         if ($avatarFilePath) {
+            $params[':avatar'] = $avatarFilePath; // Save full path in the database
         }
 
         $stmt->execute($params);
