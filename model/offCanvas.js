@@ -660,17 +660,7 @@ document.addEventListener('DOMContentLoaded', function () {
                  editUserModal.show();
 
                  // Attach the event listener for saving user changes **AFTER** the modal is loaded
-                  // document.getElementById('saveUserChanges').addEventListener('click', saveUserChanges);
-
-                  setTimeout(() => {
-                    let saveButton = document.getElementById('saveUserChanges');
-                    if (saveButton) {
-                      saveButton.removeEventListener('click', saveUserChanges);
-                      saveButton.addEventListener('click', saveUserChanges);
-                    } else {
-                      console.error('Save button not found');
-                    }
-                  }, 500);
+                   document.getElementById('saveUserChanges').addEventListener('click', saveUserChanges);
                } else {
                  alert('Error: ' + data.message);
                }
@@ -680,7 +670,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
          //** save user changes */
 
-         document.getElementById('saveUserChanges').addEventListener('click', function () {
+         function saveUserChanges() {
            let formData = new FormData();
 
            // Capture input values
@@ -727,7 +717,7 @@ document.addEventListener('DOMContentLoaded', function () {
                }
              })
              .catch(error => console.error('Error updating user:', error));
-         });
+         }
 
 
 
