@@ -460,7 +460,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // script to listen for clicks on Activate and Suspend actions
-  /*
+
     document.addEventListener('click', function (event) {
       let target = event.target;
 
@@ -488,25 +488,65 @@ document.addEventListener('DOMContentLoaded', function () {
       let spinner = document.querySelector('.loading-spinner');
       if (spinner) spinner.remove();
     }
-*/
 
-document.addEventListener('click', function (event) {
-  let target = event.target;
 
-  // Activate User
-  if (target.classList.contains('userActivate')) {
-    let userId = target.getAttribute('data-id');
-    updateUserStatus(userId, 'Active', target);
-  }
+    function changeStatus(userId, newStatus) {
+      showLoadingSpinner();
 
-  // Suspend User
-  if (target.classList.contains('userSuspend')) {
-    let userId = target.getAttribute('data-id');
-    updateUserStatus(userId, 'Suspended', target);
-  }
-});
+      fetch('../php/userRole/update_user_status.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `user_id=${encodeURIComponent(userId)}&status=${encodeURIComponent(newStatus)}`
+      })
+        .then(response => response.json())
+        .then(data => {
+          hideLoadingSpinner();
+          if (data.success) {
+            updateUserRow(userId, newStatus);
+          } else {
+            alert('Failed to update status. Try again.');
+          }
+        })
+        .catch(() => {
+          hideLoadingSpinner();
+          alert('An error occurred. Please try again.');
+        });
+    }
 
-function updateUserStatus(userId, newStatus, targetElement) {
+    function updateUserRow(userId, newStatus) {
+      let row = document.querySelector(`.userView[data-id="${userId}"]`).closest('tr');
+
+      if (!row) return;
+
+      // Update status badge
+      let statusCell = row.children[6]; // Assuming status is in the 7th column
+      let badge = statusCell.querySelector('span');
+
+      if (badge) {
+        badge.className = `badge ${newStatus === 'Active' ? 'bg-label-success' : 'bg-label-secondary'}`;
+        badge.textContent = newStatus;
+      }
+
+      // Update dropdown options
+      let dropdownMenu = '';
+      if (newStatus === 'Active') {
+        dropdownMenu = `
+                <a class="dropdown-item border-bottom userEdit" href="javascript:;" data-id="${userId}">Edit</a>
+                <a class="dropdown-item border-bottom userSuspend" href="javascript:;" data-id="${userId}">Suspend</a>
+                <a class="dropdown-item userCredential" href="javascript:;" data-id="${userId}">Send Credential</a>
+            `;
+      } else if (newStatus === 'Suspended') {
+        dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
+      }
+
+      let dropdown = row.querySelector('.dropdown-menu');
+      if (dropdown) {
+        dropdown.innerHTML = dropdownMenu;
+      }
+    }
+
+/*
+function changeStatus(userId, newStatus, targetElement) {
   fetch('../php/userRole/update_user_status.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -551,7 +591,7 @@ function updateUserStatus(userId, newStatus, targetElement) {
     })
     .catch(error => console.error('Error:', error));
 }
-
+*/
   /*
   function updateUserInTable(user) {
     let table = $('#userTable').DataTable(); // Get the DataTable instance
