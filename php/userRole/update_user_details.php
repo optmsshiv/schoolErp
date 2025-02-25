@@ -3,7 +3,7 @@ require '../db_connection.php'; // Ensure correct path
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     $userId = $_POST['user_id'];
-    $fullName = $_POST['full_name'];
+    $fullName = $_POST['fullname'];
     $qualification = $_POST['qualification'];
     $role = $_POST['role'];
     $email = $_POST['email'];
@@ -13,13 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     $status = $_POST['status'];
     $gender = $_POST['gender'];
     $salary = $_POST['salary'];
-    $aadhar = $_POST['aadhar'];
+    $aadhar = $_POST['aadhar_card'];
     $subject = $_POST['subject'];
-    $address = $_POST['address'];
+    $address = $_POST['user_address'];
     $bankName = $_POST['bank_name'];
     $branchName = $_POST['branch_name'];
     $accountNumber = $_POST['account_number'];
-    $ifsc = $_POST['ifsc'];
+    $ifsc = $_POST['ifsc_code'];
     $accountType = $_POST['account_type'];
 
     // Handle avatar upload
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
 
     try {
         $sql = "UPDATE userRole SET
-            full_name = :full_name,
+            fullname = :fullname,
             qualification = :qualification,
             role = :role,
             email = :email,
@@ -56,13 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
             status = :status,
             gender = :gender,
             salary = :salary,
-            aadhar = :aadhar,
+            aadhar_card = :aadhar_card,
             subject = :subject,
             address = :address,
             bank_name = :bank_name,
             branch_name = :branch_name,
             account_number = :account_number,
-            ifsc = :ifsc,
+            ifsc_code = :ifsc_code,
             account_type = :account_type";
 
         // Update avatar only if a new file was uploaded
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
 
         $stmt = $pdo->prepare($sql);
         $params = [
-            ':full_name' => $fullName,
+            ':fullname' => $fullName,
             ':qualification' => $qualification,
             ':role' => $role,
             ':email' => $email,
@@ -84,13 +84,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
             ':status' => $status,
             ':gender' => $gender,
             ':salary' => $salary,
-            ':aadhar' => $aadhar,
+            ':aadhar_card' => $aadhar,
             ':subject' => $subject,
             ':address' => $address,
             ':bank_name' => $bankName,
             ':branch_name' => $branchName,
             ':account_number' => $accountNumber,
-            ':ifsc' => $ifsc,
+            ':ifsc_code' => $ifsc,
             ':account_type' => $accountType,
             ':user_id' => $userId
         ];
