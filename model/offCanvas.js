@@ -533,19 +533,12 @@ document.addEventListener('DOMContentLoaded', function () {
           row.style.backgroundColor = '#f8d7da'; // Light red
           row.style.boxShadow = '0px 0px 15px rgba(220, 53, 69, 0.8)'; // Red glow
         }
-
-
+        
         setTimeout(() => {
           row.style.opacity = '1';
           row.style.backgroundColor = '';
           row.style.boxShadow = '';
           row.style.transform = 'translateX(0)'; // Reset position
-
-          // ** Fix for Faded Dropdown **
-          row.style.display = 'none'; // Temporarily hide row
-          setTimeout(() => {
-            row.style.display = ''; // Show it again to reset styles
-          }, 10); // Small delay to trigger reflow
         }, 800);
       }, 400);
 
