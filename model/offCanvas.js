@@ -606,8 +606,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // If modal is already loaded, just open it
             openEditUserModal(userId);
         }
-    }
-});
+      }
+     });
 
 
           // Function to fetch user data and open modal
@@ -658,6 +658,9 @@ document.addEventListener('DOMContentLoaded', function () {
                  // Show modal
                  let editUserModal = new bootstrap.Modal(document.getElementById('editUserModal'));
                  editUserModal.show();
+
+                 // Attach the event listener for saving user changes **AFTER** the modal is loaded
+                   document.getElementById('saveUserChanges').addEventListener('click', saveUserChanges);
                } else {
                  alert('Error: ' + data.message);
                }
