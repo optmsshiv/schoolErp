@@ -1197,11 +1197,11 @@ td {
   font-weight: bold;
   z-index: 9999;
 }
-
+/*
 .disabled {
   pointer-events: none;
   opacity: 0.9;
-}
+}*/
 
 /* 🔊 Toast Notification Styles */
 .custom-toast {
