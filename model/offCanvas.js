@@ -660,7 +660,17 @@ document.addEventListener('DOMContentLoaded', function () {
                  editUserModal.show();
 
                  // Attach the event listener for saving user changes **AFTER** the modal is loaded
-                   document.getElementById('saveUserChanges').addEventListener('click', saveUserChanges);
+                  // document.getElementById('saveUserChanges').addEventListener('click', saveUserChanges);
+
+                  setTimeout(() => {
+                    let saveButton = document.getElementById('saveUserChanges');
+                    if (saveButton) {
+                      saveButton.removeEventListener('click', saveUserChanges);
+                      saveButton.addEventListener('click', saveUserChanges);
+                    } else {
+                      console.error('Save button not found');
+                    }
+                  }, 500);
                } else {
                  alert('Error: ' + data.message);
                }
