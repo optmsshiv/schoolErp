@@ -520,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Step 1: Highlight row with yellow flash effect
       row.style.transition = 'background-color 0.3s ease-in-out, opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
       row.style.backgroundColor = '#fff3cd'; // Yellow for brief attention
-      row.style.transform = 'translateX(5px)'; // Slide effect
+    //  row.style.transform = 'translateX(5px)'; // Slide effect
 
       setTimeout(() => {
         // Step 2: Apply final background and glow effect
@@ -538,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function () {
           row.style.opacity = '1';
           row.style.backgroundColor = '';
           row.style.boxShadow = '';
-          row.style.transform = 'translateX(0)'; // Reset position
+         // row.style.transform = 'translateX(0)'; // Reset position
         }, 800);
       }, 400);
 
@@ -549,16 +549,9 @@ document.addEventListener('DOMContentLoaded', function () {
       if (badge) {
         badge.className = `badge ${newStatus === 'Active' ? 'bg-label-success' : 'bg-label-secondary'}`;
         badge.textContent = newStatus;
-        badge.style.animation = 'pulse 0.5s ease-in-out';
+         badge.style.animation = 'pulse 0.5s ease-in-out';
       }
 
-      // Fix dropdown fade issue
-      let dropdown = row.querySelector('.dropdown-menu');
-      if (dropdown) {
-        dropdown.style.opacity = '1'; // Ensure dropdown is fully visible
-        dropdown.style.transition = 'none'; // Disable animation on dropdown
-      }
-      
       // Update dropdown options
       let dropdownMenu = '';
       if (newStatus === 'Active') {
@@ -571,7 +564,7 @@ document.addEventListener('DOMContentLoaded', function () {
         dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
       }
 
-      // let dropdown = row.querySelector('.dropdown-menu');
+     // let dropdown = row.querySelector('.dropdown-menu');
       if (dropdown) {
         dropdown.innerHTML = dropdownMenu;
       }
