@@ -584,13 +584,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // **Edit and update script
         // **Alert for Edit User**
-        document.addEventListener('click', function (event) {
-          if (event.target.classList.contains('userEdit')) {
-              let userId = event.target.dataset.id;
-              alert(`Edit User: ID ${userId}`);
-              // You can open an edit modal or navigate to an edit page here
-          }
-      });
+       document.addEventListener('click', function (event) {
+         if (event.target.classList.contains('userEdit')) {
+           let userId = event.target.dataset.id;
+
+           fetch(`../php/userRole/get_user_details.php?user_id=${userId}`)
+             .then(response => response.json())
+             .then(data => {
+               if (data.success) {
+                 let user = data.user;
+
+                 // Populate modal fields
+                 document.getElementById('userIdInput').value = user.user_id;
+                 document.getElementById('fullNameInput').value = user.full_name || '';
+                 document.getElementById('qualificationInput').value = user.qualification || '';
+                 document.getElementById('roleSelect').value = user.role || '';
+                 document.getElementById('emailInput').value = user.email || '';
+                 document.getElementById('phoneInput').value = user.phone || '';
+                 document.getElementById('dobDateInput').value = user.dob || '';
+                 document.getElementById('joiningDateInput').value = user.joining_date || '';
+                 document.getElementById('statusSelect').value = user.status || '';
+                 document.getElementById('genderSelect').value = user.gender || '';
+                 document.getElementById('salaryInput').value = user.salary || '';
+                 document.getElementById('aadharInput').value = user.aadhar || '';
+                 document.getElementById('subjectInput').value = user.subject || '';
+                 document.getElementById('userAddress').value = user.address || '';
+                 document.getElementById('bankNameInput').value = user.bank_name || '';
+                 document.getElementById('branchNameInput').value = user.branch_name || '';
+                 document.getElementById('accountNumberInput').value = user.account_number || '';
+                 document.getElementById('ifscCodeInput').value = user.ifsc || '';
+                 document.getElementById('accountType').value = user.account_type || '';
+
+                 // Update avatar preview
+                 let avatarImg = document.getElementById('userAvatar');
+                 avatarImg.src = user.avatar ? user.avatar : '/assets/img/avatars/default-avatar.png';
+
+                 // Show modal
+                 let editUserModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+                 editUserModal.show();
+               } else {
+                 alert('Error: ' + data.message);
+               }
+             })
+             .catch(error => console.error('Error fetching user data:', error));
+         }
+       });
+
 
       // **Alert for View User**
       document.addEventListener('click', function (event) {
@@ -611,6 +650,16 @@ document.addEventListener('DOMContentLoaded', function () {
               }
           }
       });
+
+      document.addEventListener('click', function (event) {
+        if (event.target.classList.contains('userCredential')) {
+            let userId = event.target.dataset.id;
+            if (confirm(`Are you sure you want to send Credential to user ID ${userId}?`)) {
+                alert(`Credential for User ID ${userId} has been send.`);
+                // You can call a function to delete the user from the database here
+            }
+        }
+    });
 
 /*
 function changeStatus(userId, newStatus, targetElement) {
