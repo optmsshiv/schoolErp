@@ -158,8 +158,8 @@ document.addEventListener('DOMContentLoaded', function () {
       tbody = document.createElement('tbody');
       userTable.appendChild(tbody);
     }
-    tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`
-    tbody.querySelector('td').appendChild(loadingSpinner);;
+    tbody.innerHTML = `<tr><td colspan="8" class="text-center">Loading...</td></tr>`;
+    tbody.querySelector('td').appendChild(loadingSpinner);
 
     fetch(`/php/userRole/get_user_role.php?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`) // Replace with your actual API endpoint
       .then(response => {
