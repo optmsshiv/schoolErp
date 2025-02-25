@@ -515,36 +515,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateUserRow(userId, newStatus) {
       let row = document.querySelector(`.userView[data-id="${userId}"]`).closest('tr');
-
       if (!row) return;
 
-      // Add transition effect
-      row.style.transition = 'background-color 0.5s ease-in-out, opacity 0.5s ease-in-out, box-shadow 0.5s ease-in-out';
-      row.style.opacity = '0.5'; // Fade effect
+      // Step 1: Highlight row with yellow flash effect
+      row.style.transition = 'background-color 0.3s ease-in-out, opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
+      row.style.backgroundColor = '#fff3cd'; // Yellow for brief attention
+      row.style.transform = 'translateX(5px)'; // Slide effect
 
-      // Apply background color and glow effect
-      if (newStatus === 'Active') {
-        row.style.backgroundColor = '#d4edda'; // Light green for active
-        row.style.boxShadow = '0px 0px 10px rgba(40, 167, 69, 0.8)'; // Green glow
-      } else if (newStatus === 'Suspended') {
-        row.style.backgroundColor = '#f8d7da'; // Light red for suspended
-        row.style.boxShadow = '0px 0px 10px rgba(220, 53, 69, 0.8)'; // Red glow
-      }
-
-      // Restore row opacity and remove glow after effect
       setTimeout(() => {
-        row.style.opacity = '1';
-        row.style.backgroundColor = '';
-        row.style.boxShadow = '';
-      }, 1000);
+        // Step 2: Apply final background and glow effect
+        row.style.opacity = '0.5'; // Fade effect
 
-      // Update status badge
+        if (newStatus === 'Active') {
+          row.style.backgroundColor = '#d4edda'; // Light green
+          row.style.boxShadow = '0px 0px 15px rgba(40, 167, 69, 0.8)'; // Green glow
+        } else if (newStatus === 'Suspended') {
+          row.style.backgroundColor = '#f8d7da'; // Light red
+          row.style.boxShadow = '0px 0px 15px rgba(220, 53, 69, 0.8)'; // Red glow
+        }
+
+        setTimeout(() => {
+          row.style.opacity = '1';
+          row.style.backgroundColor = '';
+          row.style.boxShadow = '';
+          row.style.transform = 'translateX(0)'; // Reset position
+        }, 800);
+      }, 400);
+
+      // Update status badge with a pulse effect
       let statusCell = row.children[6]; // Assuming status is in the 7th column
       let badge = statusCell.querySelector('span');
 
       if (badge) {
         badge.className = `badge ${newStatus === 'Active' ? 'bg-label-success' : 'bg-label-secondary'}`;
         badge.textContent = newStatus;
+         badge.style.animation = 'pulse 0.5s ease-in-out';
       }
 
       // Update dropdown options
