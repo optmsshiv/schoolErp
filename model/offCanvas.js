@@ -520,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Step 1: Highlight row with yellow flash effect
       row.style.transition = 'background-color 0.3s ease-in-out, opacity 0.3s ease-in-out, transform 0.3s ease-in-out';
       row.style.backgroundColor = '#fff3cd'; // Yellow for brief attention
-    //  row.style.transform = 'translateX(5px)'; // Slide effect
+      row.style.transform = 'translateX(5px)'; // Slide effect
 
       setTimeout(() => {
         // Step 2: Apply final background and glow effect
@@ -538,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function () {
           row.style.opacity = '1';
           row.style.backgroundColor = '';
           row.style.boxShadow = '';
-         // row.style.transform = 'translateX(0)'; // Reset position
+          row.style.transform = 'translateX(0)'; // Reset position
         }, 800);
       }, 400);
 
