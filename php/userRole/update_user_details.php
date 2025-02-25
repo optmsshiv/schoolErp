@@ -68,9 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
             ifsc_code = :ifsc_code,
             account_type = :account_type";
 
-        // Update avatar only if a new file was uploaded
-        if ($avatarFileName) {
+        // ✅ Append avatar field dynamically
+        if ($avatarFilePath) {
             $sql .= ", user_role_avatar = :avatar";
+            $params[':avatar'] = $avatarFilePath;
         }
 
         $sql .= " WHERE user_id = :user_id";
@@ -101,6 +102,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
          if ($avatarFilePath) {
             $params[':avatar'] = $avatarFilePath; // Save full path in the database
         }
+
+        $sql .= " WHERE user_id = :user_id";
+
+        // Prepare & Execute
+        $stmt = $pdo->prepare($sql);
 
         $stmt->execute($params);
 
