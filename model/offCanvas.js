@@ -502,14 +502,15 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
           hideLoadingSpinner();
           if (data.success) {
+            showToast(`User status changed to ${newStatus}`, 'success');
             updateUserRow(userId, newStatus);
           } else {
-            alert('Failed to update status. Try again.');
+            showToast('Failed to update status', 'error');
           }
         })
         .catch(() => {
           hideLoadingSpinner();
-          alert('An error occurred. Please try again.');
+          showToast('An error occurred. Please try again.', 'error');
         });
     }
 
@@ -568,6 +569,19 @@ document.addEventListener('DOMContentLoaded', function () {
       if (dropdown) {
         dropdown.innerHTML = dropdownMenu;
       }
+    }
+
+    function showToast(message, type) {
+      let toast = document.createElement('div');
+      toast.className = `custom-toast ${type === 'success' ? 'toast-success' : 'toast-error'}`;
+      toast.innerHTML = `<span>${message}</span>`;
+      document.body.appendChild(toast);
+
+      setTimeout(() => toast.classList.add('show'), 100);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 500);
+      }, 3000);
     }
 
 /*

@@ -1203,3 +1203,28 @@ td {
   opacity: 0.6;
 }
 
+/* 🔊 Toast Notification Styles */
+.custom-toast {
+  position: fixed;
+  bottom: 20px;
+  right: -300px;
+  background: #333;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: all 0.5s ease-in-out;
+}
+
+.custom-toast.show {
+  right: 20px;
+}
+
+.toast-success {
+  background: #28a745;
+}
+
+.toast-error {
+  background: #dc3545;
+}
+
