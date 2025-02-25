@@ -102,12 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
          if ($avatarFilePath) {
             $params[':avatar'] = $avatarFilePath; // Save full path in the database
         }
-
-        $sql .= " WHERE user_id = :user_id";
-
         // Prepare & Execute
-        $stmt = $pdo->prepare($sql);
-
         $stmt->execute($params);
 
         echo json_encode(['success' => true, 'message' => 'User updated successfully']);
