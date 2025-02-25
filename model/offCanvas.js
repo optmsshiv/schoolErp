@@ -489,6 +489,22 @@ document.addEventListener('DOMContentLoaded', function () {
       if (spinner) spinner.remove();
     }
 
+    $(document).on('click', '.userActivate', function () {
+      var userId = $(this).data('id');
+      var badge = $(this).closest('tr').find('.status-badge'); // Find badge in the row
+      if (confirm('Are you sure you want to activate this user?')) {
+        changeStatus(userId, 'Active', badge);
+      }
+    });
+
+    $(document).on('click', '.userSuspend', function () {
+      var userId = $(this).data('id');
+      var badge = $(this).closest('tr').find('.status-badge'); // Find badge in the row
+      if (confirm('Are you sure you want to suspend this user?')) {
+        changeStatus(userId, 'Suspended', badge);
+      }
+    });
+
 
     function changeStatus(userId, newStatus, badge) {
       if (!badge) return;
