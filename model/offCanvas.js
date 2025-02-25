@@ -524,22 +524,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
       setTimeout(() => {
         // Step 2: Apply final background and glow effect
-        row.style.opacity = '0.5'; // Fade effect
+      //  row.style.opacity = '0.5'; // Fade effect
 
         if (newStatus === 'Active') {
           row.style.backgroundColor = '#d4edda'; // Light green
-          row.style.boxShadow = '0px 0px 15px rgba(40, 167, 69, 0.8)'; // Green glow
+        //  row.style.boxShadow = '0px 0px 15px rgba(40, 167, 69, 0.8)'; // Green glow
         } else if (newStatus === 'Suspended') {
           row.style.backgroundColor = '#f8d7da'; // Light red
-          row.style.boxShadow = '0px 0px 15px rgba(220, 53, 69, 0.8)'; // Red glow
+        //  row.style.boxShadow = '0px 0px 15px rgba(220, 53, 69, 0.8)'; // Red glow
         }
 
         setTimeout(() => {
-          row.style.opacity = '1';
+        //  row.style.opacity = '1';
           row.style.backgroundColor = '';
-          row.style.boxShadow = '';
+        //  row.style.boxShadow = '';
           row.style.transform = 'translateX(0)'; // Reset position
-        }, 500);
+        }, 800);
       }, 400);
 
       // Update status badge with a pulse effect
