@@ -642,6 +642,18 @@ document.addEventListener('DOMContentLoaded', function () {
                  // Update avatar preview
                  let avatarImg = document.getElementById('userAvatar');
                  avatarImg.src = user.avatar ? user.avatar : '/assets/img/avatars/default-avatar.png';
+                 let avatarInput = document.getElementById('avatarUpload');
+
+                 // Show image preview when file is selected
+                 avatarInput.addEventListener('change', function () {
+                   if (avatarInput.files && avatarInput.files[0]) {
+                     let reader = new FileReader();
+                     reader.onload = function (e) {
+                       avatarImg.src = e.target.result; // Set the preview image
+                     };
+                     reader.readAsDataURL(avatarInput.files[0]); // Read file as DataURL
+                   }
+                 });
 
                  // Show modal
                  let editUserModal = new bootstrap.Modal(document.getElementById('editUserModal'));
