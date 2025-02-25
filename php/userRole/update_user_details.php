@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
 
         // Update avatar only if a new file was uploaded
         if ($avatarFileName) {
-            $sql .= ", avatar = :avatar";
+            $sql .= ", user_role_avatar = :avatar";
         }
 
         $sql .= " WHERE user_id = :user_id";
