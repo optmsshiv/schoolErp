@@ -533,12 +533,19 @@ document.addEventListener('DOMContentLoaded', function () {
           row.style.backgroundColor = '#f8d7da'; // Light red
           row.style.boxShadow = '0px 0px 15px rgba(220, 53, 69, 0.8)'; // Red glow
         }
-        
+
         setTimeout(() => {
           row.style.opacity = '1';
           row.style.backgroundColor = '';
           row.style.boxShadow = '';
           row.style.transform = 'translateX(0)'; // Reset position
+
+          // ** FIX: Refresh Bootstrap dropdown positioning **
+          let dropdown = row.querySelector('.dropdown-toggle');
+          if (dropdown) {
+            let bsDropdown = new bootstrap.Dropdown(dropdown);
+            bsDropdown.update(); // Force Bootstrap to refresh dropdown positioning
+          }
         }, 800);
       }, 400);
 
