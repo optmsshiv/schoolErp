@@ -581,6 +581,37 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 3000);
     }
 
+
+      // **Edit and update script
+        // **Alert for Edit User**
+        document.addEventListener('click', function (event) {
+          if (event.target.classList.contains('userEdit')) {
+              let userId = event.target.dataset.id;
+              alert(`Edit User: ID ${userId}`);
+              // You can open an edit modal or navigate to an edit page here
+          }
+      });
+
+      // **Alert for View User**
+      document.addEventListener('click', function (event) {
+          if (event.target.classList.contains('userView')) {
+              let userId = event.target.dataset.id;
+              alert(`View User: ID ${userId}`);
+              // You can open a modal or navigate to a details page here
+          }
+      });
+
+      // **Alert for Delete User**
+      document.addEventListener('click', function (event) {
+          if (event.target.classList.contains('userDelete')) {
+              let userId = event.target.dataset.id;
+              if (confirm(`Are you sure you want to delete user ID ${userId}?`)) {
+                  alert(`User ID ${userId} has been deleted.`);
+                  // You can call a function to delete the user from the database here
+              }
+          }
+      });
+
 /*
 function changeStatus(userId, newStatus, targetElement) {
   fetch('../php/userRole/update_user_status.php', {
