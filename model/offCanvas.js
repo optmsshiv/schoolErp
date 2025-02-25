@@ -620,7 +620,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                  // Populate modal fields
                  document.getElementById('userIdInput').value = user.user_id;
-                 document.getElementById('fullNameInput').value = user.full_name || '';
+                 document.getElementById('fullNameInput').value = user.fullname || '';
                  document.getElementById('qualificationInput').value = user.qualification || '';
                  document.getElementById('roleSelect').value = user.role || '';
                  document.getElementById('emailInput').value = user.email || '';
@@ -630,13 +630,13 @@ document.addEventListener('DOMContentLoaded', function () {
                  document.getElementById('statusSelect').value = user.status || '';
                  document.getElementById('genderSelect').value = user.gender || '';
                  document.getElementById('salaryInput').value = user.salary || '';
-                 document.getElementById('aadharInput').value = user.aadhar || '';
+                 document.getElementById('aadharInput').value = user.aadhar_card || '';
                  document.getElementById('subjectInput').value = user.subject || '';
-                 document.getElementById('userAddress').value = user.address || '';
+                 document.getElementById('userAddress').value = user.user_address || '';
                  document.getElementById('bankNameInput').value = user.bank_name || '';
                  document.getElementById('branchNameInput').value = user.branch_name || '';
                  document.getElementById('accountNumberInput').value = user.account_number || '';
-                 document.getElementById('ifscCodeInput').value = user.ifsc || '';
+                 document.getElementById('ifscCodeInput').value = user.ifsc_code || '';
                  document.getElementById('accountType').value = user.account_type || '';
 
                  // Update avatar preview
@@ -652,7 +652,7 @@ document.addEventListener('DOMContentLoaded', function () {
              })
              .catch(error => console.error('Error fetching user data:', error));
          }
-       
+
 
 
       // **Alert for View User**
