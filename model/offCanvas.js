@@ -490,10 +490,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function changeStatus(userId, newStatus, button) {
-      if (!button) return;
+    function changeStatus(userId, newStatus, badge) {
+      if (!badge) return;
 
-      button.classList.add('loading'); // Add spinner animation
+      badge.classList.add('loading'); // Add spinner animation
       showLoadingSpinner();
 
       fetch('../php/userRole/update_user_status.php', {
@@ -516,7 +516,7 @@ document.addEventListener('DOMContentLoaded', function () {
           showToast('An error occurred. Please try again.', 'error');
         })
         .finally(() => {
-          button.classList.remove('loading'); // Remove spinner
+          badge.classList.remove('loading'); // Remove spinner
         });
     }
 
