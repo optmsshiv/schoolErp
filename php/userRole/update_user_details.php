@@ -25,11 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     // Handle avatar upload
     $avatarFileName = null;
     if (!empty($_FILES['avatar']['name'])) {
-        $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/avatars/";;
-        $avatarFileName = time() . "_" . basename($_FILES["avatar"]["name"]);
-        $targetFilePath = $targetDir . $avatarFileName;
+        $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/avatars/";;
+        $fileName = time() . "_" . basename($_FILES["avatar"]["name"]);
+        $targetFilePath = $uploadDir . $fileName;
         $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
-        $targetFile = $uploadDir . $fileName;
+       // $targetFile = $uploadDir . $fileName;
 
         // Validate file type (only allow images)
         $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
