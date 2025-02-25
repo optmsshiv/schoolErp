@@ -524,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       setTimeout(() => {
         // Step 2: Apply final background and glow effect
-        row.style.opacity = '0.5'; // Fade effect
+        row.style.opacity = '0'; // Fade effect
 
         if (newStatus === 'Active') {
           row.style.backgroundColor = '#d4edda'; // Light green
