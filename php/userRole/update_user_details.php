@@ -1,70 +1,52 @@
 <?php
-require '../db_connection.php';
+require '../db_connection.php'; // Ensure correct path
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
+    $userId = $_POST['user_id'];
+    $fullName = $_POST['full_name'];
+    $qualification = $_POST['qualification'];
+    $role = $_POST['role'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $dob = $_POST['dob'];
+    $joiningDate = $_POST['joining_date'];
+    $status = $_POST['status'];
+    $gender = $_POST['gender'];
+    $salary = $_POST['salary'];
+    $aadhar = $_POST['aadhar'];
+    $subject = $_POST['subject'];
+    $address = $_POST['address'];
+    $bankName = $_POST['bank_name'];
+    $branchName = $_POST['branch_name'];
+    $accountNumber = $_POST['account_number'];
+    $ifsc = $_POST['ifsc'];
+    $accountType = $_POST['account_type'];
 
-header('Content-Type: application/json'); // Ensure JSON response
+    // Handle avatar upload
+    $avatarFileName = null;
+    if (!empty($_FILES['avatar']['name'])) {
+        $targetDir = "/assets/img/avatars/";
+        $avatarFileName = time() . "_" . basename($_FILES["avatar"]["name"]);
+        $targetFilePath = $targetDir . $avatarFileName;
+        $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
-$response = ['success' => false];
+        // Validate file type (only allow images)
+        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+        if (!in_array(strtolower($fileType), $allowedTypes)) {
+            echo json_encode(['success' => false, 'message' => 'Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed.']);
+            exit;
+        }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Move file to upload folder
+        if (!move_uploaded_file($_FILES["avatar"]["tmp_name"], $targetFilePath)) {
+            echo json_encode(['success' => false, 'message' => 'Error uploading file.']);
+            exit;
+        }
+    }
+
     try {
-        // Fetch all input values
-        $user_id = $_POST['user_id'] ?? null;
-        $full_name = $_POST['full_name'] ?? '';
-        $qualification = $_POST['qualification'] ?? '';
-        $role = $_POST['role'] ?? '';
-        $email = $_POST['email'] ?? '';
-        $phone = $_POST['phone'] ?? '';
-        $dob = $_POST['dob'] ?? '';
-        $joining_date = $_POST['joining_date'] ?? '';
-        $status = $_POST['status'] ?? '';
-        $gender = $_POST['gender'] ?? '';
-        $salary = $_POST['salary'] ?? '';
-        $aadhar = $_POST['aadhar'] ?? '';
-        $subject = $_POST['subject'] ?? '';
-        $user_address = $_POST['user_address'] ?? '';
-        $bank_name = $_POST['bank_name'] ?? '';
-        $branch_name = $_POST['branch_name'] ?? '';
-        $account_number = $_POST['account_number'] ?? '';
-        $ifsc_code = $_POST['ifsc_code'] ?? '';
-        $account_type = $_POST['account_type'] ?? '';
-
-        if (!$user_id) {
-            throw new Exception("User ID is required.");
-        }
-
-        // Fetch existing avatar from database
-        $stmt = $pdo->prepare("SELECT user_role_avatar FROM userRole WHERE user_id = :user_id");
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->execute();
-        $existingAvatar = $stmt->fetchColumn();
-
-        // Initialize avatar path
-        $avatarPath = $existingAvatar;
-
-        // Handle file upload
-        if (!empty($_FILES['avatar']['name'])) {
-            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/assets/img/avatars/"; // Ensure this directory exists
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true); // Create the directory if it doesn't exist
-            }
-
-            $fileExt = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
-            $fileName = "user_" . $user_id . "_" . time() . "." . $fileExt;
-            $targetFilePath = $uploadDir . $fileName;
-
-            if (move_uploaded_file($_FILES['avatar']['tmp_name'], $targetFilePath)) {
-                $avatarPath = "/assets/img/avatars/" . $fileName; // Public URL path
-            } else {
-                throw new Exception("Failed to upload the file.");
-            }
-        }
-
-        // Prepare SQL statement
-        $query = "UPDATE userRole SET
-            fullname = :full_name,
+        $sql = "UPDATE userRole SET
+            full_name = :full_name,
             qualification = :qualification,
             role = :role,
             email = :email,
@@ -74,64 +56,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             status = :status,
             gender = :gender,
             salary = :salary,
-            aadhar_card = :aadhar,
+            aadhar = :aadhar,
             subject = :subject,
-            user_address = :user_address,
+            address = :address,
             bank_name = :bank_name,
             branch_name = :branch_name,
             account_number = :account_number,
-            ifsc_code = :ifsc_code,
+            ifsc = :ifsc,
             account_type = :account_type";
 
-        // Only update the avatar if a new file is uploaded
-        if (!empty($_FILES['avatar']['name'])) {
-            $query .= ", user_role_avatar = :avatarPath";
+        // Update avatar only if a new file was uploaded
+        if ($avatarFileName) {
+            $sql .= ", avatar = :avatar";
         }
 
-        $query .= " WHERE user_id = :user_id";
+        $sql .= " WHERE user_id = :user_id";
 
-        $stmt = $pdo->prepare($query);
+        $stmt = $pdo->prepare($sql);
+        $params = [
+            ':full_name' => $fullName,
+            ':qualification' => $qualification,
+            ':role' => $role,
+            ':email' => $email,
+            ':phone' => $phone,
+            ':dob' => $dob,
+            ':joining_date' => $joiningDate,
+            ':status' => $status,
+            ':gender' => $gender,
+            ':salary' => $salary,
+            ':aadhar' => $aadhar,
+            ':subject' => $subject,
+            ':address' => $address,
+            ':bank_name' => $bankName,
+            ':branch_name' => $branchName,
+            ':account_number' => $accountNumber,
+            ':ifsc' => $ifsc,
+            ':account_type' => $accountType,
+            ':user_id' => $userId
+        ];
 
-        // Bind parameters
-        $stmt->bindParam(':full_name', $full_name);
-        $stmt->bindParam(':qualification', $qualification);
-        $stmt->bindParam(':role', $role);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':phone', $phone);
-        $stmt->bindParam(':dob', $dob);
-        $stmt->bindParam(':joining_date', $joining_date);
-        $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':gender', $gender);
-        $stmt->bindParam(':salary', $salary);
-        $stmt->bindParam(':aadhar', $aadhar);
-        $stmt->bindParam(':subject', $subject);
-        $stmt->bindParam(':user_address', $user_address);
-        $stmt->bindParam(':bank_name', $bank_name);
-        $stmt->bindParam(':branch_name', $branch_name);
-        $stmt->bindParam(':account_number', $account_number);
-        $stmt->bindParam(':ifsc_code', $ifsc_code);
-        $stmt->bindParam(':account_type', $account_type);
-        $stmt->bindParam(':user_id', $user_id);
-
-        if (!empty($_FILES['avatar']['name'])) {
-            $stmt->bindParam(':avatarPath', $avatarPath);
+        if ($avatarFileName) {
+            $params[':avatar'] = $avatarFileName;
         }
 
-        // Execute query
-        if ($stmt->execute()) {
-            $response['success'] = true;
-            $response['message'] = "User updated successfully!";
-            $response['avatar_path'] = $avatarPath;
-        } else {
-            throw new Exception("Database update failed.");
-        }
+        $stmt->execute($params);
+
+        echo json_encode(['success' => true, 'message' => 'User updated successfully']);
     } catch (PDOException $e) {
-        $response['error'] = "Database error: " . $e->getMessage();
-    } catch (Exception $e) {
-        $response['error'] = "Error: " . $e->getMessage();
+        echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
     }
 }
-
-// Return JSON response
-echo json_encode($response);
 ?>
