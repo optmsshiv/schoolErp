@@ -564,7 +564,7 @@ document.addEventListener('DOMContentLoaded', function () {
         dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
       }
 
-     // let dropdown = row.querySelector('.dropdown-menu');
+      let dropdown = row.querySelector('.dropdown-menu');
       if (dropdown) {
         dropdown.innerHTML = dropdownMenu;
       }
