@@ -1159,17 +1159,6 @@ td {
   transition: width 0.5s ease-in-out;
 }
 
-/* Apply fade-in effect only to table rows, NOT dropdowns */
-.fade-in {
-    opacity: 0;
-    animation: fadeIn 0.8s ease-in-out forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
 /*pulse effect*/
 @keyframes pulse {
   0% {
@@ -1197,11 +1186,11 @@ td {
   font-weight: bold;
   z-index: 9999;
 }
-/*
+
 .disabled {
   pointer-events: none;
-  opacity: 0.9;
-}*/
+  opacity: 0.6;
+}
 
 /* 🔊 Toast Notification Styles */
 .custom-toast {
