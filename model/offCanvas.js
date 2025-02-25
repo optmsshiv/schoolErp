@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
         loadingBar.style.width = '100%'; // Complete progress
         setTimeout(() => {
           loadingBarContainer.style.display = 'none'; // Hide after 500ms
-          loadingSpinner.style.display = 'none';
+         // loadingSpinner.style.display = 'none';
         }, 500);
 
         document.getElementById('customLength').disabled = false;
