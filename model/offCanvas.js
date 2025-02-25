@@ -518,6 +518,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (!row) return;
 
+      // Add transition effect
+      row.style.transition = 'background-color 0.5s ease-in-out';
+
+      // Change row background color based on status
+      if (newStatus === 'Active') {
+        row.style.backgroundColor = '#d4edda'; // Light green for active
+      } else if (newStatus === 'Suspended') {
+        row.style.backgroundColor = '#f8d7da'; // Light red for suspended
+      }
+
+      // Reset to default after effect
+      setTimeout(() => {
+        row.style.backgroundColor = '';
+      }, 1000);
+
       // Update status badge
       let statusCell = row.children[6]; // Assuming status is in the 7th column
       let badge = statusCell.querySelector('span');
