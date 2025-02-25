@@ -539,14 +539,7 @@ document.addEventListener('DOMContentLoaded', function () {
           row.style.backgroundColor = '';
           row.style.boxShadow = '';
           row.style.transform = 'translateX(0)'; // Reset position
-
-          // ** FIX: Refresh Bootstrap dropdown positioning **
-          let dropdown = row.querySelector('.dropdown-toggle');
-          if (dropdown) {
-            let bsDropdown = new bootstrap.Dropdown(dropdown);
-            bsDropdown.update(); // Force Bootstrap to refresh dropdown positioning
-          }
-        }, 800);
+        }, 500);
       }, 400);
 
       // Update status badge with a pulse effect
