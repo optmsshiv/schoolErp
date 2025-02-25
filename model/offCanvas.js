@@ -524,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       setTimeout(() => {
         // Step 2: Apply final background and glow effect
-        row.style.opacity = '0.5'; // Fade effect
+      //  row.style.opacity = '0.5'; // Fade effect
 
         if (newStatus === 'Active') {
           row.style.backgroundColor = '#d4edda'; // Light green
@@ -552,6 +552,7 @@ document.addEventListener('DOMContentLoaded', function () {
          badge.style.animation = 'pulse 0.5s ease-in-out';
       }
 
+
       // Update dropdown options
       let dropdownMenu = '';
       if (newStatus === 'Active') {
@@ -567,6 +568,8 @@ document.addEventListener('DOMContentLoaded', function () {
       let dropdown = row.querySelector('.dropdown-menu');
       if (dropdown) {
         dropdown.innerHTML = dropdownMenu;
+        dropdown.style.opacity = '1'; // Ensure dropdown is fully visible
+        dropdown.style.transition = 'none'; // Disable animation on dropdown
       }
     }
 
