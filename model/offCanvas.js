@@ -675,7 +675,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
            // Capture input values
            formData.append('user_id', document.getElementById('userIdInput').value);
-           formData.append('full_name', document.getElementById('fullNameInput').value);
+           formData.append('fullname', document.getElementById('fullNameInput').value);
            formData.append('qualification', document.getElementById('qualificationInput').value);
            formData.append('role', document.getElementById('roleSelect').value);
            formData.append('email', document.getElementById('emailInput').value);
@@ -685,13 +685,13 @@ document.addEventListener('DOMContentLoaded', function () {
            formData.append('status', document.getElementById('statusSelect').value);
            formData.append('gender', document.getElementById('genderSelect').value);
            formData.append('salary', document.getElementById('salaryInput').value);
-           formData.append('aadhar', document.getElementById('aadharInput').value);
+           formData.append('aadhar_card', document.getElementById('aadharInput').value);
            formData.append('subject', document.getElementById('subjectInput').value);
-           formData.append('address', document.getElementById('userAddress').value);
+           formData.append('user_address', document.getElementById('userAddress').value);
            formData.append('bank_name', document.getElementById('bankNameInput').value);
            formData.append('branch_name', document.getElementById('branchNameInput').value);
            formData.append('account_number', document.getElementById('accountNumberInput').value);
-           formData.append('ifsc', document.getElementById('ifscCodeInput').value);
+           formData.append('ifsc_code', document.getElementById('ifscCodeInput').value);
            formData.append('account_type', document.getElementById('accountType').value);
 
            // Append avatar file if selected
