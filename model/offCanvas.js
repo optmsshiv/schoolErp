@@ -490,7 +490,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function changeStatus(userId, newStatus) {
+    function changeStatus(userId, newStatus, button) {
+      if (!button) return;
+
+      button.classList.add('loading'); // Add spinner animation
       showLoadingSpinner();
 
       fetch('../php/userRole/update_user_status.php', {
@@ -502,7 +505,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
           hideLoadingSpinner();
           if (data.success) {
-            showToast(`User status changed to ${newStatus}`, 'success');
+            showToast(`User status changed to ${newStatus}`, newStatus === 'Active' ? 'success' : 'error');
             updateUserRow(userId, newStatus);
           } else {
             showToast('Failed to update status', 'error');
@@ -511,6 +514,9 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(() => {
           hideLoadingSpinner();
           showToast('An error occurred. Please try again.', 'error');
+        })
+        .finally(() => {
+          button.classList.remove('loading'); // Remove spinner
         });
     }
 
