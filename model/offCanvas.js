@@ -545,6 +545,7 @@ document.addEventListener('DOMContentLoaded', function () {
       let badge = statusCell.querySelector('span');
 
       if (badge) {
+         badge.textContent = 'Updating...';
         badge.className = `badge ${newStatus === 'Active' ? 'bg-label-success' : 'bg-label-secondary'}`;
         badge.textContent = newStatus;
          badge.style.animation = 'pulse 0.5s ease-in-out';
