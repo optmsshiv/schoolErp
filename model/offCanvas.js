@@ -549,9 +549,16 @@ document.addEventListener('DOMContentLoaded', function () {
       if (badge) {
         badge.className = `badge ${newStatus === 'Active' ? 'bg-label-success' : 'bg-label-secondary'}`;
         badge.textContent = newStatus;
-         badge.style.animation = 'pulse 0.5s ease-in-out';
+        badge.style.animation = 'pulse 0.5s ease-in-out';
       }
 
+      // Fix dropdown fade issue
+      let dropdown = row.querySelector('.dropdown-menu');
+      if (dropdown) {
+        dropdown.style.opacity = '1'; // Ensure dropdown is fully visible
+        dropdown.style.transition = 'none'; // Disable animation on dropdown
+      }
+      
       // Update dropdown options
       let dropdownMenu = '';
       if (newStatus === 'Active') {
@@ -564,7 +571,7 @@ document.addEventListener('DOMContentLoaded', function () {
         dropdownMenu = `<a class="dropdown-item userActivate" href="javascript:;" data-id="${userId}">Activate</a>`;
       }
 
-      let dropdown = row.querySelector('.dropdown-menu');
+      // let dropdown = row.querySelector('.dropdown-menu');
       if (dropdown) {
         dropdown.innerHTML = dropdownMenu;
       }
