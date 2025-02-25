@@ -1135,7 +1135,7 @@ td {
 }
 
 .tr-animate {
-  animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
 /* Improve loading bar animation */
