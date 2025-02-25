@@ -353,6 +353,7 @@ document.addEventListener('DOMContentLoaded', function () {
   setInterval(() => fetchUserList(currentPage, rowsPerPage, searchQuery), 500000);
 
   // ✅ Event Delegation for Efficient Event Handling
+  /*
   document.getElementById('userTable').addEventListener('click', function (e) {
     let target = e.target;
     let userId = target.dataset.id;
@@ -368,7 +369,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (target.classList.contains('userCredential')) {
       sendUserCredential(userId);
     }
-  });
+  });  */
 
   // ✅ Load Data on Page Load
   //  document.addEventListener('DOMContentLoaded', () => fetchUserList(currentPage, rowsPerPage));
@@ -588,6 +589,29 @@ document.addEventListener('DOMContentLoaded', function () {
          if (event.target.classList.contains('userEdit')) {
            let userId = event.target.dataset.id;
 
+        // Check if the modal is already loaded
+        if (!document.getElementById('editUserModal')) {
+            // Fetch the modal HTML from /html/model_user_edit/user_edit.html
+            fetch('/html/model_user_edit/user_edit.html')
+                .then(response => response.text())
+                .then(html => {
+                    // Insert modal into the body
+                    document.body.insertAdjacentHTML('beforeend', html);
+
+                    // Call function to fetch user data and open modal
+                    openEditUserModal(userId);
+                })
+                .catch(error => console.error('Error loading edit modal:', error));
+        } else {
+            // If modal is already loaded, just open it
+            openEditUserModal(userId);
+        }
+    }
+});
+
+
+          // Function to fetch user data and open modal
+          function openEditUserModal(userId) {
            fetch(`../php/userRole/get_user_details.php?user_id=${userId}`)
              .then(response => response.json())
              .then(data => {
@@ -628,7 +652,7 @@ document.addEventListener('DOMContentLoaded', function () {
              })
              .catch(error => console.error('Error fetching user data:', error));
          }
-       });
+       
 
 
       // **Alert for View User**
