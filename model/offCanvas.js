@@ -490,7 +490,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function changeStatus(userId, newStatus) {
+    function changeStatus(userId, newStatus, button) {
+      if (!button) return;
+
+      // Disable button to prevent multiple clicks
+      button.classList.add('disabled');
       showLoadingSpinner();
 
       fetch('../php/userRole/update_user_status.php', {
@@ -510,6 +514,10 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(() => {
           hideLoadingSpinner();
           alert('An error occurred. Please try again.');
+        })
+        .finally(() => {
+          // Re-enable button after status change
+          button.classList.remove('disabled');
         });
     }
 
