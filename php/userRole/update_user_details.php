@@ -1,6 +1,12 @@
 <?php
 require '../db_connection.php'; // Ensure correct path
 
+header('Content-Type: application/json'); // Ensure JSON response
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     $userId = $_POST['user_id'];
     $fullName = $_POST['fullname'];
