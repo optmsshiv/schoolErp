@@ -710,24 +710,9 @@ document.addEventListener('DOMContentLoaded', function () {
              .then(data => {
                if (data.success) {
                  alert('User updated successfully!');
-
-                 // Update the UI dynamically without reloading
-                 document.getElementById(`fullname_${userId}`).innerText = formData.get('fullname');
-                 document.getElementById(`email_${userId}`).innerText = formData.get('email');
-                 document.getElementById(`phone_${userId}`).innerText = formData.get('phone');
-                 document.getElementById(`role_${userId}`).innerText = formData.get('role');
-                 document.getElementById(`status_${userId}`).innerText = formData.get('status');
-
-                 // If avatar is updated, update the image
-                 if (avatarFile) {
-                   let avatarUrl = URL.createObjectURL(avatarFile);
-                   document.getElementById(`avatar_${userId}`).src = avatarUrl;
-                 }
-
-                 // Close the modal without refreshing
                  let editUserModal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
                  editUserModal.hide(); // Close modal after saving
-                 // location.reload(); // Reload page to reflect changes (optional)
+                 location.reload(); // Reload page to reflect changes (optional)
                } else {
                  alert('Error: ' + data.message);
                }
