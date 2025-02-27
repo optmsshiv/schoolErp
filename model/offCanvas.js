@@ -583,7 +583,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 3000);
     }
 
-/*
+
       // **Edit and update script
         // **Alert for Edit User**
        document.addEventListener('click', function (event) {
@@ -669,7 +669,7 @@ document.addEventListener('DOMContentLoaded', function () {
              .catch(error => console.error('Error fetching user data:', error));
          }
 
-         //** save user changes
+         //** save user changes*/
 
          function saveUserChanges() {
            let formData = new FormData();
@@ -719,193 +719,8 @@ document.addEventListener('DOMContentLoaded', function () {
              })
              .catch(error => console.error('Error updating user:', error));
          }
-*/
 
-    document.addEventListener('click', function (event) {
-      if (event.target.classList.contains('userEdit')) {
-        let userId = event.target.dataset.id;
 
-        if (!document.getElementById('editUserModal')) {
-          fetch('/html/model_user_edit/user_edit.html')
-            .then(response => response.text())
-            .then(html => {
-              document.body.insertAdjacentHTML('beforeend', html);
-              openEditUserModal(userId);
-            })
-            .catch(error => console.error('Error loading edit modal:', error));
-        } else {
-          openEditUserModal(userId);
-        }
-      }
-    });
-
-    function openEditUserModal(userId) {
-      fetch(`../php/userRole/get_user_details.php?user_id=${userId}`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            let user = data.user;
-
-            let fields = [
-              'userIdInput',
-              'fullNameInput',
-              'qualificationInput',
-              'roleSelect',
-              'emailInput',
-              'phoneInput',
-              'dobDateInput',
-              'joiningDateInput',
-              'statusSelect',
-              'genderSelect',
-              'salaryInput',
-              'aadharInput',
-              'subjectInput',
-              'userAddress',
-              'bankNameInput',
-              'branchNameInput',
-              'accountNumberInput',
-              'ifscCodeInput',
-              'accountType'
-            ];
-
-            fields.forEach(field => {
-              let input = document.getElementById(field);
-              input.value = user[field.replace('Input', '').replace('Select', '')] || '';
-            });
-
-            let avatarImg = document.getElementById('userAvatar');
-            avatarImg.src = user.user_role_avatar || '/assets/img/avatars/default-avatar.png';
-            let avatarInput = document.getElementById('avatarUpload');
-
-            avatarInput.addEventListener('change', function () {
-              if (avatarInput.files && avatarInput.files[0]) {
-                let reader = new FileReader();
-                reader.onload = e => (avatarImg.src = e.target.result);
-                reader.readAsDataURL(avatarInput.files[0]);
-              }
-            });
-
-            let editUserModal = new bootstrap.Modal(document.getElementById('editUserModal'));
-            editUserModal.show();
-
-            let saveButton = document.getElementById('saveUserChanges');
-            saveButton.disabled = true;
-
-            document.querySelectorAll('#editUserModal input, #editUserModal select').forEach(input => {
-              input.addEventListener('input', () => {
-                saveButton.disabled = false;
-              });
-            });
-
-            saveButton.addEventListener('click', saveUserChanges);
-          } else {
-            showToast('Error: ' + data.message, 'danger');
-          }
-        })
-        .catch(error => console.error('Error fetching user data:', error));
-    }
-
-    function saveUserChanges() {
-      let saveButton = document.getElementById('saveUserChanges');
-      let progressBar = document.getElementById('uploadProgress');
-      let spinner = document.getElementById('loadingSpinner');
-
-      saveButton.disabled = true;
-      spinner.style.display = 'inline-block';
-      progressBar.style.width = '0%';
-
-      let formData = new FormData();
-      let fields = [
-        'userIdInput',
-        'fullNameInput',
-        'qualificationInput',
-        'roleSelect',
-        'emailInput',
-        'phoneInput',
-        'dobDateInput',
-        'joiningDateInput',
-        'statusSelect',
-        'genderSelect',
-        'salaryInput',
-        'aadharInput',
-        'subjectInput',
-        'userAddress',
-        'bankNameInput',
-        'branchNameInput',
-        'accountNumberInput',
-        'ifscCodeInput',
-        'accountType'
-      ];
-
-      fields.forEach(field => {
-        formData.append(field.replace('Input', '').replace('Select', ''), document.getElementById(field).value);
-      });
-
-      let avatarFile = document.getElementById('avatarUpload').files[0];
-      if (avatarFile) {
-        formData.append('avatar', avatarFile);
-      }
-
-      let xhr = new XMLHttpRequest();
-      xhr.open('POST', '/php/userRole/update_user_details.php', true);
-
-      xhr.upload.onprogress = function (event) {
-        if (event.lengthComputable) {
-          let percent = Math.round((event.loaded / event.total) * 100);
-          progressBar.style.width = percent + '%';
-        }
-      };
-
-      xhr.onload = function () {
-        spinner.style.display = 'none';
-        progressBar.style.width = '100%';
-
-        let response = JSON.parse(xhr.responseText);
-        if (response.success) {
-          showToast('User updated successfully!', 'success');
-          let editUserModal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
-          editUserModal.hide();
-          setTimeout(() => location.reload(), 1000);
-        } else {
-          showToast('Error: ' + response.message, 'danger');
-          saveButton.disabled = false;
-        }
-      };
-
-      xhr.onerror = function () {
-        spinner.style.display = 'none';
-        showToast('Error updating user. Please try again.', 'danger');
-        saveButton.disabled = false;
-      };
-
-      xhr.send(formData);
-    }
-
-    function showToast(message, type) {
-      let toastContainer = document.getElementById('toastContainer');
-      if (!toastContainer) {
-        toastContainer = document.createElement('div');
-        toastContainer.id = 'toastContainer';
-        toastContainer.style.position = 'fixed';
-        toastContainer.style.bottom = '20px';
-        toastContainer.style.right = '20px';
-        toastContainer.style.zIndex = '9999';
-        document.body.appendChild(toastContainer);
-      }
-
-      let toast = document.createElement('div');
-      toast.className = `toast align-items-center text-bg-${type} border-0 show`;
-      toast.style.minWidth = '250px';
-      toast.innerHTML = `
-        <div class="d-flex">
-            <div class="toast-body">${message}</div>
-            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
-        </div>
-    `;
-
-      toastContainer.appendChild(toast);
-      setTimeout(() => toast.remove(), 4000);
-    }
 
 
 
