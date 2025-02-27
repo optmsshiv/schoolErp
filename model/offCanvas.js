@@ -811,7 +811,7 @@ document.addEventListener('DOMContentLoaded', function () {
               let button = event.target;
               button.disabled = true; // Prevent multiple clicks
 
-              // AJAX request to fetch user credentials
+              // Fetch user credentials from the server
               $.ajax({
                 url: '/php/whatsapp/getUserCredentials.php',
                 type: 'POST',
@@ -821,18 +821,21 @@ document.addEventListener('DOMContentLoaded', function () {
                   if (response.success) {
                     let { fullname, password, phone, fromName } = response.data;
 
-                    // Show confirmation toast instead of confirm()
-                    toastr.info(`Send credentials to:<br><b>${fullname}</b><br>Phone: ${phone}`, 'Confirmation', {
-                      timeOut: 5000,
-                      closeButton: true,
-                      progressBar: true,
-                      preventDuplicates: true,
-                      extendedTimeOut: 2000,
-                      tapToDismiss: false,
-                      newestOnTop: true,
-                      positionClass: 'toast-top-center',
-                      onclick: function () {
+                    // Use SweetAlert2 for confirmation
+                    Swal.fire({
+                      title: 'Send Credentials?',
+                      html: `<b>Name:</b> ${fullname}<br><b>Phone:</b> ${phone}`,
+                      icon: 'info',
+                      showCancelButton: true,
+                      confirmButtonText: 'Send Now',
+                      cancelButtonText: 'Cancel',
+                      confirmButtonColor: '#28a745',
+                      cancelButtonColor: '#d33'
+                    }).then(result => {
+                      if (result.isConfirmed) {
                         sendCredentials(userId, fullname, password, phone, fromName, button);
+                      } else {
+                        button.disabled = false; // Re-enable if canceled
                       }
                     });
                   } else {
@@ -865,10 +868,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 toastr.error('Failed to send credentials.', 'Error');
               },
               complete: function () {
-                button.disabled = false; // Re-enable button
+                button.disabled = false; // Re-enable button after request
               }
             });
           }
+
 
 
 
