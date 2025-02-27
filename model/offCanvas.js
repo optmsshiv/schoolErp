@@ -641,7 +641,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                  // Update avatar preview
                  let avatarImg = document.getElementById('userAvatar');
-                 avatarImg.src = user.avatar ? user.avatar : '/assets/img/avatars/default-avatar.png';
+                 avatarImg.src = user.user_role_avatar ? user.user_role_avatar : '/assets/img/avatars/default-avatar.png';
                  let avatarInput = document.getElementById('avatarUpload');
 
                  // Show image preview when file is selected
