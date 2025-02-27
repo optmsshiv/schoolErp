@@ -720,8 +720,6 @@ document.addEventListener('DOMContentLoaded', function () {
          }
 
 
-
-
       // **Alert for View User**
       document.addEventListener('click', function (event) {
           if (event.target.classList.contains('userView')) {
@@ -744,14 +742,69 @@ document.addEventListener('DOMContentLoaded', function () {
 
       document.addEventListener('click', function (event) {
         if (event.target.classList.contains('userCredential')) {
-            let userId = event.target.dataset.id;
-            if (confirm(`Are you sure you want to send Credential to user ID ${userId}?`)) {
-                alert(`Credential for User ID ${userId} has been send.`);
-                // You can call a function to delete the user from the database here
-            }
-        }
-    });
+          let userId = event.target.dataset.id;
+          let button = event.target;
+          button.disabled = true; // Prevent multiple clicks
 
+          // AJAX request to fetch user credentials from the server
+          $.ajax({
+            url: '/php/whatsapp/getUserCredentials.php', // Backend script to fetch credentials
+            type: 'POST',
+            data: { user_id: userId }, // Send the user ID to the backend
+            dataType: 'json', // Expect JSON response
+            success: function (response) {
+              if (response.success) {
+                let fullName = response.data.fullname;
+                let password = response.data.password;
+                let phone = response.data.phone;
+                let fromName = response.data.fromName;
+
+                // Display confirmation before sending credentials
+                if (confirm(`Send credentials to:\nFull Name: ${fullName}\nPhone: ${phone}`)) {
+                  // Send credentials via WhatsApp API
+                  $.ajax({
+                    url: '/php/whatsapp/sendUserRoleCred.php', // Script to send via WhatsApp
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                      fullName: fullName,
+                      user_id: userId,
+                      password: password,
+                      phone: phone,
+                      fromName: fromName
+                    }),
+                    dataType: 'json',
+                    success: function (sendResponse) {
+                      console.log('Success:', sendResponse);
+                      alert('Credentials sent successfully!');
+                    },
+                    error: function (xhr) {
+                      console.error('Error:', xhr.responseText);
+                      alert('Failed to send credentials.');
+                    },
+                    complete: function () {
+                      button.disabled = false; // Re-enable button
+                    }
+                  });
+                } else {
+                  button.disabled = false; // Re-enable if user cancels
+                }
+              } else {
+                alert('User credentials not found.');
+                button.disabled = false; // Re-enable button
+              }
+            },
+            error: function (xhr) {
+              console.error('Error fetching credentials:', xhr.responseText);
+              alert('Error retrieving user credentials.');
+              button.disabled = false; // Re-enable button
+            }
+          });
+        }
+      });
+
+
+      
 /*
 function changeStatus(userId, newStatus, targetElement) {
   fetch('../php/userRole/update_user_status.php', {
