@@ -740,6 +740,7 @@ document.addEventListener('DOMContentLoaded', function () {
           }
       });
 
+      /*
       document.addEventListener('click', function (event) {
         if (event.target.classList.contains('userCredential')) {
           let userId = event.target.dataset.id;
@@ -802,9 +803,75 @@ document.addEventListener('DOMContentLoaded', function () {
           });
         }
       });
+*/
+
+          document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('userCredential')) {
+              let userId = event.target.dataset.id;
+              let button = event.target;
+              button.disabled = true; // Prevent multiple clicks
+
+              // AJAX request to fetch user credentials
+              $.ajax({
+                url: '/php/whatsapp/getUserCredentials.php',
+                type: 'POST',
+                data: { user_id: userId },
+                dataType: 'json',
+                success: function (response) {
+                  if (response.success) {
+                    let { fullname, password, phone, fromName } = response.data;
+
+                    // Show confirmation toast instead of confirm()
+                    toastr.info(`Send credentials to:<br><b>${fullname}</b><br>Phone: ${phone}`, 'Confirmation', {
+                      timeOut: 5000,
+                      closeButton: true,
+                      progressBar: true,
+                      preventDuplicates: true,
+                      extendedTimeOut: 2000,
+                      tapToDismiss: false,
+                      newestOnTop: true,
+                      positionClass: 'toast-top-center',
+                      onclick: function () {
+                        sendCredentials(userId, fullname, password, phone, fromName, button);
+                      }
+                    });
+                  } else {
+                    toastr.error('User credentials not found.', 'Error');
+                    button.disabled = false;
+                  }
+                },
+                error: function (xhr) {
+                  console.error('Error fetching credentials:', xhr.responseText);
+                  toastr.error('Error retrieving user credentials.', 'Error');
+                  button.disabled = false;
+                }
+              });
+            }
+          });
+
+          function sendCredentials(userId, fullName, password, phone, fromName, button) {
+            $.ajax({
+              url: '/php/whatsapp/sendUserRoleCred.php',
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify({ fullName, user_id: userId, password, phone, fromName }),
+              dataType: 'json',
+              success: function (sendResponse) {
+                console.log('Success:', sendResponse);
+                toastr.success('Credentials sent successfully!', 'Success');
+              },
+              error: function (xhr) {
+                console.error('Error:', xhr.responseText);
+                toastr.error('Failed to send credentials.', 'Error');
+              },
+              complete: function () {
+                button.disabled = false; // Re-enable button
+              }
+            });
+          }
 
 
-      
+
 /*
 function changeStatus(userId, newStatus, targetElement) {
   fetch('../php/userRole/update_user_status.php', {
