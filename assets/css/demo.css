@@ -1217,3 +1217,12 @@ td {
   background: #dc3545;
 }
 
+.flash {
+  background-color: yellow;
+  transition: background-color 1s ease-in-out;
+}
+
+.flash-img {
+  border: 3px solid yellow;
+  transition: border 1s ease-in-out;
+}

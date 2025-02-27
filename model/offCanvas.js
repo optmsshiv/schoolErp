@@ -669,8 +669,8 @@ document.addEventListener('DOMContentLoaded', function () {
              .catch(error => console.error('Error fetching user data:', error));
          }
 
-         //** save user changes*/
-
+         //** save user changes
+/*
          function saveUserChanges() {
            let formData = new FormData();
 
@@ -719,6 +719,88 @@ document.addEventListener('DOMContentLoaded', function () {
              })
              .catch(error => console.error('Error updating user:', error));
          }
+*/
+
+
+        function saveUserChanges() {
+          let formData = new FormData();
+
+          // Capture input values
+          let userId = document.getElementById('userIdInput').value;
+          formData.append('user_id', userId);
+          formData.append('fullname', document.getElementById('fullNameInput').value);
+          formData.append('qualification', document.getElementById('qualificationInput').value);
+          formData.append('role', document.getElementById('roleSelect').value);
+          formData.append('email', document.getElementById('emailInput').value);
+          formData.append('phone', document.getElementById('phoneInput').value);
+          formData.append('dob', document.getElementById('dobDateInput').value);
+          formData.append('joining_date', document.getElementById('joiningDateInput').value);
+          formData.append('status', document.getElementById('statusSelect').value);
+          formData.append('gender', document.getElementById('genderSelect').value);
+          formData.append('salary', document.getElementById('salaryInput').value);
+          formData.append('aadhar_card', document.getElementById('aadharInput').value);
+          formData.append('subject', document.getElementById('subjectInput').value);
+          formData.append('user_address', document.getElementById('userAddress').value);
+          formData.append('bank_name', document.getElementById('bankNameInput').value);
+          formData.append('branch_name', document.getElementById('branchNameInput').value);
+          formData.append('account_number', document.getElementById('accountNumberInput').value);
+          formData.append('ifsc_code', document.getElementById('ifscCodeInput').value);
+          formData.append('account_type', document.getElementById('accountType').value);
+
+          // Append avatar file if selected
+          let avatarFile = document.getElementById('avatarUpload').files[0];
+          if (avatarFile) {
+            formData.append('avatar', avatarFile);
+          }
+
+          // Send data to PHP
+          fetch('/php/userRole/update_user_details.php', {
+            method: 'POST',
+            body: formData
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                alert('User updated successfully!');
+
+                // Update the UI dynamically with a flash effect
+                updateWithFlash(`fullname_${userId}`, formData.get('fullname'));
+                updateWithFlash(`email_${userId}`, formData.get('email'));
+                updateWithFlash(`phone_${userId}`, formData.get('phone'));
+                updateWithFlash(`role_${userId}`, formData.get('role'));
+                updateWithFlash(`status_${userId}`, formData.get('status'));
+
+                // If avatar is updated, update the image
+                if (avatarFile) {
+                  let avatarUrl = URL.createObjectURL(avatarFile);
+                  let avatarElement = document.getElementById(`avatar_${userId}`);
+                  avatarElement.src = avatarUrl;
+                  avatarElement.classList.add('flash-img');
+                  setTimeout(() => avatarElement.classList.remove('flash-img'), 1000);
+                }
+
+                // Close the modal without refreshing
+                let editUserModal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
+                editUserModal.hide();
+              } else {
+                alert('Error: ' + data.message);
+              }
+            })
+            .catch(error => console.error('Error updating user:', error));
+        }
+
+        // Function to apply flash effect to updated fields
+        function updateWithFlash(elementId, newValue) {
+          let element = document.getElementById(elementId);
+          if (element) {
+            element.innerText = newValue;
+            element.classList.add('flash');
+            setTimeout(() => element.classList.remove('flash'), 1000);
+          }
+        }
+
+
+
 
 
       // **Alert for View User**
