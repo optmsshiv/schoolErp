@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Send WhatsApp Message
             sendWhatsAppMessage(data.fullname, data.user_id, data.password, data.phone, data.role, data.status);
-            
+
           });
         } else {
           Swal.fire({
@@ -583,7 +583,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 3000);
     }
 
-
+/*
       // **Edit and update script
         // **Alert for Edit User**
        document.addEventListener('click', function (event) {
@@ -669,7 +669,7 @@ document.addEventListener('DOMContentLoaded', function () {
              .catch(error => console.error('Error fetching user data:', error));
          }
 
-         //** save user changes */
+         //** save user changes
 
          function saveUserChanges() {
            let formData = new FormData();
@@ -719,6 +719,198 @@ document.addEventListener('DOMContentLoaded', function () {
              })
              .catch(error => console.error('Error updating user:', error));
          }
+*/
+
+    document.addEventListener('click', function (event) {
+      if (event.target.classList.contains('userEdit')) {
+        let userId = event.target.dataset.id;
+
+        // Check if the modal is already loaded
+        if (!document.getElementById('editUserModal')) {
+          fetch('/html/model_user_edit/user_edit.html')
+            .then(response => response.text())
+            .then(html => {
+              document.body.insertAdjacentHTML('beforeend', html);
+              openEditUserModal(userId);
+            })
+            .catch(error => console.error('Error loading edit modal:', error));
+        } else {
+          openEditUserModal(userId);
+        }
+      }
+    });
+
+    // Function to fetch user data and open modal
+    function openEditUserModal(userId) {
+      fetch(`../php/userRole/get_user_details.php?user_id=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            let user = data.user;
+            let avatarImg = document.getElementById('userAvatar');
+            let avatarInput = document.getElementById('avatarUpload');
+            let saveButton = document.getElementById('saveUserChanges');
+            let progressBar = document.getElementById('uploadProgressBar');
+            let progressContainer = document.getElementById('progressContainer');
+            let spinner = document.getElementById('loadingSpinner');
+
+            // Populate modal fields
+            document.getElementById('userIdInput').value = user.user_id;
+            document.getElementById('fullNameInput').value = user.fullname || '';
+            document.getElementById('qualificationInput').value = user.qualification || '';
+            document.getElementById('roleSelect').value = user.role || '';
+            document.getElementById('emailInput').value = user.email || '';
+            document.getElementById('phoneInput').value = user.phone || '';
+            document.getElementById('dobDateInput').value = user.dob || '';
+            document.getElementById('joiningDateInput').value = user.joining_date || '';
+            document.getElementById('statusSelect').value = user.status || '';
+            document.getElementById('genderSelect').value = user.gender || '';
+            document.getElementById('salaryInput').value = user.salary || '';
+            document.getElementById('aadharInput').value = user.aadhar_card || '';
+            document.getElementById('subjectInput').value = user.subject || '';
+            document.getElementById('userAddress').value = user.user_address || '';
+            document.getElementById('bankNameInput').value = user.bank_name || '';
+            document.getElementById('branchNameInput').value = user.branch_name || '';
+            document.getElementById('accountNumberInput').value = user.account_number || '';
+            document.getElementById('ifscCodeInput').value = user.ifsc_code || '';
+            document.getElementById('accountType').value = user.account_type || '';
+
+            // Update avatar preview
+            avatarImg.src = user.user_role_avatar ? user.user_role_avatar : '/assets/img/avatars/default-avatar.png';
+
+            // Show image preview when file is selected
+            avatarInput.addEventListener('change', function () {
+              if (avatarInput.files && avatarInput.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                  avatarImg.src = e.target.result;
+                };
+                reader.readAsDataURL(avatarInput.files[0]);
+                saveButton.disabled = false; // Enable save button when file changes
+              }
+            });
+
+            // Detect any changes in inputs
+            document.querySelectorAll('.form-control, .form-select').forEach(input => {
+              input.addEventListener('input', () => {
+                saveButton.disabled = false;
+              });
+            });
+
+            // Show modal
+            let editUserModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+            editUserModal.show();
+
+            // Attach the event listener for saving user changes
+            saveButton.addEventListener('click', function () {
+              saveUserChanges(userId, spinner, progressContainer, progressBar);
+            });
+
+            saveButton.disabled = true; // Initially disable button
+          } else {
+            alert('Error: ' + data.message);
+          }
+        })
+        .catch(error => console.error('Error fetching user data:', error));
+    }
+
+    // Function to save user changes
+    function saveUserChanges(userId, spinner, progressContainer, progressBar) {
+      let formData = new FormData();
+      let saveButton = document.getElementById('saveUserChanges');
+
+      // Capture input values
+      let fields = [
+        'userIdInput',
+        'fullNameInput',
+        'qualificationInput',
+        'roleSelect',
+        'emailInput',
+        'phoneInput',
+        'dobDateInput',
+        'joiningDateInput',
+        'statusSelect',
+        'genderSelect',
+        'salaryInput',
+        'aadharInput',
+        'subjectInput',
+        'userAddress',
+        'bankNameInput',
+        'branchNameInput',
+        'accountNumberInput',
+        'ifscCodeInput',
+        'accountType'
+      ];
+
+      fields.forEach(field => {
+        formData.append(field.replace('Input', ''), document.getElementById(field).value);
+      });
+
+      // Append avatar file if selected
+      let avatarFile = document.getElementById('avatarUpload').files[0];
+      if (avatarFile) {
+        formData.append('avatar', avatarFile);
+      }
+
+      // Show loading spinner
+      saveButton.disabled = true;
+      spinner.classList.remove('d-none');
+      progressContainer.classList.remove('d-none');
+
+      fetch('/php/userRole/update_user_details.php', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.json())
+        .then(data => {
+          spinner.classList.add('d-none');
+          progressContainer.classList.add('d-none');
+          saveButton.disabled = false;
+
+          if (data.success) {
+            showToast('User updated successfully!', 'success');
+
+            let editUserModal = bootstrap.Modal.getInstance(document.getElementById('editUserModal'));
+            editUserModal.hide();
+
+            let updatedRow = document.querySelector(`#userRow_${userId}`);
+            if (updatedRow) {
+              updatedRow.classList.add('flash-update');
+              setTimeout(() => updatedRow.classList.remove('flash-update'), 2000);
+            }
+          } else {
+            showToast('Error: ' + data.message, 'error');
+          }
+        })
+        .catch(error => {
+          spinner.classList.add('d-none');
+          showToast('Error updating user', 'error');
+          console.error('Error updating user:', error);
+        });
+    }
+
+    // Function to show toast notifications
+    function showToast(message, type) {
+      let toast = document.createElement('div');
+      toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0`;
+      toast.style.position = 'fixed';
+      toast.style.bottom = '20px';
+      toast.style.right = '20px';
+      toast.style.zIndex = '1050';
+      toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">${message}</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+      document.body.appendChild(toast);
+      let bsToast = new bootstrap.Toast(toast);
+      bsToast.show();
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+
+
 
 
       // **Alert for View User**
