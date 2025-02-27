@@ -1,8 +1,6 @@
 <?php
 require '../db_connection.php'; // Ensure correct path
 
-header('Content-Type: application/json');
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
     $userId = $_POST['user_id'];
