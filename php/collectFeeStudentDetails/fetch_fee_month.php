@@ -16,7 +16,7 @@ $feePlansQuery->execute([$userId]);
 $feePlans = $feePlansQuery->fetchAll(PDO::FETCH_ASSOC);
 
 // Fetch fee payment status from feeDetails table
-$feeDetailsQuery = $pdo->prepare("SELECT month, feeHead, status FROM feeDetails WHERE userId = ?");
+$feeDetailsQuery = $pdo->prepare("SELECT month, payment_status FROM feeDetails WHERE userId = ?");
 $feeDetailsQuery->execute([$userId]);
 $feeDetails = $feeDetailsQuery->fetchAll(PDO::FETCH_ASSOC);
 
