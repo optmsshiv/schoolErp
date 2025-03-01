@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
     // function fetchFeePlansData(studentData)
-    function fetchFeePlansData(ANAN7245) {
+    function fetchFeePlansData(user_id) {
       const months = [
         'April',
         'May',
