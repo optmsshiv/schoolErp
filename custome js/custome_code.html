@@ -86,4 +86,26 @@ totalRow.appendChild(totalAmountCell);
 tableBody.appendChild(totalRow);
 }
 
+function addToFeeCollection(month, feeType, amount) {
+const tableBody = document.querySelector('#FeeCollection tbody');
+const newRow = document.createElement('tr');
+
+newRow.innerHTML = `
+<td>${month}</td>
+<td>${feeType}</td>
+<td>${amount}</td>
+<td class="text-center">
+  <button class="btn text-muted h-px-30 deleteFeeButton" type="button" id="deleteFeeButton">
+    <i class="btn-outline-danger bx bx-trash bx-sm"></i>
+  </button>
+</td>
+`;
+
+tableBody.appendChild(newRow);
+
+// Update total amount
+totalAmount += parseFloat(amount); // Add the new amount to the total
+updateTotalAmount(); // Call to update the total and the payableAmount input field
+}
+
 <script src="/php/collectFeeStudentDetails/fetch_fee_month.php"> </script>

@@ -1,24 +1,38 @@
 <?php
-require 'db_connection.php'; // Ensure you have a database connection file
+require 'db_connection.php'; // Your database connection file
 
-header('Content-Type: application/json');
+$user_id = $_GET['user_id'] ?? '';
 
-if (!isset($_GET['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'User ID is required']);
+if (!$user_id) {
+    echo json_encode(['error' => 'User ID is required']);
     exit;
 }
 
-$user_id = $_GET['user_id'];
+// Fetch Fee Plan for the student
+$sql = "SELECT * FROM FeePlans WHERE user_id = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$user_id]);
+$feePlan = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Fetch fee plans from FeePlans table
-$feePlansQuery = $pdo->prepare("SELECT fee_head_name, amount FROM FeePlans WHERE user_id = ?");
-$feePlansQuery->execute([$user_id]);
-$feePlans = $feePlansQuery->fetchAll(PDO::FETCH_ASSOC);
+if (!$feePlan) {
+    echo json_encode(['error' => 'No fee plan found for this user']);
+    exit;
+}
 
-// Fetch fee payment status from feeDetails table
-$feeDetailsQuery = $pdo->prepare("SELECT month, payment_status FROM feeDetails WHERE user_id = ?");
-$feeDetailsQuery->execute([$user_id]);
-$feeDetails = $feeDetailsQuery->fetchAll(PDO::FETCH_ASSOC);
+// Fetch Fee Payment Details
+$sqlPaid = "SELECT month, status FROM feeDetails WHERE user_id = ?";
+$stmtPaid = $pdo->prepare($sqlPaid);
+$stmtPaid->execute([$user_id]);
+$paidFees = $stmtPaid->fetchAll(PDO::FETCH_ASSOC);
 
-echo json_encode(['success' => true, 'feePlans' => $feePlans, 'feeDetails' => $feeDetails]);
+// Convert paid status into an easy-to-use format
+$paidStatus = [];
+foreach ($paidFees as $fee) {
+    $paidStatus[$fee['month']] = $fee['status']; // Assuming 1 = Paid, 0 = Unpaid
+}
+
+echo json_encode([
+    'monthly_fee' => $feePlan['monthly_fee'],
+    'paid_status' => $paidStatus
+]);
 ?>
