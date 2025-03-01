@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
     // function fetchFeePlansData(studentData)
-    function fetchFeePlansData(user_id) {
+    function fetchFeePlansData(ANAN7245) {
       const months = [
         'April',
         'May',
@@ -120,9 +120,11 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       // Fetch data from the database
-      fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?user_id=${user_id}`)
+      fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?user_id=${encodeURIComponent(user_id)}`)
         .then(response => response.json())
         .then(data => {
+          console.log('Fetching fee data for user_id:', user_id);
+
           if (!data.success) {
             console.error('Error fetching fee data:', data.message);
             return;
