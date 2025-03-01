@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
     // function fetchFeePlansData(studentData)
-    function fetchFeePlansData(userId) {
+    function fetchFeePlansData(user_id) {
       const months = [
         'April',
         'May',
@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       // Fetch data from the database
-      fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?userId=${userId}`)
+      fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?user_id=${user_id}`)
         .then(response => response.json())
         .then(data => {
           if (!data.success) {
