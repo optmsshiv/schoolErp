@@ -3,22 +3,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const studentData = JSON.parse(sessionStorage.getItem('studentData')); // Retrieve data from session storage
 
     if (studentData && Array.isArray(studentData) && studentData.length > 0) {
-      const className = studentData[0].class_name; // Extract class_name from the first student object
+        const className = studentData[0].class_name; // Get class name
+        const userId = studentData[0].user_id; // Get user ID
 
-      if (className) {
-        fetchFeePlansData(className); // Pass class name to fetch fee plans
-      } else {
-        console.error('Class name is missing in student data.');
-        showAlert('Class name is missing.', 'error');
-      }
+        if (className && userId) {
+            fetchFeePlansData(className, userId);
+        } else {
+            console.error('Class name or User ID is missing.');
+            showAlert('Student data is incomplete.', 'error');
+        }
     } else {
-      console.error('No valid student data found in session storage.');
-      showAlert('Student data is missing or invalid.', 'error');
+        console.error('No valid student data found in session storage.');
+        showAlert('Student data is missing or invalid.', 'error');
     }
-  } catch (error) {
+} catch (error) {
     console.error('Error parsing student data:', error);
     showAlert('Failed to load student data.', 'error');
-  }
+}
 
 
   // Event listener for the "plus" buttons in the "Total" row
@@ -210,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
          // Add amount for each month
          monthAmounts.forEach((amount, index) => {
            const amountCell = document.createElement('td');
-           
+
 
            if (amount !== 'N/A' && !isNaN(amount)) {
              totalAmounts[index] += parseFloat(amount);
