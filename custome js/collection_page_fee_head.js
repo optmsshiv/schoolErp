@@ -3,13 +3,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const studentData = JSON.parse(sessionStorage.getItem('studentData')); // Retrieve data from session storage
 
     if (studentData && Array.isArray(studentData) && studentData.length > 0) {
-      const className = studentData[0].class_name; // Extract class_name from the first student object
+      const className = studentData[0].class_name; // Get class name
+      const userId = studentData[0].user_id; // Get user ID
 
-      if (className) {
-        fetchFeePlansData(className); // Pass class name to fetch fee plans
+      if (className && userId) {
+        fetchFeePlansData(className, userId);
       } else {
-        console.error('Class name is missing in student data.');
-        showAlert('Class name is missing.', 'error');
+        console.error('Class name or User ID is missing.');
+        showAlert('Student data is incomplete.', 'error');
       }
     } else {
       console.error('No valid student data found in session storage.');
