@@ -9,7 +9,7 @@ if (!$user_id) {
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT month_name FROM feeDetails WHERE user_id = ?");
+    $stmt = $pdo->prepare("SELECT month FROM feeDetails WHERE user_id = ?");
     $stmt->execute([$user_id]);
     $paidMonths = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
