@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
      }
 
 
-     function updateFeeTable(feePlans) {
+     function updateFeeTable(feePlans, paidMonths) {
        const months = [
          'April',
          'May',
@@ -169,22 +169,21 @@ document.addEventListener('DOMContentLoaded', function () {
          'March'
        ];
 
-       // Get table elements
        const theadRow = document.querySelector('#student_fee_table thead tr');
        const tableBody = document.querySelector('#student_fee_table tbody');
 
-       // Clear existing table content
-       theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
+       // Clear existing content
+       theadRow.innerHTML = '<th>Fee Head</th>';
        tableBody.innerHTML = '';
 
-       // Generate table header dynamically
+       // Generate table headers
        months.forEach(month => {
          const th = document.createElement('th');
          th.textContent = month;
          theadRow.appendChild(th);
        });
 
-       // Create a map to organize data by Fee Head and months
+       // Organize fee data by Fee Head and months
        const feeDataMap = {};
 
        feePlans.forEach(({ month_name, amount, fee_head_name }) => {
@@ -197,21 +196,19 @@ document.addEventListener('DOMContentLoaded', function () {
          }
        });
 
-       let totalAmounts = new Array(months.length).fill(0); // Track total amount for each month
+       let totalAmounts = new Array(months.length).fill(0);
 
        Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
          const row = document.createElement('tr');
          row.classList.add('text-center');
 
-         // Add Fee Head column
+         // Fee Head column
          const feeHeadCell = document.createElement('td');
          feeHeadCell.textContent = feeHeadName;
          row.appendChild(feeHeadCell);
 
-         // Add amount for each month
          monthAmounts.forEach((amount, index) => {
            const amountCell = document.createElement('td');
-
 
            if (amount !== 'N/A' && !isNaN(amount)) {
              totalAmounts[index] += parseFloat(amount);
@@ -259,6 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
        tableBody.appendChild(totalRow);
      }
+
 
 
 
