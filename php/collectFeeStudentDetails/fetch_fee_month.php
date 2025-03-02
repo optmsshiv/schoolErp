@@ -1,5 +1,5 @@
 <?php
-require 'db_connection.php'; // Include your database connection
+require '../db_connection.php'; // Include your database connection
 
 $class_name = $_GET['class_name'] ?? ''; // Get class_name from request
 
