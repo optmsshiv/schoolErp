@@ -108,6 +108,23 @@ totalAmount += parseFloat(amount); // Add the new amount to the total
 updateTotalAmount(); // Call to update the total and the payableAmount input field
 }
 
+
+/**************************/
+
+try {
+const studentData = JSON.parse(sessionStorage.getItem('studentData')); // Retrieve data from session storage
+
+if (studentData && Array.isArray(studentData) && studentData.length > 0) {
+fetchFeePlansData(studentData);
+} else {
+console.error('No valid student data found in session storage.');
+showAlert('Student data is missing or invalid.', 'error');
+}
+} catch (error) {
+console.error('Error parsing student data:', error);
+showAlert('Failed to load student data.', 'error');
+}
+
 <script src="/php/collectFeeStudentDetails/fetch_fee_month.php"> </script>
 
 

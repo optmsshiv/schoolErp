@@ -3,7 +3,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const studentData = JSON.parse(sessionStorage.getItem('studentData')); // Retrieve data from session storage
 
     if (studentData && Array.isArray(studentData) && studentData.length > 0) {
-      fetchFeePlansData(studentData);
+      const className = studentData[0].class_name; // Extract class_name from the first student object
+
+      if (className) {
+        fetchFeePlansData(className); // Pass class name to fetch fee plans
+      } else {
+        console.error('Class name is missing in student data.');
+        showAlert('Class name is missing.', 'error');
+      }
     } else {
       console.error('No valid student data found in session storage.');
       showAlert('Student data is missing or invalid.', 'error');
@@ -12,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     console.error('Error parsing student data:', error);
     showAlert('Failed to load student data.', 'error');
   }
+
 
   // Event listener for the "plus" buttons in the "Total" row
   document.querySelector('#student_fee_table').addEventListener('click', function (event) {
@@ -116,93 +124,106 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // function fetchFeePlansData(studentData)
-        async function fetchFeePlansData(className) {
-          const response = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`);
-          const feePlans = await response.json();
+     async function fetchFeePlansData(className) {
+       try {
+         const response = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`);
+         const feePlans = await response.json();
 
-          if (feePlans.error) {
-            console.error(feePlans.error);
-            return;
-          }
+         if (feePlans.error) {
+           console.error(feePlans.error);
+           showAlert(feePlans.error, 'error');
+           return;
+         }
 
-          const months = [
-            'April',
-            'May',
-            'June',
-            'July',
-            'August',
-            'September',
-            'October',
-            'November',
-            'December',
-            'January',
-            'February',
-            'March'
-          ];
+         updateFeeTable(feePlans);
+       } catch (error) {
+         console.error('Error fetching fee plans:', error);
+         showAlert('Failed to load fee plans.', 'error');
+       }
+     }
 
-          // Generate table header dynamically
-          const theadRow = document.querySelector('#student_fee_table thead tr');
-          theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
+     function updateFeeTable(feePlans) {
+       const months = [
+         'April',
+         'May',
+         'June',
+         'July',
+         'August',
+         'September',
+         'October',
+         'November',
+         'December',
+         'January',
+         'February',
+         'March'
+       ];
 
-          months.forEach(month => {
-            const th = document.createElement('th');
-            th.textContent = month;
-            theadRow.appendChild(th);
-          });
+       // Get table elements
+       const theadRow = document.querySelector('#student_fee_table thead tr');
+       const tableBody = document.querySelector('#student_fee_table tbody');
 
-          // Create a map to organize data by Fee Head and months
-          const feeDataMap = {};
+       // Clear existing table content
+       theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
+       tableBody.innerHTML = '';
 
-          feePlans.forEach(({ month_name, amount, fee_head_name }) => {
-            if (!feeDataMap[fee_head_name]) {
-              feeDataMap[fee_head_name] = new Array(months.length).fill('N/A');
-            }
-            const monthIndex = months.indexOf(month_name);
-            if (monthIndex !== -1) {
-              feeDataMap[fee_head_name][monthIndex] = amount;
-            }
-          });
+       // Generate table header dynamically
+       months.forEach(month => {
+         const th = document.createElement('th');
+         th.textContent = month;
+         theadRow.appendChild(th);
+       });
 
-          // Populate the table body dynamically
-          const tableBody = document.querySelector('#student_fee_table tbody');
-          tableBody.innerHTML = ''; // Clear any existing rows
+       // Create a map to organize data by Fee Head and months
+       const feeDataMap = {};
 
-          let totalAmounts = new Array(months.length).fill(0);
+       feePlans.forEach(({ month_name, amount, fee_head_name }) => {
+         if (!feeDataMap[fee_head_name]) {
+           feeDataMap[fee_head_name] = new Array(months.length).fill('N/A');
+         }
+         const monthIndex = months.indexOf(month_name);
+         if (monthIndex !== -1) {
+           feeDataMap[fee_head_name][monthIndex] = amount;
+         }
+       });
 
-          Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
-            const row = document.createElement('tr');
-            row.classList.add('text-center');
+       let totalAmounts = new Array(months.length).fill(0); // Track total amount for each month
 
-            // Fee Head column
-            const feeHeadCell = document.createElement('td');
-            feeHeadCell.textContent = feeHeadName;
-            row.appendChild(feeHeadCell);
+       Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
+         const row = document.createElement('tr');
+         row.classList.add('text-center');
 
-            // Amount columns for each month
-            monthAmounts.forEach((amount, index) => {
-              const amountCell = document.createElement('td');
-              amountCell.textContent = amount !== 'N/A' ? amount : 'N/A';
-              row.appendChild(amountCell);
+         // Add Fee Head column
+         const feeHeadCell = document.createElement('td');
+         feeHeadCell.textContent = feeHeadName;
+         row.appendChild(feeHeadCell);
 
-              if (amount !== 'N/A' && !isNaN(amount)) {
-                totalAmounts[index] += parseFloat(amount);
-              }
-            });
+         // Add amount for each month
+         monthAmounts.forEach((amount, index) => {
+           const amountCell = document.createElement('td');
+           amountCell.textContent = amount !== 'N/A' ? amount : 'N/A';
+           row.appendChild(amountCell);
 
-            tableBody.appendChild(row);
-          });
+           if (amount !== 'N/A' && !isNaN(amount)) {
+             totalAmounts[index] += parseFloat(amount);
+           }
+         });
 
-          // Add "Total" row with amount buttons
-          const totalRow = document.createElement('tr');
-          totalRow.classList.add('text-center');
+         tableBody.appendChild(row);
+       });
 
-          const totalFeeHeadCell = document.createElement('td');
-          totalFeeHeadCell.textContent = 'Total';
-          totalRow.appendChild(totalFeeHeadCell);
+       // Add "Total" row with amount buttons
+       const totalRow = document.createElement('tr');
+       totalRow.classList.add('text-center');
 
-          totalAmounts.forEach(totalAmount => {
-            const totalAmountCell = document.createElement('td');
-            totalAmountCell.innerHTML = `
+       // Add "Total" cell
+       const totalFeeHeadCell = document.createElement('td');
+       totalFeeHeadCell.textContent = 'Total';
+       totalRow.appendChild(totalFeeHeadCell);
+
+       // Add total amounts for each month with a button
+       totalAmounts.forEach(totalAmount => {
+         const totalAmountCell = document.createElement('td');
+         totalAmountCell.innerHTML = `
       <div class="amount-button">
         <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
         <button class="btn btn-outline-primary rounded-circle">
@@ -210,11 +231,13 @@ document.addEventListener('DOMContentLoaded', function () {
         </button>
       </div>
     `;
-            totalRow.appendChild(totalAmountCell);
-          });
+         totalRow.appendChild(totalAmountCell);
+       });
 
-          tableBody.appendChild(totalRow);
-        }
+       tableBody.appendChild(totalRow);
+     }
+
+
 
 
 
