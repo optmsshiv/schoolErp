@@ -127,22 +127,29 @@ document.addEventListener('DOMContentLoaded', function () {
 // function fetchFeePlansData(studentData)
      async function fetchFeePlansData(className, userId) {
        try {
-         const response = await fetch(
-           `/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}&user_id=${userId}`);
-         const feeData = await response.json();
+         // Fetch fee plans for the class
+         const feePlansResponse = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`
+         );
+         const feePlans = await feePlansResponse.json();
 
-         if (feeData.error) {
-           console.error(feeData.error);
-           showAlert(feeData.error, 'error');
+         // Fetch paid months from feeDetails table for this student
+         const paidMonthsResponse = await fetch(`/php/collectFeeStudentDetails/fetch_paid_months.php?user_id=${userId}`
+         );
+         const paidMonths = await paidMonthsResponse.json();
+
+         if (feePlans.error || paidMonths.error) {
+           console.error(feePlans.error || paidMonths.error);
+           showAlert(feePlans.error || paidMonths.error, 'error');
            return;
          }
 
-         updateFeeTable(feeData.feePlans, feeData.paidMonths);
+         updateFeeTable(feePlans, paidMonths);
        } catch (error) {
          console.error('Error fetching fee plans:', error);
          showAlert('Failed to load fee plans.', 'error');
        }
      }
+
 
 
           function updateFeeTable(feePlans, paidMonths) {
