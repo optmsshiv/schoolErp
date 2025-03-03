@@ -209,20 +209,18 @@ document.addEventListener('DOMContentLoaded', function () {
              totalAmounts[index] += parseFloat(amount);
 
              // Check if this month is paid
-              if (paidMonths.includes(months[index])) {
-               // Show green tick if the month is paid
-              amountCell.innerHTML = `<span class="text-success fw-bold fs-5">✔</span>`;
-               } else if (amount !== 'N/A' && amount) {
-              // Show the pay button only if amount exists and is unpaid
-              amountCell.innerHTML = `
-                <div class="amount-button">
-                  <div class="amount">${amount}</div>
-                  <button class="btn btn-outline-primary rounded-circle pay-fee" data-month="${months[index]}">
-                    <i class="bx bx-plus"></i>
-                  </button>
-                </div>
-              `;
-               }
+             if (paidMonths.includes(months[index])) {
+               amountCell.innerHTML = `<span class="text-success">✔</span>`; // Green tick for paid
+             } else {
+               amountCell.innerHTML = `
+            <div class="amount-button">
+              <div class="amount">${amount}</div>
+              <button class="btn btn-outline-primary rounded-circle pay-fee" data-month="${months[index]}">
+                <i class="bx bx-plus"></i>
+              </button>
+            </div>
+          `;
+             }
            } else {
              amountCell.textContent = 'N/A';
            }
