@@ -125,18 +125,23 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // function fetchFeePlansData(studentData)
-     async function fetchFeePlansData(className) {
+     async function fetchFeePlansData(className, userId) {
        try {
-         const response = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`);
-         const feePlans = await response.json();
+         // Fetch fee structure for the class
+         const feePlansResponse = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`);
+         const feePlans = await feePlansResponse.json();
 
-         if (feePlans.error) {
-           console.error(feePlans.error);
-           showAlert(feePlans.error, 'error');
+         // Fetch paid months from feeDetails table for this student
+         const paidMonthsResponse = await fetch(`/php/collectFeeStudentDetails/fetch_paid_months.php?user_id=${userId}`);
+         const paidMonths = await paidMonthsResponse.json();
+
+         if (feePlans.error || paidMonths.error) {
+           console.error(feePlans.error || paidMonths.error);
+           showAlert(feePlans.error || paidMonths.error, 'error');
            return;
          }
 
-         updateFeeTable(feePlans);
+         updateFeeTable(feePlans, paidMonths);
        } catch (error) {
          console.error('Error fetching fee plans:', error);
          showAlert('Failed to load fee plans.', 'error');
@@ -201,12 +206,30 @@ document.addEventListener('DOMContentLoaded', function () {
          // Add amount for each month
          monthAmounts.forEach((amount, index) => {
            const amountCell = document.createElement('td');
-           amountCell.textContent = amount !== 'N/A' ? amount : 'N/A';
-           row.appendChild(amountCell);
 
            if (amount !== 'N/A' && !isNaN(amount)) {
              totalAmounts[index] += parseFloat(amount);
+
+             // Check if this month is paid
+             if (paidMonths.includes(months[index])) {
+               // Show green tick if the month is paid
+               amountCell.innerHTML = `<span class="text-success fw-bold fs-5">✔</span>`;
+                  } else if (amount !== 'N/A' && amount) {
+                // Show the pay button only if amount exists and is unpaid
+                  amountCell.innerHTML = `
+                 <div class="amount-button">
+                   <div class="amount">${amount}</div>
+                   <button class="btn btn-outline-primary rounded-circle pay-fee" data-month="${months[index]}">
+                     <i class="bx bx-plus"></i>
+                   </button>
+                 </div>
+                 `;
+             }
+           } else {
+             amountCell.textContent = 'N/A';
            }
+
+           row.appendChild(amountCell);
          });
 
          tableBody.appendChild(row);
@@ -227,9 +250,10 @@ document.addEventListener('DOMContentLoaded', function () {
          totalAmountCell.innerHTML = `
       <div class="amount-button">
         <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
+        <!---
         <button class="btn btn-outline-primary rounded-circle">
           <i class="bx bx-plus"></i>
-        </button>
+        </button>-->
       </div>
     `;
          totalRow.appendChild(totalAmountCell);

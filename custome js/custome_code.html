@@ -1,14 +1,28 @@
-function fetchFeePlansData(studentData) {
+function updateFeeTable(feePlans) {
 const months = [
-'April', 'May', 'June', 'July', 'August',
-'September', 'October', 'November', 'December',
-'January', 'February', 'March'
+'April',
+'May',
+'June',
+'July',
+'August',
+'September',
+'October',
+'November',
+'December',
+'January',
+'February',
+'March'
 ];
 
-// Generate the table header dynamically
+// Get table elements
 const theadRow = document.querySelector('#student_fee_table thead tr');
-theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
+const tableBody = document.querySelector('#student_fee_table tbody');
 
+// Clear existing table content
+theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
+tableBody.innerHTML = '';
+
+// Generate table header dynamically
 months.forEach(month => {
 const th = document.createElement('th');
 th.textContent = month;
@@ -18,44 +32,38 @@ theadRow.appendChild(th);
 // Create a map to organize data by Fee Head and months
 const feeDataMap = {};
 
-studentData.forEach(student => {
-const { monthly_fee } = student;
-
-// Populate "Monthly Fee" for all months
-if (!feeDataMap['Monthly Fee']) {
-feeDataMap['Monthly Fee'] = new Array(months.length).fill(monthly_fee || 'N/A'); // Default to N/A if fee is not
-available
+feePlans.forEach(({ month_name, amount, fee_head_name }) => {
+if (!feeDataMap[fee_head_name]) {
+feeDataMap[fee_head_name] = new Array(months.length).fill('N/A');
+}
+const monthIndex = months.indexOf(month_name);
+if (monthIndex !== -1) {
+feeDataMap[fee_head_name][monthIndex] = amount;
 }
 });
 
-// Populate the table body dynamically
-const tableBody = document.querySelector('#student_fee_table tbody');
-tableBody.innerHTML = ''; // Clear any existing rows
-
-let totalAmounts = new Array(months.length).fill(0); // Array to store total amounts for each month
+let totalAmounts = new Array(months.length).fill(0); // Track total amount for each month
 
 Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
 const row = document.createElement('tr');
 row.classList.add('text-center');
 
-// Fee Head column
+// Add Fee Head column
 const feeHeadCell = document.createElement('td');
 feeHeadCell.textContent = feeHeadName;
 row.appendChild(feeHeadCell);
 
-// Amount columns for each month (No button here for monthly fee)
+// Add amount for each month
 monthAmounts.forEach((amount, index) => {
 const amountCell = document.createElement('td');
-amountCell.textContent = amount !== 'N/A' && amount ? amount : 'N/A'; // Show amount if available
+amountCell.textContent = amount !== 'N/A' ? amount : 'N/A';
 row.appendChild(amountCell);
 
-// Add the amount to the total for that month (only if it's numeric)
-if (amount && !isNaN(amount)) {
+if (amount !== 'N/A' && !isNaN(amount)) {
 totalAmounts[index] += parseFloat(amount);
 }
 });
 
-// Append row to the table body
 tableBody.appendChild(row);
 });
 
@@ -68,7 +76,7 @@ const totalFeeHeadCell = document.createElement('td');
 totalFeeHeadCell.textContent = 'Total';
 totalRow.appendChild(totalFeeHeadCell);
 
-// Add total amounts for each month with the plus button
+// Add total amounts for each month with a button
 totalAmounts.forEach(totalAmount => {
 const totalAmountCell = document.createElement('td');
 totalAmountCell.innerHTML = `
@@ -82,47 +90,7 @@ totalAmountCell.innerHTML = `
 totalRow.appendChild(totalAmountCell);
 });
 
-// Append total row to the table
 tableBody.appendChild(totalRow);
-}
-
-function addToFeeCollection(month, feeType, amount) {
-const tableBody = document.querySelector('#FeeCollection tbody');
-const newRow = document.createElement('tr');
-
-newRow.innerHTML = `
-<td>${month}</td>
-<td>${feeType}</td>
-<td>${amount}</td>
-<td class="text-center">
-  <button class="btn text-muted h-px-30 deleteFeeButton" type="button" id="deleteFeeButton">
-    <i class="btn-outline-danger bx bx-trash bx-sm"></i>
-  </button>
-</td>
-`;
-
-tableBody.appendChild(newRow);
-
-// Update total amount
-totalAmount += parseFloat(amount); // Add the new amount to the total
-updateTotalAmount(); // Call to update the total and the payableAmount input field
-}
-
-
-/**************************/
-
-try {
-const studentData = JSON.parse(sessionStorage.getItem('studentData')); // Retrieve data from session storage
-
-if (studentData && Array.isArray(studentData) && studentData.length > 0) {
-fetchFeePlansData(studentData);
-} else {
-console.error('No valid student data found in session storage.');
-showAlert('Student data is missing or invalid.', 'error');
-}
-} catch (error) {
-console.error('Error parsing student data:', error);
-showAlert('Failed to load student data.', 'error');
 }
 
 <script src="/php/collectFeeStudentDetails/fetch_fee_month.php"> </script>
