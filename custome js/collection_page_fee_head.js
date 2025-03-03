@@ -127,118 +127,122 @@ document.addEventListener('DOMContentLoaded', function () {
 // function fetchFeePlansData(studentData)
      async function fetchFeePlansData(className, userId) {
        try {
-         // Fetch fee structure for the class
-         const feePlansResponse = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`);
-         const feePlans = await feePlansResponse.json();
+         const response = await fetch(
+           `/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}&user_id=${userId}`);
+         const feeData = await response.json();
 
-         if (feePlans.error) {
-           console.error(feePlans.error);
-           showAlert(feePlans.error, 'error');
+         if (feeData.error) {
+           console.error(feeData.error);
+           showAlert(feeData.error, 'error');
            return;
          }
 
-         updateFeeTable(feePlans);
+         updateFeeTable(feeData.feePlans, feeData.paidMonths);
        } catch (error) {
          console.error('Error fetching fee plans:', error);
          showAlert('Failed to load fee plans.', 'error');
        }
      }
 
-     function updateFeeTable(feePlans) {
-       const months = [
-         'April',
-         'May',
-         'June',
-         'July',
-         'August',
-         'September',
-         'October',
-         'November',
-         'December',
-         'January',
-         'February',
-         'March'
-       ];
 
-       // Get table elements
-       const theadRow = document.querySelector('#student_fee_table thead tr');
-       const tableBody = document.querySelector('#student_fee_table tbody');
+          function updateFeeTable(feePlans, paidMonths) {
+            const months = [
+              'April',
+              'May',
+              'June',
+              'July',
+              'August',
+              'September',
+              'October',
+              'November',
+              'December',
+              'January',
+              'February',
+              'March'
+            ];
 
-       // Clear existing table content
-       theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
-       tableBody.innerHTML = '';
+            const theadRow = document.querySelector('#student_fee_table thead tr');
+            const tableBody = document.querySelector('#student_fee_table tbody');
 
-       // Generate table header dynamically
-       months.forEach(month => {
-         const th = document.createElement('th');
-         th.textContent = month;
-         theadRow.appendChild(th);
-       });
+            theadRow.innerHTML = '<th>Fee Head</th>';
+            tableBody.innerHTML = '';
 
-       // Create a map to organize data by Fee Head and months
-       const feeDataMap = {};
+            months.forEach(month => {
+              const th = document.createElement('th');
+              th.textContent = month;
+              theadRow.appendChild(th);
+            });
 
-       feePlans.forEach(({ month_name, amount, fee_head_name }) => {
-         if (!feeDataMap[fee_head_name]) {
-           feeDataMap[fee_head_name] = new Array(months.length).fill('N/A');
-         }
-         const monthIndex = months.indexOf(month_name);
-         if (monthIndex !== -1) {
-           feeDataMap[fee_head_name][monthIndex] = amount;
-         }
-       });
+            const feeDataMap = {};
+            feePlans.forEach(({ month_name, amount, fee_head_name }) => {
+              if (!feeDataMap[fee_head_name]) {
+                feeDataMap[fee_head_name] = new Array(months.length).fill('N/A');
+              }
+              const monthIndex = months.indexOf(month_name);
+              if (monthIndex !== -1) {
+                feeDataMap[fee_head_name][monthIndex] = amount;
+              }
+            });
 
-       let totalAmounts = new Array(months.length).fill(0); // Track total amount for each month
+            let totalAmounts = new Array(months.length).fill(0);
 
-       Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
-         const row = document.createElement('tr');
-         row.classList.add('text-center');
+            Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
+              const row = document.createElement('tr');
+              row.classList.add('text-center');
 
-         // Add Fee Head column
-         const feeHeadCell = document.createElement('td');
-         feeHeadCell.textContent = feeHeadName;
-         row.appendChild(feeHeadCell);
+              const feeHeadCell = document.createElement('td');
+              feeHeadCell.textContent = feeHeadName;
+              row.appendChild(feeHeadCell);
 
-         // Add amount for each month
-         monthAmounts.forEach((amount, index) => {
-           const amountCell = document.createElement('td');
-           amountCell.textContent = amount !== 'N/A' ? amount : 'N/A';
-           row.appendChild(amountCell);
+              monthAmounts.forEach((amount, index) => {
+                const amountCell = document.createElement('td');
+                amountCell.textContent = amount !== 'N/A' ? amount : 'N/A';
+                row.appendChild(amountCell);
 
-           if (amount !== 'N/A' && !isNaN(amount)) {
-             totalAmounts[index] += parseFloat(amount);
-           }
-         });
+                if (amount !== 'N/A' && !isNaN(amount)) {
+                  totalAmounts[index] += parseFloat(amount);
+                }
+              });
 
-         tableBody.appendChild(row);
-       });
+              tableBody.appendChild(row);
+            });
 
-       // Add "Total" row with amount buttons
-       const totalRow = document.createElement('tr');
-       totalRow.classList.add('text-center');
+            // Add "Total" row
+            const totalRow = document.createElement('tr');
+            totalRow.classList.add('text-center');
 
-       // Add "Total" cell
-       const totalFeeHeadCell = document.createElement('td');
-       totalFeeHeadCell.textContent = 'Total';
-       totalRow.appendChild(totalFeeHeadCell);
+            const totalFeeHeadCell = document.createElement('td');
+            totalFeeHeadCell.textContent = 'Total';
+            totalRow.appendChild(totalFeeHeadCell);
 
-       // Add total amounts for each month with a button
-       totalAmounts.forEach(totalAmount => {
-         const totalAmountCell = document.createElement('td');
-         totalAmountCell.innerHTML = `
-      <div class="amount-button">
-        <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-        <button class="btn btn-outline-primary rounded-circle">
-          <i class="bx bx-plus"></i>
-        </button>
-      </div>
-    `;
-         totalRow.appendChild(totalAmountCell);
-       });
+            totalAmounts.forEach((totalAmount, index) => {
+              const monthName = months[index];
+              const totalAmountCell = document.createElement('td');
 
-       tableBody.appendChild(totalRow);
-     }
+              if (paidMonths.includes(monthName)) {
+                // Show Green Tick (✔) for Paid Months
+                totalAmountCell.innerHTML = `
+        <div class="amount-button">
+          <div class="amount text-success"><i class="bx bx-check-circle"></i></div>
+        </div>
+      `;
+              } else {
+                // Show Plus Button (➕) for Unpaid Months
+                totalAmountCell.innerHTML = `
+        <div class="amount-button">
+          <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
+          <button class="btn btn-outline-primary rounded-circle">
+            <i class="bx bx-plus"></i>
+          </button>
+        </div>
+      `;
+              }
 
+              totalRow.appendChild(totalAmountCell);
+            });
+
+            tableBody.appendChild(totalRow);
+          }
 
 
 
