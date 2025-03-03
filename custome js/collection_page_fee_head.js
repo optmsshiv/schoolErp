@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 totalAmountCell.innerHTML = `
         <div class="amount-button">
           <button class=" btn btn-outline-success rounded-circle">
-          <i class="bx bx-check-circle"></i></button>
+          <i class="bx bx-check"></i></button>
         </div>
       `;
               } else {
