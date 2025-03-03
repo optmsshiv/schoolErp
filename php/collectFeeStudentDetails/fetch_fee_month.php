@@ -1,5 +1,5 @@
 <?php
-require 'db_connection.php'; // Your PDO database connection
+require '../db_connection.php'; // Your PDO database connection
 
 $class_name = $_GET['class_name'] ?? '';
 $user_id = $_GET['user_id'] ?? '';
