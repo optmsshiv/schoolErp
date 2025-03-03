@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', function () {
        totalRow.appendChild(totalFeeHeadCell);
 
        // Add total amounts for each month with a button
-       totalAmounts.forEach(totalAmount => {
+       totalAmounts.forEach((totalAmount, index) => {
          const totalAmountCell = document.createElement('td');
          totalAmountCell.innerHTML = `
       <div class="amount-button">
