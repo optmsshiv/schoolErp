@@ -247,7 +247,7 @@ async function fetchFeeDetails(userId) {
 
       if (!confirm(`Are you sure you want to delete Receipt No: ${receiptNo}?`)) return;
 
-      fetch('delete_fee.php', {
+      fetch('../php/collectFeeStudentDetails/delete_fee.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ receipt_no: receiptNo })
@@ -268,7 +268,7 @@ async function fetchFeeDetails(userId) {
     function handleSendReceipt(row) {
       const receiptNo = row.querySelector('td:first-child').innerText;
 
-      fetch('send_fee_receipt.php', {
+      fetch('../php/collectFeeStudentDetails/send_fee_receipt.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ receipt_no: receiptNo })
@@ -288,7 +288,7 @@ async function fetchFeeDetails(userId) {
     function handleSendMessage(row) {
       const receiptNo = row.querySelector('td:first-child').innerText;
 
-      fetch('send_fee_message.php', {
+      fetch('../php/collectFeeStudentDetails/send_fee_message.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ receipt_no: receiptNo })
