@@ -213,6 +213,11 @@ async function fetchFeeDetails(userId) {
                 <i class="bx bx-dots-vertical-rounded bx-sm"></i>
               </button>
               <ul class="dropdown-menu">
+                ${
+                  detail.status === 'Pending'
+                    ? `<li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="collectFeeLink">Collect Fee</a></li>`
+                    : ''
+                }
                 <li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="viewFeeReceiptLink">View Fee Receipt</a></li>
                 <li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="sendFeeReceiptLink">Send Fee Receipt</a></li>
                 <li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="sendFeeMessageLink">Send Fee Message</a></li>
