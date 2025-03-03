@@ -128,22 +128,16 @@ document.addEventListener('DOMContentLoaded', function () {
      async function fetchFeePlansData(className, userId) {
        try {
          // Fetch fee structure for the class
-         const feePlansResponse = await fetch(
-           `/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`
-         );
+         const feePlansResponse = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`);
          const feePlans = await feePlansResponse.json();
 
-         // Fetch paid months from feeDetails table for this student
-         const paidMonthsResponse = await fetch(`fetch_paid_months.php?user_id=${userId}`);
-         const paidMonths = await paidMonthsResponse.json();
-
-         if (feePlans.error || paidMonths.error) {
-           console.error(feePlans.error || paidMonths.error);
-           showAlert(feePlans.error || paidMonths.error, 'error');
+         if (feePlans.error) {
+           console.error(feePlans.error);
+           showAlert(feePlans.error, 'error');
            return;
          }
 
-         updateFeeTable(feePlans, paidMonths);
+         updateFeeTable(feePlans);
        } catch (error) {
          console.error('Error fetching fee plans:', error);
          showAlert('Failed to load fee plans.', 'error');
@@ -208,28 +202,12 @@ document.addEventListener('DOMContentLoaded', function () {
          // Add amount for each month
          monthAmounts.forEach((amount, index) => {
            const amountCell = document.createElement('td');
+           amountCell.textContent = amount !== 'N/A' ? amount : 'N/A';
+           row.appendChild(amountCell);
 
            if (amount !== 'N/A' && !isNaN(amount)) {
              totalAmounts[index] += parseFloat(amount);
-
-             // Check if this month is paid
-             if (paidMonths.includes(months[index])) {
-               amountCell.innerHTML = `<span class="text-success">✔</span>`; // Green tick for paid
-             } else {
-               amountCell.innerHTML = `
-            <div class="amount-button">
-              <div class="amount">${amount}</div>
-              <button class="btn btn-outline-primary rounded-circle pay-fee" data-month="${months[index]}">
-                <i class="bx bx-plus"></i>
-              </button>
-            </div>
-          `;
-             }
-           } else {
-             amountCell.textContent = 'N/A';
            }
-
-           row.appendChild(amountCell);
          });
 
          tableBody.appendChild(row);
