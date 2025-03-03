@@ -13,7 +13,14 @@ try {
     $stmt->execute([$user_id]);
     $paidMonths = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-    echo json_encode($paidMonths);
+    // Flatten the comma-separated values into a single array
+    $allPaidMonths = [];
+    foreach ($paidMonths as $monthString) {
+        $months = explode(',', $monthString);
+        $allPaidMonths = array_merge($allPaidMonths, array_map('trim', $months)); // Trim spaces
+    }
+
+    echo json_encode(array_values(array_unique($allPaidMonths))); // Remove duplicates & re-index
 } catch (PDOException $e) {
     echo json_encode(['error' => $e->getMessage()]);
 }
