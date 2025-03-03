@@ -239,13 +239,13 @@ document.addEventListener('DOMContentLoaded', function () {
               } else {
                 // Show Plus Button (➕) for Unpaid Months
                 totalAmountCell.innerHTML = `
-        <div class="amount-button">
-          <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-          <button class="btn btn-outline-primary rounded-circle">
-            <i class="bx bx-plus"></i>
-          </button>
-        </div>
-      `;
+                         <div class="amount-button">
+                           <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
+                           <button class="btn btn-outline-primary rounded-circle">
+                             <i class="bx bx-plus"></i>
+                           </button>
+                         </div>
+                       `;
               }
 
               totalRow.appendChild(totalAmountCell);
