@@ -142,7 +142,9 @@ async function searchStudents(searchInput, resultsContainer) {
 
 async function fetchFeeDetails(userId) {
   try {
-    const response = await fetch(`../php/collectFeeStudentDetails/students_fee_details.php?user_id=${encodeURIComponent(userId)}`);
+    const response = await fetch(
+      `../php/collectFeeStudentDetails/students_fee_details.php?user_id=${encodeURIComponent(userId)}`
+    );
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -157,7 +159,7 @@ async function fetchFeeDetails(userId) {
     }
 
     // Use the fetched data here
-    console.log(data); // For debugging
+    // console.log(data); // For debugging
 
     // Calculate total pending amount from table data
     const totalPendingAmount = data.details.reduce((sum, detail) => {
@@ -180,10 +182,14 @@ async function fetchFeeDetails(userId) {
 
     // Update fee table
     const feeTableBody = document.getElementById('optms').querySelector('tbody');
-    feeTableBody.innerHTML = data.details.map(detail => {
-      const months = detail.month.split(',').map(month => month.trim()).join(', '); // Clean month data
+    feeTableBody.innerHTML = data.details
+      .map(detail => {
+        const months = detail.month
+          .split(',')
+          .map(month => month.trim())
+          .join(', '); // Clean month data
 
-      return `
+        return `
         <tr>
           <td>${detail.receipt_no}</td>
           <td>${months}</td>
@@ -199,8 +205,8 @@ async function fetchFeeDetails(userId) {
           <td align="center">₹ ${detail.received_amount || '0'}</td>
           <td align="center">₹ ${detail.total_amount || '0'}</td>
           <td><span class="badge rounded-pill ${detail.status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'}">${
-        detail.status
-      }</span></td>
+          detail.status
+        }</span></td>
           <td align="center">
             <div class="dropdown">
               <button class="btn text-muted p-0" type="button" data-bs-toggle="dropdown">
@@ -218,9 +224,87 @@ async function fetchFeeDetails(userId) {
           </td>
         </tr>
       `;
-    }).join('');
+      })
+      .join('');
 
-     // Attach the click event listener for 'View Fee Receipt' link
+    // Event delegation for dynamically added elements
+    feeTableBody.addEventListener('click', function (event) {
+      const target = event.target;
+      const row = target.closest('tr'); // Get the clicked row
+
+      if (target.closest('#deleteFeeLink')) {
+        handleDelete(row);
+      } else if (target.closest('#sendFeeReceiptLink')) {
+        handleSendReceipt(row);
+      } else if (target.closest('#sendFeeMessageLink')) {
+        handleSendMessage(row);
+      }
+    });
+
+    // 🔴 Function to delete a fee entry
+    function handleDelete(row) {
+      const receiptNo = row.querySelector('td:first-child').innerText;
+
+      if (!confirm(`Are you sure you want to delete Receipt No: ${receiptNo}?`)) return;
+
+      fetch('delete_fee.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ receipt_no: receiptNo })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            row.remove(); // Remove row from the table
+            alert('✅ Fee record deleted successfully.');
+          } else {
+            alert('❌ Failed to delete fee record.');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // 📜 Function to send fee receipt via WhatsApp
+    function handleSendReceipt(row) {
+      const receiptNo = row.querySelector('td:first-child').innerText;
+
+      fetch('send_fee_receipt.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ receipt_no: receiptNo })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('✅ Fee receipt sent successfully via WhatsApp.');
+          } else {
+            alert('❌ Failed to send fee receipt.');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // 📩 Function to send fee reminder message via WhatsApp
+    function handleSendMessage(row) {
+      const receiptNo = row.querySelector('td:first-child').innerText;
+
+      fetch('send_fee_message.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ receipt_no: receiptNo })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('✅ Fee reminder sent successfully via WhatsApp.');
+          } else {
+            alert('❌ Failed to send fee reminder.');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Attach the click event listener for 'View Fee Receipt' link
     document.querySelectorAll('#viewFeeReceiptLink').forEach(link => {
       link.addEventListener('click', function (e) {
         e.preventDefault();
@@ -229,7 +313,6 @@ async function fetchFeeDetails(userId) {
         loadFeeReceiptModal();
       });
     });
-
   } catch (error) {
     console.error('Error fetching fee details:', error);
     alert('Error fetching fee details. Please try again later.');
