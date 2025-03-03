@@ -230,7 +230,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Show Green Tick (✔) for Paid Months
                 totalAmountCell.innerHTML = `
         <div class="amount-button">
-          <div class="amount text-success"><i class="bx bx-check-circle"></i></div>
+          <button class=" btn btn-outline-success rounded-circle">
+          <i class="bx bx-check-circle"></i></button>
         </div>
       `;
               } else {
