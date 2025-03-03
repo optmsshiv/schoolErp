@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function () {
        }
      }
 
-     function updateFeeTable(feePlans, paidMonths) {
+     function updateFeeTable(feePlans) {
        const months = [
          'April',
          'May',
@@ -164,21 +164,22 @@ document.addEventListener('DOMContentLoaded', function () {
          'March'
        ];
 
+       // Get table elements
        const theadRow = document.querySelector('#student_fee_table thead tr');
        const tableBody = document.querySelector('#student_fee_table tbody');
 
-       // Clear table headers and body
-       theadRow.innerHTML = '<th>Fee Head</th>';
+       // Clear existing table content
+       theadRow.innerHTML = '<th>Fee Head</th>'; // Add "Fee Head" column
        tableBody.innerHTML = '';
 
-       // Generate table headers
+       // Generate table header dynamically
        months.forEach(month => {
          const th = document.createElement('th');
          th.textContent = month;
          theadRow.appendChild(th);
        });
 
-       // Organize fee data by Fee Head and months
+       // Create a map to organize data by Fee Head and months
        const feeDataMap = {};
 
        feePlans.forEach(({ month_name, amount, fee_head_name }) => {
@@ -191,17 +192,18 @@ document.addEventListener('DOMContentLoaded', function () {
          }
        });
 
-       let totalAmounts = new Array(months.length).fill(0);
+       let totalAmounts = new Array(months.length).fill(0); // Track total amount for each month
 
        Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
          const row = document.createElement('tr');
          row.classList.add('text-center');
 
-         // Fee Head column
+         // Add Fee Head column
          const feeHeadCell = document.createElement('td');
          feeHeadCell.textContent = feeHeadName;
          row.appendChild(feeHeadCell);
 
+         // Add amount for each month
          monthAmounts.forEach((amount, index) => {
            const amountCell = document.createElement('td');
 
@@ -210,16 +212,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
              // Check if this month is paid
              if (paidMonths.includes(months[index])) {
-               amountCell.innerHTML = `<span class="text-success">✔</span>`; // Green tick for paid
-             } else {
-               amountCell.innerHTML = `
-            <div class="amount-button">
-              <div class="amount">${amount}</div>
-              <button class="btn btn-outline-primary rounded-circle pay-fee" data-month="${months[index]}">
-                <i class="bx bx-plus"></i>
-              </button>
-            </div>
-          `;
+               // Show green tick if the month is paid
+               amountCell.innerHTML = `<span class="text-success fw-bold fs-5">✔</span>`;
+                  } else if (amount !== 'N/A' && amount) {
+                // Show the pay button only if amount exists and is unpaid
+                  amountCell.innerHTML = `
+                 <div class="amount-button">
+                   <div class="amount">${amount}</div>
+                   <button class="btn btn-outline-primary rounded-circle pay-fee" data-month="${months[index]}">
+                     <i class="bx bx-plus"></i>
+                   </button>
+                 </div>
+                 `;
              }
            } else {
              amountCell.textContent = 'N/A';
@@ -235,15 +239,21 @@ document.addEventListener('DOMContentLoaded', function () {
        const totalRow = document.createElement('tr');
        totalRow.classList.add('text-center');
 
+       // Add "Total" cell
        const totalFeeHeadCell = document.createElement('td');
        totalFeeHeadCell.textContent = 'Total';
        totalRow.appendChild(totalFeeHeadCell);
 
-       totalAmounts.forEach((totalAmount, index) => {
+       // Add total amounts for each month with a button
+       totalAmounts.forEach(totalAmount => {
          const totalAmountCell = document.createElement('td');
          totalAmountCell.innerHTML = `
       <div class="amount-button">
         <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
+        <!---
+        <button class="btn btn-outline-primary rounded-circle">
+          <i class="bx bx-plus"></i>
+        </button>-->
       </div>
     `;
          totalRow.appendChild(totalAmountCell);
