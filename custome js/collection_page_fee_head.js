@@ -152,107 +152,111 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-          function updateFeeTable(feePlans, paidMonths) {
-            const months = [
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December',
-              'January',
-              'February',
-              'March'
-            ];
+         function updateFeeTable(feePlans, paidMonthsString) {
+           const months = [
+             'April',
+             'May',
+             'June',
+             'July',
+             'August',
+             'September',
+             'October',
+             'November',
+             'December',
+             'January',
+             'February',
+             'March'
+           ];
 
-            const theadRow = document.querySelector('#student_fee_table thead tr');
-            const tableBody = document.querySelector('#student_fee_table tbody');
+           const theadRow = document.querySelector('#student_fee_table thead tr');
+           const tableBody = document.querySelector('#student_fee_table tbody');
 
-            theadRow.innerHTML = '<th>Fee Head</th>';
-            tableBody.innerHTML = '';
+           theadRow.innerHTML = '<th>Fee Head</th>';
+           tableBody.innerHTML = '';
 
-            months.forEach(month => {
-              const th = document.createElement('th');
-              th.textContent = month;
-              theadRow.appendChild(th);
-            });
+           months.forEach(month => {
+             const th = document.createElement('th');
+             th.textContent = month;
+             theadRow.appendChild(th);
+           });
 
-            const feeDataMap = {};
-            feePlans.forEach(({ month_name, amount, fee_head_name }) => {
-              if (!feeDataMap[fee_head_name]) {
-                feeDataMap[fee_head_name] = new Array(months.length).fill('N/A');
-              }
-              const monthIndex = months.indexOf(month_name);
-              if (monthIndex !== -1) {
-                feeDataMap[fee_head_name][monthIndex] = amount;
-              }
-            });
+           // Convert paid months from string to array (handling comma-separated values)
+           const paidMonthsArray = paidMonthsString ? paidMonthsString.split(',').map(m => m.trim()) : [];
 
-            let totalAmounts = new Array(months.length).fill(0);
+           const feeDataMap = {};
+           feePlans.forEach(({ month_name, amount, fee_head_name }) => {
+             if (!feeDataMap[fee_head_name]) {
+               feeDataMap[fee_head_name] = new Array(months.length).fill('N/A');
+             }
+             const monthIndex = months.indexOf(month_name);
+             if (monthIndex !== -1) {
+               feeDataMap[fee_head_name][monthIndex] = amount;
+             }
+           });
 
-            Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
-              const row = document.createElement('tr');
-              row.classList.add('text-center');
+           let totalAmounts = new Array(months.length).fill(0);
 
-              const feeHeadCell = document.createElement('td');
-              feeHeadCell.textContent = feeHeadName;
-              row.appendChild(feeHeadCell);
+           Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
+             const row = document.createElement('tr');
+             row.classList.add('text-center');
 
-              monthAmounts.forEach((amount, index) => {
-                const amountCell = document.createElement('td');
-                amountCell.textContent = amount !== 'N/A' ? amount : 'N/A';
-                row.appendChild(amountCell);
+             const feeHeadCell = document.createElement('td');
+             feeHeadCell.textContent = feeHeadName;
+             row.appendChild(feeHeadCell);
 
-                if (amount !== 'N/A' && !isNaN(amount)) {
-                  totalAmounts[index] += parseFloat(amount);
-                }
-              });
+             monthAmounts.forEach((amount, index) => {
+               const amountCell = document.createElement('td');
+               amountCell.textContent = amount !== 'N/A' ? amount : 'N/A';
+               row.appendChild(amountCell);
 
-              tableBody.appendChild(row);
-            });
+               if (amount !== 'N/A' && !isNaN(amount)) {
+                 totalAmounts[index] += parseFloat(amount);
+               }
+             });
 
-            // Add "Total" row
-            const totalRow = document.createElement('tr');
-            totalRow.classList.add('text-center');
+             tableBody.appendChild(row);
+           });
 
-            const totalFeeHeadCell = document.createElement('td');
-            totalFeeHeadCell.textContent = 'Total';
-            totalRow.appendChild(totalFeeHeadCell);
+           // Add "Total" row
+           const totalRow = document.createElement('tr');
+           totalRow.classList.add('text-center');
 
-            totalAmounts.forEach((totalAmount, index) => {
-              const monthName = months[index];
-              const totalAmountCell = document.createElement('td');
+           const totalFeeHeadCell = document.createElement('td');
+           totalFeeHeadCell.textContent = 'Total';
+           totalRow.appendChild(totalFeeHeadCell);
 
-              if (paidMonths.includes(monthName)) {
-                // Show Green Tick (✔) for Paid Months
-                totalAmountCell.innerHTML = `
-                   <div class="amount-button">
-                   <div class="amount text-success">
-                   ${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-                     <button class=" btn btn-outline-success rounded-circle">
-                     <i class="bx bx-check"></i></button>
-                   </div>
-                 `;
-              } else {
-                // Show Plus Button (➕) for Unpaid Months
-                totalAmountCell.innerHTML = `
-                         <div class="amount-button">
-                           <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-                           <button class="btn btn-outline-primary rounded-circle">
-                             <i class="bx bx-plus"></i>
-                           </button>
-                         </div>
-                       `;
-              }
+           totalAmounts.forEach((totalAmount, index) => {
+             const monthName = months[index];
+             const totalAmountCell = document.createElement('td');
 
-              totalRow.appendChild(totalAmountCell);
-            });
+             if (paidMonthsArray.includes(monthName)) {
+               // ✅ Show Green Tick (✔) with Amount for Paid Months
+               totalAmountCell.innerHTML = `
+                <div class="amount-button">
+                    <div class="amount text-success">
+                        ${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}
+                        <i class="bx bx-check-circle"></i>
+                    </div>
+                </div>
+            `;
+             } else {
+               // ➕ Show Plus Button for Unpaid Months
+               totalAmountCell.innerHTML = `
+                <div class="amount-button">
+                    <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
+                    <button class="btn btn-outline-primary rounded-circle">
+                        <i class="bx bx-plus"></i>
+                    </button>
+                </div>
+            `;
+             }
 
-            tableBody.appendChild(totalRow);
-          }
+             totalRow.appendChild(totalAmountCell);
+           });
+
+           tableBody.appendChild(totalRow);
+         }
+
 
 
 
