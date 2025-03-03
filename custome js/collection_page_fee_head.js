@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-         function updateFeeTable(feePlans, paidMonthsString) {
+         function updateFeeTable(feePlans, paidMonths) {
            const months = [
              'April',
              'May',
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
            });
 
            // Convert paid months from string to array (handling comma-separated values)
-           const paidMonthsArray = paidMonthsString ? paidMonthsString.split(',').map(m => m.trim()) : [];
+           const paidMonthsArray = paidMonths ? paidMonths.split(',').map(m => m.trim()) : [];
 
            const feeDataMap = {};
            feePlans.forEach(({ month_name, amount, fee_head_name }) => {
