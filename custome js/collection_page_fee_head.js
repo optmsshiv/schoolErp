@@ -229,13 +229,13 @@ document.addEventListener('DOMContentLoaded', function () {
               if (paidMonths.includes(monthName)) {
                 // Show Green Tick (✔) for Paid Months
                 totalAmountCell.innerHTML = `
-        <div class="amount-button">
-        <div class="amount text-success">
-        ${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-          <button class=" btn btn-outline-success rounded-circle">
-          <i class="bx bx-check"></i></button>
-        </div>
-      `;
+                   <div class="amount-button">
+                   <div class="amount text-success">
+                   ${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
+                     <button class=" btn btn-outline-success rounded-circle">
+                     <i class="bx bx-check"></i></button>
+                   </div>
+                 `;
               } else {
                 // Show Plus Button (➕) for Unpaid Months
                 totalAmountCell.innerHTML = `
