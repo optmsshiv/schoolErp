@@ -128,11 +128,13 @@ document.addEventListener('DOMContentLoaded', function () {
      async function fetchFeePlansData(className, userId) {
        try {
          // Fetch fee structure for the class
-         const feePlansResponse = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`);
+         const feePlansResponse = await fetch(
+           `/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`
+         );
          const feePlans = await feePlansResponse.json();
 
          // Fetch paid months from feeDetails table for this student
-         const paidMonthsResponse = await fetch(`/php/collectFeeStudentDetails/fetch_paid_months.php?user_id=${userId}`);
+         const paidMonthsResponse = await fetch(`fetch_paid_months.php?user_id=${userId}`);
          const paidMonths = await paidMonthsResponse.json();
 
          if (feePlans.error || paidMonths.error) {
@@ -212,18 +214,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
              // Check if this month is paid
              if (paidMonths.includes(months[index])) {
-               // Show green tick if the month is paid
-               amountCell.innerHTML = `<span class="text-success fw-bold fs-5">✔</span>`;
-                  } else if (amount !== 'N/A' && amount) {
-                // Show the pay button only if amount exists and is unpaid
-                  amountCell.innerHTML = `
-                 <div class="amount-button">
-                   <div class="amount">${amount}</div>
-                   <button class="btn btn-outline-primary rounded-circle pay-fee" data-month="${months[index]}">
-                     <i class="bx bx-plus"></i>
-                   </button>
-                 </div>
-                 `;
+               amountCell.innerHTML = `<span class="text-success">✔</span>`; // Green tick for paid
+             } else {
+               amountCell.innerHTML = `
+            <div class="amount-button">
+              <div class="amount">${amount}</div>
+              <button class="btn btn-outline-primary rounded-circle pay-fee" data-month="${months[index]}">
+                <i class="bx bx-plus"></i>
+              </button>
+            </div>
+          `;
              }
            } else {
              amountCell.textContent = 'N/A';
@@ -250,10 +250,9 @@ document.addEventListener('DOMContentLoaded', function () {
          totalAmountCell.innerHTML = `
       <div class="amount-button">
         <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-        <!---
         <button class="btn btn-outline-primary rounded-circle">
           <i class="bx bx-plus"></i>
-        </button>-->
+        </button>
       </div>
     `;
          totalRow.appendChild(totalAmountCell);
