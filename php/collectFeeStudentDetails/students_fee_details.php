@@ -61,30 +61,30 @@ try {
     }
 
     // Fetch detailed fee records
-    $detailsQuery = "
-        SELECT
-            fd.receipt_no,
-            fd.month,
-            fd.due_amount,
-            fd.advanced_amount,
-    CASE
-        WHEN fd.received_amount >= fd.total_amount THEN 0
-        ELSE fd.received_amount
-        END AS received_amount,
-    CASE
-        WHEN fd.received_amount >= fd.total_amount THEN fd.total_amount
-        ELSE fd.total_amount - fd.received_amount
-        END AS pending_amount,
+   $detailsQuery = "
+    SELECT
+        fd.receipt_no,
+        fd.month,
+        fd.due_amount,
+        fd.received_amount,
         fd.total_amount,
-    CASE
-        WHEN fd.received_amount >= fd.total_amount THEN 'Pending'
-        ELSE 'Paid'
+        CASE
+            WHEN fd.received_amount > fd.total_amount THEN fd.received_amount - fd.total_amount
+            ELSE 0
+        END AS advanced_amount,
+        CASE
+            WHEN fd.received_amount >= fd.total_amount THEN 0
+            ELSE fd.total_amount - fd.received_amount
+        END AS pending_amount,
+        CASE
+            WHEN fd.received_amount >= fd.total_amount THEN 'Paid'
+            ELSE 'Pending'
         END AS status
-      FROM
-         feeDetails fd
-      WHERE
-           fd.user_id = :user_id;
-    ";
+    FROM
+        feeDetails fd
+    WHERE
+        fd.user_id = :user_id;
+";
 
     $detailsStmt = $pdo->prepare($detailsQuery);
     $detailsStmt->bindParam(':user_id', $user_id, PDO::PARAM_STR); // Bind user_id
