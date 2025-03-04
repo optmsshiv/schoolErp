@@ -194,7 +194,6 @@ async function fetchFeeDetails(userId) {
           <td>${detail.receipt_no}</td>
           <td>${months}</td>
           <td align="center">₹ ${detail.due_amount || '0'}</td>
-
           <td align="center">
         ${
           detail.status === 'Pending'
@@ -202,6 +201,7 @@ async function fetchFeeDetails(userId) {
             : '—'
         }
       </td>
+          <td align="center">₹ ${detail.advance_amount || '0'}</td>
           <td align="center">₹ ${detail.received_amount || '0'}</td>
           <td align="center">₹ ${detail.total_amount || '0'}</td>
           <td><span class="badge rounded-pill ${detail.status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'}">${
