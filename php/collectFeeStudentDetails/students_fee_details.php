@@ -61,23 +61,31 @@ try {
     }
 
     // Fetch detailed fee records
-  $detailsQuery = "
+ $detailsQuery = "
     SELECT
         fd.receipt_no,
         fd.month,
         fd.due_amount,
-        fd.total_amount,
         fd.advanced_amount,
+
+        -- Show correct received amount (including advanced)
         fd.received_amount,
 
-        -- Show received_amount in pending_amount column when status is 'pending'
+        -- Pending amount should be 0 when there is an advanced amount
         CASE
-            WHEN fd.payment_status = 'pending' THEN fd.received_amount
-            WHEN fd.payment_status = 'paid' THEN NULL
+            WHEN fd.advanced_amount > 0 THEN 0
+            WHEN fd.received_amount >= fd.total_amount THEN 0
             ELSE fd.total_amount - fd.received_amount
         END AS pending_amount,
 
-        fd.payment_status AS status
+        fd.total_amount,
+
+        -- Status should be 'Paid' if there is an advanced amount or full payment
+        CASE
+            WHEN fd.advanced_amount > 0 THEN 'Paid'
+            WHEN fd.received_amount >= fd.total_amount THEN 'Paid'
+            ELSE 'Pending'
+        END AS status
 
     FROM feeDetails fd
     WHERE fd.user_id = :user_id;
