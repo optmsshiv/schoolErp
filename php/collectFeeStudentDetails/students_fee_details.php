@@ -68,17 +68,14 @@ try {
         fd.due_amount,
         fd.total_amount,
         fd.advanced_amount,
+        fd.received_amount,
 
-        -- Ensure correct received amount
-        fd.received_amount AS received_amount,
-
-        -- Pending amount should be NULL/Blank if fully paid
+        -- Show received_amount in pending_amount column when status is 'pending'
         CASE
-            WHEN fd.payment_status = 'paid' THEN NULL
-            ELSE fd.total_amount - fd.received_amount
+            WHEN fd.payment_status = 'pending' THEN fd.received_amount
+            ELSE NULL
         END AS pending_amount,
 
-        -- Use database status directly instead of recalculating
         fd.payment_status AS status
 
     FROM feeDetails fd
