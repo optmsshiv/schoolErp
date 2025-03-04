@@ -61,7 +61,7 @@ try {
     }
 
     // Fetch detailed fee records
-    $detailsQuery = "
+  $detailsQuery = "
     SELECT
         fd.receipt_no,
         fd.month,
@@ -73,7 +73,8 @@ try {
         -- Show received_amount in pending_amount column when status is 'pending'
         CASE
             WHEN fd.payment_status = 'pending' THEN fd.received_amount
-            ELSE NULL
+            WHEN fd.payment_status = 'paid' THEN NULL
+            ELSE fd.total_amount - fd.received_amount
         END AS pending_amount,
 
         fd.payment_status AS status
