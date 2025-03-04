@@ -73,9 +73,7 @@ try {
             WHEN fd.received_amount > fd.total_amount THEN (fd.received_amount - fd.total_amount)
             ELSE fd.advanced_amount
         END AS advanced_amount,
-
-        fd.total_amount,
-        fd.payment_status AS status
+        
     CASE
         WHEN fd.received_amount >= fd.total_amount THEN 0
         ELSE fd.received_amount
