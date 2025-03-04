@@ -67,6 +67,7 @@ try {
             fd.month,
             fd.due_amount,
             fd.total_amount,
+            fd.advanced_amount,
     CASE
         WHEN fd.received_amount >= fd.total_amount THEN 0
         ELSE fd.received_amount
@@ -77,7 +78,7 @@ try {
         END AS pending_amount,
 
     CASE
-        WHEN fd.received_amount >= fd.total_amount THEN 'Pending'
+        WHEN fd.received_amount <= fd.total_amount THEN 'Pending'
         ELSE 'Paid'
         END AS status
       FROM
