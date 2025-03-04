@@ -67,11 +67,9 @@ try {
             fd.month,
             fd.due_amount,
             fd.received_amount,
-            fd.received_amount,
             fd.advanced_amount,
-            fd.pending_amount,
             fd.total_amount,
-            
+
 
     CASE
         WHEN fd.received_amount >= fd.total_amount THEN 'Pending'
