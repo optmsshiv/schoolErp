@@ -78,7 +78,7 @@ try {
     fd.total_amount,
     CASE
         WHEN fd.received_amount >= fd.total_amount THEN 'Pending'
-        WHEN fd.advanced_amount > 0 THEN 'Paid'
+        WHEN fd.advanced_amount >= fd.total_amount 'Paid'
         ELSE 'Paid'
       END AS status
     FROM feeDetails fd
