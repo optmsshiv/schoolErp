@@ -62,26 +62,22 @@ try {
 
     // Fetch detailed fee records
     $detailsQuery = "
-        SELECT
-            fd.receipt_no,
-            fd.month,
-            fd.due_amount,
-            fd.advanced_amount,
-    CASE
-        WHEN fd.received_amount >= fd.total_amount THEN 0
-        ELSE fd.received_amount
-    END AS received_amount,
-    CASE
-        WHEN fd.received_amount >= fd.total_amount THEN fd.total_amount
-        ELSE fd.total_amount - fd.received_amount
-    END AS pending_amount,
-    fd.total_amount,
-    CASE
-        WHEN fd.received_amount >= fd.total_amount THEN 'Pending'
-        ELSE 'Paid'
-      END AS status
+          SELECT
+        fd.receipt_no,
+        fd.month,
+        CASE
+            WHEN fd.received_amount < fd.total_amount THEN (fd.total_amount - fd.received_amount)
+            ELSE fd.due_amount
+        END AS due_amount,
+        CASE
+            WHEN fd.received_amount > fd.total_amount THEN (fd.received_amount - fd.total_amount)
+            ELSE fd.advanced_amount
+        END AS advanced_amount,
+        fd.received_amount,
+        fd.total_amount,
+        'Paid' AS status
     FROM feeDetails fd
-      WHERE fd.user_id = :user_id;";
+    WHERE fd.user_id = :user_id;";
 
     $detailsStmt = $pdo->prepare($detailsQuery);
     $detailsStmt->bindParam(':user_id', $user_id, PDO::PARAM_STR); // Bind user_id
