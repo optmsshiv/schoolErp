@@ -65,7 +65,6 @@ try {
         SELECT
             fd.receipt_no,
             fd.month,
-            fd.due_amount,
             
             CASE
             WHEN fd.received_amount < fd.total_amount THEN (fd.total_amount - fd.received_amount)
