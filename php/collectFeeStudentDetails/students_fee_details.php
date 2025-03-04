@@ -77,9 +77,8 @@ try {
     END AS pending_amount,
     fd.total_amount,
     CASE
-        WHEN fd.received_amount >= fd.total_amount THEN 'Paid'
-        WHEN fd.advanced_amount > 0 THEN 'Paid'
-        ELSE 'Pending'
+        WHEN fd.received_amount >= fd.total_amount THEN 'Pending'
+        ELSE 'Paid'
       END AS status
     FROM feeDetails fd
       WHERE fd.user_id = :user_id;";
