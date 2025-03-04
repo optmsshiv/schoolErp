@@ -68,6 +68,7 @@ try {
             fd.due_amount,
             fd.total_amount,
             fd.advanced_amount,
+            fd.received_amount AS received_amount,
     CASE
         WHEN fd.received_amount >= fd.total_amount THEN 0
         ELSE fd.received_amount
