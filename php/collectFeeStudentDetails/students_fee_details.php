@@ -76,10 +76,7 @@ try {
         ELSE fd.advanced_amount
         END AS advanced_amount,
 
-    CASE
-        WHEN fd.received_amount >= fd.total_amount THEN 0
-        ELSE fd.received_amount
-    END AS received_amount,
+   
 
     CASE
         WHEN fd.received_amount >= fd.total_amount THEN fd.total_amount
