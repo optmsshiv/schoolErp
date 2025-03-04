@@ -66,7 +66,7 @@ try {
             fd.receipt_no,
             fd.month,
             CASE
-            WHEN fd.received_amount < fd.total_amount THEN (fd.total_amount - fd.received_amount)
+            WHEN fd.received_amount > fd.total_amount THEN (fd.total_amount - fd.received_amount)
             ELSE fd.due_amount
         END AS due_amount,
             fd.advanced_amount,
