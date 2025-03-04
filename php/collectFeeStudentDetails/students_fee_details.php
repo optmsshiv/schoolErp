@@ -63,33 +63,25 @@ try {
     // Fetch detailed fee records
  $detailsQuery = "
     SELECT
-        fd.receipt_no,
-        fd.month,
-        fd.due_amount,
-        fd.advanced_amount,
-
-        -- Show correct received amount (including advanced)
-        fd.received_amount,
-
-        -- Pending amount should be 0 when there is an advanced amount
-        CASE
-            WHEN fd.advanced_amount > 0 THEN 0
-            WHEN fd.received_amount >= fd.total_amount THEN 0
-            ELSE fd.total_amount - fd.received_amount
-        END AS pending_amount,
-
-        fd.total_amount,
-
-        -- Status should be 'Paid' if there is an advanced amount or full payment
-        CASE
-            WHEN fd.advanced_amount > 0 THEN 'Paid'
-            WHEN fd.received_amount >= fd.total_amount THEN 'Paid'
-            ELSE 'Pending'
-        END AS status
-
+    fd.receipt_no,
+    fd.month,
+    fd.due_amount,
+    fd.advanced_amount,
+    CASE
+    WHEN fd.received_amount >= fd.total_amount THEN 0
+    ELSE fd.received_amount
+    END AS received_amount,
+    CASE
+    WHEN fd.received_amount >= fd.total_amount THEN fd.total_amount
+    ELSE fd.total_amount - fd.received_amount
+    END AS pending_amount,
+    fd.total_amount,
+    CASE
+    WHEN fd.received_amount >= fd.total_amount THEN 'Pending'
+    ELSE 'Paid'
+    END AS status
     FROM feeDetails fd
-    WHERE fd.user_id = :user_id;
-";
+    WHERE fd.user_id = :user_id;";
 
     $detailsStmt = $pdo->prepare($detailsQuery);
     $detailsStmt->bindParam(':user_id', $user_id, PDO::PARAM_STR); // Bind user_id
