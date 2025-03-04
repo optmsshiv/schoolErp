@@ -78,7 +78,7 @@ try {
         END AS pending_amount,
 
     CASE
-        WHEN fd.received_amount <= fd.total_amount THEN 'Pending'
+        WHEN fd.received_amount > fd.total_amount THEN 'Pending'
         ELSE 'Paid'
         END AS status
       FROM
