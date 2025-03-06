@@ -190,43 +190,47 @@ async function fetchFeeDetails(userId) {
           .join(', '); // Clean month data
 
         return `
-        <tr>
-          <td>${detail.receipt_no}</td>
-          <td>${months}</td>
-          <td align="center">₹ ${detail.due_amount || '0'}</td>
-          <td align="center">
+          <tr>
+  <td>${detail.receipt_no}</td>
+  <td>${months}</td>
+  <td align="center">₹ ${detail.due_amount || '0'}</td>
+  <td align="center">
+    ${
+      detail.status.toLowerCase() === 'pending'
+        ? `₹ ${(parseFloat(detail.total_amount || 0) - parseFloat(detail.received_amount || 0)).toFixed(2)}`
+        : '—'
+    }
+  </td>
+  <td align="center">₹ ${detail.advanced_amount || '0'}</td>
+  <td align="center">₹ ${detail.received_amount || '0'}</td>
+  <td align="center">₹ ${detail.total_amount || '0'}</td>
+  <td>
+    <span class="badge rounded-pill ${detail.status.toLowerCase() === 'paid' ? 'bg-label-success' : 'bg-label-danger'}">
+      ${detail.status}
+    </span>
+  </td>
+  <td align="center">
+    <div class="dropdown">
+      <button class="btn text-muted p-0" type="button" data-bs-toggle="dropdown">
+        <i class="bx bx-dots-vertical-rounded bx-sm"></i>
+      </button>
+      <ul class="dropdown-menu">
         ${
-          detail.status === 'Pending'
-            ? `₹ ${(parseFloat(detail.total_amount || 0) - parseFloat(detail.received_amount || 0)).toFixed(2)}`
-            : '—'
+          detail.status.toLowerCase() === 'pending'
+            ? `<li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="collectFeeLink">Collect Fee</a></li>`
+            : ''
         }
-      </td>
-          <td align="center">₹ ${detail.advanced_amount || '0'}</td>
-          <td align="center">₹ ${detail.received_amount || '0'}</td>
-          <td align="center">₹ ${detail.total_amount || '0'}</td>
-          <td><span class="badge rounded-pill ${detail.payment_status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'
-          }">${detail.payment_status}</span></td>
-          <td align="center">
-            <div class="dropdown">
-              <button class="btn text-muted p-0" type="button" data-bs-toggle="dropdown">
-                <i class="bx bx-dots-vertical-rounded bx-sm"></i>
-              </button>
-              <ul class="dropdown-menu">
-                ${
-                  detail.payment_status === 'Pending'
-                    ? `<li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="collectFeeLink">Collect Fee</a></li>`
-                    : ''
-                }
-                <li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="viewFeeReceiptLink">View Fee Receipt</a></li>
-                <li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="sendFeeReceiptLink">Send Fee Receipt</a></li>
-                <li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="sendFeeMessageLink">Send Fee Message</a></li>
-                <li><a class="dropdown-item" href="javascript:void(0);" id="deleteFeeLink">Delete</a></li>
-              </ul>
-              <!-- Placeholder for Modal -->
-               <div id="modalContainer"></div>
-            </div>
-          </td>
-        </tr>
+        <li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="viewFeeReceiptLink">View Fee Receipt</a></li>
+        <li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="sendFeeReceiptLink">Send Fee Receipt</a></li>
+        <li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="sendFeeMessageLink">Send Fee Message</a></li>
+        <li><a class="dropdown-item" href="javascript:void(0);" id="deleteFeeLink">Delete</a></li>
+      </ul>
+      <!-- Placeholder for Modal -->
+       <div id="modalContainer"></div>
+    </div>
+  </td>
+</tr>
+
       `;
       })
       .join('');
