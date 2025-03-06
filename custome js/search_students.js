@@ -214,7 +214,7 @@ async function fetchFeeDetails(userId) {
               </button>
               <ul class="dropdown-menu">
                 ${
-                  detail.status === 'Pending'
+                  detail.payment_status === 'Pending'
                     ? `<li><a class="dropdown-item border-bottom" href="javascript:void(0);" id="collectFeeLink">Collect Fee</a></li>`
                     : ''
                 }
