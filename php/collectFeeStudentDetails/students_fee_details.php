@@ -70,7 +70,7 @@ $detailsQuery = "
         fd.received_amount,
         (fd.total_amount - fd.received_amount) AS pending_amount,
         fd.total_amount,
-        fd.status
+        fd.payment_status
     FROM feeDetails fd
     WHERE fd.user_id = :user_id;";
 
