@@ -196,7 +196,7 @@ async function fetchFeeDetails(userId) {
           <td align="center">₹ ${detail.due_amount || '0'}</td>
           <td align="center">
         ${
-          detail.payment_status === 'Pending'
+          detail.payment_status === 'pending'
             ? `₹ ${(parseFloat(detail.total_amount || 0) - parseFloat(detail.received_amount || 0)).toFixed(2)}`
             : '—'
         }
