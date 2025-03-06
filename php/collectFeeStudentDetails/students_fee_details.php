@@ -61,25 +61,16 @@ try {
     }
 
     // Fetch detailed fee records
- $detailsQuery = "
+$detailsQuery = "
     SELECT
-    fd.receipt_no,
-    fd.month,
-    fd.due_amount,
-    fd.advanced_amount,
-    CASE
-    WHEN fd.received_amount >= fd.total_amount THEN 0
-    ELSE fd.received_amount
-    END AS received_amount,
-    CASE
-    WHEN fd.received_amount >= fd.total_amount THEN fd.total_amount
-    ELSE fd.total_amount - fd.received_amount
-    END AS pending_amount,
-    fd.total_amount,
-    CASE
-    WHEN fd.received_amount >= fd.total_amount THEN 'Pending'
-    ELSE 'Paid'
-    END AS status
+        fd.receipt_no,
+        fd.month,
+        fd.due_amount,
+        fd.advanced_amount,
+        fd.received_amount,
+        (fd.total_amount - fd.received_amount) AS pending_amount,
+        fd.total_amount,
+        fd.status
     FROM feeDetails fd
     WHERE fd.user_id = :user_id;";
 
