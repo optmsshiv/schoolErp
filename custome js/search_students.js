@@ -204,8 +204,7 @@ async function fetchFeeDetails(userId) {
           <td align="center">₹ ${detail.advanced_amount || '0'}</td>
           <td align="center">₹ ${detail.received_amount || '0'}</td>
           <td align="center">₹ ${detail.total_amount || '0'}</td>
-          <td><span class="badge rounded-pill ${
-            detail.payment_status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'
+          <td><span class="badge rounded-pill ${detail.payment_status === 'Paid' ? 'bg-label-success' : 'bg-label-danger'
           }">${detail.payment_status}</span></td>
           <td align="center">
             <div class="dropdown">
