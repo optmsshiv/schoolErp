@@ -163,10 +163,10 @@ async function fetchFeeDetails(userId) {
 
     // Calculate total pending amount from table data
     const totalPendingAmount = data.details.reduce((sum, detail) => {
-      if (detail.payment_status === 'Paid') {
+      if (detail.payment_status === 'paid') {
         // Add 'due_amount' for Paid status
         return sum + parseFloat(detail.due_amount || 0);
-      } else if (detail.payment_status === 'Pending') {
+      } else if (detail.payment_status === 'pending') {
         // Add 'total_amount' for Pending status
         return sum + parseFloat(detail.total_amount || 0);
       }
