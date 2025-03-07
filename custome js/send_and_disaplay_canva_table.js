@@ -129,12 +129,12 @@ if (!addFeeCanvasEl) {
       <td class="totalAmountCell">${feeAmount}</td> <!-- Added class for easy selection -->
       <td>
         <div class="d-flex gap-1">
-          <button class="btn editFeeButton">
-            <i class="btn-outline-warning bx bx-edit bx-sm"></i>
-          </button>
-          <button type="button" class="btn deleteFeeButton">
-            <i class="btn-outline-danger bx bx-trash bx-sm"></i>
-          </button>
+
+            <i class="editFeeButton btn-outline-warning bx bx-edit bx-sm"></i>
+
+
+            <i class="deleteFeeButton btn-outline-danger bx bx-trash bx-sm"></i>
+          
         </div>
       </td>
     `;
