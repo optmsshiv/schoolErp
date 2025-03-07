@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td class="totalAmountCell">${feeAmount}</td>
                 <td>
                     <i class="editFeeButton btn-outline-warning bx bx-edit bx-sm"></i>
-                    <i class="deleteFeeButton btn-outline-danger bx bx-trash bx-sm" style="margin: 0 -8px;"></i>
+                    <i class="deleteFeeButton btn-outline-danger bx bx-trash bx-sm" style="margin: 0 10px;"></i>
                 </td>
             `;
 
