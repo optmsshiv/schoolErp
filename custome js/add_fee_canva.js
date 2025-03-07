@@ -170,6 +170,44 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
+    // Handle Edit Fee
+    function handleEditFee(row) {
+      const feeMonthElement = document.getElementById('feeMonth');
+      const feeAmountElement = document.getElementById('feeAmount');
+      const feeTypeElement = document.getElementById('feeType');
+
+      const feeMonth = row.children[0].textContent;
+      const feeType = row.children[1].textContent;
+      const feeAmount = row.children[2].textContent;
+
+      feeMonthElement.value = feeMonth;
+      feeAmountElement.value = feeAmount;
+      [...feeTypeElement.options].forEach(option => {
+        if (option.text === feeType) {
+          option.selected = true;
+        }
+      });
+
+      addFeeCanvas.show();
+
+      saveFeeButton.removeEventListener('click', handleSaveFee);
+      saveFeeButton.addEventListener(
+        'click',
+        () => {
+          const { isValid, message, ...data } = validateForm();
+          if (isValid) {
+            row.children[0].textContent = data.feeMonth;
+            row.children[1].textContent = data.feeType;
+            row.children[2].textContent = data.feeAmount;
+            addFeeCanvas.hide();
+          } else {
+            Swal.fire('Error', message, 'error');
+          }
+        },
+        { once: true }
+      );
+    }
+
     // Handle Offcanvas Hide Event
     addFeeCanvasEl.addEventListener('hide.bs.offcanvas', () => {
       if (!isSaveButtonClicked) feeForm.reset();
