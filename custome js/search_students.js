@@ -250,9 +250,9 @@ async function fetchFeeDetails(userId) {
     // 🔴 Function to handle fee collection
     function handleCollectFee(row) {
       const user_id = row.dataset.user_id;
-      const feeMonth = row.dataset.months;
+      const months = row.dataset.months;
 
-      if (!user_id || !feeMonth) {
+      if (!user_id || !months) {
         alert('Missing student ID or fee month.');
         return;
       }
