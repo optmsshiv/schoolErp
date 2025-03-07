@@ -242,8 +242,24 @@ async function fetchFeeDetails(userId) {
         handleSendReceipt(row);
       } else if (target.closest('#sendFeeMessageLink')) {
         handleSendMessage(row);
+      } else if (target.closest('#collectFeeLink')) {
+        handleCollectFee(row);
       }
     });
+
+    // 🔴 Function to handle fee collection
+    function handleCollectFee(row) {
+      const studentId = row.dataset.studentId;
+      const feeMonth = row.dataset.feeMonth;
+
+      if (!studentId || !feeMonth) {
+        alert('Missing student ID or fee month.');
+        return;
+      }
+
+      // Redirect to fee collection page or open a modal
+      window.location.href = `collect-fee.php?student_id=${studentId}&month=${feeMonth}`;
+    }
 
     // 🔴 Function to delete a fee entry
     function handleDelete(row) {
