@@ -132,8 +132,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${feeType}</td>
                 <td class="totalAmountCell">${feeAmount}</td>
                 <td>
-                    <button class="btn editFeeButton"><i class="btn-outline-warning bx bx-edit bx-sm"></i></button>
-                    <button class="btn deleteFeeButton"><i class="btn-outline-danger bx bx-trash bx-sm"></i></button>
+                    <i class="editFeeButton btn-outline-warning bx bx-edit bx-sm"></i>
+                    <i class="deleteFeeButton btn-outline-danger bx bx-trash bx-sm"></i>
                 </td>
             `;
 
