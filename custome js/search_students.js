@@ -249,16 +249,16 @@ async function fetchFeeDetails(userId) {
 
     // 🔴 Function to handle fee collection
     function handleCollectFee(row) {
-      const studentId = row.dataset.studentId;
-      const feeMonth = row.dataset.feeMonth;
+      const user_id = row.dataset.user_id;
+      const feeMonth = row.dataset.months;
 
-      if (!studentId || !feeMonth) {
+      if (!user_id || !feeMonth) {
         alert('Missing student ID or fee month.');
         return;
       }
 
       // Redirect to fee collection page or open a modal
-      window.location.href = `collect-fee.php?student_id=${studentId}&month=${feeMonth}`;
+      window.location.href = `collection-page.html?user_id=${user_id}&month=${months}`;
     }
 
     // 🔴 Function to delete a fee entry
