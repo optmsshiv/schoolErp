@@ -250,33 +250,51 @@ async function fetchFeeDetails(userId) {
     // 🔴 Function to handle fee collection
     function handleCollectFee(row) {
       const user_id = row.dataset.user_id;
-      const months = row.dataset.months || 'N/A'; // Default to "N/A" if undefined
-      const pendingAmount = row.dataset.pendingAmount || '0'; // Default to 0 if missing
+      const months = row.dataset.months || 'N/A';
+      const pendingAmount = row.dataset.pendingAmount || '0';
 
-      // Load the modal content dynamically
-      fetch('/html/model/payment_collection_modal.html')
-        .then(response => response.text())
-        .then(html => {
-          document.body.insertAdjacentHTML('beforeend', html);
+      // Check if modal already exists in the DOM
+      let existingModal = document.getElementById('paymentModal');
 
-          // Ensure modal elements exist before updating them
-          const pendingAmountElem = document.getElementById('pendingAmount');
-          const selectedMonthsElem = document.getElementById('selectedMonths');
-          const confirmPaymentBtn = document.getElementById('confirmPayment');
+      if (existingModal) {
+        // If modal exists, just update values and show it
+        updateModalContent(user_id, months, pendingAmount);
+        let paymentModal = new bootstrap.Modal(existingModal);
+        paymentModal.show();
+      } else {
+        // Load the modal content dynamically
+        fetch('/html/model/payment_collection_modal.html')
+          .then(response => response.text())
+          .then(html => {
+            document.body.insertAdjacentHTML('beforeend', html);
 
-          if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
-          if (selectedMonthsElem) selectedMonthsElem.textContent = months.replace(/,/g, ', ');
-          if (confirmPaymentBtn) {
-            confirmPaymentBtn.setAttribute('data-user-id', user_id);
-            confirmPaymentBtn.setAttribute('data-months', months);
-          }
+            // Wait for DOM to update before accessing elements
+            setTimeout(() => {
+              updateModalContent(user_id, months, pendingAmount);
 
-          // Show the modal
-          const modal = document.getElementById('paymentModal');
-          if (modal) modal.style.display = 'block';
-        })
-        .catch(error => console.error('Error loading modal:', error));
+              // Show the modal using Bootstrap
+              let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+              paymentModal.show();
+            }, 100);
+          })
+          .catch(error => console.error('Error loading modal:', error));
+      }
     }
+
+    // Function to update modal content dynamically
+    function updateModalContent(user_id, months, pendingAmount) {
+      const pendingAmountElem = document.getElementById('pendingAmount');
+      const selectedMonthsElem = document.getElementById('selectedMonths');
+      const confirmPaymentBtn = document.getElementById('confirmPayment');
+
+      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
+      if (selectedMonthsElem) selectedMonthsElem.textContent = months.replace(/,/g, ', ');
+      if (confirmPaymentBtn) {
+        confirmPaymentBtn.setAttribute('data-user-id', user_id);
+        confirmPaymentBtn.setAttribute('data-months', months);
+      }
+    }
+
 
 
 
