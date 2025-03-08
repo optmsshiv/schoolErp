@@ -251,15 +251,35 @@ async function fetchFeeDetails(userId) {
     function handleCollectFee(row) {
       const user_id = row.dataset.user_id;
       const months = row.dataset.months;
+      const pendingAmount = row.dataset.pendingAmount;
 
-     // if (!user_id || !months) {
-     //   alert('Missing student ID or fee month.');
-     //   return;
-     // }
+      // Load the modal content dynamically
+      fetch('html/model/payment_collection_modal.html')
+        .then(response => response.text())
+        .then(html => {
+          document.body.insertAdjacentHTML('beforeend', html);
 
-      // Redirect to fee collection page or open a modal
-      window.location.href = `collection-page.html?user_id=${user_id}&month=${months}`;
+          // Set modal values
+          document.getElementById('pendingAmount').textContent = `₹${pendingAmount}`;
+          document.getElementById('selectedMonths').textContent = months.replace(/,/g, ', ');
+          document.getElementById('confirmPayment').setAttribute('data-user-id', user_id);
+          document.getElementById('confirmPayment').setAttribute('data-months', months);
+
+          // Show the modal
+          document.getElementById('paymentModal').style.display = 'block';
+        })
+        .catch(error => console.error('Error loading modal:', error));
     }
+
+
+    function closePaymentModal() {
+      const modal = document.getElementById('paymentModal');
+      if (modal) {
+        modal.remove(); // Remove modal from DOM
+      }
+    }
+
+
 
     // 🔴 Function to delete a fee entry
     function handleDelete(row) {

@@ -1,0 +1,28 @@
+<!-- Payment Collection Modal -->
+<div id="paymentModal" class="modal">
+  <div class="modal-content">
+    <h2>Collect Payment</h2>
+
+    <p><strong>Pending Months:</strong> <span id="selectedMonths"></span></p>
+    <p><strong>Pending Amount:</strong> <span id="pendingAmount"></span></p>
+
+    <label>
+      <input type="radio" name="paymentType" value="full" checked> Full Payment
+    </label>
+    <label>
+      <input type="radio" name="paymentType" value="partial"> Partial Payment
+    </label>
+    <input type="number" id="partialAmount" placeholder="Enter amount" disabled>
+
+    <h3>Select Payment Mode</h3>
+    <select id="paymentMode">
+      <option value="UPI">UPI</option>
+      <option value="Cash">Cash</option>
+      <option value="Bank Transfer">Bank Transfer</option>
+      <option value="Online Payment">Online Payment</option>
+    </select>
+
+    <button id="confirmPayment">Confirm Payment</button>
+    <button onclick="closePaymentModal()">Cancel</button>
+  </div>
+</div>
