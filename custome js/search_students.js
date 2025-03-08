@@ -243,11 +243,11 @@ async function fetchFeeDetails(userId) {
       const target = event.target;
       const row = target.closest('tr'); // Get the clicked row
 
-      if (target.closest('#deleteFeeLink')) {
+      if (target.closest('.deleteFeeLink')) {
         handleDelete(row);
-      } else if (target.closest('#sendFeeReceiptLink')) {
+      } else if (target.closest('.sendFeeReceiptLink')) {
         handleSendReceipt(row);
-      } else if (target.closest('#sendFeeMessageLink')) {
+      } else if (target.closest('.sendFeeMessageLink')) {
         handleSendMessage(row);
       } else if (target.closest('.collectFeeLink')) {
         handleCollectFee(row);
@@ -378,7 +378,7 @@ async function fetchFeeDetails(userId) {
     }
 
     // Attach the click event listener for 'View Fee Receipt' link
-    document.querySelectorAll('#viewFeeReceiptLink').forEach(link => {
+    document.querySelectorAll('.viewFeeReceiptLink').forEach(link => {
       link.addEventListener('click', function (e) {
         e.preventDefault();
 
