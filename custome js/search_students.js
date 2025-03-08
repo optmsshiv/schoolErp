@@ -249,7 +249,7 @@ async function fetchFeeDetails(userId) {
         handleSendReceipt(row);
       } else if (target.closest('#sendFeeMessageLink')) {
         handleSendMessage(row);
-      } else if (target.closest('#collectFeeLink')) {
+      } else if (target.closest('.collectFeeLink')) {
         handleCollectFee(row);
       }
     });
