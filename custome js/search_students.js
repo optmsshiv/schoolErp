@@ -250,7 +250,7 @@ async function fetchFeeDetails(userId) {
     // 🔴 Function to handle fee collection
     function handleCollectFee(row) {
       const user_id = row.dataset.user_id;
-      const months = row.dataset.months || 'N/A';
+      const month = row.dataset.month || 'N/A';
       const pendingAmount = row.dataset.pendingAmount || '0';
 
       // Check if modal already exists in the DOM
@@ -258,7 +258,7 @@ async function fetchFeeDetails(userId) {
 
       if (existingModal) {
         // If modal exists, just update values and show it
-        updateModalContent(user_id, months, pendingAmount);
+        updateModalContent(user_id, month, pendingAmount);
         let paymentModal = new bootstrap.Modal(existingModal);
         paymentModal.show();
       } else {
@@ -270,7 +270,7 @@ async function fetchFeeDetails(userId) {
 
             // Wait for DOM to update before accessing elements
             setTimeout(() => {
-              updateModalContent(user_id, months, pendingAmount);
+              updateModalContent(user_id, month, pendingAmount);
 
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
@@ -282,16 +282,16 @@ async function fetchFeeDetails(userId) {
     }
 
     // Function to update modal content dynamically
-    function updateModalContent(user_id, months, pendingAmount) {
+    function updateModalContent(user_id, month, pendingAmount) {
       const pendingAmountElem = document.getElementById('pendingAmount');
-      const selectedMonthsElem = document.getElementById('selectedMonths');
+      const selectedMonthElem = document.getElementById('selectedMonth');
       const confirmPaymentBtn = document.getElementById('confirmPayment');
 
       if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
-      if (selectedMonthsElem) selectedMonthsElem.textContent = months.replace(/,/g, ', ');
+      if (selectedMonthElem) selectedMonthElem.textContent = month.replace(/,/g, ', ');
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
-        confirmPaymentBtn.setAttribute('data-months', months);
+        confirmPaymentBtn.setAttribute('data-month', month);
       }
     }
 
