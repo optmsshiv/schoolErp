@@ -252,10 +252,10 @@ async function fetchFeeDetails(userId) {
       const user_id = row.dataset.user_id;
       const months = row.dataset.months;
 
-      if (!user_id || !months) {
-        alert('Missing student ID or fee month.');
-        return;
-      }
+     // if (!user_id || !months) {
+     //   alert('Missing student ID or fee month.');
+     //   return;
+     // }
 
       // Redirect to fee collection page or open a modal
       window.location.href = `collection-page.html?user_id=${user_id}&month=${months}`;
