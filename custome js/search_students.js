@@ -250,26 +250,34 @@ async function fetchFeeDetails(userId) {
     // 🔴 Function to handle fee collection
     function handleCollectFee(row) {
       const user_id = row.dataset.user_id;
-      const months = row.dataset.months;
-      const pendingAmount = row.dataset.pendingAmount;
+      const months = row.dataset.months || 'N/A'; // Default to "N/A" if undefined
+      const pendingAmount = row.dataset.pendingAmount || '0'; // Default to 0 if missing
 
       // Load the modal content dynamically
-      fetch('/html/model/payment_collection_modal.html')
+      fetch('html/model/payment_collection_modal.html')
         .then(response => response.text())
         .then(html => {
           document.body.insertAdjacentHTML('beforeend', html);
 
-          // Set modal values
-          document.getElementById('pendingAmount').textContent = `₹${pendingAmount}`;
-          document.getElementById('selectedMonths').textContent = months.replace(/,/g, ', ');
-          document.getElementById('confirmPayment').setAttribute('data-user-id', user_id);
-          document.getElementById('confirmPayment').setAttribute('data-months', months);
+          // Ensure modal elements exist before updating them
+          const pendingAmountElem = document.getElementById('pendingAmount');
+          const selectedMonthsElem = document.getElementById('selectedMonths');
+          const confirmPaymentBtn = document.getElementById('confirmPayment');
+
+          if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
+          if (selectedMonthsElem) selectedMonthsElem.textContent = months.replace(/,/g, ', ');
+          if (confirmPaymentBtn) {
+            confirmPaymentBtn.setAttribute('data-user-id', user_id);
+            confirmPaymentBtn.setAttribute('data-months', months);
+          }
 
           // Show the modal
-          document.getElementById('paymentModal').style.display = 'block';
+          const modal = document.getElementById('paymentModal');
+          if (modal) modal.style.display = 'block';
         })
         .catch(error => console.error('Error loading modal:', error));
     }
+
 
 
     function closePaymentModal() {
