@@ -254,7 +254,7 @@ async function fetchFeeDetails(userId) {
       const pendingAmount = row.dataset.pendingAmount || '0'; // Default to 0 if missing
 
       // Load the modal content dynamically
-      fetch('html/model/payment_collection_modal.html')
+      fetch('/html/model/payment_collection_modal.html')
         .then(response => response.text())
         .then(html => {
           document.body.insertAdjacentHTML('beforeend', html);
