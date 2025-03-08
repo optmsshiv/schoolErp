@@ -250,7 +250,7 @@ async function fetchFeeDetails(userId) {
     // 🔴 Function to handle fee collection
     function handleCollectFee(row) {
       const user_id = row.dataset.user_id;
-      const month = row.dataset.month || 'N/A';
+      const months = row.dataset.month || 'N/A';
       const pendingAmount = row.dataset.pendingAmount || '0';
 
       // Check if modal already exists in the DOM
@@ -258,7 +258,7 @@ async function fetchFeeDetails(userId) {
 
       if (existingModal) {
         // If modal exists, just update values and show it
-        updateModalContent(user_id, month, pendingAmount);
+        updateModalContent(user_id, months, pendingAmount);
         let paymentModal = new bootstrap.Modal(existingModal);
         paymentModal.show();
       } else {
@@ -270,7 +270,7 @@ async function fetchFeeDetails(userId) {
 
             // Wait for DOM to update before accessing elements
             setTimeout(() => {
-              updateModalContent(user_id, month, pendingAmount);
+              updateModalContent(user_id, months, pendingAmount);
 
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
@@ -282,16 +282,16 @@ async function fetchFeeDetails(userId) {
     }
 
     // Function to update modal content dynamically
-    function updateModalContent(user_id, month, pendingAmount) {
-      const pendingAmountElem = document.getElementById('pendingAmount');
-      const selectedMonthElem = document.getElementById('selectedMonth');
+    function updateModalContent(user_id, month, pending) {
+      const pendingAmountElem = document.getElementById('pending');
+      const selectedMonthsElem = document.getElementById('selectedMonths');
       const confirmPaymentBtn = document.getElementById('confirmPayment');
 
-      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
-      if (selectedMonthElem) selectedMonthElem.textContent = month.replace(/,/g, ', ');
+      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pending}`;
+      if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
-        confirmPaymentBtn.setAttribute('data-month', month);
+        confirmPaymentBtn.setAttribute('data-months', month);
       }
     }
 
