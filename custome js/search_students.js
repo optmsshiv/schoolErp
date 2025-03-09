@@ -195,7 +195,7 @@ async function fetchFeeDetails(userId) {
             data-user_id="${detail.receipt_no}"
             data-student_name="${detail.student_name}"
             data-months="${months}"
-            data-pendingAmount="${totalPendingAmount}">
+            data-totalPendingAmount="${totalPendingAmount.toFixed(2)}">
 
             <td>${detail.receipt_no}</td>
             <td>${months}</td>
@@ -259,101 +259,72 @@ async function fetchFeeDetails(userId) {
     });
 
     // 🔴 Function to handle fee collection
-    // Function to Handle Collect Fee Click
     function handleCollectFee(row) {
       const user_id = row.dataset.user_id;
       const studentName = row.dataset.student_name || 'Unknown Student';
       const months = row.dataset.months || 'N/A';
-      const pendingAmount = parseFloat(row.dataset.pendingAmount || '0');
+      const pendingAmount = parseFloat(row.dataset.totalPendingAmount || '0');
+      console.log('Extracted Pending Amount from Row:', totalPendingAmount); // Debugging
 
-      // Set modal values
-      document.getElementById('studentName').textContent = studentName;
-      document.getElementById('pendingAmount').textContent = `₹${pendingAmount}`;
-      document.getElementById('selectedMonths').textContent = months.replace(/,/g, ', ');
-      document.getElementById('confirmPayment').setAttribute('data-user-id', user_id);
-      document.getElementById('confirmPayment').setAttribute('data-months', months);
-      document.getElementById('confirmPayment').setAttribute('data-amount', pendingAmount);
+      // Check if modal already exists in the DOM
+      let existingModal = document.getElementById('paymentModal');
 
-      // Open Bootstrap Modal
-      let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
-      paymentModal.show();
+      if (existingModal) {
+        // If modal exists, just update values and show it
+        updateModalContent(user_id, studentName, months, pendingAmount);
+        let paymentModal = new bootstrap.Modal(existingModal);
+        paymentModal.show();
+      } else {
+        // Load the modal content dynamically
+        fetch('/html/model/payment_collection_modal.html')
+          .then(response => response.text())
+          .then(html => {
+            document.body.insertAdjacentHTML('beforeend', html);
+
+            // Wait for DOM to update before accessing elements
+            setTimeout(() => {
+              updateModalContent(user_id, studentName, months, pendingAmount);
+
+              // Show the modal using Bootstrap
+              let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+              paymentModal.show();
+            }, 100);
+          })
+          .catch(error => console.error('Error loading modal:', error));
+      }
     }
 
-    // Enable Partial Payment Input and Validate Amount
-    document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
-      radio.addEventListener('change', function () {
-        let partialInput = document.getElementById('partialAmount');
-        partialInput.disabled = this.value !== 'partial';
-      });
-    });
+    // Function to update modal content dynamically
+    function updateModalContent(user_id, student_name, month, pendingAmount) {
 
-    // Validate Partial Payment Amount
-    document.getElementById('partialAmount').addEventListener('input', function () {
-      let pendingAmount = parseFloat(document.getElementById('confirmPayment').getAttribute('data-amount'));
-      let enteredAmount = parseFloat(this.value);
-      let errorLabel = document.getElementById('amountError');
+      const studentNameElem = document.getElementById('studentName');
+      const selectedMonthsElem = document.getElementById('selectedMonths');
+      const pendingAmountElem = document.getElementById('pendingAmount');
+      const confirmPaymentBtn = document.getElementById('confirmPayment');
 
-      if (enteredAmount > pendingAmount) {
-        errorLabel.style.display = 'block';
-        this.classList.add('is-invalid');
-      } else {
-        errorLabel.style.display = 'none';
-        this.classList.remove('is-invalid');
+      if (studentNameElem) studentNameElem.textContent = student_name;
+      if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
+      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
+      if (confirmPaymentBtn) {
+        confirmPaymentBtn.setAttribute('data-user-id', user_id);
+        confirmPaymentBtn.setAttribute('data-months', month);
       }
-    });
+    }
 
-    // Show QR Code if UPI is Selected
-    document.getElementById('paymentMode').addEventListener('change', function () {
-      let upiSection = document.getElementById('upiSection');
-      let upiQrCode = document.getElementById('upiQrCode');
 
-      if (this.value === 'UPI') {
-        upiQrCode.src =
-          'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=YOUR_UPI_ID&pn=Your%20Name&am=' +
-          document.getElementById('confirmPayment').getAttribute('data-amount');
-        upiSection.style.display = 'block';
-      } else {
-        upiSection.style.display = 'none';
+
+
+    function closePaymentModal() {
+      let paymentModalElem = document.getElementById('paymentModal');
+      if (paymentModalElem) {
+        let bootstrapModal = bootstrap.Modal.getInstance(paymentModalElem);
+        if (bootstrapModal) {
+          bootstrapModal.hide();
+        }
       }
-    });
+    }
 
-    // Handle Payment Confirmation
-    document.getElementById('confirmPayment').addEventListener('click', function () {
-      const user_id = this.getAttribute('data-user-id');
-      const months = this.getAttribute('data-months');
-      const paymentType = document.querySelector('input[name="paymentType"]:checked').value;
-      let amount =
-        paymentType === 'full'
-          ? document.getElementById('pendingAmount').textContent.replace('₹', '')
-          : document.getElementById('partialAmount').value;
-      const paymentMode = document.getElementById('paymentMode').value;
 
-      if (!amount || amount <= 0) {
-        alert('Please enter a valid amount!');
-        return;
-      }
-
-      // Process payment
-      fetch('process-payment.php', {
-        method: 'POST',
-        body: JSON.stringify({ user_id, months, amount, paymentMode }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            alert('Payment Successful! Generating Receipt...');
-            window.open(`generate-receipt.php?user_id=${user_id}&months=${months}`, '_blank');
-            sendWhatsAppReceipt(user_id, months);
-          } else {
-            alert('Payment failed! Please try again.');
-          }
-        });
-
-      // Close Modal
-      let paymentModal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-      paymentModal.hide();
-    });
 
     // 🔴 Function to delete a fee entry
     function handleDelete(row) {
