@@ -302,8 +302,8 @@ async function fetchFeeDetails(userId) {
       const confirmPaymentBtn = document.getElementById('confirmPayment');
 
       if (studentNameElem) studentNameElem.textContent = studentName;
-      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
+      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
         confirmPaymentBtn.setAttribute('data-months', month);
