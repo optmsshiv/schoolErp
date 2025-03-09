@@ -263,7 +263,7 @@ async function fetchFeeDetails(userId) {
       const user_id = row.dataset.user_id;
       const studentName = row.dataset.student_name || 'Unknown Student';
       const months = row.dataset.months || 'N/A';
-      const pendingAmount = parseFloat(row.dataset.totalPendingAmount || '0');
+      const totalPendingAmount = parseFloat(row.dataset.totalPendingAmount || '0');
       console.log('Extracted Pending Amount from Row:', totalPendingAmount); // Debugging
 
       // Check if modal already exists in the DOM
@@ -271,7 +271,7 @@ async function fetchFeeDetails(userId) {
 
       if (existingModal) {
         // If modal exists, just update values and show it
-        updateModalContent(user_id, studentName, months, pendingAmount);
+        updateModalContent(user_id, studentName, months, totalPendingAmount);
         let paymentModal = new bootstrap.Modal(existingModal);
         paymentModal.show();
       } else {
@@ -283,7 +283,7 @@ async function fetchFeeDetails(userId) {
 
             // Wait for DOM to update before accessing elements
             setTimeout(() => {
-              updateModalContent(user_id, studentName, months, pendingAmount);
+              updateModalContent(user_id, studentName, months, totalPendingAmount);
 
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
@@ -295,16 +295,15 @@ async function fetchFeeDetails(userId) {
     }
 
     // Function to update modal content dynamically
-    function updateModalContent(user_id, student_name, month, pendingAmount) {
-
+    function updateModalContent(user_id, student_name, month, totalPendingAmount) {
       const studentNameElem = document.getElementById('studentName');
       const selectedMonthsElem = document.getElementById('selectedMonths');
-      const pendingAmountElem = document.getElementById('pendingAmount');
+      const totalPendingAmountElem = document.getElementById('pendingAmount');
       const confirmPaymentBtn = document.getElementById('confirmPayment');
 
       if (studentNameElem) studentNameElem.textContent = student_name;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
-      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
+      if (totalPendingAmountElem) totalPendingAmountElem.textContent = `₹${pendingAmount}`;
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
         confirmPaymentBtn.setAttribute('data-months', month);
