@@ -264,7 +264,7 @@ async function fetchFeeDetails(userId) {
       const studentName = row.dataset.student_name || 'Unknown Student';
       const months = row.dataset.months || 'N/A';
       const pendingAmount = parseFloat(row.dataset.pendingAmount || '0');
-
+      console.log('Extracted Pending Amount from Row:', pendingAmount); // Debugging
 
       // Check if modal already exists in the DOM
       let existingModal = document.getElementById('paymentModal');
@@ -283,7 +283,7 @@ async function fetchFeeDetails(userId) {
 
             // Wait for DOM to update before accessing elements
             setTimeout(() => {
-              updateModalContent(user_id, months, pendingAmount);
+              updateModalContent(user_id, months, totalpendingAmount);
 
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
@@ -302,7 +302,7 @@ async function fetchFeeDetails(userId) {
       const confirmPaymentBtn = document.getElementById('confirmPayment');
 
       if (studentNameElem) studentNameElem.textContent = studentName;
-      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
+      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount.toFixed(2)}`;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
