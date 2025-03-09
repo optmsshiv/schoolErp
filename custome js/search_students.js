@@ -195,7 +195,7 @@ async function fetchFeeDetails(userId) {
             data-user_id="${detail.receipt_no}"
             data-student_name="${detail.student_name}"
             data-months="${months}"
-            data-pendingAmount="${totalPendingAmount.toFixed(2)}">
+            data-pendingAmount="${totalPendingAmount}">
 
             <td>${detail.receipt_no}</td>
             <td>${months}</td>
@@ -302,7 +302,7 @@ async function fetchFeeDetails(userId) {
       const confirmPaymentBtn = document.getElementById('confirmPayment');
 
       if (studentNameElem) studentNameElem.textContent = studentName;
-      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
+      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount.toFixed(2)}`;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
