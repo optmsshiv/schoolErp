@@ -263,8 +263,8 @@ async function fetchFeeDetails(userId) {
       const user_id = row.dataset.user_id;
       const studentName = row.dataset.student_name || 'Unknown Student';
       const months = row.dataset.months || 'N/A';
-      const totalPendingAmount = parseFloat(row.dataset.totalPendingAmount || '0');
-      console.log('Extracted Pending Amount from Row:', totalPendingAmount); // Debugging
+      const pendingAmount = parseFloat(row.dataset.totalPendingAmount || '0');
+      console.log('Extracted Pending Amount from Row:', pendingAmount); // Debugging
 
       // Check if modal already exists in the DOM
       let existingModal = document.getElementById('paymentModal');
@@ -295,15 +295,16 @@ async function fetchFeeDetails(userId) {
     }
 
     // Function to update modal content dynamically
-    function updateModalContent(user_id, student_name, month, totalPendingAmount) {
+    function updateModalContent(user_id, student_name, month, pendingAmount) {
+
       const studentNameElem = document.getElementById('studentName');
       const selectedMonthsElem = document.getElementById('selectedMonths');
-      const totalPendingAmountElem = document.getElementById('pendingAmount');
+      const pendingAmountElem = document.getElementById('pendingAmount');
       const confirmPaymentBtn = document.getElementById('confirmPayment');
 
       if (studentNameElem) studentNameElem.textContent = student_name;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
-      if (totalPendingAmountElem) totalPendingAmountElem.textContent = `₹${pendingAmount}`;
+      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
         confirmPaymentBtn.setAttribute('data-months', month);
