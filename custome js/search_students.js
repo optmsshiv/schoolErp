@@ -264,6 +264,7 @@ async function fetchFeeDetails(userId) {
       const studentName = row.dataset.student_name || 'Unknown Student';
       const months = row.dataset.months || 'N/A';
       const pendingAmount = parseFloat(row.dataset.totalPendingAmount || '0');
+
       console.log('Extracted Pending Amount from Row:', pendingAmount); // Debugging
 
       // Check if modal already exists in the DOM
@@ -296,35 +297,83 @@ async function fetchFeeDetails(userId) {
 
     // Function to update modal content dynamically
     function updateModalContent(user_id, student_name, month, pendingAmount) {
-
       const studentNameElem = document.getElementById('studentName');
       const selectedMonthsElem = document.getElementById('selectedMonths');
       const pendingAmountElem = document.getElementById('pendingAmount');
       const confirmPaymentBtn = document.getElementById('confirmPayment');
+      const fullPaymentRadio = document.getElementById('fullPayment');
+      const partialPaymentRadio = document.getElementById('partialPayment');
+      const partialAmountInput = document.getElementById('partialAmount');
+      const amountError = document.getElementById('amountError');
+      const paymentModeSelect = document.getElementById('paymentMode');
+      const upiSection = document.getElementById('upiSection');
+      const upiQrCode = document.getElementById('upiQrCode');
 
       if (studentNameElem) studentNameElem.textContent = student_name;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
-      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
+      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount.toFixed(2)}`;
+
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
         confirmPaymentBtn.setAttribute('data-months', month);
       }
+    
+
+    // Default to full payment
+    if (fullPaymentRadio) fullPaymentRadio.checked = true;
+    if (partialPaymentRadio) partialPaymentRadio.checked = false;
+    if (partialAmountInput) {
+      partialAmountInput.value = '';
+      partialAmountInput.disabled = true;
     }
 
+    // Payment type change event
+    document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
+      radio.addEventListener('change', function () {
+        if (this.value === 'full') {
+          partialAmountInput.disabled = true;
+          partialAmountInput.value = ''; // Clear input
+          amountError.style.display = 'none';
+        } else {
+          partialAmountInput.disabled = false;
+          partialAmountInput.focus();
+        }
+      });
+    });
 
+    // Validate partial payment amount
+    partialAmountInput.addEventListener('input', function () {
+      let enteredAmount = parseFloat(this.value) || 0;
+      if (enteredAmount > pendingAmount) {
+        amountError.style.display = 'block';
+      } else {
+        amountError.style.display = 'none';
+      }
+    });
 
+        // Show UPI QR if selected
+    paymentModeSelect.addEventListener('change', function () {
+        if (this.value === 'UPI') {
+            upiSection.style.display = 'block';
+            upiQrCode.src = `/generate-qr?amount=${pendingAmount}`; // Dynamically generate QR
+        } else {
+            upiSection.style.display = 'none';
+        }
+    });
 
-    function closePaymentModal() {
-      let paymentModalElem = document.getElementById('paymentModal');
-      if (paymentModalElem) {
+    // Ensure UPI section hides by default
+    upiSection.style.display = paymentModeSelect.value === 'UPI' ? 'block' : 'none';
+}
+// Close the modal
+function closePaymentModal() {
+    let paymentModalElem = document.getElementById('paymentModal');
+    if (paymentModalElem) {
         let bootstrapModal = bootstrap.Modal.getInstance(paymentModalElem);
         if (bootstrapModal) {
-          bootstrapModal.hide();
+            bootstrapModal.hide();
         }
-      }
     }
-
-
+}
 
     // 🔴 Function to delete a fee entry
     function handleDelete(row) {
