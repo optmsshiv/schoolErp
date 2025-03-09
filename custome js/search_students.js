@@ -172,6 +172,7 @@ async function fetchFeeDetails(userId) {
       }
       return sum; // For any other status, do nothing
     }, 0);
+
     // Update the UI with the calculated total pending amount
 
     // Update fee cards
@@ -301,7 +302,7 @@ async function fetchFeeDetails(userId) {
       const confirmPaymentBtn = document.getElementById('confirmPayment');
 
       if (studentNameElem) studentNameElem.textContent = studentName;
-      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount.toFixed(2)}`;
+      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
