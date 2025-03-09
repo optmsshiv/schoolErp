@@ -3,19 +3,26 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <!-- Modal Header -->
-      <div class="modal-header bg-secondary text-white">
-        <h5 class="modal-title" id="paymentModalLabel">Collect Payment</h5>
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="paymentModalLabel">
+          <i class="bi bi-cash-coin"></i> Collect Payment
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <!-- Modal Body -->
       <div class="modal-body">
-        <p><strong>Pending Months:</strong> <span id="selectedMonths"></span></p>
-        <p><strong>Pending Amount:</strong> <span id="pendingAmount" class="fw-bold text-danger"></span></p>
+        <div class="alert alert-warning">
+          <i class="bi bi-info-circle"></i> <strong>Note:</strong> Please confirm payment details before proceeding.
+        </div>
+
+        <p><strong>Student:</strong> <span id="studentName"></span></p>
+        <p><strong>Pending Months:</strong> <span id="selectedMonths" class="text-primary fw-bold"></span></p>
+        <p><strong>Pending Amount:</strong> <span id="pendingAmount" class="fw-bold text-danger fs-5"></span></p>
 
         <!-- Payment Type Selection -->
         <div class="mb-3">
-          <label class="form-label fw-bold">Payment Type:</label>
+          <label class="form-label fw-bold"><i class="bi bi-credit-card"></i> Payment Type:</label>
           <div class="form-check">
             <input class="form-check-input" type="radio" name="paymentType" id="fullPayment" value="full" checked>
             <label class="form-check-label" for="fullPayment">Full Payment</label>
@@ -25,11 +32,12 @@
             <label class="form-check-label" for="partialPayment">Partial Payment</label>
           </div>
           <input type="number" id="partialAmount" class="form-control mt-2" placeholder="Enter amount" disabled>
+          <small class="text-danger" id="amountError" style="display: none;">Amount must be less than pending!</small>
         </div>
 
         <!-- Payment Mode Selection -->
         <div class="mb-3">
-          <label for="paymentMode" class="form-label fw-bold">Payment Mode:</label>
+          <label for="paymentMode" class="form-label fw-bold"><i class="bi bi-wallet2"></i> Payment Mode:</label>
           <select id="paymentMode" class="form-select">
             <option value="UPI">UPI</option>
             <option value="Cash">Cash</option>
@@ -37,12 +45,20 @@
             <option value="Online Payment">Online Payment</option>
           </select>
         </div>
+
+        <!-- QR Code for UPI Payment -->
+        <div id="upiSection" class="text-center" style="display: none;">
+          <p><strong>Scan QR to Pay via UPI:</strong></p>
+          <img id="upiQrCode" src="" alt="UPI QR Code" class="img-fluid rounded shadow">
+        </div>
       </div>
 
       <!-- Modal Footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-success" id="confirmPayment">Confirm Payment</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i>
+          Cancel</button>
+        <button type="button" class="btn btn-success" id="confirmPayment"><i class="bi bi-check-circle"></i> Confirm
+          Payment</button>
       </div>
     </div>
   </div>
