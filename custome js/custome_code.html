@@ -1,149 +1,63 @@
+function handleCollectFee(row) {
+const user_id = row.dataset.user_id;
+const studentName = row.dataset.student_name || 'Unknown Student';
+const months = row.dataset.months || 'N/A';
+const pendingAmount = parseFloat(row.dataset.pendingAmount || '0');
+console.log('Extracted Pending Amount from Row:', pendingAmount); // Debugging
 
+// Check if modal already exists in the DOM
+let existingModal = document.getElementById('paymentModal');
 
-<script src="/php/collectFeeStudentDetails/fetch_fee_month.php"> </script>
-
-<?php
-require '../db_connection.php'; // Include your database connection
-
-$class_name = $_GET['class_name'] ?? ''; // Get class_name from request
-
-if (!$class_name) {
-    echo json_encode(['error' => 'Class name is required']);
-    exit;
-}
-
-try {
-    $stmt = $pdo->prepare("SELECT month_name, amount, fee_head_name FROM FeePlans WHERE class_name = ?");
-    $stmt->execute([$class_name]);
-    $feePlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($feePlans);
-} catch (PDOException $e) {
-    echo json_encode(['error' => $e->getMessage()]);
-}
-?>
-
-
-
-/**********************************************************************************************************************/
-async function fetchFeePlansData(className, userId) {
-try {
-// Fetch fee structure for the class
-const feePlansResponse = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`);
-const feePlans = await feePlansResponse.json();
-
-if (feePlans.error) {
-console.error(feePlans.error);
-showAlert(feePlans.error, 'error');
-return;
-}
-
-updateFeeTable(feePlans);
-} catch (error) {
-console.error('Error fetching fee plans:', error);
-showAlert('Failed to load fee plans.', 'error');
-}
-}
-
-/**********************************************************************/
-function updateFeeTable(feePlans, paidMonths) {
-const months = [
-'April',
-'May',
-'June',
-'July',
-'August',
-'September',
-'October',
-'November',
-'December',
-'January',
-'February',
-'March'
-];
-
-const theadRow = document.querySelector('#student_fee_table thead tr');
-const tableBody = document.querySelector('#student_fee_table tbody');
-
-theadRow.innerHTML = '<th>Fee Head</th>';
-tableBody.innerHTML = '';
-
-months.forEach(month => {
-const th = document.createElement('th');
-th.textContent = month;
-theadRow.appendChild(th);
-});
-
-const feeDataMap = {};
-feePlans.forEach(({ month_name, amount, fee_head_name }) => {
-if (!feeDataMap[fee_head_name]) {
-feeDataMap[fee_head_name] = new Array(months.length).fill('N/A');
-}
-const monthIndex = months.indexOf(month_name);
-if (monthIndex !== -1) {
-feeDataMap[fee_head_name][monthIndex] = amount;
-}
-});
-
-let totalAmounts = new Array(months.length).fill(0);
-
-Object.entries(feeDataMap).forEach(([feeHeadName, monthAmounts]) => {
-const row = document.createElement('tr');
-row.classList.add('text-center');
-
-const feeHeadCell = document.createElement('td');
-feeHeadCell.textContent = feeHeadName;
-row.appendChild(feeHeadCell);
-
-monthAmounts.forEach((amount, index) => {
-const amountCell = document.createElement('td');
-amountCell.textContent = amount !== 'N/A' ? amount : 'N/A';
-row.appendChild(amountCell);
-
-if (amount !== 'N/A' && !isNaN(amount)) {
-totalAmounts[index] += parseFloat(amount);
-}
-});
-
-tableBody.appendChild(row);
-});
-
-// Add "Total" row
-const totalRow = document.createElement('tr');
-totalRow.classList.add('text-center');
-
-const totalFeeHeadCell = document.createElement('td');
-totalFeeHeadCell.textContent = 'Total';
-totalRow.appendChild(totalFeeHeadCell);
-
-totalAmounts.forEach((totalAmount, index) => {
-const monthName = months[index];
-const totalAmountCell = document.createElement('td');
-
-if (paidMonths.includes(monthName)) {
-// Show Green Tick (✔) for Paid Months
-totalAmountCell.innerHTML = `
-<div class="amount-button">
-  <div class="amount text-success">
-    ${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-  <button class=" btn btn-outline-success rounded-circle">
-    <i class="bx bx-check"></i></button>
-</div>
-`;
+if (existingModal) {
+// If modal exists, just update values and show it
+updateModalContent(user_id, studentName, months, pendingAmount);
+let paymentModal = new bootstrap.Modal(existingModal);
+paymentModal.show();
 } else {
-// Show Plus Button (➕) for Unpaid Months
-totalAmountCell.innerHTML = `
-<div class="amount-button">
-  <div class="amount">${totalAmount > 0 ? totalAmount.toFixed(0) : 'N/A'}</div>
-  <button class="btn btn-outline-primary rounded-circle">
-    <i class="bx bx-plus"></i>
-  </button>
-</div>
-`;
+// Load the modal content dynamically
+fetch('/html/model/payment_collection_modal.html')
+.then(response => response.text())
+.then(html => {
+document.body.insertAdjacentHTML('beforeend', html);
+
+// Wait for DOM to update before accessing elements
+setTimeout(() => {
+updateModalContent(user_id, months, pendingAmount);
+
+// Show the modal using Bootstrap
+let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+paymentModal.show();
+}, 100);
+})
+.catch(error => console.error('Error loading modal:', error));
+}
 }
 
-totalRow.appendChild(totalAmountCell);
-});
+// Function to update modal content dynamically
+function updateModalContent(user_id, month, pendingAmount) {
+const studentNameElem = document.getElementById('studentName');
+const pendingAmountElem = document.getElementById('pendingAmount');
+const selectedMonthsElem = document.getElementById('selectedMonths');
+const confirmPaymentBtn = document.getElementById('confirmPayment');
 
-tableBody.appendChild(totalRow);
+if (studentNameElem) studentNameElem.textContent = studentName;
+if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
+if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
+if (confirmPaymentBtn) {
+confirmPaymentBtn.setAttribute('data-user-id', user_id);
+confirmPaymentBtn.setAttribute('data-months', month);
 }
- <script src="/html/model/payment_collection_modal.html"></script>
+}
+
+
+
+
+function closePaymentModal() {
+let paymentModalElem = document.getElementById('paymentModal');
+if (paymentModalElem) {
+let bootstrapModal = bootstrap.Modal.getInstance(paymentModalElem);
+if (bootstrapModal) {
+bootstrapModal.hide();
+}
+}
+}
