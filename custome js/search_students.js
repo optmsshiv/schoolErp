@@ -264,13 +264,13 @@ async function fetchFeeDetails(userId) {
       const months = row.dataset.months || 'N/A';
       const pendingAmount = parseFloat(row.dataset.pendingAmount || '0');
 
-      
+
       // Check if modal already exists in the DOM
       let existingModal = document.getElementById('paymentModal');
 
       if (existingModal) {
         // If modal exists, just update values and show it
-        updateModalContent(user_id, months, pendingAmount);
+        updateModalContent(user_id, studentName, months, pendingAmount);
         let paymentModal = new bootstrap.Modal(existingModal);
         paymentModal.show();
       } else {
@@ -295,11 +295,13 @@ async function fetchFeeDetails(userId) {
 
     // Function to update modal content dynamically
     function updateModalContent(user_id, month, pendingAmount) {
+      const studentNameElem = document.getElementById('studentName');
       const pendingAmountElem = document.getElementById('pendingAmount');
       const selectedMonthsElem = document.getElementById('selectedMonths');
       const confirmPaymentBtn = document.getElementById('confirmPayment');
 
-      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount}`;
+      if (studentNameElem) studentNameElem.textContent = studentName;
+      if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount.toFixed(2)}`;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
@@ -311,9 +313,12 @@ async function fetchFeeDetails(userId) {
 
 
     function closePaymentModal() {
-      const modal = document.getElementById('paymentModal');
-      if (modal) {
-        modal.remove(); // Remove modal from DOM
+      let paymentModalElem = document.getElementById('paymentModal');
+      if (paymentModalElem) {
+        let bootstrapModal = bootstrap.Modal.getInstance(paymentModalElem);
+        if (bootstrapModal) {
+          bootstrapModal.hide();
+        }
       }
     }
 
