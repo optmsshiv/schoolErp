@@ -192,6 +192,7 @@ async function fetchFeeDetails(userId) {
         return `
        <tr
             data-user_id="${detail.receipt_no}"
+            data-student_name="${detail.student_name}"
             data-months="${months}"
             data-pendingAmount="${totalPendingAmount.toFixed(2)}">
 
@@ -259,8 +260,17 @@ async function fetchFeeDetails(userId) {
     // 🔴 Function to handle fee collection
     function handleCollectFee(row) {
       const user_id = row.dataset.user_id;
+      const studentName = row.dataset.student_name || 'Unknown Student';
       const months = row.dataset.months || 'N/A';
-      const pendingAmount = row.dataset.pendingAmount || '0';
+      const pendingAmount = parseFloat(row.dataset.pendingAmount || '0');
+
+      // Set modal values
+      document.getElementById('studentName').textContent = studentName;
+      document.getElementById('pendingAmount').textContent = `₹${pendingAmount}`;
+      document.getElementById('selectedMonths').textContent = months.replace(/,/g, ', ');
+      document.getElementById('confirmPayment').setAttribute('data-user-id', user_id);
+      document.getElementById('confirmPayment').setAttribute('data-months', months);
+      document.getElementById('confirmPayment').setAttribute('data-amount', pendingAmount);
 
       // Check if modal already exists in the DOM
       let existingModal = document.getElementById('paymentModal');
