@@ -317,53 +317,85 @@ async function fetchFeeDetails(userId) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
         confirmPaymentBtn.setAttribute('data-months', month);
       }
-    
 
-    // Default to full payment
-    if (fullPaymentRadio) fullPaymentRadio.checked = true;
-    if (partialPaymentRadio) partialPaymentRadio.checked = false;
-    if (partialAmountInput) {
+      // Default to full payment
+      fullPaymentRadio.checked = true;
+      partialPaymentRadio.checked = false;
       partialAmountInput.value = '';
       partialAmountInput.disabled = true;
-    }
+      amountError.style.display = 'none';
 
-    // Payment type change event
-    document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
-      radio.addEventListener('change', function () {
-        if (this.value === 'full') {
-          partialAmountInput.disabled = true;
-          partialAmountInput.value = ''; // Clear input
-          amountError.style.display = 'none';
+      function updateUPIQr(amount) {
+        if (paymentModeSelect.value === 'UPI') {
+          upiSection.style.display = 'block';
+          upiQrCode.src = `/generate-qr?amount=${amount}`;
         } else {
-          partialAmountInput.disabled = false;
-          partialAmountInput.focus();
+          upiSection.style.display = 'none';
+        }
+      }
+
+      // Payment type change event
+      document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+          if (this.value === 'full') {
+            partialAmountInput.disabled = true;
+            partialAmountInput.value = ''; // Clear input
+            amountError.style.display = 'none';
+            confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
+            updateUPIQr(pendingAmount);
+          } else {
+            partialAmountInput.disabled = false;
+            partialAmountInput.value = pendingAmount; // Default to full amount
+            partialAmountInput.focus();
+            confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
+            updateUPIQr(pendingAmount);
+          }
+        });
+      });
+
+      // Payment type change event
+      document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+          if (this.value === 'full') {
+            partialAmountInput.disabled = true;
+            partialAmountInput.value = ''; // Clear input
+            amountError.style.display = 'none';
+            confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
+            updateUPIQr(pendingAmount);
+          } else {
+            partialAmountInput.disabled = false;
+            partialAmountInput.value = pendingAmount; // Default to full amount
+            partialAmountInput.focus();
+            confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
+            updateUPIQr(pendingAmount);
+          }
+        });
+      });
+
+      // Validate partial payment amount
+      partialAmountInput.addEventListener('input', function () {
+        let enteredAmount = parseFloat(this.value) || 0;
+        if (enteredAmount > pendingAmount || enteredAmount <= 0) {
+          amountError.style.display = 'block';
+          confirmPaymentBtn.disabled = true;
+        } else {
+          amountError.style.display = 'none';
+          confirmPaymentBtn.disabled = false;
+          confirmPaymentBtn.setAttribute('data-amount', enteredAmount);
+          updateUPIQr(enteredAmount);
         }
       });
-    });
 
-    // Validate partial payment amount
-    partialAmountInput.addEventListener('input', function () {
-      let enteredAmount = parseFloat(this.value) || 0;
-      if (enteredAmount > pendingAmount) {
-        amountError.style.display = 'block';
-      } else {
-        amountError.style.display = 'none';
-      }
-    });
+      // Show UPI QR if selected
+      paymentModeSelect.addEventListener('change', function () {
+        updateUPIQr(confirmPaymentBtn.getAttribute('data-amount'));
+      });
 
-        // Show UPI QR if selected
-    paymentModeSelect.addEventListener('change', function () {
-        if (this.value === 'UPI') {
-            upiSection.style.display = 'block';
-            upiQrCode.src = `/generate-qr?amount=${pendingAmount}`; // Dynamically generate QR
-        } else {
-            upiSection.style.display = 'none';
-        }
-    });
+      // Ensure UPI section hides by default
+      upiSection.style.display = paymentModeSelect.value === 'UPI' ? 'block' : 'none';
+    }
 
-    // Ensure UPI section hides by default
-    upiSection.style.display = paymentModeSelect.value === 'UPI' ? 'block' : 'none';
-}
+    
 // Close the modal
 function closePaymentModal() {
     let paymentModalElem = document.getElementById('paymentModal');
