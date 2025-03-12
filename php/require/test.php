@@ -1,14 +1,9 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-use Endroid\QrCode\Builder\Builder;
-use Endroid\QrCode\Writer\PngWriter;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel;
+if (!class_exists('Endroid\QrCode\Builder\Builder')) {
+    die("Error: Endroid QR Code Builder class not found. Check composer installation.");
+}
 
-// Enable error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-echo "QR Code Builder class loaded successfully!";
+echo "QR Code Builder is available!";
 ?>
