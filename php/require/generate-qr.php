@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require __DIR__ . '/vendor/autoload.php';  // Check this path!
+require '/home1/edrppymy/public_html/erp/vendor/autoload.php';  // Check this path!
 
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;

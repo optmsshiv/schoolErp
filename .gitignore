@@ -79,3 +79,4 @@ gulpfile.tmp.*
 /package-lock.json
 .qodo
 
+/vendor/
