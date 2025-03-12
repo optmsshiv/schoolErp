@@ -329,7 +329,7 @@ async function fetchFeeDetails(userId) {
       function updateUPIQr(amount) {
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
-          upiQrCode.src = `/generate-qr?amount=${amount}`;
+          upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}`;
         } else {
           upiSection.style.display = 'none';
         }
@@ -455,7 +455,7 @@ async function fetchFeeDetails(userId) {
         });
     }
 
-    
+
 // Close the modal
 function closePaymentModal() {
     let paymentModalElem = document.getElementById('paymentModal');
