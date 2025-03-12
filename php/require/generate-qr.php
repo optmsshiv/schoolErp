@@ -8,7 +8,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 
 
-require $_SERVER['DOCUMENT_ROOT'] . '/vendor/endroid/qr-code/src/QrCode/QrCode.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/vendor/endroid/qr-code/src/QrCode.php';
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
