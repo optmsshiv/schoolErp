@@ -30,3 +30,4 @@ $qrCode = QrCode::create($upi_uri)
 // Output the QR code as a PNG image
 header('Content-Type: image/png');
 echo $qrCode->getString();
+?>
