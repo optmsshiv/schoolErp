@@ -77,3 +77,6 @@ gulpfile.tmp.*
 
 # Package Lock files
 /package-lock.json
+.qodo
+
+/vendor/

@@ -316,6 +316,7 @@ async function fetchFeeDetails(userId) {
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
         confirmPaymentBtn.setAttribute('data-months', month);
+        confirmPaymentBtn.addEventListener('click', handleConfirmPayment);
       }
 
       // Default to full payment
@@ -393,6 +394,65 @@ async function fetchFeeDetails(userId) {
 
       // Ensure UPI section hides by default
       upiSection.style.display = paymentModeSelect.value === 'UPI' ? 'block' : 'none';
+    }
+
+    // Function to handle confirm payment
+    function handleConfirmPayment() {
+      const userId = document.getElementById('confirmPayment').getAttribute('data-user-id');
+      const selectedMonths = document.getElementById('confirmPayment').getAttribute('data-months');
+      const paymentType = document.querySelector('input[name="paymentType"]:checked').value;
+      const paymentMode = document.getElementById('paymentMode').value;
+      let paymentAmount = parseFloat(document.getElementById('confirmPayment').getAttribute('data-amount')) || 0;
+
+      // If partial payment is selected, get the entered amount
+      if (paymentType === 'partial') {
+        const partialAmountInput = document.getElementById('partialAmount');
+        paymentAmount = parseFloat(partialAmountInput.value) || 0;
+        if (paymentAmount <= 0) {
+          alert('Invalid payment amount! Please enter a valid amount.');
+          return;
+        }
+      }
+
+      // Ensure amount is valid
+      if (paymentAmount <= 0) {
+        alert('Payment amount must be greater than zero.');
+        return;
+      }
+
+      // Prepare data for submission
+      const paymentData = {
+        user_id: userId,
+        months: selectedMonths,
+        amount: paymentAmount,
+        type: paymentType,
+        mode: paymentMode
+      };
+
+      console.log('Submitting Payment:', paymentData); // Debugging
+
+      // Send data via AJAX or form submission
+      fetch('/process_payment.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(paymentData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Payment Successful!');
+            closePaymentModal();
+            location.reload(); // Refresh to update UI
+          } else {
+            alert('Payment Failed: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error processing payment:', error);
+          alert('An error occurred while processing the payment.');
+        });
     }
 
     

@@ -1,0 +1,12 @@
+{
+    "name": "optme-tech/school-erp",
+    "authors": [
+        {
+            "name": "optmsshiv",
+            "email": "optmsshiv@gmail.com"
+        }
+    ],
+    "require": {
+        "endroid/qr-code": "^6.0"
+    }
+}
