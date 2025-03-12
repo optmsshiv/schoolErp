@@ -33,3 +33,4 @@ $result = $writer->write($qrCode);
 // Output the QR code as a PNG image
 header('Content-Type: image/png');
 echo $result->getString();
+?>
