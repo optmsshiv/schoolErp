@@ -5,10 +5,8 @@ ini_set('display_errors', 1);
 
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel;
 
 // Enable error reporting
 error_reporting(E_ALL);
@@ -27,15 +25,10 @@ if ($amount <= 0) {
 // Generate the UPI payment URI
 $upi_uri = "upi://pay?pa=$upi_id&pn=School%20Fees&mc=0000&tid=123456&tr=ABC123&tn=Fee%20Payment&am=$amount&cu=INR";
 
-// Build QR code using Endroid v6
-$result = Builder::create()
-    ->writer(new PngWriter())
-    ->data($upi_uri)
-    ->encoding(new Encoding('UTF-8'))
-    ->errorCorrectionLevel(ErrorCorrectionLevel::Medium)
-    ->size(300)
-    ->margin(10)
-    ->build();
+// Create QR code
+$qrCode = QrCode::create($upi_uri);
+$writer = new PngWriter();
+$result = $writer->write($qrCode);
 
 // Output the QR code as a PNG image
 header('Content-Type: image/png');
