@@ -1,5 +1,11 @@
 {
     "name": "optme-tech/school-erp",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "OptmeTech\\SchoolErp\\": "src/"
+        }
+    },
     "authors": [
         {
             "name": "optmsshiv",
