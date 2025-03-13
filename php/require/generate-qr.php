@@ -3,6 +3,8 @@ require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\LabelAlignment;
 
 // Enable error reporting
 error_reporting(E_ALL);
@@ -21,8 +23,11 @@ $upi_uri = "upi://pay?pa=$upi_id&pn=School%20Fees&am=$amount&cu=INR";
 
 // Create a QR code
 $qrCode = new QrCode($upi_uri);
-$qrCode->setSize( 300);
+
+// Set options for the QR code
+$qrCode->setSize(300);
 $qrCode->setMargin(10);
+$qrCode->setErrorCorrectionLevel(ErrorCorrectionLevel::HIGH);
 
 // Create a writer instance
 $writer = new PngWriter();
