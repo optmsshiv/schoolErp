@@ -4,10 +4,11 @@ require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Label\Label;
 use Endroid\QrCode\Label\Font\NotoSans;
-use Endroid\QrCode\RoundBlockSizeMode;
-use Endroid\QrCode\ErrorCorrectionLevel;
 
 // Enable error reporting
 error_reporting(E_ALL);
@@ -29,18 +30,18 @@ if ($amount <= 0) {
 // Generate the UPI payment URI
 $upi_uri = "upi://pay?pa=$upi_id&pn=School%20Fees&am=$amount&cu=INR";
 
-// Create QR code using version 6.x syntax
-$qrCode = new QrCode($upi_uri);
-$qrCode->setSize(300)
-    ->setMargin(10)
-    ->setEncoding(new Encoding('UTF-8'))
-    ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)
-    ->setRoundBlockSizeMode(RoundBlockSizeMode::Margin)
-    ->setLabel(new Label('Scan to Pay', new NotoSans(14)));
-
-// Generate PNG output
-$writer = new PngWriter();
-$result = $writer->write($qrCode);
+// Use Builder for Endroid QR Code 6.x
+$result = Builder::create()
+    ->data($upi_uri)
+    ->encoding(new Encoding('UTF-8'))
+    ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+    ->size(300)
+    ->margin(10)
+    ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
+    ->labelText('Scan to Pay')
+    ->labelFont(new NotoSans(14))
+    ->writer(new PngWriter())
+    ->build();
 
 // Output the QR code as a PNG image
 header('Content-Type: image/png');
