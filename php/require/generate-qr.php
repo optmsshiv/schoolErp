@@ -1,6 +1,10 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
+if (!class_exists('Endroid\QrCode\Builder\Builder')) {
+    die('Builder class not found. Check your installation.');
+}
+
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
