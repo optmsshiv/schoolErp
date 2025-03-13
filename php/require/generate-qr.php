@@ -19,8 +19,8 @@ if ($amount <= 0) {
 // Generate the UPI payment URI
 $upi_uri = "upi://pay?pa=$upi_id&pn=School%20Fees&am=$amount&cu=INR";
 
-// ✅ Correct way for Endroid QR Code v6.0.5
-$result = Builder::create()
+// ✅ Correct way for Endroid QR Code v6.0.5 (without create())
+$result = (new Builder())
     ->writer(new PngWriter())
     ->data($upi_uri)
     ->size(300)
