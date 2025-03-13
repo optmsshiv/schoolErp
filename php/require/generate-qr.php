@@ -21,12 +21,12 @@ if ($amount <= 0) {
 // Generate the UPI payment URI
 $upi_uri = "upi://pay?pa=$upi_id&pn=School%20Fees&am=$amount&cu=INR";
 
-// ✅ Correct approach for v6.0.5
-$qrCode = new QrCode($upi_uri);
-$qrCode->setEncoding(new Encoding('UTF-8'))
-       ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)
-       ->setSize(300)
-       ->setMargin(10);
+// ✅ Correct method for v6.0.5 (Pass all settings in constructor)
+$qrCode = QrCode::create($upi_uri)
+    ->withEncoding(new Encoding('UTF-8'))
+    ->withErrorCorrectionLevel(ErrorCorrectionLevel::High)
+    ->withSize(300)
+    ->withMargin(10);
 
 // Generate PNG image
 $writer = new PngWriter();
