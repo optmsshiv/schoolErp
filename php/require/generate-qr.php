@@ -27,8 +27,9 @@ if ($amount <= 0) {
 // Generate the UPI payment URI
 $upi_uri = "upi://pay?pa=$upi_id&pn=School%20Fees&am=$amount&cu=INR";
 
-// Create QR code using correct v6 syntax
-$qrCode = QrCode::create($upi_uri)
+// ✅ Use `new QrCode()` instead of `QrCode::create()`
+$qrCode = new QrCode($upi_uri);
+$qrCode = $qrCode
     ->withEncoding(new Encoding('UTF-8'))
     ->withErrorCorrectionLevel(ErrorCorrectionLevel::High)
     ->withSize(300)
