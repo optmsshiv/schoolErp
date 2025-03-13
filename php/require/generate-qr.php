@@ -6,8 +6,6 @@ use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 
-
-
 // Enable error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
