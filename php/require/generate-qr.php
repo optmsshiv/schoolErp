@@ -1,8 +1,8 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
+use \vendor\Endroid\QrCode\QrCode;
+use \vendor\Endroid\QrCode\Writer\PngWriter;
 
 // Enable error reporting
 error_reporting(E_ALL);
