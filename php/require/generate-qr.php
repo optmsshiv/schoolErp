@@ -1,10 +1,6 @@
 <?php
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-if (!class_exists('Endroid\QrCode\Builder\Builder')) {
-    die('Builder class not found. Check your installation.');
-}
-
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
@@ -14,28 +10,25 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Get the amount from the query parameter
-$amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
-$upi_id = "yourupi@upi";  // Replace with your actual UPI ID
+// Static test QR code content
+$upi_uri = "upi://pay?pa=yourupi@upi&pn=TestPayment&am=10&cu=INR";
 
-if ($amount <= 0) {
-    die("Invalid amount");
-}
-
-// Generate the UPI payment URI
-$upi_uri = "upi://pay?pa=$upi_id&pn=School%20Fees&am=$amount&cu=INR";
-
-// Use Builder for QR Code generation
+// Generate QR Code
 $result = Builder::create()
-    ->data($upi_uri)
     ->writer(new PngWriter())
+    ->data($upi_uri)
     ->encoding(new Encoding('UTF-8'))
     ->errorCorrectionLevel(ErrorCorrectionLevel::High)
-    ->size(300) // Set the size here
-    ->margin(10) // Set the margin here
+    ->size(300)
+    ->margin(10)
     ->build();
 
-// Set headers and output image
+// Debugging: Check if QR code was generated
+if (!$result) {
+    die("Error: QR Code generation failed.");
+}
+
+// Output QR Code image
 header('Content-Type: image/png');
 echo $result->getString();
 ?>
