@@ -18,7 +18,6 @@ if ($amount <= 0) {
     die("Invalid amount");
 }
 
-
 // Generate the UPI payment URI
 $upi_uri = "upi://pay?pa=$upi_id&pn=School%20Fees&am=$amount&cu=INR";
 
