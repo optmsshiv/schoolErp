@@ -5,7 +5,6 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
-use Endroid\QrCode\RoundBlockSizeMode;
 
 // Enable error reporting
 error_reporting(E_ALL);
@@ -27,14 +26,12 @@ if ($amount <= 0) {
 // Generate the UPI payment URI
 $upi_uri = "upi://pay?pa=$upi_id&pn=School%20Fees&am=$amount&cu=INR";
 
-// ✅ Use `new QrCode()` instead of `QrCode::create()`
+// ✅ Correct way to create a QR code in v6
 $qrCode = new QrCode($upi_uri);
-$qrCode = $qrCode
-    ->withEncoding(new Encoding('UTF-8'))
-    ->withErrorCorrectionLevel(ErrorCorrectionLevel::High)
-    ->withSize(300)
-    ->withMargin(10)
-    ->withRoundBlockSizeMode(RoundBlockSizeMode::Margin);
+$qrCode->setEncoding(new Encoding('UTF-8'));
+$qrCode->setErrorCorrectionLevel(ErrorCorrectionLevel::High);
+$qrCode->setSize(300);
+$qrCode->setMargin(10);
 
 // Generate QR code image
 $writer = new PngWriter();
