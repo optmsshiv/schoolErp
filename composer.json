@@ -13,6 +13,7 @@
         }
     ],
     "require": {
-        "endroid/qr-code": "^6.0"
+        "endroid/qr-code": "^6.0",
+        "bacon/bacon-qr-code": "^3.0"
     }
 }
