@@ -1,4 +1,6 @@
 <?php
+
+header('Content-Type: image/png');
 // Enable error reporting for debugging (Remove in production)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
