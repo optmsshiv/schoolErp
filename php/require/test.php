@@ -2,9 +2,6 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Set content type
-header('Content-Type: image/png');
-
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 use Endroid\QrCode\QrCode;
@@ -33,7 +30,7 @@ $qrCode = QrCode::create($upi_uri)
 $writer = new PngWriter();
 $result = $writer->write($qrCode);
 
-// Output QR Code
+// Output image headers
+header('Content-Type: image/png');
 echo $result->getString();
 exit;
-?>
