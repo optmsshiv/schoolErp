@@ -1,6 +1,9 @@
 <?php
 
+// Set content type to PNG
 header('Content-Type: image/png');
+
+// Enable error reporting for debugging (remove in production)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -17,8 +20,10 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 $amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
 $upi_id = "yourupi@upi";
 
+// Validate amount
 if ($amount <= 0) {
-    die("Invalid amount specified.");
+    http_response_code(400); // Bad Request
+    exit; // Stop execution to prevent extra output
 }
 
 // Generate UPI QR Code data
@@ -33,21 +38,17 @@ $qrCode = QrCode::create($upi_uri)
 
 $writer = new PngWriter();
 
-// Optional: Add Logo (Ensure the file path is correct)
+// Optional: Add Logo (Ensure file exists)
 $logoPath = $_SERVER['DOCUMENT_ROOT'] . '/path/to/school_logo.png';
-if (file_exists($logoPath)) {
-    $logo = Logo::create($logoPath)->setResizeToWidth(50);
-} else {
-    $logo = null;
-}
+$logo = (file_exists($logoPath)) ? Logo::create($logoPath)->setResizeToWidth(50) : null;
 
-// Optional: Add a Label Below the QR Code
+// Optional: Add Label Below the QR Code
 $label = Label::create("Scan to Pay ₹" . number_format($amount, 2))->setFontSize(14);
 
-// Generate the final QR Code image
+// Generate the QR Code
 $result = $writer->write($qrCode, $logo, $label);
 
-// Output as Image
+// Output the image
 echo $result->getString();
 
 ?>
