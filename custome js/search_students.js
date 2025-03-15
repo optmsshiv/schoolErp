@@ -307,7 +307,7 @@ async function fetchFeeDetails(userId) {
       const amountError = document.getElementById('amountError');
       const paymentModeSelect = document.getElementById('paymentMode');
       const upiSection = document.getElementById('upiSection');
-      const upiQrCode = document.getElementById('upiQrCode');
+      const upiQrCode = document.getElementById('upi-qr-code');
 
       if (studentNameElem) studentNameElem.textContent = student_name;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
