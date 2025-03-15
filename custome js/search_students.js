@@ -289,7 +289,7 @@ async function fetchFeeDetails(userId) {
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
               paymentModal.show();
-            }, 100);
+            }, 200);
           })
           .catch(error => console.error('Error loading modal:', error));
       }
