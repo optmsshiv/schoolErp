@@ -27,20 +27,27 @@ $upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fee
 // Create QR Code
 $qrCode = QrCode::create($upi_uri)
     ->setEncoding(new Encoding('UTF-8'))
-    ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)
+    ->setErrorCorrectionLevel(ErrorCorrectionLevel::HIGH())
     ->setSize(300)
-    ->setMargin(10)
-    ->setWriter(new PngWriter());
+    ->setMargin(10);
 
-// Optional: Add Logo (School Logo or UPI Logo)
-$logo = Logo::create('school_logo.png')->setResizeToWidth(50);
-$qrCode->setLogo($logo);
+$writer = new PngWriter();
+
+// Optional: Add Logo (Ensure the file path is correct)
+$logoPath = $_SERVER['DOCUMENT_ROOT'] . '/path/to/school_logo.png';
+if (file_exists($logoPath)) {
+    $logo = Logo::create($logoPath)->setResizeToWidth(50);
+} else {
+    $logo = null;
+}
 
 // Optional: Add a Label Below the QR Code
 $label = Label::create("Scan to Pay ₹" . number_format($amount, 2))->setFontSize(14);
-$qrCode->setLabel($label);
+
+// Generate the final QR Code image
+$result = $writer->write($qrCode, $logo, $label);
 
 // Output as Image
-header('Content-Type: image/png');
-echo $qrCode->getString();
+echo $result->getString();
+
 ?>
