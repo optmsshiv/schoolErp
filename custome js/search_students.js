@@ -286,9 +286,7 @@ async function fetchFeeDetails(userId) {
             setTimeout(() => {
               updateModalContent(user_id, studentName, months, totalPendingAmount);
 
-              // Ensure QR code updates only after the modal is loaded
-              updateUPIQr(amount);
-              
+
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
               paymentModal.show();
@@ -319,6 +317,7 @@ async function fetchFeeDetails(userId) {
       if (confirmPaymentBtn) {
         confirmPaymentBtn.setAttribute('data-user-id', user_id);
         confirmPaymentBtn.setAttribute('data-months', month);
+        confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
         confirmPaymentBtn.addEventListener('click', handleConfirmPayment);
       }
 
@@ -342,28 +341,19 @@ async function fetchFeeDetails(userId) {
         }
       }*/
 
-
       // ✅ Function to update UPI QR Code
-     function updateUPIQr(amount) {
-       console.log('Updating QR with amount:', amount); // Debugging
 
-       const upiQrCode = document.getElementById('upiQrCode');
-       if (!upiQrCode) {
-         console.error('QR Code element not found!');
-         return;
-       }
+      function updateUPIQr(amount) {
+        console.log('Updating QR with amount:', amount); // Debugging
+        if (paymentModeSelect.value === 'UPI') {
+          upiSection.style.display = 'block';
+          upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
+        } else {
+          upiSection.style.display = 'none';
+        }
+      }
 
-       const newSrc = `https://erp.optms.co.in/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
-
-       // Clear previous src before updating (forces reload)
-       upiQrCode.src = '';
-
-       setTimeout(() => {
-         upiQrCode.src = newSrc;
-         console.log('QR Code Updated:', newSrc);
-       }, 100);
-     }
-
+      updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
 
       // Payment type change event
       /*
