@@ -339,25 +339,30 @@ async function fetchFeeDetails(userId) {
         }
       }*/
 
-      // Show QR Code when modal opens
-      updateUPIQr(pendingAmount);
-      
+
       // ✅ Function to update UPI QR Code
       function updateUPIQr(amount) {
-        console.log('updateUPIQr() function is running with amount:', amount); // Debugging
+        console.log('updateUPIQr() function is running with amount:', amount);
 
         setTimeout(() => {
           // Delay to ensure modal loads
-          const upiQrCode = document.getElementById('upiQrCode'); // Fetch after modal is fully rendered
+          const upiQrCode = document.getElementById('upiQrCode');
 
           if (upiQrCode) {
-            upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
-            console.log('QR Code Updated:', upiQrCode.src);
+            // Force reload by first setting src to an empty string
+            upiQrCode.src = '';
+
+            // Update with new QR code URL
+            const newSrc = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
+            upiQrCode.src = newSrc;
+
+            console.log('QR Code Updated:', newSrc);
           } else {
             console.error('UPI QR Code element not found.');
           }
-        }, 300); // Small delay to ensure element exists
+        }, 300); // Small delay to ensure modal has fully loaded
       }
+
 
       // Payment type change event
       /*
