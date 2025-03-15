@@ -1,12 +1,9 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Set content type
 header('Content-Type: image/png');
-header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-header('Pragma: no-cache');
-
-error_reporting(0);
-ini_set('display_errors', 0);
 
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
@@ -20,8 +17,7 @@ $amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
 $upi_id = "yourupi@upi";
 
 if ($amount <= 0) {
-    http_response_code(400);
-    exit;
+    die("Invalid amount specified.");
 }
 
 // Generate UPI QR Code data
@@ -40,5 +36,4 @@ $result = $writer->write($qrCode);
 // Output QR Code
 echo $result->getString();
 exit;
-
 ?>
