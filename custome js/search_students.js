@@ -327,21 +327,20 @@ async function fetchFeeDetails(userId) {
       partialAmountInput.disabled = true;
       amountError.style.display = 'none';
 
-      /*
 
       function updateUPIQr(amount) {
         console.log('Updating QR with amount:', amount); // Debugging
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
-         // upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}`;
-           upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
+          upiQrCode.src = `/php/require/test.php?amount=${amount}`;
+        //   upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
         } else {
           upiSection.style.display = 'none';
         }
-      }*/
+      }
 
       // ✅ Function to update UPI QR Code
-
+        /*
       function updateUPIQr(amount) {
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
@@ -352,28 +351,9 @@ async function fetchFeeDetails(userId) {
       }
 
       updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
+*/
 
-      // Payment type change event
-      /*
-      document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
-        radio.addEventListener('change', function () {
-          if (this.value === 'full') {
-            partialAmountInput.disabled = true;
-            partialAmountInput.value = ''; // Clear input
-            amountError.style.display = 'none';
-            confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
-            updateUPIQr(pendingAmount);
-          } else {
-            partialAmountInput.disabled = false;
-            partialAmountInput.value = pendingAmount; // Default to full amount
-            partialAmountInput.focus();
-            confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
-            updateUPIQr(pendingAmount);
-          }
-        });
-      }); */
-
-      // Payment type change event
+    // Payment type change event
       document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
         radio.addEventListener('change', function () {
           if (this.value === 'full') {
