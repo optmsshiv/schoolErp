@@ -307,7 +307,7 @@ async function fetchFeeDetails(userId) {
       const amountError = document.getElementById('amountError');
       const paymentModeSelect = document.getElementById('paymentMode');
       const upiSection = document.getElementById('upiSection');
-      const upiQrCode = document.getElementById('upiQrCode');
+      const upiQrCode = document.getElementById('upi-qr-code');
 
       if (studentNameElem) studentNameElem.textContent = student_name;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
@@ -327,6 +327,7 @@ async function fetchFeeDetails(userId) {
       amountError.style.display = 'none';
 
       function updateUPIQr(amount) {
+        console.log('Updating QR with amount:', amount); // Debugging
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
           upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}`;
