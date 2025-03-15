@@ -286,7 +286,6 @@ async function fetchFeeDetails(userId) {
             setTimeout(() => {
               updateModalContent(user_id, studentName, months, totalPendingAmount);
 
-
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
               paymentModal.show();
@@ -344,7 +343,6 @@ async function fetchFeeDetails(userId) {
       // ✅ Function to update UPI QR Code
 
       function updateUPIQr(amount) {
-        console.log('Updating QR with amount:', amount); // Debugging
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
           upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
