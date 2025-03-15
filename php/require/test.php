@@ -38,17 +38,9 @@ $qrCode = QrCode::create($upi_uri)
 
 $writer = new PngWriter();
 
-// Optional: Add Logo (Ensure file exists)
-$logoPath = $_SERVER['DOCUMENT_ROOT'] . '/path/to/school_logo.png';
-$logo = (file_exists($logoPath)) ? Logo::create($logoPath)->setResizeToWidth(50) : null;
-
-// Optional: Add Label Below the QR Code
-$label = Label::create("Scan to Pay ₹" . number_format($amount, 2))->setFontSize(14);
-
 // Generate the QR Code
-$result = $writer->write($qrCode, $logo, $label);
+$result = $writer->write($qrCode);
 
-// Output the image
+// Output the raw image data (important: no echo before this)
 echo $result->getString();
-
 ?>
