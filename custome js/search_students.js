@@ -341,7 +341,7 @@ async function fetchFeeDetails(userId) {
 
       // ✅ Function to update UPI QR Code
       function updateUPIQr(amount) {
-        console.log('Updating QR with amount:', amount);
+        console.log('updateUPIQr() function is running with amount:', amount); // Debugging
 
         setTimeout(() => {
           // Delay to ensure modal loads
