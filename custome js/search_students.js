@@ -331,8 +331,8 @@ async function fetchFeeDetails(userId) {
         const upiQrCode = document.getElementById('upi-qr-code'); // Get element inside the function
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
-          upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}`;
-          // upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
+         // upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}`;
+           upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
         } else {
           upiSection.style.display = 'none';
         }
@@ -393,9 +393,9 @@ async function fetchFeeDetails(userId) {
 
       // Show UPI QR if selected
       paymentModeSelect.addEventListener('change', function () {
-        updateUPIQr(confirmPaymentBtn.getAttribute('data-amount'));
+        updateUPIQr(confirmPaymentBtn.getAttribute('data-amount') || pendingAmount);
       });
-
+        updateUPIQr(pendingAmount);
       // Ensure UPI section hides by default
       upiSection.style.display = paymentModeSelect.value === 'UPI' ? 'block' : 'none';
     }
