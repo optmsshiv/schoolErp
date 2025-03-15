@@ -14,7 +14,7 @@ $amount = isset($_GET['amount']) ? filter_var($_GET['amount'], FILTER_SANITIZE_N
 $amount = floatval($amount);
 
 // Replace with your actual UPI ID (Consider fetching from DB)
-$upi_id = "yourupi@upi";
+$upi_id = "optmsshiv@axisbank";
 
 if ($amount <= 0) {
     die("Invalid amount specified.");
