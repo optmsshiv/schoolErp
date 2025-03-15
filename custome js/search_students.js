@@ -339,6 +339,9 @@ async function fetchFeeDetails(userId) {
         }
       }*/
 
+      // Show QR Code when modal opens
+      updateUPIQr(pendingAmount);
+      
       // ✅ Function to update UPI QR Code
       function updateUPIQr(amount) {
         console.log('updateUPIQr() function is running with amount:', amount); // Debugging
@@ -355,7 +358,6 @@ async function fetchFeeDetails(userId) {
           }
         }, 300); // Small delay to ensure element exists
       }
-
 
       // Payment type change event
       /*
