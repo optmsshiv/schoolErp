@@ -2,18 +2,18 @@
 
 // Set content type to PNG
 header('Content-Type: image/png');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
 
-// Enable error reporting for debugging (remove in production)
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Disable error output (important for images)
+error_reporting(0);
+ini_set('display_errors', 0);
 
 require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\Label\Label;
-use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\ErrorCorrectionLevel;
 
 // Get the amount from query parameters
@@ -22,8 +22,8 @@ $upi_id = "yourupi@upi";
 
 // Validate amount
 if ($amount <= 0) {
-    http_response_code(400); // Bad Request
-    exit; // Stop execution to prevent extra output
+    http_response_code(400);
+    exit;
 }
 
 // Generate UPI QR Code data
@@ -38,9 +38,7 @@ $qrCode = QrCode::create($upi_uri)
 
 $writer = new PngWriter();
 
-// Generate the QR Code
-$result = $writer->write($qrCode);
-
-// Output the raw image data (important: no echo before this)
-echo $result->getString();
+// Generate and output the QR code
+echo $writer->write($qrCode)->getString();
+exit; // Ensure no extra output
 ?>
