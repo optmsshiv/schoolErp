@@ -38,3 +38,4 @@ $qrCode->setLabel($label);
 // Output as Image
 header('Content-Type: image/png');
 echo $qrCode->getString();
+?>
