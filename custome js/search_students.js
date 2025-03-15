@@ -341,7 +341,7 @@ async function fetchFeeDetails(userId) {
 
       // ✅ Function to update UPI QR Code
 
-      /*
+      
       function updateUPIQr(amount) {
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
@@ -350,63 +350,8 @@ async function fetchFeeDetails(userId) {
           upiSection.style.display = 'none';
         }
       }
-      */
 
-      function updateUPIQr(amount) {
-        const qrImg = document.getElementById('upiQrCode');
-        const qrTimer = document.getElementById('qrTimer');
-        const qrLink = document.getElementById('qrLink');
-        const whatsappShare = document.getElementById('whatsappShare');
-        const downloadQR = document.getElementById('downloadQR');
-        let timeLeft = 90;
-
-        function fetchQR() {
-          const qrUrl = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
-
-          fetch(qrUrl)
-            .then(response => response.json())
-            .then(data => {
-              qrImg.src = data.qr_url;
-              qrImg.style.opacity = '0';
-              setTimeout(() => {
-                qrImg.style.opacity = '1';
-              }, 300);
-
-              // Update shareable link
-              qrLink.value = data.qr_url;
-
-              // Update WhatsApp Share Link
-              whatsappShare.href = `https://api.whatsapp.com/send?text=Scan this QR to pay ₹${amount}: ${data.qr_url}`;
-
-              // Update Download Link
-              downloadQR.href = data.qr_url;
-              downloadQR.setAttribute('download', `UPI_QR_${amount}.png`);
-
-              timeLeft = 90;
-            })
-            .catch(err => console.error('QR Fetch Error:', err));
-        }
-
-        fetchQR();
-
-        setInterval(() => {
-          if (timeLeft === 10) qrTimer.style.color = 'red';
-          if (timeLeft <= 0) fetchQR();
-          qrTimer.innerText = timeLeft--;
-        }, 1000);
-
-        document.getElementById('refreshQR').addEventListener('click', fetchQR);
-        document.getElementById('copyLink').addEventListener('click', () => {
-          qrLink.select();
-          document.execCommand('copy');
-          alert('QR Code link copied!');
-        });
-      }
-
-      updateUPIQr(3000);
-
-      
-    //  updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
+      updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
 
 
     // Payment type change event
