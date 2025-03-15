@@ -1,11 +1,10 @@
 <?php
 
-// Set content type to PNG
+// Set content type
 header('Content-Type: image/png');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
 
-// Disable error output (important for images)
 error_reporting(0);
 ini_set('display_errors', 0);
 
@@ -20,7 +19,6 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 $amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
 $upi_id = "yourupi@upi";
 
-// Validate amount
 if ($amount <= 0) {
     http_response_code(400);
     exit;
@@ -37,8 +35,10 @@ $qrCode = QrCode::create($upi_uri)
     ->setMargin(10);
 
 $writer = new PngWriter();
+$result = $writer->write($qrCode);
 
-// Generate and output the QR code
-echo $writer->write($qrCode)->getString();
-exit; // Ensure no extra output
+// Output QR Code
+echo $result->getString();
+exit;
+
 ?>
