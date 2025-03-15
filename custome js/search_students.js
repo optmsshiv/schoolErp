@@ -341,27 +341,25 @@ async function fetchFeeDetails(userId) {
 
 
       // ✅ Function to update UPI QR Code
-      function updateUPIQr(amount) {
-        console.log('updateUPIQr() function is running with amount:', amount);
+     function updateUPIQr(amount) {
+       console.log('Updating QR with amount:', amount); // Debugging
 
-        setTimeout(() => {
-          // Delay to ensure modal loads
-          const upiQrCode = document.getElementById('upiQrCode');
+       const upiQrCode = document.getElementById('upiQrCode');
+       if (!upiQrCode) {
+         console.error('QR Code element not found!');
+         return;
+       }
 
-          if (upiQrCode) {
-            // Force reload by first setting src to an empty string
-            upiQrCode.src = '';
+       const newSrc = `https://erp.optms.co.in/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
 
-            // Update with new QR code URL
-            const newSrc = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
-            upiQrCode.src = newSrc;
+       // Clear previous src before updating (forces reload)
+       upiQrCode.src = '';
 
-            console.log('QR Code Updated:', newSrc);
-          } else {
-            console.error('UPI QR Code element not found.');
-          }
-        }, 300); // Small delay to ensure modal has fully loaded
-      }
+       setTimeout(() => {
+         upiQrCode.src = newSrc;
+         console.log('QR Code Updated:', newSrc);
+       }, 100);
+     }
 
 
       // Payment type change event
