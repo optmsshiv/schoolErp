@@ -330,14 +330,14 @@ async function fetchFeeDetails(userId) {
         console.log('Updating QR with amount:', amount); // Debugging
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
-         // upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}`;
-         upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
+          upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}`;
+        // upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
 
         } else {
           upiSection.style.display = 'none';
         }
       }
-      
+
       // Payment type change event
           /*
       document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
