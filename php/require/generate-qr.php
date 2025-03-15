@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 $amount = isset($_GET['amount']) ? filter_var($_GET['amount'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : 0;
 $amount = floatval($amount);
 
-// Replace with your actual UPI ID (Consider fetching from DB)
+// Replace with your actual UPI ID (Consider fetching from DB)b..
 $upi_id = "yourupi@upi";
 
 if ($amount <= 0) {
