@@ -1,18 +1,32 @@
 <?php
-// Get the amount from the query parameter
-$amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
-$upi_id = "yourupi@upi";  // Replace with your actual UPI ID
+// Enable error reporting for debugging (Remove in production)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Get the amount from the query parameter & sanitize it
+$amount = isset($_GET['amount']) ? filter_var($_GET['amount'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : 0;
+$amount = floatval($amount);
+
+// Replace with your actual UPI ID (Consider fetching from DB)
+$upi_id = "yourupi@upi";
 
 if ($amount <= 0) {
-    die("Invalid amount");
+    die("Invalid amount specified.");
 }
 
-// Generate the UPI payment URI (properly encoded)
-$upi_uri = rawurlencode("upi://pay?pa=$upi_id&pn=School%20Fees&am=$amount&cu=INR");
+// Encode UPI payment URI
+$upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fees") . "&am=" . urlencode($amount) . "&cu=INR";
 
-// Google Chart API QR Code URL
-$qr_url = "https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=$upi_uri&choe=UTF-8";
+// Google API QR Code URL
+$google_qr_url = "https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=" . urlencode($upi_uri) . "&choe=UTF-8";
+
+// Backup QR Code using QuickChart.io (More Reliable)
+$quickchart_qr_url = "https://quickchart.io/qr?text=" . urlencode($upi_uri) . "&size=300";
+
+// Use Google API first, fallback to QuickChart.io if needed
+$final_qr_url = @file_get_contents($google_qr_url) ? $google_qr_url : $quickchart_qr_url;
 
 // Output QR Code
-echo "<img src='$qr_url' alt='UPI QR Code' />";
+echo "<p>Scan this QR code to pay ₹$amount</p>";
+echo "<img src='" . htmlspecialchars($final_qr_url, ENT_QUOTES, 'UTF-8') . "' alt='UPI QR Code' />";
 ?>
