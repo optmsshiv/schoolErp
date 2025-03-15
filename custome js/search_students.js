@@ -337,8 +337,9 @@ async function fetchFeeDetails(userId) {
           upiSection.style.display = 'none';
         }
       }
-
+      
       // Payment type change event
+          /*
       document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
         radio.addEventListener('change', function () {
           if (this.value === 'full') {
@@ -355,7 +356,7 @@ async function fetchFeeDetails(userId) {
             updateUPIQr(pendingAmount);
           }
         });
-      });
+      }); */
 
       // Payment type change event
       document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
