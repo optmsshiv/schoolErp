@@ -286,6 +286,9 @@ async function fetchFeeDetails(userId) {
             setTimeout(() => {
               updateModalContent(user_id, studentName, months, totalPendingAmount);
 
+              // Ensure QR code updates only after the modal is loaded
+              updateUPIQr(amount);
+              
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
               paymentModal.show();
