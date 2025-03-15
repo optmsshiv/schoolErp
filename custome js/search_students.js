@@ -404,7 +404,9 @@ async function fetchFeeDetails(userId) {
       }
 
       updateUPIQr(3000);
-      updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
+
+      
+    //  updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
 
 
     // Payment type change event
