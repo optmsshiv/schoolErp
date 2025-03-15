@@ -47,10 +47,24 @@
         </div>
 
         <!-- QR Code for UPI Payment -->
+        <div id="qrContainer" class="text-center p-3">
         <div id="upiSection" class="text-center" style="display: none;">
           <p><strong>Scan QR to Pay via UPI:</strong></p>
           <img id="upiQrCode" src="" alt="UPI QR Code" class="img-fluid rounded shadow">
         </div>
+        <p class="text-muted mt-2">QR refreshes in <span id="qrTimer">90</span>s</p>
+
+        <button id="refreshQR" class="btn btn-primary mt-2">Refresh QR</button>
+
+        <div class="mt-3">
+          <input type="text" id="qrLink" class="form-control text-center" readonly>
+          <button id="copyLink" class="btn btn-secondary mt-2">📋 Copy Link</button>
+          <a id="whatsappShare" class="btn btn-success mt-2" target="_blank">📤 Share on WhatsApp</a>
+          <a id="downloadQR" class="btn btn-info mt-2" download="UPI_QR.png">⬇ Download QR</a>
+        </div>
+        </div>
+
+
       </div>
 
       <!-- Modal Footer -->
