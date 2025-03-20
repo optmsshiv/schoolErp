@@ -292,6 +292,6 @@
             "install-path": "../setasign/fpdf"
         }
     ],
-    "dev": true,
+    "dev": false,
     "dev-package-names": []
 }
