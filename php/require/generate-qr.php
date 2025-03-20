@@ -13,6 +13,7 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Label\Label;
 use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\Color\Color;
 
 // Get amount from URL
 $amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
@@ -32,15 +33,18 @@ $qrCode = new QrCode(
     errorCorrectionLevel: ErrorCorrectionLevel::High
 );
 
-// Add logo if available
+// Add logo (if file exists)
 $logoPath = __DIR__ . '/logo.png'; // Ensure logo.png exists
-$logo = file_exists($logoPath) ? Logo::fromPath($logoPath)->setResizeToWidth(60) : null;
+$logo = file_exists($logoPath) ? new Logo($logoPath, 60) : null;
 
-// Add label
-$label = Label::create('Scan to Pay ₹' . number_format($amount, 2, '.', '') . ' INR')
-    ->setFontSize(16);
+// Add label (correct syntax)
+$label = new Label(
+    text: 'Pay ₹' . number_format($amount, 2, '.', '') . ' INR',
+    fontSize: 16,
+    textColor: new Color(0, 0, 0) // Black color
+);
 
-// Generate QR code
+// Generate QR code with writer
 $writer = new PngWriter();
 $result = $writer->write($qrCode, $logo, $label);
 
