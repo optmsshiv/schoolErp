@@ -27,7 +27,7 @@ if ($amount <= 0) {
 // UPI QR Code data
 $upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fees") . "&am=" . urlencode(number_format($amount, 2, '.', '')) . "&cu=INR";
 
-// Create QR code using the constructor (correct way in v6)
+// Create QR code
 $qrCode = new QrCode(
     data: $upi_uri,
     encoding: new Encoding('UTF-8'),
@@ -35,12 +35,22 @@ $qrCode = new QrCode(
 );
 
 // Add logo (if file exists)
-$logoPath = __DIR__ . '/assets/img/avatars/default-avatar.png'; // Ensure logo.png exists
+$logoPath = __DIR__ . '/logo.png'; // Ensure logo.png exists
 $logo = file_exists($logoPath) ? new Logo($logoPath, 60) : null;
 
-// Add label (Corrected: Removed unknown named parameters)
+// Use a font that supports ₹ symbol
+$fontPath = __DIR__ . '/php/require/NotoSans.ttf'; // Ensure this font is available in the directory
+
+if (file_exists($fontPath)) {
+    $font = new NotoSans($fontPath, 14);
+} else {
+    die("Font file not found: NotoSans.ttf");
+}
+
+// Add label with correct font
 $label = new Label(
-    text: 'Pay ₹' . number_format($amount, 2, '.', '') . ' INR'
+    text: "Pay ₹" . number_format($amount, 2, '.', '') . " INR",
+    font: $font
 );
 
 // Generate QR code with writer
