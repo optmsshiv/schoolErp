@@ -4,6 +4,7 @@ header('Content-Type: image/png');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Ensure Composer dependencies are loaded
 require __DIR__ . '/../../vendor/autoload.php';
 
 use Endroid\QrCode\QrCode;
@@ -24,7 +25,7 @@ if ($amount <= 0) {
 // Generate UPI QR Code data
 $upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fees") . "&am=" . urlencode($amount) . "&cu=INR";
 
-// Create QR Code (Updated Syntax)
+// Create QR Code (Corrected Syntax)
 $qrCode = new QrCode(
     $upi_uri,
     new Encoding('UTF-8'),
@@ -35,7 +36,11 @@ $writer = new PngWriter();
 
 // Optional: Add Logo (Ensure the file path is correct)
 $logoPath = $_SERVER['DOCUMENT_ROOT'] . '/path/to/school_logo.png';
-$logo = file_exists($logoPath) ? Logo::create($logoPath)->setResizeToWidth(50) : null;
+$logo = null;
+
+if (file_exists($logoPath)) {
+    $logo = Logo::create($logoPath)->setResizeToWidth(50);
+}
 
 // Optional: Add a Label Below the QR Code
 $label = Label::create("Scan to Pay ₹" . number_format($amount, 2))->setFontSize(14);
@@ -46,4 +51,5 @@ $result = $writer->write($qrCode, $logo, $label);
 // Output the QR code as a PNG image
 header('Content-Type: ' . $result->getMimeType());
 echo $result->getString();
+
 ?>
