@@ -7,14 +7,14 @@ error_reporting(E_ALL);
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Writer\PngWriter;
 
 // Get amount from URL
 $amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
-$upi_id = "yourupi@upi";
+$upi_id = "yourupi@upi"; // Replace with your actual UPI ID
 
 if ($amount <= 0) {
     die("Invalid amount specified.");
@@ -24,14 +24,14 @@ if ($amount <= 0) {
 $upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fees") . "&am=" . urlencode(number_format($amount, 2, '.', '')) . "&cu=INR";
 
 // Generate QR Code
-$result = Builder::create()
-    ->writer(new PngWriter())
-    ->data($upi_uri)
-    ->encoding(new Encoding('UTF-8'))
-    ->errorCorrectionLevel(ErrorCorrectionLevel::High)
-    ->size(300)
-    ->margin(10)
-    ->build();
+$qrCode = new QrCode(
+    $upi_uri,
+    new Encoding('UTF-8'),
+    ErrorCorrectionLevel::High
+);
+
+$writer = new PngWriter();
+$result = $writer->write($qrCode);
 
 // Output QR code as PNG
 header('Content-Type: ' . $result->getMimeType());
