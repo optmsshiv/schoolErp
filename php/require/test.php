@@ -8,9 +8,9 @@ require '/home1/edrppymy/public_html/erp/vendor/autoload.php';
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 
-$qrCode = QrCode::create('Hello from Live Server!')
-    ->setSize(300)
-    ->setMargin(10);
+$qrCode = new QrCode('Hello from Live Server!');
+$qrCode->setSize(300);
+$qrCode->setMargin(10);
 
 $writer = new PngWriter();
 $result = $writer->write($qrCode);
