@@ -31,7 +31,7 @@ $qrCode = new QrCode(
 $writer = new PngWriter();
 
 // Optional: Add Logo (Ensure the file path is correct)
-$logoPath = $_SERVER['DOCUMENT_ROOT'] . '/path/to/school_logo.png';
+$logoPath = $_SERVER['DOCUMENT_ROOT'] . '/assets/img/avatars/default-avatar.png';
 $logo = null;
 
 if (file_exists($logoPath)) {
