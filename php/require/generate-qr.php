@@ -10,7 +10,6 @@ require __DIR__ . '/../../vendor/autoload.php';
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
-use Endroid\QrCode\Label\Label;
 use Endroid\QrCode\Writer\PngWriter;
 
 // Get amount from URL
@@ -24,9 +23,6 @@ if ($amount <= 0) {
 // UPI QR Code data
 $upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fees") . "&am=" . urlencode(number_format($amount, 2, '.', '')) . "&cu=INR";
 
-// Label (Optional)
-$label = Label::create("Scan to Pay ₹" . number_format($amount, 2))->setFontSize(14);
-
 // Generate QR Code
 $result = Builder::create()
     ->writer(new PngWriter())
@@ -35,7 +31,6 @@ $result = Builder::create()
     ->errorCorrectionLevel(ErrorCorrectionLevel::High)
     ->size(300)
     ->margin(10)
-    ->label($label)
     ->build();
 
 // Output QR code as PNG
