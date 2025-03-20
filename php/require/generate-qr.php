@@ -25,12 +25,14 @@ if ($amount <= 0) {
 // UPI QR Code data
 $upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fees") . "&am=" . urlencode(number_format($amount, 2, '.', '')) . "&cu=INR";
 
-// Create QR Code
-$qrCode = QrCode::create($upi_uri)
-    ->setEncoding(new Encoding('UTF-8'))
-    ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)
-    ->setSize(300)
-    ->setMargin(10);
+// Create QR code using the constructor
+$qrCode = new QrCode(
+    $upi_uri,
+    new Encoding('UTF-8'),
+    ErrorCorrectionLevel::High
+);
+$qrCode->setSize(300);
+$qrCode->setMargin(10);
 
 // Add logo if available
 $logoPath = __DIR__ . '/logo.png'; // Ensure logo.png is present in the same directory
