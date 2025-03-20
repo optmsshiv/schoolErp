@@ -18,7 +18,7 @@ use Endroid\QrCode\Label\Font\NotoSans; // Ensure this font is available
 
 // Get amount from URL
 $amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
-$upi_id = "yourupi@upi"; // Replace with your actual UPI ID
+$upi_id = "7282071620@kotak"; // Replace with your actual UPI ID
 
 if ($amount <= 0) {
     die("Invalid amount specified.");
@@ -39,7 +39,7 @@ $logoPath = __DIR__ . '/assets/img/avatars/default-avatar.png'; // Ensure logo.p
 $logo = file_exists($logoPath) ? new Logo($logoPath, 60) : null;
 
 // Use a font that supports ₹ symbol
-$fontPath = __DIR__ . '/NotoSans-Regular.ttf'; // Ensure this font is available in the directory
+$fontPath = __DIR__ . '/php/require/NotoSans.ttf'; // Ensure this font is available in the directory
 
 if (file_exists($fontPath)) {
     $font = new NotoSans($fontPath, 14);
