@@ -327,13 +327,13 @@ async function fetchFeeDetails(userId) {
       partialAmountInput.disabled = true;
       amountError.style.display = 'none';
 
-        
+
       function updateUPIQr(amount) {
         console.log('Updating QR with amount:', amount); // Debugging
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
-          upiQrCode.src = `/php/require/test.php?amount=${amount}`;
-        //   upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
+        //  upiQrCode.src = `/php/require/test.php?amount=${amount}`;
+         upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
         } else {
           upiSection.style.display = 'none';
         }
