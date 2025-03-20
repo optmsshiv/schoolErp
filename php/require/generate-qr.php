@@ -7,14 +7,12 @@ error_reporting(E_ALL);
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Writer\PngWriter;
-use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
 use Endroid\QrCode\Label\Label;
 use Endroid\QrCode\Logo\Logo;
-use Endroid\QrCode\RoundBlockSizeMode;
 
 // Get amount from URL
 $amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
@@ -27,23 +25,28 @@ if ($amount <= 0) {
 // UPI QR Code data
 $upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fees") . "&am=" . urlencode(number_format($amount, 2, '.', '')) . "&cu=INR";
 
-// Ensure logo exists before adding
-$logoPath = __DIR__ . '/logo.png'; // Place your logo in the same directory
-$logo = file_exists($logoPath) ? Logo::fromPath($logoPath)->setResizeToWidth(60) : null;
+// Create QR Code
+$qrCode = QrCode::create($upi_uri)
+    ->setEncoding(new Encoding('UTF-8'))
+    ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)
+    ->setSize(300)
+    ->setMargin(10);
 
-// Generate QR Code with logo and label
-$result = Builder::create()
-    ->writer(new PngWriter())
-    ->data($upi_uri)
-    ->encoding(new Encoding('UTF-8'))
-    ->errorCorrectionLevel(ErrorCorrectionLevel::High)
-    ->size(300)
-    ->margin(10)
-    ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
-    ->logo($logo) // Add logo if available
-    ->labelText('Scan to Pay ₹' . number_format($amount, 2, '.', '') . ' INR') // Add label
-    ->labelAlignment(LabelAlignmentCenter) // Center label
-    ->build();
+// Add logo if available
+$logoPath = __DIR__ . '/logo.png'; // Ensure logo.png is present in the same directory
+if (file_exists($logoPath)) {
+    $logo = Logo::fromPath($logoPath)->setResizeToWidth(60);
+} else {
+    $logo = null;
+}
+
+// Add label
+$label = Label::create('Scan to Pay ₹' . number_format($amount, 2, '.', '') . ' INR')
+    ->setFontSize(16);
+
+// Generate the QR code with PNG writer
+$writer = new PngWriter();
+$result = $writer->write($qrCode, $logo, $label);
 
 // Output QR code as PNG
 header('Content-Type: ' . $result->getMimeType());
