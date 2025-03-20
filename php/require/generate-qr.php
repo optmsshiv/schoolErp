@@ -35,7 +35,7 @@ $qrCode = new QrCode(
 );
 
 // Add logo (if file exists)
-$logoPath = __DIR__ . '/logo.png'; // Ensure logo.png exists
+$logoPath = __DIR__ . '/assets/img/avatars/default-avatar.png'; // Ensure logo.png exists
 $logo = file_exists($logoPath) ? new Logo($logoPath, 60) : null;
 
 // Add label (Corrected: Removed unknown named parameters)
