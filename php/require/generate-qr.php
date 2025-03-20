@@ -1,39 +1,49 @@
 <?php
 
-// Set the content type to PNG (MUST be set before outputting anything)
 header('Content-Type: image/png');
-header("Cache-Control: no-cache, must-revalidate");
-header("Expires: Sat, 1 Jan 2000 00:00:00 GMT");
-
-// Enable error reporting for debugging (Remove in production)
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Get the amount from the query parameter & sanitize it
-$amount = isset($_GET['amount']) ? filter_var($_GET['amount'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : 0;
-$amount = floatval($amount);
+require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
-// Replace with your actual UPI ID (Consider fetching from DB)
-$upi_id = "optmsshiv@axisbank";
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\ErrorCorrectionLevel;
+
+// Get the amount from query parameters
+$amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
+$upi_id = "yourupi@upi";
 
 if ($amount <= 0) {
     die("Invalid amount specified.");
 }
 
-// Encode UPI payment URI
+// Generate UPI QR Code data
 $upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fees") . "&am=" . urlencode($amount) . "&cu=INR";
 
-// Use QuickChart.io to generate QR
-$quickchart_qr_url = "https://quickchart.io/qr?text=" . urlencode($upi_uri) . "&size=300";
+// Create QR Code (Updated Syntax)
+$qrCode = new QrCode(
+    $upi_uri,
+    new Encoding('UTF-8'),
+    ErrorCorrectionLevel::High
+);
 
-// Fetch QR code image directly
-$qr_image = file_get_contents($quickchart_qr_url);
+$writer = new PngWriter();
 
-if (!$qr_image) {
-    die("Failed to generate QR Code.");
-}
+// Optional: Add Logo (Ensure the file path is correct)
+$logoPath = $_SERVER['DOCUMENT_ROOT'] . '/path/to/school_logo.png';
+$logo = file_exists($logoPath) ? Logo::create($logoPath)->setResizeToWidth(50) : null;
 
-// Output the image data
-echo $qr_image;
+// Optional: Add a Label Below the QR Code
+$label = Label::create("Scan to Pay ₹" . number_format($amount, 2))->setFontSize(14);
 
+// Generate the final QR Code image
+$result = $writer->write($qrCode, $logo, $label);
+
+// Output the QR code as a PNG image
+header('Content-Type: ' . $result->getMimeType());
+echo $result->getString();
 ?>
