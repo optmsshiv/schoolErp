@@ -14,7 +14,7 @@ use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Label\Label;
 use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\Color\Color;
-use Endroid\QrCode\Label\Font\NotoSans; // Ensure this font is available
+use Endroid\QrCode\Label\Font; // Ensure this font is available
 
 // Get amount from URL
 $amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
