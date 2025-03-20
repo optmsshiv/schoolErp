@@ -31,7 +31,7 @@
             },
             "time": "2024-10-01T13:55:55+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "BaconQrCode\\": "src/"
@@ -81,7 +81,7 @@
             },
             "time": "2024-08-09T14:30:48+00:00",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "DASPRiD\\Enum\\": "src/"
@@ -112,17 +112,17 @@
         },
         {
             "name": "endroid/qr-code",
-            "version": "6.0.5",
-            "version_normalized": "6.0.5.0",
+            "version": "6.0.6",
+            "version_normalized": "6.0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/qr-code.git",
-                "reference": "238baddf22500bbfeb2fa1ddc1eb2bd9374a6998"
+                "reference": "11e6a94458dab8dd18736c11892130ec788b5028"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code/zipball/238baddf22500bbfeb2fa1ddc1eb2bd9374a6998",
-                "reference": "238baddf22500bbfeb2fa1ddc1eb2bd9374a6998",
+                "url": "https://api.github.com/repos/endroid/qr-code/zipball/11e6a94458dab8dd18736c11892130ec788b5028",
+                "reference": "11e6a94458dab8dd18736c11892130ec788b5028",
                 "shasum": ""
             },
             "require": {
@@ -141,14 +141,14 @@
                 "roave/security-advisories": "Makes sure package versions with known security issues are not installed",
                 "setasign/fpdf": "Enables you to use the PDF writer"
             },
-            "time": "2025-03-07T08:15:43+00:00",
+            "time": "2025-03-14T23:29:08+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-main": "6.x-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "Endroid\\QrCode\\": "src/"
@@ -175,7 +175,7 @@
             ],
             "support": {
                 "issues": "https://github.com/endroid/qr-code/issues",
-                "source": "https://github.com/endroid/qr-code/tree/6.0.5"
+                "source": "https://github.com/endroid/qr-code/tree/6.0.6"
             },
             "funding": [
                 {
