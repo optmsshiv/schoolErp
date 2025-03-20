@@ -11,8 +11,6 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\Writer\PngWriter;
-use Endroid\QrCode\Label\Label;
-use Endroid\QrCode\Logo\Logo;
 
 // Get amount from URL
 $amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
@@ -25,7 +23,7 @@ if ($amount <= 0) {
 // UPI QR Code data
 $upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fees") . "&am=" . urlencode(number_format($amount, 2, '.', '')) . "&cu=INR";
 
-// Create QR code
+// Generate QR Code
 $qrCode = new QrCode(
     $upi_uri,
     new Encoding('UTF-8'),
@@ -33,18 +31,7 @@ $qrCode = new QrCode(
 );
 
 $writer = new PngWriter();
-
-// Add logo (Ensure you have 'logo.png' in the same directory or provide the full path)
-$logo = Logo::fromPath(__DIR__ . '/assets/img/avatars/default-avatar.png')
-    ->setResizeToWidth(60); // Resize logo to fit properly
-
-// Add label
-$label = Label::create('Scan to Pay ₹' . number_format($amount, 2, '.', '') . ' INR')
-    ->setTextColor('black') // Label text color
-    ->setFontSize(14); // Font size
-
-// Generate QR code with logo and label
-$result = $writer->write($qrCode, $logo, $label);
+$result = $writer->write($qrCode);
 
 // Output QR code as PNG
 header('Content-Type: ' . $result->getMimeType());
