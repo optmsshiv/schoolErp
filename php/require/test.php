@@ -1,7 +1,8 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require __DIR__ . '/vendor/autoload.php';  // Adjust based on your project structure
+require '/home1/edrppymy/public_html/erp/vendor/autoload.php';
+  // Adjust based on your project structure
 
 
 use Endroid\QrCode\QrCode;
