@@ -45,7 +45,7 @@ $fontPath = $_SERVER['DOCUMENT_ROOT'] . '/php/require/NotoSans.ttf';
 if (file_exists($fontPath)) {
     $font = new NotoSans($fontPath, 14);
 } else {
-    die("Font file not found: NotoSans.ttf");
+    die("Font file not found:" . $fontPath);
 }
 
 // Add label with correct font
