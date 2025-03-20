@@ -296,7 +296,7 @@ async function fetchFeeDetails(userId) {
     }
 
     // Function to update modal content dynamically
-    function updateModalContent(user_id, student_name, month, pendingAmount) {
+    function updateModalContent(user_id, first_name, month, pendingAmount) {
       const studentNameElem = document.getElementById('studentName');
       const selectedMonthsElem = document.getElementById('selectedMonths');
       const pendingAmountElem = document.getElementById('pendingAmount');
@@ -309,7 +309,7 @@ async function fetchFeeDetails(userId) {
       const upiSection = document.getElementById('upiSection');
       const upiQrCode = document.getElementById('upiQrCode');
 
-      if (studentNameElem) studentNameElem.textContent = student_name;
+      if (studentNameElem) studentNameElem.textContent = first_name;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
       if (pendingAmountElem) pendingAmountElem.textContent = `₹${pendingAmount.toFixed(2)}`;
 
@@ -332,25 +332,13 @@ async function fetchFeeDetails(userId) {
         console.log('Updating QR with amount:', amount); // Debugging
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
-        //  upiQrCode.src = `/php/require/test.php?amount=${amount}`;
-         upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
+          upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
         } else {
           upiSection.style.display = 'none';
         }
       }
 
       // ✅ Function to update UPI QR Code
-
-/*
-      function updateUPIQr(amount) {
-        if (paymentModeSelect.value === 'UPI') {
-          upiSection.style.display = 'block';
-          upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
-        } else {
-          upiSection.style.display = 'none';
-        }
-      }
-*/
       updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
 
 
