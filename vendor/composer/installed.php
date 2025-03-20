@@ -3,11 +3,11 @@
         'name' => 'optme-tech/school-erp',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '5edea01f9c00f2c111f64cab58384b4ca2358bae',
+        'reference' => '18ba2ceef78846b6456d8e4f00e0d4fcdd14da28',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'dev' => false,
+        'dev' => true,
     ),
     'versions' => array(
         'bacon/bacon-qr-code' => array(
@@ -49,7 +49,7 @@
         'optme-tech/school-erp' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '5edea01f9c00f2c111f64cab58384b4ca2358bae',
+            'reference' => '18ba2ceef78846b6456d8e4f00e0d4fcdd14da28',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
