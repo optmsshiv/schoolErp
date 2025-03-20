@@ -37,11 +37,9 @@ $qrCode = new QrCode(
 $logoPath = __DIR__ . '/logo.png'; // Ensure logo.png exists
 $logo = file_exists($logoPath) ? new Logo($logoPath, 60) : null;
 
-// Add label (correct syntax)
+// Add label (Corrected: Removed unknown named parameters)
 $label = new Label(
-    text: 'Pay ₹' . number_format($amount, 2, '.', '') . ' INR',
-    fontSize: 16,
-    textColor: new Color(0, 0, 0) // Black color
+    text: 'Pay ₹' . number_format($amount, 2, '.', '') . ' INR'
 );
 
 // Generate QR code with writer
