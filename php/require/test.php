@@ -20,4 +20,4 @@ $result = $writer->write($qrCode);
 header('Content-Type: ' . $result->getMimeType());
 echo $result->getString();
 ?>
-
+/assets/img/avatars/default-avatar.png
