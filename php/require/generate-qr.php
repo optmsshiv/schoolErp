@@ -1,9 +1,5 @@
 <?php
 
-header('Content-Type: image/png');
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 // Ensure Composer dependencies are loaded
 require __DIR__ . '/../../vendor/autoload.php';
 
@@ -16,16 +12,16 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 
 // Get the amount from query parameters
 $amount = isset($_GET['amount']) ? floatval($_GET['amount']) : 0;
-$upi_id = "yourupi@upi";
+$upi_id = "yourupi@upi"; // Replace with your actual UPI ID
 
 if ($amount <= 0) {
     die("Invalid amount specified.");
 }
 
 // Generate UPI QR Code data
-$upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fees") . "&am=" . urlencode($amount) . "&cu=INR";
+$upi_uri = "upi://pay?pa=" . urlencode($upi_id) . "&pn=" . urlencode("School Fees") . "&am=" . urlencode(number_format($amount, 2, '.', '')) . "&cu=INR";
 
-// Create QR Code (Corrected Syntax)
+// Create QR Code
 $qrCode = new QrCode(
     $upi_uri,
     new Encoding('UTF-8'),
