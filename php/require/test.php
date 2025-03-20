@@ -5,22 +5,22 @@ require '/home1/edrppymy/public_html/erp/vendor/autoload.php';
   // Adjust based on your project structure
 
 
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Encoding\Encoding;
-use Endroid\QrCode\ErrorCorrectionLevel;
-use Endroid\QrCode\Label\Label;
-use Endroid\QrCode\Writer\PngWriter;
+  use Endroid\QrCode\QrCode;
+  use Endroid\QrCode\Encoding\Encoding;
+  use Endroid\QrCode\ErrorCorrectionLevel;
+  use Endroid\QrCode\Writer\PngWriter;
 
-$qrCode = QrCode::create('Hello from Live Server!')
-    ->setEncoding(new Encoding('UTF-8'))
-    ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)
-    ->setSize(300)
-    ->setMargin(10);
+  // Instantiate QrCode object correctly
+  $qrCode = new QrCode('Hello from Live Server!');
+  $qrCode->setEncoding(new Encoding('UTF-8'))
+         ->setErrorCorrectionLevel(ErrorCorrectionLevel::High)
+         ->setSize(300)
+         ->setMargin(10);
 
-$writer = new PngWriter();
-$result = $writer->write($qrCode);
+  $writer = new PngWriter();
+  $result = $writer->write($qrCode);
 
-// Output as PNG
-header('Content-Type: ' . $result->getMimeType());
-echo $result->getString();
-?>
+  // Output the QR code as PNG
+  header('Content-Type: ' . $result->getMimeType());
+  echo $result->getString();
+  ?>
