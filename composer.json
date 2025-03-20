@@ -13,7 +13,7 @@
         }
     ],
     "require": {
-        "endroid/qr-code": "*",
+        "endroid/qr-code": "^6.0",
         "bacon/bacon-qr-code": "^3.0",
         "setasign/fpdf": "^1.8",
         "khanamiryan/qrcode-detector-decoder": "^2.0"

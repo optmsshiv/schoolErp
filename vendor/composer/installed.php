@@ -3,7 +3,7 @@
         'name' => 'optme-tech/school-erp',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '6e880c3e767bfb0f9a6d335f060ee9ad01a05eea',
+        'reference' => '5d4489f1d7a93d3dab008f1ac854ec1018ccadb5',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -49,7 +49,7 @@
         'optme-tech/school-erp' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '6e880c3e767bfb0f9a6d335f060ee9ad01a05eea',
+            'reference' => '5d4489f1d7a93d3dab008f1ac854ec1018ccadb5',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
