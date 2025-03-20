@@ -36,14 +36,14 @@ $qrCode = new QrCode(
 
 // Add logo (if file exists)
 $logoPath = __DIR__ . '/logo.png'; // Ensure logo.png exists
-$logo = file_exists($logoPath) ? new Logo($logoPath, 60) : null;
+$logo = file_exists($logoPath) ? new Logo($logoPath, 90) : null;
 
 // Use a font that supports ₹ symbol
 $fontPath = __DIR__ . '/NotoSans.ttf';
  // Ensure this font is available in the directory
 
 if (file_exists($fontPath)) {
-    $font = new Font($fontPath, 14);
+    $font = new Font($fontPath, 16);
 } else {
     die("Font file not found:" . $fontPath);
 }
