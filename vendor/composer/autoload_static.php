@@ -6,7 +6,15 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitbe0fc74d3d97a36826a9a1677b2fa116
 {
+    public static $files = array (
+        'a9ed0d27b5a698798a89181429f162c5' => __DIR__ . '/..' . '/khanamiryan/qrcode-detector-decoder/lib/Common/customFunctions.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'Z' => 
+        array (
+            'Zxing\\' => 6,
+        ),
         'O' => 
         array (
             'OptmeTech\\SchoolErp\\' => 20,
@@ -26,6 +34,10 @@ class ComposerStaticInitbe0fc74d3d97a36826a9a1677b2fa116
     );
 
     public static $prefixDirsPsr4 = array (
+        'Zxing\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/khanamiryan/qrcode-detector-decoder/lib',
+        ),
         'OptmeTech\\SchoolErp\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -46,6 +58,7 @@ class ComposerStaticInitbe0fc74d3d97a36826a9a1677b2fa116
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'FPDF' => __DIR__ . '/..' . '/setasign/fpdf/fpdf.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
