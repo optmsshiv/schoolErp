@@ -39,11 +39,11 @@ $logoPath = __DIR__ . '/logo.png'; // Ensure logo.png exists
 $logo = file_exists($logoPath) ? new Logo($logoPath, 60) : null;
 
 // Use a font that supports ₹ symbol
-$fontPath = __DIR__ . '/NotoSans.ttf';
+$fontPath = __DIR__ . '/open_sans.ttf';
  // Ensure this font is available in the directory
 
 if (file_exists($fontPath)) {
-    $font = new NotoSans($fontPath, 14);
+    $font = new open_sans($fontPath, 14);
 } else {
     die("Font file not found:" . $fontPath);
 }
