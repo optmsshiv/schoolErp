@@ -43,7 +43,7 @@ $fontPath = __DIR__ . '/NotoSans.ttf';
  // Ensure this font is available in the directory
 
 if (file_exists($fontPath)) {
-    $font = new NotoSans($fontPath, 14);
+    $font = new Font($fontPath, 14);
 } else {
     die("Font file not found:" . $fontPath);
 }
