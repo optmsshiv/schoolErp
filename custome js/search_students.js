@@ -327,7 +327,7 @@ async function fetchFeeDetails(userId) {
       partialAmountInput.disabled = true;
       amountError.style.display = 'none';
 
-          /*
+        
       function updateUPIQr(amount) {
         console.log('Updating QR with amount:', amount); // Debugging
         if (paymentModeSelect.value === 'UPI') {
@@ -337,11 +337,11 @@ async function fetchFeeDetails(userId) {
         } else {
           upiSection.style.display = 'none';
         }
-      } */
+      }
 
       // ✅ Function to update UPI QR Code
 
-      
+/*
       function updateUPIQr(amount) {
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
@@ -350,7 +350,7 @@ async function fetchFeeDetails(userId) {
           upiSection.style.display = 'none';
         }
       }
-
+*/
       updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
 
 
