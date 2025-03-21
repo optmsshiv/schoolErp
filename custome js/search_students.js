@@ -261,7 +261,7 @@ async function fetchFeeDetails(userId) {
     // 🔴 Function to handle fee collection
 
     function handleCollectFee(row) {
-      const user_id = row.dataset.user_id;
+      const user_id = row.dataset.receipt_no;
       const studentName = row.dataset.student_name || 'Unknown Student';
       const months = row.dataset.months || 'N/A';
       const pendingAmount = parseFloat(row.dataset.totalPendingAmount || '0');
@@ -318,9 +318,9 @@ async function fetchFeeDetails(userId) {
 
       if (studentNameElem) studentNameElem.textContent = first_name;
       if (fatherNameElem) fatherNameElem.textContent = fatherName;
-      if (studentClassElem) studentClassElem.textContent = month;
-      if (lastPaidAmountElem) lastPaidAmountElem.textContent = pendingAmount;
-      if (lastPaidAmountDateElem) lastPaidAmountDateElem.textContent = lastPaidAmountDateElem;
+      if (studentClassElem) studentClassElem.textContent = studentClass;
+      if (lastPaidAmountElem) lastPaidAmountElem.textContent = lastPaidAmount;
+      if (lastPaidAmountDateElem) lastPaidAmountDateElem.textContent = lastPaidAmountDate;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
       if (pendingAmountElem) pendingAmountElem.textContent = `₹ ${pendingAmount.toFixed(2)}`;
 
