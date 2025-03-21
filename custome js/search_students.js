@@ -293,13 +293,8 @@ async function fetchFeeDetails(userId) {
     }
 
     // Function to update modal content dynamically
-    function updateModalContent(recieptId, month, pendingAmount) {
+    function updateModalContent(recieptId, month, pendingAmount, userId) {
       const recieptNoElem = document.getElementById('recieptId');
-      const studentNameElem = document.getElementById('studentName');
-      const fatherNameElem = document.getElementById('fatherName');
-      const studentClassElem = document.getElementById('studentClass');
-      const lastPaidAmountElem = document.getElementById('lastPaidAmount');
-      const lastPaidAmountDateElem = document.getElementById('lastPaidAmountDate');
       const selectedMonthsElem = document.getElementById('selectedMonths');
       const pendingAmountElem = document.getElementById('pendingAmount');
       const confirmPaymentBtn = document.getElementById('confirmPayment');
@@ -399,6 +394,17 @@ async function fetchFeeDetails(userId) {
 
       // Ensure UPI section hides by default
       upiSection.style.display = paymentModeSelect.value === 'UPI' ? 'block' : 'none';
+
+      fetch(`/php/getFeeDetails.php?user_id=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('studentName').textContent = data.student_name || 'N/A';
+          document.getElementById('fatherName').textContent = data.father_name || 'N/A';
+          document.getElementById('studentClass').textContent = data.class_name || 'N/A';
+          document.getElementById('lastPaidAmount').textContent = `₹ ${data.last_paid_amount || 0}`;
+          document.getElementById('lastPaidAmountDate').textContent = data.last_paid_date || 'N/A';
+        })
+        .catch(error => console.error('Error fetching fee details:', error));
     }
 
     // Function to handle confirm payment
