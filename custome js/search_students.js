@@ -332,7 +332,7 @@ async function fetchFeeDetails(userId) {
 
       function updateUPIQr(amount) {
         console.log('Updating QR with amount:', amount); // Debugging
-        let selectedMode = paymentModeSelect.value; 
+        let selectedMode = paymentModeSelect.value;
 
         if (selectedMode === 'UPI') {
           qrContainer.style.display = 'block';
@@ -351,9 +351,9 @@ async function fetchFeeDetails(userId) {
       }
 
       // Listen for payment mode changes
-      paymentModeSelect.addEventListener('change', function () {
-        updateUPIQr(pendingAmount); // Call function to update UI
-      });
+     // paymentModeSelect.addEventListener('change', function () {
+     //   updateUPIQr(pendingAmount); // Call function to update UI
+     // });
       // ✅ Function to update UPI QR Code
       updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
 
