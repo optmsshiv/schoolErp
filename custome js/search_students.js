@@ -309,6 +309,8 @@ async function fetchFeeDetails(userId) {
       const paymentModeSelect = document.getElementById('paymentMode');
       const upiSection = document.getElementById('upiSection');
       const upiQrCode = document.getElementById('upiQrCode');
+      const bankDropdown = document.getElementById('bankDropdown');
+      const qrContainer = document.getElementById('qrContainer');
 
       if (studentNameElem) studentNameElem.textContent = first_name;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
@@ -333,10 +335,19 @@ async function fetchFeeDetails(userId) {
         console.log('Updating QR with amount:', amount); // Debugging
         if (paymentModeSelect.value === 'UPI') {
           upiSection.style.display = 'block';
+          qrContainer.style.display = 'block';
+          bankDropdown.style.display = 'none';
           upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
-        } else {
-          upiSection.style.display = 'none';
-        }
+        }else if (selectedMode === "Bank Transfer") {
+      qrContainer.style.display = "none"; // Hide QR functions
+      upiSection.style.display = "none";
+      bankDropdown.style.display = "block"; // Show bank dropdown
+      }
+         else {
+           qrContainer.style.display = 'none'; // Hide everything when Cash/Online Payment is selected
+           upiSection.style.display = 'none';
+           bankDropdown.style.display = 'none';
+         }
       }
 
       // ✅ Function to update UPI QR Code
