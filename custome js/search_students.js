@@ -293,7 +293,7 @@ setTimeout(() => {
 
             // Wait for DOM to update before accessing elements
             setTimeout(() => {
-              updateModalContent(recieptId, months, totalPendingAmount);
+              updateModalContent(recieptId, months, totalPendingAmount, userId);
 
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
