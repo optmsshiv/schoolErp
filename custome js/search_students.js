@@ -268,26 +268,29 @@ async function fetchFeeDetails(userId) {
 
       console.log('Extracted Pending Amount from Row:', pendingAmount); // Debugging
 
-      // Check if modal already exists in the DOM
       let existingModal = document.getElementById('paymentModal');
 
       if (existingModal) {
-        // If modal exists, update values and show it
+        // Update values & show modal if already exists
         updateModalContent(user_id, studentName, months, pendingAmount);
-        existingModal.style.display = 'flex'; // Show the modal
+        existingModal.style.display = 'flex'; // Show modal
       } else {
-        // Load the modal content dynamically
+        // Fetch and insert modal HTML if not found
         fetch('/html/model/payment_collection_modal.html')
           .then(response => response.text())
           .then(html => {
             document.body.insertAdjacentHTML('beforeend', html);
 
-            // Wait for DOM update before accessing elements
+            // Wait for the DOM update before accessing elements
             setTimeout(() => {
               let modal = document.getElementById('paymentModal');
-              updateModalContent(user_id, studentName, months, pendingAmount);
-              modal.style.display = 'flex'; // Show the modal
-            }, 200);
+              if (modal) {
+                updateModalContent(user_id, studentName, months, pendingAmount);
+                modal.style.display = 'flex'; // Show modal
+              } else {
+                console.error('Modal not found in DOM after insertion!');
+              }
+            }, 100); // Small delay to ensure modal is inserted
           })
           .catch(error => console.error('Error loading modal:', error));
       }
@@ -301,13 +304,14 @@ async function fetchFeeDetails(userId) {
       }
     }
 
-    // Event listener for closing the modal when clicking outside
+    // Event listener for closing modal when clicking outside
     document.addEventListener('click', function (event) {
       let modal = document.getElementById('paymentModal');
       if (modal && event.target === modal) {
         closeModal();
       }
     });
+
 
 
     /*
