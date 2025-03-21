@@ -330,31 +330,34 @@ async function fetchFeeDetails(userId) {
       partialAmountInput.disabled = true;
       amountError.style.display = 'none';
 
-
       function updateUPIQr(amount) {
         console.log('Updating QR with amount:', amount); // Debugging
-        if (paymentModeSelect.value === 'UPI') {
-          upiSection.style.display = 'block';
+        let selectedMode = paymentModeSelect.value; 
+
+        if (selectedMode === 'UPI') {
           qrContainer.style.display = 'block';
+          upiSection.style.display = 'block';
           bankDropdown.style.display = 'none';
           upiQrCode.src = `/php/require/generate-qr.php?amount=${amount}&t=${Date.now()}`;
-        }else if (selectedMode === "Bank Transfer") {
-      qrContainer.style.display = "none"; // Hide QR functions
-      upiSection.style.display = "none";
-      bankDropdown.style.display = "block"; // Show bank dropdown
-      }
-         else {
-           qrContainer.style.display = 'none'; // Hide everything when Cash/Online Payment is selected
-           upiSection.style.display = 'none';
-           bankDropdown.style.display = 'none';
-         }
+        } else if (selectedMode === 'Bank Transfer') {
+          qrContainer.style.display = 'none'; // Hide QR functions
+          upiSection.style.display = 'none';
+          bankDropdown.style.display = 'block'; // Show bank dropdown
+        } else {
+          qrContainer.style.display = 'none'; // Hide everything when Cash/Online Payment is selected
+          upiSection.style.display = 'none';
+          bankDropdown.style.display = 'none';
+        }
       }
 
+      // Listen for payment mode changes
+      paymentModeSelect.addEventListener('change', function () {
+        updateUPIQr(pendingAmount); // Call function to update UI
+      });
       // ✅ Function to update UPI QR Code
       updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
 
-
-    // Payment type change event
+      // Payment type change event
       document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
         radio.addEventListener('change', function () {
           if (this.value === 'full') {
