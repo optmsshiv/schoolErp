@@ -174,7 +174,16 @@ async function fetchFeeDetails(userId) {
     }, 0);
 
     // Wait for the table to be updated
-   
+    setTimeout(() => {
+      const userIdElem = document.querySelector('#studentTable tr:last-child td:last-child');
+
+      if (userIdElem) {
+        const userId = userIdElem.textContent.trim();
+        console.log('Extracted User ID:', userId); // Debugging
+      } else {
+        console.error('User ID not found in the table!');
+      }
+    }, 100);
 
     // Update fee cards and  the UI with the calculated total pending amount
 
