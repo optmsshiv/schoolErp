@@ -192,16 +192,18 @@ async function fetchFeeDetails(userId) {
         return `
 
        <tr
-            data-reciept_id="${detail.receipt_no}"
+            data-receipt_no="${detail.receipt_no}"
             data-months="${months}"
             data-totalPendingAmount="${totalPendingAmount.toFixed(2)}">
 
             <td>${detail.receipt_no}</td>
             <td>${months}</td>
             <td align="center">₹ ${detail.due_amount || '0'}</td>
-            <td align="center">${detail.payment_status === 'pending'
-                  ? `₹ ${(parseFloat(detail.total_amount || 0) - parseFloat(detail.received_amount || 0)).toFixed(2)}`
-                  : '—'}</td>
+            <td align="center">${
+              detail.payment_status === 'pending'
+                ? `₹ ${(parseFloat(detail.total_amount || 0) - parseFloat(detail.received_amount || 0)).toFixed(2)}`
+                : '—'
+            }</td>
             <td align="center">₹ ${detail.advanced_amount || '0'}</td>
             <td align="center">₹ ${detail.received_amount || '0'}</td>
             <td align="center">₹ ${detail.total_amount || '0'}</td>
