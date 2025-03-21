@@ -17,23 +17,6 @@
       /* Make it responsive */
     }
 
-    /* Custom modal header */
-  .modal-header-custom {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px 5px 0 0;
-  }
-
-  .modal-header-custom h5 {
-    margin: 0;
-    display: flex;
-    align-items: center;
-  }
-
-  .modal-header-custom i {
-    margin-right: 8px;
-  }
 
   /* Custom alert with left border */
   .custom-alert {
@@ -53,7 +36,7 @@
     <div class="modal-dialog modal-dialog-centered custom-modal-width">
       <div class="modal-content">
         <!-- Modal Header -->
-        <div class="modal-header modal-header-custom">
+        <div class="modal-header">
           <h5 class="modal-title" id="paymentModalLabel">
             <i class="bi bi-cash-coin"></i> Collect Payment
           </h5>
@@ -62,7 +45,7 @@
 
         <!-- Modal Body -->
         <div class="modal-body">
-          <div class="alert alert-warning">
+          <div class="alert alert-warning custom-alert">
             <i class="bi bi-info-circle"></i> <strong>Note:</strong> Please confirm payment details before proceeding.
           </div>
 
