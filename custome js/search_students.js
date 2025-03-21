@@ -256,24 +256,17 @@ async function fetchFeeDetails(userId) {
     // 🔴 Function to handle fee collection
 
     function handleCollectFee(row) {
-      const reciept_id = row.dataset.receipt_no || 'N/A';
-      const studentName = row.dataset.student_name || 'N/A';
-      const fatherName = row.dataset.father_name || 'N/A';
+      const recieptId = row.dataset.receipt_no || 'N/A';
       const months = row.dataset.months || 'N/A';
-      const feeType = row.dataset.fee_type || 'N/A';
-      const studentClass = row.dataset.class_name || 'N/A';
-      const pendingAmount = parseFloat(row.dataset.totalPendingAmount || '0');
-      const lastPaidAmount = parseFloat(row.dataset.lastPaidAmount || '0');
-      const lastPaidAmountDate = row.dataset.lastPaidAmountDate || 'N/A';
 
-      console.log('Extracted Pending Amount from Row:', reciept_id); // Debugging
+      console.log('Extracted Pending Amount from Row:', recieptId); // Debugging
 
       // Check if modal already exists in the DOM
       let existingModal = document.getElementById('paymentModal');
 
       if (existingModal) {
         // If modal exists, just update values and show it
-        updateModalContent(reciept_id, months, totalPendingAmount);
+        updateModalContent(recieptId, months, totalPendingAmount);
         let paymentModal = new bootstrap.Modal(existingModal);
         paymentModal.show();
       } else {
@@ -285,7 +278,7 @@ async function fetchFeeDetails(userId) {
 
             // Wait for DOM to update before accessing elements
             setTimeout(() => {
-              updateModalContent(reciept_id, months, totalPendingAmount);
+              updateModalContent(recieptId, months, totalPendingAmount);
 
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
@@ -298,7 +291,7 @@ async function fetchFeeDetails(userId) {
 
     // Function to update modal content dynamically
     function updateModalContent(recieptId, month, pendingAmount) {
-      const recieptNoElem = document.getElementById('recieptNo');
+      const recieptNoElem = document.getElementById('recieptId');
       const studentNameElem = document.getElementById('studentName');
       const fatherNameElem = document.getElementById('fatherName');
       const studentClassElem = document.getElementById('studentClass');
@@ -317,7 +310,7 @@ async function fetchFeeDetails(userId) {
       const bankDropdown = document.getElementById('bankDropdown');
       const qrContainer = document.getElementById('qrContainer');
 
-      if (recieptNoElem) recieptNoElem.textContent = recieptNo;
+      if (recieptNoElem) recieptNoElem.textContent = recieptId;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
       if (pendingAmountElem) pendingAmountElem.textContent = `₹ ${pendingAmount.toFixed(2)}`;
 
