@@ -259,6 +259,58 @@ async function fetchFeeDetails(userId) {
     });
 
     // 🔴 Function to handle fee collection
+
+    function handleCollectFee(row) {
+      const user_id = row.dataset.user_id;
+      const studentName = row.dataset.student_name || 'Unknown Student';
+      const months = row.dataset.months || 'N/A';
+      const pendingAmount = parseFloat(row.dataset.totalPendingAmount || '0');
+
+      console.log('Extracted Pending Amount from Row:', pendingAmount); // Debugging
+
+      // Check if modal already exists in the DOM
+      let existingModal = document.getElementById('paymentModal');
+
+      if (existingModal) {
+        // If modal exists, update values and show it
+        updateModalContent(user_id, studentName, months, pendingAmount);
+        existingModal.style.display = 'flex'; // Show the modal
+      } else {
+        // Load the modal content dynamically
+        fetch('/html/model/payment_collection_modal.html')
+          .then(response => response.text())
+          .then(html => {
+            document.body.insertAdjacentHTML('beforeend', html);
+
+            // Wait for DOM update before accessing elements
+            setTimeout(() => {
+              let modal = document.getElementById('paymentModal');
+              updateModalContent(user_id, studentName, months, pendingAmount);
+              modal.style.display = 'flex'; // Show the modal
+            }, 200);
+          })
+          .catch(error => console.error('Error loading modal:', error));
+      }
+    }
+
+    // Close modal function
+    function closeModal() {
+      let modal = document.getElementById('paymentModal');
+      if (modal) {
+        modal.style.display = 'none'; // Hide modal
+      }
+    }
+
+    // Event listener for closing the modal when clicking outside
+    document.addEventListener('click', function (event) {
+      let modal = document.getElementById('paymentModal');
+      if (modal && event.target === modal) {
+        closeModal();
+      }
+    });
+
+
+    /*
     function handleCollectFee(row) {
       const user_id = row.dataset.user_id;
       const studentName = row.dataset.student_name || 'Unknown Student';
@@ -294,7 +346,7 @@ async function fetchFeeDetails(userId) {
           .catch(error => console.error('Error loading modal:', error));
       }
     }
-
+*/
     // Function to update modal content dynamically
     function updateModalContent(user_id, first_name, month, pendingAmount) {
       const studentNameElem = document.getElementById('studentName');
