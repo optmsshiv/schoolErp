@@ -266,7 +266,7 @@ async function fetchFeeDetails(userId) {
       const months = row.dataset.months || 'N/A';
       const pendingAmount = parseFloat(row.dataset.totalPendingAmount || '0');
 
-      console.log('Extracted Pending Amount from Row:', pendingAmount); // Debugging
+      console.log('Extracted Pending Amount from Row:', user_id); // Debugging
 
       // Check if modal already exists in the DOM
       let existingModal = document.getElementById('paymentModal');
@@ -299,6 +299,10 @@ async function fetchFeeDetails(userId) {
     // Function to update modal content dynamically
     function updateModalContent(user_id, first_name, month, pendingAmount) {
       const studentNameElem = document.getElementById('studentName');
+      const fatherNameElem = document.getElementById('fatherName');
+      const studentClassElem = document.getElementById('studentClass');
+      const lastPaidAmountElem = document.getElementById('lastPaidAmount');
+      const lastPaidAmountDateElem = document.getElementById('lastPaidAmountDate');
       const selectedMonthsElem = document.getElementById('selectedMonths');
       const pendingAmountElem = document.getElementById('pendingAmount');
       const confirmPaymentBtn = document.getElementById('confirmPayment');
@@ -313,6 +317,10 @@ async function fetchFeeDetails(userId) {
       const qrContainer = document.getElementById('qrContainer');
 
       if (studentNameElem) studentNameElem.textContent = first_name;
+      if (fatherNameElem) fatherNameElem.textContent = fatherName;
+      if (studentClassElem) studentClassElem.textContent = month;
+      if (lastPaidAmountElem) lastPaidAmountElem.textContent = pendingAmount;
+      if (lastPaidAmountDateElem) lastPaidAmountDateElem.textContent = lastPaidAmountDateElem;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
       if (pendingAmountElem) pendingAmountElem.textContent = `₹ ${pendingAmount.toFixed(2)}`;
 
@@ -354,6 +362,7 @@ async function fetchFeeDetails(userId) {
      //paymentModeSelect.addEventListener('change', function () {
      //  updateUPIQr(pendingAmount); // Call function to update UI
      //});
+
       // ✅ Function to update UPI QR Code
       updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
 
