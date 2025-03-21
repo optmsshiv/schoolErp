@@ -173,9 +173,20 @@ async function fetchFeeDetails(userId) {
       return sum; // For any other status, do nothing
     }, 0);
 
-    // Update the UI with the calculated total pending amount
+    // Wait for the table to be updated
+    setTimeout(() => {
+      const userIdElem = document.querySelector('#studentTable tr:last-child td:last-child');
 
-    // Update fee cards
+      if (userIdElem) {
+        const userId = userIdElem.textContent.trim();
+        console.log('Extracted User ID:', userId); // Debugging
+      } else {
+        console.error('User ID not found in the table!');
+      }
+    }, 100);
+
+    // Update fee cards and  the UI with the calculated total pending amount
+
     document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
     document.getElementById('pending_amount').textContent = `₹ ${totalPendingAmount.toFixed(2)}`;
     document.getElementById('hostel_amount').textContent = `₹ ${data.summary.hostel_amount || '0'}`;
@@ -281,7 +292,7 @@ async function fetchFeeDetails(userId) {
 
             // Wait for DOM to update before accessing elements
             setTimeout(() => {
-              updateModalContent(recieptId, months, totalPendingAmount);
+              updateModalContent(recieptId, months, totalPendingAmount, userId);
 
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
@@ -395,7 +406,7 @@ async function fetchFeeDetails(userId) {
       // Ensure UPI section hides by default
       upiSection.style.display = paymentModeSelect.value === 'UPI' ? 'block' : 'none';
 
-      fetch(`/php/require/joint_data_model.php?user_id=${encodeURIComponent(userId)}`)
+      fetch(`/php/require/joint_data_model.php?user_id=${userId}`)
         .then(response => response.json())
         .then(data => {
           document.getElementById('studentName').textContent = data.student_name || 'N/A';
@@ -467,17 +478,16 @@ async function fetchFeeDetails(userId) {
         });
     }
 
-
-// Close the modal
-function closePaymentModal() {
-    let paymentModalElem = document.getElementById('paymentModal');
-    if (paymentModalElem) {
+    // Close the modal
+    function closePaymentModal() {
+      let paymentModalElem = document.getElementById('paymentModal');
+      if (paymentModalElem) {
         let bootstrapModal = bootstrap.Modal.getInstance(paymentModalElem);
         if (bootstrapModal) {
-            bootstrapModal.hide();
+          bootstrapModal.hide();
         }
+      }
     }
-}
 
     // 🔴 Function to delete a fee entry
     function handleDelete(row) {
