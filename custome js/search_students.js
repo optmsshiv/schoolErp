@@ -400,6 +400,7 @@ async function fetchFeeDetails(userId) {
         .then(data => {
           document.getElementById('studentName').textContent = data.student_name || 'N/A';
           document.getElementById('fatherName').textContent = data.father_name || 'N/A';
+          document.getElementById('feeType').textContent = data.fee_type || 'N/A';
           document.getElementById('studentClass').textContent = data.class_name || 'N/A';
           document.getElementById('lastPaidAmount').textContent = `₹ ${data.last_paid_amount || 0}`;
           document.getElementById('lastPaidAmountDate').textContent = data.last_paid_date || 'N/A';
