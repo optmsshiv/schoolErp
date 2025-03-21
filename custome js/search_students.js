@@ -174,16 +174,17 @@ async function fetchFeeDetails(userId) {
     }, 0);
 
     // Wait for the table to be updated
-    setTimeout(() => {
-      const userIdElem = document.querySelector('#studentTable tr:last-child td:last-child');
+setTimeout(() => {
+    const userIdElem = document.querySelector("#studentTable tr:last-child td:last-child");
 
-      if (userIdElem) {
+    if (userIdElem) {
         const userId = userIdElem.textContent.trim();
-        console.log('Extracted User ID:', userId); // Debugging
-      } else {
-        console.error('User ID not found in the table!');
-      }
-    }, 100);
+        console.log("Extracted User ID:", userId);  // Debugging
+    } else {
+        console.error("User ID not found in the table!");
+    }
+}, 100);
+
 
     // Update fee cards and  the UI with the calculated total pending amount
 
@@ -272,8 +273,6 @@ async function fetchFeeDetails(userId) {
       const recieptId = row.dataset.receipt_no || 'N/A';
       const months = row.dataset.months || 'N/A';
       const pendingAmount = totalPendingAmount || 0;
-      const userIdElem = document.querySelector('#studentTable tr:last-child td:last-child');
-      const userId = userIdElem.textContent.trim();
 
       console.log('Extracted Pending Amount from Row:', pendingAmount); // Debugging
 
@@ -282,7 +281,7 @@ async function fetchFeeDetails(userId) {
 
       if (existingModal) {
         // If modal exists, just update values and show it
-        updateModalContent(recieptId, months, totalPendingAmount, userId);
+        updateModalContent(recieptId, months, totalPendingAmount);
         let paymentModal = new bootstrap.Modal(existingModal);
         paymentModal.show();
       } else {
@@ -294,7 +293,7 @@ async function fetchFeeDetails(userId) {
 
             // Wait for DOM to update before accessing elements
             setTimeout(() => {
-              updateModalContent(recieptId, months, totalPendingAmount, userId);
+              updateModalContent(recieptId, months, totalPendingAmount);
 
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
