@@ -260,8 +260,9 @@ async function fetchFeeDetails(userId) {
     function handleCollectFee(row) {
       const recieptId = row.dataset.receipt_no || 'N/A';
       const months = row.dataset.months || 'N/A';
+      const pendingAmount = totalPendingAmount || 0;
 
-     // console.log('Extracted Pending Amount from Row:', recieptId); // Debugging
+      console.log('Extracted Pending Amount from Row:', pendingAmount); // Debugging
 
       // Check if modal already exists in the DOM
       let existingModal = document.getElementById('paymentModal');
