@@ -351,11 +351,11 @@ async function fetchFeeDetails(userId) {
       }
 
       // Listen for payment mode changes
-      paymentModeSelect.addEventListener('change', function () {
-        updateUPIQr(pendingAmount); // Call function to update UI
-      });
+     //paymentModeSelect.addEventListener('change', function () {
+     //  updateUPIQr(pendingAmount); // Call function to update UI
+     //});
       // ✅ Function to update UPI QR Code
-     // updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
+      updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
 
       // Payment type change event
       document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
