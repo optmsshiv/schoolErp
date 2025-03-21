@@ -395,7 +395,7 @@ async function fetchFeeDetails(userId) {
       // Ensure UPI section hides by default
       upiSection.style.display = paymentModeSelect.value === 'UPI' ? 'block' : 'none';
 
-      fetch(`/php/getFeeDetails.php?user_id=${userId}`)
+      fetch(`/php/require/joint_data_model.php?user_id=${userId}`)
         .then(response => response.json())
         .then(data => {
           document.getElementById('studentName').textContent = data.student_name || 'N/A';
