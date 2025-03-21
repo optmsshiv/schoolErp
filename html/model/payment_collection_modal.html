@@ -13,15 +13,14 @@
     .custom-modal-width {
       max-width: 800px;
       /* Adjust the width as needed */
-      width: 70%;
+      width: 60%;
       /* Make it responsive */
     }
 
 
   /* Custom alert with left border */
   .custom-alert {
-    border-left: 5px solid #007bff;
-    padding: 10px;
+    border-left: 5px solid #daa30b;
     border-radius: 5px;
   }
   </style>
@@ -36,7 +35,7 @@
         <!-- Modal Header -->
         <div class="modal-header">
           <h5 class="modal-title" id="paymentModalLabel">
-            <i class="bi bi-cash-coin"></i> Collect Payment
+            <i class="bi bi-cash-coin p-2"></i> Collect Payment
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -44,7 +43,7 @@
         <!-- Modal Body -->
         <div class="modal-body">
           <div class="alert alert-warning custom-alert">
-            <i class="bi bi-info-circle"></i> <strong>Note:</strong> Please confirm payment details before proceeding.
+            <i class="bi bi-info-circle p-2"></i> <strong>Note:</strong> Please confirm payment details before proceeding.
           </div>
 
           <!-- Student Name & Father's Name -->
@@ -79,7 +78,7 @@
 
           <!-- Payment Type Selection -->
           <div class="mb-3">
-            <label class="form-label fw-bold"><i class="bi bi-credit-card"></i> Payment Type:</label>
+            <label class="form-label fw-bold"><i class="bi bi-credit-card p-2"></i> Payment Type:</label>
             <div class="form-check">
               <input class="form-check-input" type="radio" name="paymentType" id="fullPayment" value="full" checked>
               <label class="form-check-label" for="fullPayment">Full Payment</label>
@@ -94,7 +93,7 @@
 
           <!-- Payment Mode Selection -->
           <div class="mb-3">
-            <label for="paymentMode" class="form-label fw-bold"><i class="bi bi-wallet2"></i> Payment Mode:</label>
+            <label for="paymentMode" class="form-label fw-bold"><i class="bi bi-wallet2 p-2"></i> Payment Mode:</label>
             <select id="paymentMode" class="form-select">
               <option value="UPI">UPI</option>
               <option value="Cash">Cash</option>
@@ -128,10 +127,10 @@
         <!-- Modal Footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            <i class="bi bi-x-circle ms-2"></i> Cancel
+            <i class="bi bi-x-circle p-2"></i> Cancel
           </button>
           <button type="button" class="btn btn-success" id="confirmPayment">
-            <i class="bi bi-check-circle ms-1"></i> Confirm Payment
+            <i class="bi bi-check-circle p-2"></i> Confirm Payment
           </button>
         </div>
       </div>
