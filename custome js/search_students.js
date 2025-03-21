@@ -189,24 +189,19 @@ async function fetchFeeDetails(userId) {
           .split(',')
           .map(month => month.trim())
           .join(', '); // Clean month data
-
         return `
+
        <tr
             data-user_id="${detail.receipt_no}"
-            data-student_name="${detail.student_name}"
             data-months="${months}"
             data-totalPendingAmount="${totalPendingAmount.toFixed(2)}">
 
             <td>${detail.receipt_no}</td>
             <td>${months}</td>
             <td align="center">₹ ${detail.due_amount || '0'}</td>
-            <td align="center">
-              ${
-                detail.payment_status === 'pending'
+            <td align="center">${detail.payment_status === 'pending'
                   ? `₹ ${(parseFloat(detail.total_amount || 0) - parseFloat(detail.received_amount || 0)).toFixed(2)}`
-                  : '—'
-              }
-            </td>
+                  : '—'}</td>
             <td align="center">₹ ${detail.advanced_amount || '0'}</td>
             <td align="center">₹ ${detail.received_amount || '0'}</td>
             <td align="center">₹ ${detail.total_amount || '0'}</td>
@@ -261,10 +256,15 @@ async function fetchFeeDetails(userId) {
     // 🔴 Function to handle fee collection
 
     function handleCollectFee(row) {
-      const user_id = row.dataset.receipt_no;
-      const studentName = row.dataset.student_name || 'Unknown Student';
+      const user_id = row.dataset.receipt_no || 'N/A';
+      const studentName = row.dataset.student_name || 'N/A';
+      const fatherName = row.dataset.father_name || 'N/A';
       const months = row.dataset.months || 'N/A';
+      const feeType = row.dataset.fee_type || 'N/A';
+      const studentClass = row.dataset.class_name || 'N/A';
       const pendingAmount = parseFloat(row.dataset.totalPendingAmount || '0');
+      const lastPaidAmount = parseFloat(row.dataset.lastPaidAmount || '0');
+      const lastPaidAmountDate = row.dataset.lastPaidAmountDate || 'N/A';
 
       console.log('Extracted Pending Amount from Row:', user_id); // Debugging
 
@@ -273,7 +273,7 @@ async function fetchFeeDetails(userId) {
 
       if (existingModal) {
         // If modal exists, just update values and show it
-        updateModalContent(user_id, studentName, months, totalPendingAmount);
+        updateModalContent(user_id, months, totalPendingAmount);
         let paymentModal = new bootstrap.Modal(existingModal);
         paymentModal.show();
       } else {
@@ -285,7 +285,7 @@ async function fetchFeeDetails(userId) {
 
             // Wait for DOM to update before accessing elements
             setTimeout(() => {
-              updateModalContent(user_id, studentName, months, totalPendingAmount);
+              updateModalContent(user_id, months, totalPendingAmount);
 
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
@@ -297,7 +297,8 @@ async function fetchFeeDetails(userId) {
     }
 
     // Function to update modal content dynamically
-    function updateModalContent(user_id, first_name, month, pendingAmount) {
+    function updateModalContent(recieptId, month, pendingAmount) {
+      const recieptNoElem = document.getElementById('recieptNo');
       const studentNameElem = document.getElementById('studentName');
       const fatherNameElem = document.getElementById('fatherName');
       const studentClassElem = document.getElementById('studentClass');
@@ -316,16 +317,12 @@ async function fetchFeeDetails(userId) {
       const bankDropdown = document.getElementById('bankDropdown');
       const qrContainer = document.getElementById('qrContainer');
 
-      if (studentNameElem) studentNameElem.textContent = first_name;
-      if (fatherNameElem) fatherNameElem.textContent = fatherName;
-      if (studentClassElem) studentClassElem.textContent = studentClass;
-      if (lastPaidAmountElem) lastPaidAmountElem.textContent = lastPaidAmount;
-      if (lastPaidAmountDateElem) lastPaidAmountDateElem.textContent = lastPaidAmountDate;
+      if (recieptNoElem) recieptNoElem.textContent = recieptId;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
       if (pendingAmountElem) pendingAmountElem.textContent = `₹ ${pendingAmount.toFixed(2)}`;
 
       if (confirmPaymentBtn) {
-        confirmPaymentBtn.setAttribute('data-user-id', user_id);
+        confirmPaymentBtn.setAttribute('data-user-id', recieptId);
         confirmPaymentBtn.setAttribute('data-months', month);
         confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
         confirmPaymentBtn.addEventListener('click', handleConfirmPayment);
@@ -359,9 +356,9 @@ async function fetchFeeDetails(userId) {
       }
 
       // Listen for payment mode changes
-     //paymentModeSelect.addEventListener('change', function () {
-     //  updateUPIQr(pendingAmount); // Call function to update UI
-     //});
+      //paymentModeSelect.addEventListener('change', function () {
+      //  updateUPIQr(pendingAmount); // Call function to update UI
+      //});
 
       // ✅ Function to update UPI QR Code
       updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
