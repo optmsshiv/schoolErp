@@ -4,24 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Load Bootstrap CSS (Only inside the isolated container) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <title>Payment Modal</title>
 
   <style>
-    /* Bootstrap isolation */
-    .bootstrap-isolated {
-      all: initial;
-      font-family: sans-serif;
-    }
-
-    .bootstrap-isolated * {
-      all: unset;
-    }
-
-    /* Modal-specific styles */
-    .bootstrap-isolated .modal {
+    /* Modal Background */
+    .modal {
       display: none;
       position: fixed;
       z-index: 1050;
@@ -30,142 +17,220 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
+      overflow: hidden;
     }
 
-    .bootstrap-isolated .modal-dialog {
+    /* Modal Dialog */
+    .modal-dialog {
       position: relative;
-      margin: auto;
       max-width: 800px;
+      width: 70%;
+      margin: 10% auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
     }
 
-    .bootstrap-isolated .modal-content {
-      background-color: #fff;
-      border-radius: 10px;
+    /* Modal Content */
+    .modal-content {
+      padding: 20px;
     }
 
-    .bootstrap-isolated .modal-header {
+    /* Modal Header */
+    .modal-header {
       background-color: #007bff;
       color: white;
+      padding: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    /* Close Button */
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Modal Body */
+    .modal-body {
+      padding: 15px;
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      color: white;
+    }
+
+    /* Payment Options */
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 5px 0;
+    }
+
+    /* Input Fields */
+    .form-control {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    /* Select Dropdown */
+    .form-select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    /* QR Code Section */
+    .text-center {
+      text-align: center;
+    }
+
+    .img-fluid {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Hidden Elements */
+    #upiSection {
+      display: none;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Bootstrap Isolated Modal -->
-  <div class="bootstrap-isolated">
-    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <!-- Modal Header -->
-          <div class="modal-header">
-            <h5 class="modal-title" id="paymentModalLabel">
-              <i class="bi bi-cash-coin"></i> Collect Payment
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <!-- Payment Collection Modal -->
+  <div class="modal" id="paymentModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h5 class="modal-title">
+            💰 Collect Payment
+          </h5>
+          <button type="button" class="btn-close" onclick="closeModal()">✖</button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <div class="alert" style="background-color: #fff3cd; padding: 10px; border-left: 5px solid #ffc107;">
+            ⚠ <strong>Note:</strong> Please confirm payment details before proceeding.
           </div>
 
-          <!-- Modal Body -->
-          <div class="modal-body">
-            <div class="alert alert-warning">
-              <i class="bi bi-info-circle"></i> <strong>Note:</strong> Please confirm payment details before proceeding.
+          <!-- Student Name & Father's Name -->
+          <div class="row">
+            <div><strong>Student:</strong> <span id="studentName"></span></div>
+            <div><strong>Father's Name:</strong> <span id="fatherName"></span></div>
+          </div>
+
+          <!-- Pending Months & Class -->
+          <div class="row">
+            <div><strong>Pending Months:</strong> <span id="selectedMonths" class="text-primary fw-bold"></span></div>
+            <div><strong>Class:</strong> <span id="studentClass" class="fw-bold"></span></div>
+          </div>
+
+          <!-- Pending Amount & Last Paid Amount -->
+          <div class="row">
+            <div><strong>Pending Amount:</strong> <span id="pendingAmount" class="fw-bold text-danger fs-5"></span>
             </div>
+            <div><strong>Last Paid Amount:</strong> <span id="lastPaidAmount" class="fw-bold text-success"></span></div>
+          </div>
 
-            <!-- Student Name & Father's Name -->
-            <div class="row mb-2">
-              <div class="col">
-                <strong>Student:</strong> <span id="studentName"></span>
-              </div>
-              <div class="col">
-                <strong>Father's Name:</strong> <span id="fatherName"></span>
-              </div>
+          <!-- Payment Type Selection -->
+          <div class="mb-3">
+            <label class="fw-bold">💳 Payment Type:</label>
+            <div class="form-check">
+              <input type="radio" name="paymentType" id="fullPayment" value="full" checked>
+              <label for="fullPayment">Full Payment</label>
             </div>
-
-            <!-- Pending Months & Class -->
-            <div class="row mb-2">
-              <div class="col">
-                <strong>Pending Months:</strong> <span id="selectedMonths" class="text-primary fw-bold"></span>
-              </div>
-              <div class="col">
-                <strong>Class:</strong> <span id="studentClass" class="fw-bold"></span>
-              </div>
+            <div class="form-check">
+              <input type="radio" name="paymentType" id="partialPayment" value="partial">
+              <label for="partialPayment">Partial Payment</label>
             </div>
+            <input type="number" id="partialAmount" class="form-control mt-2" placeholder="Enter amount" disabled>
+            <small class="text-danger" id="amountError" style="display: none;">Amount must be less than pending!</small>
+          </div>
 
-            <!-- Pending Amount & Last Paid Amount -->
-            <div class="row mb-3">
-              <div class="col">
-                <strong>Pending Amount:</strong> <span id="pendingAmount" class="fw-bold text-danger fs-5"></span>
-              </div>
-              <div class="col">
-                <strong>Last Paid Amount:</strong> <span id="lastPaidAmount" class="fw-bold text-success"></span>
-              </div>
+          <!-- Payment Mode Selection -->
+          <div class="mb-3">
+            <label class="fw-bold">👜 Payment Mode:</label>
+            <select id="paymentMode" class="form-select">
+              <option value="UPI">UPI</option>
+              <option value="Cash">Cash</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Online Payment">Online Payment</option>
+            </select>
+          </div>
+
+          <!-- QR Code for UPI Payment -->
+          <div id="qrContainer" class="text-center p-3">
+            <div id="upiSection">
+              <p><strong>Scan QR to Pay via UPI:</strong></p>
+              <img id="upiQrCode" src="" alt="UPI QR Code" class="img-fluid rounded shadow">
             </div>
+            <p class="text-muted mt-2">QR refreshes in <span id="qrTimer">90</span>s</p>
+            <button id="refreshQR" class="btn btn-primary mt-2">Refresh QR</button>
 
-            <!-- Payment Type Selection -->
-            <div class="mb-3">
-              <label class="form-label fw-bold"><i class="bi bi-credit-card"></i> Payment Type:</label>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="paymentType" id="fullPayment" value="full" checked>
-                <label class="form-check-label" for="fullPayment">Full Payment</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="paymentType" id="partialPayment" value="partial">
-                <label class="form-check-label" for="partialPayment">Partial Payment</label>
-              </div>
-              <input type="number" id="partialAmount" class="form-control mt-2" placeholder="Enter amount" disabled>
-              <small class="text-danger" id="amountError" style="display: none;">Amount must be less than
-                pending!</small>
-            </div>
-
-            <!-- Payment Mode Selection -->
-            <div class="mb-3">
-              <label for="paymentMode" class="form-label fw-bold"><i class="bi bi-wallet2"></i> Payment Mode:</label>
-              <select id="paymentMode" class="form-select">
-                <option value="UPI">UPI</option>
-                <option value="Cash">Cash</option>
-                <option value="Bank Transfer">Bank Transfer</option>
-                <option value="Online Payment">Online Payment</option>
-              </select>
-            </div>
-
-            <!-- QR Code for UPI Payment -->
-            <div id="qrContainer" class="text-center p-3">
-              <div id="upiSection" class="text-center" style="display: none;">
-                <p><strong>Scan QR to Pay via UPI:</strong></p>
-                <img id="upiQrCode" src="" alt="UPI QR Code" class="img-fluid rounded shadow">
-              </div>
-              <p class="text-muted mt-2">QR refreshes in <span id="qrTimer">90</span>s</p>
-
-              <button id="refreshQR" class="btn btn-primary mt-2">Refresh QR</button>
-
-              <div class="mt-3">
-                <input type="text" id="qrLink" class="form-control text-center mb-2" readonly>
-                <div class="d-flex gap-1">
-                  <button id="copyLink" class="btn btn-secondary">📋 Copy</button>
-                  <a id="whatsappShare" class="btn btn-success" target="_blank">📤 WhatsApp</a>
-                  <a id="downloadQR" class="btn btn-info" download="UPI_QR.png">⬇ Download</a>
-                </div>
-              </div>
+            <div class="mt-3">
+              <input type="text" id="qrLink" class="form-control text-center mb-2" readonly>
+              <button id="copyLink" class="btn btn-secondary">📋 Copy</button>
+              <a id="whatsappShare" class="btn btn-success" target="_blank">📤 WhatsApp</a>
+              <a id="downloadQR" class="btn btn-info" download="UPI_QR.png">⬇ Download</a>
             </div>
           </div>
 
-          <!-- Modal Footer -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i>
-              Cancel</button>
-            <button type="button" class="btn btn-success" id="confirmPayment"><i class="bi bi-check-circle"></i> Confirm
-              Payment</button>
-          </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">✖ Cancel</button>
+          <button type="button" class="btn btn-success">✔ Confirm Payment</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Bootstrap JS (Only inside this container) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function openModal() {
+      document.getElementById("paymentModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("paymentModal").style.display = "none";
+    }
+  </script>
+
 </body>
 
 </html>
