@@ -192,7 +192,7 @@ async function fetchFeeDetails(userId) {
         return `
 
        <tr
-            data-user_id="${detail.receipt_no}"
+            data-reciept_id="${detail.receipt_no}"
             data-months="${months}"
             data-totalPendingAmount="${totalPendingAmount.toFixed(2)}">
 
@@ -256,7 +256,7 @@ async function fetchFeeDetails(userId) {
     // 🔴 Function to handle fee collection
 
     function handleCollectFee(row) {
-      const user_id = row.dataset.receipt_no || 'N/A';
+      const reciept_id = row.dataset.receipt_no || 'N/A';
       const studentName = row.dataset.student_name || 'N/A';
       const fatherName = row.dataset.father_name || 'N/A';
       const months = row.dataset.months || 'N/A';
@@ -266,14 +266,14 @@ async function fetchFeeDetails(userId) {
       const lastPaidAmount = parseFloat(row.dataset.lastPaidAmount || '0');
       const lastPaidAmountDate = row.dataset.lastPaidAmountDate || 'N/A';
 
-      console.log('Extracted Pending Amount from Row:', user_id); // Debugging
+      console.log('Extracted Pending Amount from Row:', reciept_id); // Debugging
 
       // Check if modal already exists in the DOM
       let existingModal = document.getElementById('paymentModal');
 
       if (existingModal) {
         // If modal exists, just update values and show it
-        updateModalContent(user_id, months, totalPendingAmount);
+        updateModalContent(reciept_id, months, totalPendingAmount);
         let paymentModal = new bootstrap.Modal(existingModal);
         paymentModal.show();
       } else {
@@ -285,7 +285,7 @@ async function fetchFeeDetails(userId) {
 
             // Wait for DOM to update before accessing elements
             setTimeout(() => {
-              updateModalContent(user_id, months, totalPendingAmount);
+              updateModalContent(reciept_id, months, totalPendingAmount);
 
               // Show the modal using Bootstrap
               let paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
@@ -317,12 +317,12 @@ async function fetchFeeDetails(userId) {
       const bankDropdown = document.getElementById('bankDropdown');
       const qrContainer = document.getElementById('qrContainer');
 
-      if (recieptNoElem) recieptNoElem.textContent = recieptId;
+      if (recieptNoElem) recieptNoElem.textContent = recieptNo;
       if (selectedMonthsElem) selectedMonthsElem.textContent = month.replace(/,/g, ', ');
       if (pendingAmountElem) pendingAmountElem.textContent = `₹ ${pendingAmount.toFixed(2)}`;
 
       if (confirmPaymentBtn) {
-        confirmPaymentBtn.setAttribute('data-user-id', recieptId);
+        confirmPaymentBtn.setAttribute('data-reciept_id', recieptId);
         confirmPaymentBtn.setAttribute('data-months', month);
         confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
         confirmPaymentBtn.addEventListener('click', handleConfirmPayment);
