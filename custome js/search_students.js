@@ -421,6 +421,7 @@ setTimeout(() => {
         .catch(error => console.error('Error fetching fee details:', error));
     }
 
+
     // Function to handle confirm payment
     function handleConfirmPayment() {
       const userId = document.getElementById('confirmPayment').getAttribute('data-user-id');
