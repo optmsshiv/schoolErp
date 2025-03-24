@@ -193,6 +193,7 @@ setTimeout(() => {
     document.getElementById('hostel_amount').textContent = `₹ ${data.summary.hostel_amount || '0'}`;
     document.getElementById('transport_amount').textContent = `₹ ${data.summary.transport_amount || '0'}`;
 
+
     // Update fee table
     const feeTableBody = document.getElementById('optms').querySelector('tbody');
     feeTableBody.innerHTML = data.details
