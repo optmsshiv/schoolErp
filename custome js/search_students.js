@@ -282,7 +282,7 @@ setTimeout(() => {
 
       if (existingModal) {
         // If modal exists, just update values and show it
-        updateModalContent(recieptId, months, totalPendingAmount);
+        updateModalContent(recieptId, months, totalPendingAmount, userId);
         let paymentModal = new bootstrap.Modal(existingModal);
         paymentModal.show();
       } else {

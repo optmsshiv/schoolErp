@@ -1,4 +1,5 @@
 <?php
+global $pdo;
 include '../db_connection.php'; // Ensure database connection is included
 
 $user_id = $_GET['user_id'] ?? '';
