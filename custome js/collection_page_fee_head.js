@@ -450,6 +450,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
 // Update due and advanced amounts based on received fee
 document.getElementById('recievedFee').addEventListener('input', calculateDueAndAdvanced);
 
