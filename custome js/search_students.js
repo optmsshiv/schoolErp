@@ -371,6 +371,7 @@ setTimeout(() => {
       // ✅ Function to update UPI QR Code
       updateUPIQr(pendingAmount); // ✅ Now correctly placed inside updateModalContent()
 
+
       // Payment type change event
       document.querySelectorAll('input[name="paymentType"]').forEach(radio => {
         radio.addEventListener('change', function () {
