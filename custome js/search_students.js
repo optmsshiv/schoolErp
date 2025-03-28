@@ -275,7 +275,7 @@ setTimeout(() => {
       const months = row.dataset.months || 'N/A';
       const pendingAmount = totalPendingAmount || 0;
 
-      console.log('Extracted Pending Amount from Row:', pendingAmount); // Debugging
+      console.log('Extracted Pending Amount from Row:', recieptId); // Debugging
 
       // Check if modal already exists in the DOM
       let existingModal = document.getElementById('paymentModal');
@@ -424,7 +424,7 @@ setTimeout(() => {
 
     // Function to handle confirm payment
     function handleConfirmPayment() {
-      const userId = document.getElementById('confirmPayment').getAttribute('data-user-id');
+      const recieptId = document.getElementById('confirmPayment').getAttribute('data-reciept_id');
       const selectedMonths = document.getElementById('confirmPayment').getAttribute('data-months');
       const paymentType = document.querySelector('input[name="paymentType"]:checked').value;
       const paymentMode = document.getElementById('paymentMode').value;
@@ -448,7 +448,7 @@ setTimeout(() => {
 
       // Prepare data for submission
       const paymentData = {
-        user_id: userId,
+        receipt_no: recieptId,
         months: selectedMonths,
         amount: paymentAmount,
         type: paymentType,
@@ -458,7 +458,7 @@ setTimeout(() => {
       console.log('Submitting Payment:', paymentData); // Debugging
 
       // Send data via AJAX or form submission
-      fetch('/process_payment.php', {
+      fetch('/php/submitFee/process_payment.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -470,6 +470,11 @@ setTimeout(() => {
           if (data.success) {
             alert('Payment Successful!');
             closePaymentModal();
+            // Open receipt in new tab
+           // window.open(`generate-receipt.php?student_id=${studentId}&month=${feeMonth}`, "_blank");
+
+            // Send WhatsApp Confirmation
+           // sendWhatsAppReceipt(studentId, feeMonth);
             location.reload(); // Refresh to update UI
           } else {
             alert('Payment Failed: ' + data.message);
