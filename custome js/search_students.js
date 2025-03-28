@@ -314,6 +314,8 @@ setTimeout(() => {
       const fullPaymentRadio = document.getElementById('fullPayment');
       const partialPaymentRadio = document.getElementById('partialPayment');
       const partialAmountInput = document.getElementById('partialAmount');
+      const concessionInput = document.getElementById('concessionAmount');
+      const dueAmountElem = document.getElementById('dueAmount');
       const amountError = document.getElementById('amountError');
       const paymentModeSelect = document.getElementById('paymentMode');
       const upiSection = document.getElementById('upiSection');
@@ -337,7 +339,9 @@ setTimeout(() => {
       partialPaymentRadio.checked = false;
       partialAmountInput.value = '';
       partialAmountInput.disabled = true;
+      concessionInput.style.display = 'none'; // Hide initially
       amountError.style.display = 'none';
+      dueAmountElem.value = '0';
 
       function updateUPIQr(amount) {
         console.log('Updating QR with amount:', amount); // Debugging
@@ -373,17 +377,56 @@ setTimeout(() => {
           if (this.value === 'full') {
             partialAmountInput.disabled = true;
             partialAmountInput.value = ''; // Clear input
+            concessionInput.style.display = 'none';
+            dueAmountElem.value = '0';
             amountError.style.display = 'none';
             confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
             updateUPIQr(pendingAmount);
           } else {
             partialAmountInput.disabled = false;
             partialAmountInput.value = pendingAmount; // Default to full amount
+            concessionInput.style.display = 'block'; // Show concession field
             partialAmountInput.focus();
             confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
             updateUPIQr(pendingAmount);
           }
         });
+      });
+
+      // Function to update Due Amount
+      function updateDueAmount() {
+        let enteredPartial = parseFloat(partialAmountInput.value) || 0;
+        let enteredConcession = parseFloat(concessionInput.value) || 0;
+
+        if (enteredPartial > pendingAmount || enteredPartial <= 0) {
+          amountError.style.display = 'block';
+          confirmPaymentBtn.disabled = true;
+          dueAmountElem.value = '0';
+        } else {
+          amountError.style.display = 'none';
+          confirmPaymentBtn.disabled = false;
+
+          let remainingAmount = pendingAmount - (enteredPartial + enteredConcession);
+          dueAmountElem.value = remainingAmount > 0 ? remainingAmount.toFixed(2) : '0';
+          confirmPaymentBtn.setAttribute('data-amount', enteredPartial);
+          updateUPIQr(enteredPartial);
+        }
+      }
+
+      // Listen for Partial Amount Change
+      partialAmountInput.addEventListener('input', updateDueAmount);
+
+      // Listen for Concession Amount Change
+      concessionInput.addEventListener('input', function () {
+        let enteredConcession = parseFloat(this.value) || 0;
+
+        if (enteredConcession > pendingAmount) {
+          this.value = pendingAmount; // Restrict concession to max pending amount
+        }
+
+        let adjustedPartialAmount = pendingAmount - enteredConcession;
+        partialAmountInput.value = adjustedPartialAmount > 0 ? adjustedPartialAmount.toFixed(2) : '0';
+        updateDueAmount();
       });
 
       // Validate partial payment amount
@@ -428,7 +471,13 @@ setTimeout(() => {
       const selectedMonths = document.getElementById('confirmPayment').getAttribute('data-months');
       const paymentType = document.querySelector('input[name="paymentType"]:checked').value;
       const paymentMode = document.getElementById('paymentMode').value;
+      const confirmPaymentBtn = document.getElementById('confirmPayment');
+      const concessionInput = document.getElementById('concessionAmount');
+      const dueAmountElem = document.getElementById('dueAmount');
+
       let paymentAmount = parseFloat(document.getElementById('confirmPayment').getAttribute('data-amount')) || 0;
+      let concessionAmount = parseFloat(concessionInput.value) || 0;
+      let dueAmount = 0;
 
       // If partial payment is selected, get the entered amount
       if (paymentType === 'partial') {
@@ -438,11 +487,14 @@ setTimeout(() => {
           alert('Invalid payment amount! Please enter a valid amount.');
           return;
         }
+        // Calculate due amount
+        dueAmount = (confirmPaymentBtn.getAttribute('data-amount') - (paymentAmount + concessionAmount)).toFixed(2);
+        dueAmountElem.value = dueAmount < 0 ? 0 : dueAmount; // Ensure due is not negative
       }
 
-      // Ensure amount is valid
-      if (paymentAmount <= 0) {
-        alert('Payment amount must be greater than zero.');
+      // Ensure payment amount is valid
+      if (paymentAmount + concessionAmount > confirmPaymentBtn.getAttribute('data-amount')) {
+        alert('Total of payment and concession cannot exceed pending amount.');
         return;
       }
 
@@ -452,7 +504,9 @@ setTimeout(() => {
         months: selectedMonths,
         amount: paymentAmount,
         type: paymentType,
-        mode: paymentMode
+        mode: paymentMode,
+        concession: concessionAmount,
+        due: dueAmount
       };
 
       console.log('Submitting Payment:', paymentData); // Debugging

@@ -89,7 +89,12 @@
               <input class="form-check-input" type="radio" name="paymentType" id="partialPayment" value="partial">
               <label class="form-check-label" for="partialPayment">Partial Payment</label>
             </div>
-            <input type="number" id="partialAmount" class="form-control mt-2" placeholder="Enter amount" disabled>
+            <div class="d-flex gap-2 align-items-center">
+              <input type="number" id="partialAmount" class="form-control flex-grow-1" placeholder="Enter amount" disabled>
+              <!-- Concession Amount (Hidden Initially) -->
+              <input type="number" id="concessionAmount" class="form-control flex-grow-1" placeholder="Concession amount">
+              <input type="number" id="dueAmount" class="form-control flex-grow-1" placeholder="Due amount" readonly>
+            </div>
             <small class="text-danger" id="amountError" style="display: none;">Amount must be less than pending!</small>
           </div>
 
