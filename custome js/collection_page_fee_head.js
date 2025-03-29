@@ -140,41 +140,37 @@ async function fetchFeePlansData(className, userId) {
       showAlert(feePlans.error || paidMonthsData.error, 'error');
       return;
     }
-     // Update the fee table
-    //  updateFeeTable(feePlans, paidMonths);
 
-    // Update the fee table
-    updateFeeTable(feePlans, paidMonthsData.paidMonths);
+    updateFeeTable(feePlans, paidMonthsData.paidMonths); // Update the fee table
+    const previousDueAmount = paidMonthsData.previousDueAmount || 0; // Update the previous due amount field
+    previousDueAmountField.value = previousDueAmount;
 
-    // Update the previous due amount field
-    const previousDueAmount = paidMonthsData.previousDueAmount || 0;
-    document.getElementById('previousDueAmount').value = previousDueAmount;
+    let totalAmount = getTotalFromTable();
 
-    // Get the total fee amount from the fee table
-    let totalAmount = calculateTotalFee(); // Function to get total payable amount from the table
-    // Update payable amount by adding due amount
-    let payableAmount = totalAmount + parseFloat(previousDueAmount);
-    document.getElementById("payableAmount").value = payableAmount.toFixed(2);
-
+    let payableAmount = totalAmount + parseFloat(previousDueAmount); // Update payable amount by adding due amount
+    payableAmountField.value = payableAmount.toFixed(2);
+    //  document.getElementById("payableAmount").value = payableAmount.toFixed(2);
   } catch (error) {
     console.error('Error fetching fee plans:', error);
     showAlert('Failed to load fee plans.', 'error');
   }
 }
 
-function calculateTotalFee() {
-  let total = 0;
-  document.querySelectorAll(".feeAmount").forEach(input => {
-    total += parseFloat(input.value) || 0;
-  });
-  return total;
-}
-
-
 function updateFeeTable(feePlans, paidMonths) {
   const months = [
-    'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',
-    'December', 'January', 'February', 'March'];
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+    'January',
+    'February',
+    'March'
+  ];
 
   const theadRow = document.querySelector('#student_fee_table thead tr');
   const tableBody = document.querySelector('#student_fee_table tbody');
@@ -279,13 +275,6 @@ function updateTotalAmount() {
   document.getElementById('payableAmount').value = totalAmount.toFixed(2);
 }
 
-// Event listener to detect changes in the Total column
-//document.querySelector('#FeeCollection').addEventListener('input', function (event) {
-//  if (event.target.classList.contains('totalAmountCell')) {
-//    updateTotalAmount(); // Update the total when the Total column is modified
-//  }
-//});
-
 // Function to attach event listeners to "Total" column cells
 function attachEditListeners() {
   const totalCells = document.querySelectorAll('#FeeCollection tbody tr td:nth-child(3)');
@@ -307,6 +296,7 @@ function handleCellEdit(event) {
 const observer = new MutationObserver(() => {
   attachEditListeners(); // Attach listeners to any new rows or cells
   updateTotalAmount(); // Ensure the total is recalculated
+  updatePayableAmount(); // Ensure the payable amount is recalculated
 });
 
 // Start observing the table body for added or removed rows
@@ -367,11 +357,9 @@ function getTotalFromTable() {
       total += amount;
     }
   });
-
   return total; // Return the total amount from the table
 }
-/*
-// Get references to important elements
+
 const payableAmountField = document.getElementById('payableAmount');
 const concessionFeeField = document.getElementById('concessionFee');
 const previousDueAmountField = document.getElementById('previousDueAmount'); // Get due amount field
@@ -379,77 +367,41 @@ const previousDueAmountField = document.getElementById('previousDueAmount'); // 
 // Initialize the total amount from the table (dynamic calculation)
 let totalAmountFromTable = getTotalFromTable();
 
-// Update payableAmount on concession fee change
-concessionFeeField.addEventListener('input', function () {
-
-  const concessionFee = parseFloat(this.value) || 0; // Get the current concession fee entered by the user
-  totalAmountFromTable = getTotalFromTable(); // Recalculate the total amount from the table dynamically
-  const updatedPayableAmount = totalAmountFromTable - concessionFee; // Calculate the updated payable amount
-  payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Update the payableAmount field and ensure it doesn't go below zero
-});
-
-// Recalculate the payableAmount whenever the table data changes (e.g., row addition/removal)
-document.querySelector('#FeeCollection tbody').addEventListener('DOMSubtreeModified', function () {
-  // Recalculate the total amount from the table
-  totalAmountFromTable = getTotalFromTable();
-  const concessionFee = parseFloat(concessionFeeField.value) || 0; // Get the current concession fee (if any)
-
-  // Update the payable amount based on the updated table total and concession fee
-  const updatedPayableAmount = totalAmountFromTable - concessionFee;
-  payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2);
-
-  // Recalculate due and advanced amounts
-  calculateDueAndAdvanced();
-});
-*/
-
-const payableAmountField = document.getElementById('payableAmount');
-const concessionFeeField = document.getElementById('concessionFee');
-const previousDueAmountField = document.getElementById('previousDueAmount'); // Get due amount field
-
-// Function to get the total from the fee table
-function getTotalFromTable() {
-  let total = 0;
-  document.querySelectorAll(".feeAmount").forEach(input => {
-    total += parseFloat(input.value) || 0;
-  });
-  return total;
-}
-
 // Function to update payable amount
 function updatePayableAmount() {
-  // Get due amount from the field
-  const dueAmount = parseFloat(previousDueAmountField.value) || 0;
+  // Always fetch the latest due amount
+  const dueAmount = parseFloat(previousDueAmountField.value) || 0; // Get the due amount from the field
+  const concessionFee = parseFloat(concessionFeeField.value) || 0; // Get the current concession fee entered by the user
 
-  // Get the current concession fee entered by the user
-  const concessionFee = parseFloat(concessionFeeField.value) || 0;
+  totalAmountFromTable = getTotalFromTable(); // Recalculate the total amount from the table dynamically
 
-  // Get the total amount from the table dynamically
-  let totalAmountFromTable = getTotalFromTable();
+  const updatedPayableAmount = totalAmountFromTable + dueAmount - concessionFee; // Calculate the updated payable amount
 
-  // Ensure dueAmount is included every time
-  const updatedPayableAmount = totalAmountFromTable + dueAmount - concessionFee;
+  // Debugging logs
+  /*
+  console.log("===== Debugging updatePayableAmount() =====");
+  console.log("Total from Table:", totalAmountFromTable);
+  console.log("Previous Due Amount:", dueAmount);
+  console.log("Concession Fee:", concessionFee);
+  console.log("Updated Payable Amount:", updatedPayableAmount);
+  console.log("=========================================");*/
 
-  // Update the payableAmount field and ensure it doesn't go below zero
-  payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2);
+  payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Update the payableAmount field and ensure it doesn't go below zero
 }
 
 // Update payableAmount when concession fee changes
 concessionFeeField.addEventListener('input', updatePayableAmount);
 
-// Recalculate payableAmount whenever the table data changes
+// Recalculate payableAmount whenever the table data changes (e.g., row addition/removal)
 document.querySelector('#FeeCollection tbody').addEventListener('DOMSubtreeModified', function () {
   updatePayableAmount();
   calculateDueAndAdvanced(); // Ensure due and advanced amounts update correctly
 });
 
-// Ensure due amount is included when data is fetched
+// Call updatePayableAmount when due amount is fetched from the server
 document.addEventListener('DOMContentLoaded', function () {
   updatePayableAmount();
 });
-
-
-
 
 // Update due and advanced amounts based on received fee
 document.getElementById('recievedFee').addEventListener('input', calculateDueAndAdvanced);
