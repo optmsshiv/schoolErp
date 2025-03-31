@@ -12,6 +12,7 @@ if (!empty($user_id)) {
             s.class_name,
             f.fee_type,
             f.received_amount AS last_paid_amount,
+            f.advanced_amount AS advanceAmount,
             f.payment_date AS last_paid_date
         FROM feeDetails f
         JOIN students s ON f.user_id = s.user_id

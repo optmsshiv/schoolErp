@@ -158,10 +158,9 @@ async function fetchFeeDetails(userId) {
       return;
     }
 
-    // Use the fetched data here
-    // console.log(data); // For debugging
 
     // Calculate total pending amount from table data
+/*
     const totalPendingAmount = data.details.reduce((sum, detail) => {
       if (detail.payment_status === 'paid') {
         // Add 'due_amount' for Paid status
@@ -173,8 +172,18 @@ async function fetchFeeDetails(userId) {
       return sum; // For any other status, do nothing
     }, 0);
 
+*/
+    const totalPendingAmount = data.details.reduce((sum, detail) => {
+     if (detail.payment_status === 'pending') {
+        // Add 'total_amount' for Pending status
+        return sum + parseFloat(detail.total_amount || 0);
+      }
+      return sum; // For any other status, do nothing
+    }, 0);
+
+
     // Wait for the table to be updated
-setTimeout(() => {
+  setTimeout(() => {
     const userIdElem = document.querySelector("#studentTable tr:last-child td:last-child");
 
     if (userIdElem) {
@@ -183,12 +192,15 @@ setTimeout(() => {
     } else {
         console.error("User ID not found in the table!");
     }
-}, 100);
+   }, 100);
+
+
+
 
 
     // Update fee cards and  the UI with the calculated total pending amount
 
-    document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
+   // document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
     document.getElementById('pending_amount').textContent = `₹ ${totalPendingAmount.toFixed(2)}`;
     document.getElementById('hostel_amount').textContent = `₹ ${data.summary.hostel_amount || '0'}`;
     document.getElementById('transport_amount').textContent = `₹ ${data.summary.transport_amount || '0'}`;
@@ -316,6 +328,7 @@ setTimeout(() => {
       const partialAmountInput = document.getElementById('partialAmount');
       const concessionInput = document.getElementById('concessionAmount');
       const dueAmountElem = document.getElementById('dueAmount');
+      const advanceAmountInput = document.getElementById("advanceAmount");
       const amountError = document.getElementById('amountError');
       const paymentModeSelect = document.getElementById('paymentMode');
       const upiSection = document.getElementById('upiSection');
@@ -459,6 +472,7 @@ setTimeout(() => {
           document.getElementById('fatherName').textContent = data.father_name || 'N/A';
           document.getElementById('feeType').textContent = data.fee_type || 'N/A';
           document.getElementById('studentClass').textContent = data.class_name || 'N/A';
+          document.getElementById('advanceAmount').textContent = `₹ ${data.advanceAmount || 0}`;
           document.getElementById('lastPaidAmount').textContent = `₹ ${data.last_paid_amount || 0}`;
           document.getElementById('lastPaidAmountDate').textContent = data.last_paid_date || 'N/A';
         })

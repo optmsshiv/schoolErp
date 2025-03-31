@@ -130,7 +130,7 @@ async function fetchFeePlansData(className, userId) {
     const feePlansResponse = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`);
     const feePlans = await feePlansResponse.json();
 
-    // Fetch paid months from feeDetails table for this student
+    // Fetch paid months, previous due amount, and advanced amount
     const paidMonthsResponse = await fetch(`/php/collectFeeStudentDetails/fetch_paid_months.php?user_id=${userId}`);
     // const paidMonths = await paidMonthsResponse.json();
     const paidMonthsData = await paidMonthsResponse.json();
@@ -142,12 +142,20 @@ async function fetchFeePlansData(className, userId) {
     }
 
     updateFeeTable(feePlans, paidMonthsData.paidMonths); // Update the fee table
+
+    // Fetch and update Previous Due Amount
     const previousDueAmount = paidMonthsData.previousDueAmount || 0; // Update the previous due amount field
     previousDueAmountField.value = previousDueAmount;
 
+    // Fetch and update Advanced Amount
+    const advancedFee = paidMonthsData.advancedFee || 0;
+    advancedAmountField.value = advancedFee;
+   // document.getElementById("advancedAmount").value = advancedAmount.toFixed(2);
+
     let totalAmount = getTotalFromTable();
 
-    let payableAmount = totalAmount + parseFloat(previousDueAmount); // Update payable amount by adding due amount
+    let payableAmount = totalAmount + parseFloat(previousDueAmount)- parseFloat(advancedFee); // Update payable amount by adding due amount
+
     payableAmountField.value = payableAmount.toFixed(2);
     //  document.getElementById("payableAmount").value = payableAmount.toFixed(2);
   } catch (error) {
@@ -293,6 +301,7 @@ function handleCellEdit(event) {
 }
 
 // Add a MutationObserver to track row additions or deletions
+// if any change is made to the table then must add function here
 const observer = new MutationObserver(() => {
   attachEditListeners(); // Attach listeners to any new rows or cells
   updateTotalAmount(); // Ensure the total is recalculated
@@ -363,6 +372,7 @@ function getTotalFromTable() {
 const payableAmountField = document.getElementById('payableAmount');
 const concessionFeeField = document.getElementById('concessionFee');
 const previousDueAmountField = document.getElementById('previousDueAmount'); // Get due amount field
+const advancedAmountField = document.getElementById('advancedFee');
 
 // Initialize the total amount from the table (dynamic calculation)
 let totalAmountFromTable = getTotalFromTable();
@@ -371,11 +381,13 @@ let totalAmountFromTable = getTotalFromTable();
 function updatePayableAmount() {
   // Always fetch the latest due amount
   const dueAmount = parseFloat(previousDueAmountField.value) || 0; // Get the due amount from the field
+  const advancedAmount = parseFloat(advancedAmountField.value) || 0;
   const concessionFee = parseFloat(concessionFeeField.value) || 0; // Get the current concession fee entered by the user
 
   totalAmountFromTable = getTotalFromTable(); // Recalculate the total amount from the table dynamically
 
-  const updatedPayableAmount = totalAmountFromTable + dueAmount - concessionFee; // Calculate the updated payable amount
+  // Calculate the updated payable amount (subtract advanced amount)
+  const updatedPayableAmount = totalAmountFromTable + dueAmount - concessionFee - advancedAmount; // Calculate the updated payable amount
 
   // Debugging logs
   /*

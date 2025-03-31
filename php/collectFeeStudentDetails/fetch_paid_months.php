@@ -21,19 +21,17 @@ try {
         $allPaidMonths = array_merge($allPaidMonths, array_map('trim', $months)); // Trim spaces
     }
 
-  // Fetch previous month's due amount (latest entry)
-  $dueStmt = $pdo->prepare("SELECT due_amount FROM feeDetails WHERE user_id = ? ORDER BY id DESC LIMIT 1");
-  $dueStmt->execute([$user_id]);
-  $previousDue = $dueStmt->fetchColumn();
-
-  //  echo json_encode(array_values(array_unique($allPaidMonths))); // Remove duplicates & re-index
+  // Fetch latest due amount and advanced amount
+  $amountStmt = $pdo->prepare("SELECT due_amount, advanced_amount FROM feeDetails WHERE user_id = ? ORDER BY id DESC LIMIT 1");
+  $amountStmt->execute([$user_id]);
+  $amountData = $amountStmt->fetch(PDO::FETCH_ASSOC);
 
   echo json_encode([
     'paidMonths' => array_values(array_unique($allPaidMonths)), // Remove duplicates & re-index
-    'previousDueAmount' => $previousDue ?? 0 // Return 0 if null
+    'previousDueAmount' => $amountData['due_amount'] ?? 0, // Return 0 if null
+    'advancedFee' => $amountData['advanced_amount'] ?? 0 // Return 0 if null
   ]);
-
 } catch (PDOException $e) {
-    echo json_encode(['error' => $e->getMessage()]);
+  echo json_encode(['error' => $e->getMessage()]);
 }
 ?>

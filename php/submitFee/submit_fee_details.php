@@ -1,5 +1,6 @@
 <?php
 // Include the database connection
+global $pdo;
 include('../db_connection.php');
 
 // Get JSON input from the request body
@@ -28,16 +29,16 @@ try {
     // Prepare SQL statement to insert data into feeDetails table
     $sql = "INSERT INTO feeDetails (
                 user_id, student_name, receipt_no, month, fee_type, amount, hostel_fee, transport_fee,
-                additional_amount, concession_amount, received_amount, due_amount, advanced_amount,
+                additional_amount, concession_amount, received_amount, due_amount, pending_amount, advanced_amount,
                 total_amount, payment_status, payment_type, bank_name, payment_date, remark
             )
             VALUES (
                 :user_id, :student_name, :receipt_no, :month, :fee_type, :amount, :hostel_fee, :transport_fee,
-                :additional_amount, :concession_amount, :received_amount, :due_amount, :advanced_amount,
+                :additional_amount, :concession_amount, :received_amount, :due_amount, :pending_amount, :advanced_amount,
                 :total_amount, :payment_status, :payment_type, :bank_name, :payment_date, :remark
             )";
 
-            
+
      // Extract months, fee types, and amounts
         $months = array_column($data['fee_data'], 'month');
         $feeTypes = array_column($data['fee_data'], 'feeType');
@@ -48,7 +49,10 @@ try {
          $commaSeparatedFeeTypes = implode(', ', $feeTypes);
          $commaSeparatedAmounts = implode(', ', $amounts);
 
-
+      // If payment_status is pending, set due_amount = total_amount
+            if ($data['payment_status'] === "pending") {
+            $data['pending_amount'] = $data['total_amount'];
+             }
 
         // Prepare the statement for each fee data entry
         $stmt = $pdo->prepare($sql);
@@ -66,6 +70,7 @@ try {
         $stmt->bindParam(':concession_amount', $data['concession_amount'], PDO::PARAM_STR); // Make sure the concession_amount is passed as a string
         $stmt->bindParam(':received_amount', $data['received_amount'], PDO::PARAM_STR);
         $stmt->bindParam(':due_amount', $data['due_amount'], PDO::PARAM_STR);
+        $stmt->bindParam(':pending_amount', $data['pending_amount'], PDO::PARAM_STR);
         $stmt->bindParam(':advanced_amount', $data['advanced_amount'], PDO::PARAM_STR);
         $stmt->bindParam(':total_amount', $data['total_amount'], PDO::PARAM_STR);
         $stmt->bindParam(':payment_status', $data['payment_status'], PDO::PARAM_STR); // Make sure the payment_status is passed as a string
@@ -82,7 +87,9 @@ try {
         "success" => true,
         "months" => $commaSeparatedMonths,
         "fee_types" => $commaSeparatedFeeTypes,
-        "amounts" => $commaSeparatedAmounts
+        "amounts" => $commaSeparatedAmounts,
+        "pending_amount" => $data['pending_amount']
+
     ]);
 
     // Return success response

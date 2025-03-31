@@ -50,12 +50,6 @@ try {
     // Calculate pending amount
     $pendingAmount = $existingDueAmount;
 
-    // Validation check: Total of payment and concession should not exceed pending amount
-    if (($amount + $concessionAmount) > $pendingAmount) {
-      echo json_encode(['success' => false, 'message' => 'Total of payment and concession cannot exceed pending amount.']);
-      $pdo->rollBack();
-      exit;
-    }
 
     // Calculate new due amount after payment
     // $newDueAmount = max($existingDueAmount - $amount, 0);
