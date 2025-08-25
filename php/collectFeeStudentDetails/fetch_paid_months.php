@@ -29,7 +29,7 @@ try {
   echo json_encode([
     'paidMonths' => array_values(array_unique($allPaidMonths)), // Remove duplicates & re-index
     'previousDueAmount' => $amountData['due_amount'] ?? 0, // Return 0 if null
-    'advancedFee' => $amountData['advanced_amount'] ?? 0 // Return 0 if null
+    'advancedFee' => $amountData['remaining_advance'] ?? 0 // Return 0 if null
   ]);
 } catch (PDOException $e) {
   echo json_encode(['error' => $e->getMessage()]);

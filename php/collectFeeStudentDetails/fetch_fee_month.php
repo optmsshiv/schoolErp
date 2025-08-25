@@ -1,4 +1,9 @@
 <?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+header('Content-Type: application/json');
+
 require '../db_connection.php'; // Include your database connection
 
 $class_name = $_GET['class_name'] ?? ''; // Get class_name from request
