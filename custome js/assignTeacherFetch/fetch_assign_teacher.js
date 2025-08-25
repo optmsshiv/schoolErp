@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
   // Load dropdowns
-  fetch("../php/assignTeacher/assign_class_teacher.php")
+  fetch("../php/assignTeacher/fetch_dropdowns.php")
     .then(res => res.json())
     .then(data => {
       let classSelect = document.getElementById("classTeachers");
       let teacherSelect = document.getElementById("teacherName");
 
       data.classes.forEach(c => {
-        classSelect.innerHTML += `<option value="${c.id}">${c.class_name}</option>`;
+        classSelect.innerHTML += `<option value="${c.class_id}">${c.class_name}</option>`;
       });
 
       data.teachers.forEach(t => {
-        teacherSelect.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+        teacherSelect.innerHTML += `<option value="${t.id}">${t.fullname}</option>`;
       });
     });
 
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let formData = new FormData(this);
 
-    fetch("../php/assignTeacher/fetch_teacher_class.php", {
+    fetch("../php/assignTeacher/assign_teacher.php", {
       method: "POST",
       body: formData
     })
