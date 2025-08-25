@@ -1,6 +1,6 @@
+
+
 /*submenu hide */
-
-
 input[type="checkbox"] {
   width: 18px;
   height: 18px;
@@ -210,7 +210,7 @@ body.dark-mode .icon.sun {
 /* ! For .layout-navbar-fixed added fix padding top to .layout-page */
 /* Detached navbar */
 .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal):not(.layout-without-menu) .layout-page {
-  padding-top: 76px !important;
+  padding-top: 52px !important;
 }
 
 /* Default navbar */
