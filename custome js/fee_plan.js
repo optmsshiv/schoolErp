@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const feePlanTable = document.getElementById('feePlanBody');
   const feeHeadSelect = document.getElementById('feeHeadSelect');
   const classNameSelect = document.getElementById('classNameSelect');
-
+  const classNameList = document.getElementById('classNameList');
 
   const dropdown = document.getElementById('monthDropdown');
   const dropdownMenu = dropdown.querySelector('.dropdown-menu');
@@ -174,8 +174,8 @@ document.addEventListener('DOMContentLoaded', function () {
           // Button Group (Edit and Delete)
           const buttonGroup = document.createElement('div');
           buttonGroup.append(
-            createButton('Edit', 'btn-warning me-2', () => editClassName(classItem.class_name, classItem.class_id)),
-            createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_name))
+            createButton('Edit', 'btn-warning me-2', () => editClassName(classItem.class_name, classItem.class_id))
+
           );
 
           listItem.append(nameSpan, buttonGroup);
