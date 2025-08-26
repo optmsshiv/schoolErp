@@ -544,4 +544,5 @@ document.addEventListener('DOMContentLoaded', function () {
   // Initialize
   loadFeeHeads();
   loadFeePlans();
+  loadClassNames();
 });
