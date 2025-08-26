@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
       type: 'GET',
       dataType: 'json',
       success: function (response) {
-        classNameList.innerHTML = '';
+
         classNameSelect.innerHTML = '';
 
         response.data.forEach(classItem => {
