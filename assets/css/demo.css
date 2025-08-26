@@ -527,6 +527,9 @@ td {
   width: calc(100% - 1.625rem* 2);
   border-radius: 0.375rem;
   padding: 0 1.5rem;
+  margin-top: 0rem; /* 👈 force consistent gap across browsers */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); /* optional for floating look */
+  background-color: #fff; /* ensure it looks like a floating card */
 }
 
 /* custom column padding */
