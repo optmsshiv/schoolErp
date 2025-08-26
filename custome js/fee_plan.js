@@ -154,7 +154,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Load Class Names
+  // Load Class Names
+  const loadClassNames = () => {
+    $.ajax({
+      url: '../php/classes/fetch_classes.php',
+      type: 'GET',
+      dataType: 'json',
+      success: function (response) {
+        classNameList.innerHTML = '';
+        classNameSelect.innerHTML = '';
 
+        response.data.forEach(classItem => {
+          const listItem = document.createElement('li');
+          listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+          const nameSpan = document.createElement('span');
+          nameSpan.textContent = classItem.class_name;
+
+          // Button Group (Edit and Delete)
+          const buttonGroup = document.createElement('div');
+          buttonGroup.append(
+            createButton('Edit', 'btn-warning me-2', () => editClassName(classItem.class_name, classItem.class_id)),
+            createButton('Delete', 'btn-danger', () => deleteClass(classItem.class_name))
+          );
+
+          listItem.append(nameSpan, buttonGroup);
+          classNameList.appendChild(listItem);
+
+          // Add class names to dropdown
+          const option = new Option(classItem.class_name, classItem.class_name);
+          classNameSelect.add(option);
+        });
+      },
+      error: xhr => handleError('Error loading class names.', xhr)
+    });
+  };
 
   // Edit Class Name
 
