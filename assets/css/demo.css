@@ -1,3 +1,74 @@
+/* Toast animation */
+/* Spinner fade-in/out */
+button .spinner-border {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+button.loading .spinner-border {
+  opacity: 1;
+}
+
+/* Shake effect on error */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+.form-error {
+  animation: shake 0.5s ease;
+}
+
+/* Table fade-in rows */
+.table-row {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+}
+.table-row.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Green pulse highlight */
+@keyframes pulse {
+  0%   { background-color: #d4edda; }  /* light green */
+  50%  { background-color: #a3e6b5; }
+  100% { background-color: transparent; }
+}
+
+.table-row.pulse {
+  animation: pulse 2s ease-out;
+}
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* animate toast when showing */
+.toast.slide-in {
+  animation: slideInRight 0.5s ease forwards;
+}
+
+/* animate toast when removing */
+.toast.slide-out {
+  animation: slideOutRight 0.5s ease forwards;
+}
 
 
 /*submenu hide */
