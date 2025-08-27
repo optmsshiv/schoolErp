@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   }
 
   try {
-    $stmt = $pdo->prepare("DELETE FROM Feeheads WHERE fee_head_id = :id");
+    $stmt = $pdo->prepare("DELETE FROM FeeHeads WHERE fee_head_id = :id");
     $stmt->execute([":id" => $id]);
 
     echo json_encode(["status" => "success", "message" => "Fee Head deleted successfully"]);
