@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   }
 
   try {
-    // Insert into Feeheads table
+    // Insert into Fee heads table
     $stmt = $pdo->prepare("INSERT INTO FeeHeads (fee_head_name) VALUES (:feeHeadName)");
     $stmt->execute([":feeHeadName" => $feeHeadName]);
 
