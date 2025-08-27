@@ -1,31 +1,40 @@
 <?php
-// Set header to return JSON
+// Include DB connection
+include '../db_connection.php';
+
 header('Content-Type: application/json');
 
-// Database connection details
-$host = 'localhost:3306';
-$db = 'edrppymy_rrgis';
-$user = 'edrppymy_admin';
-$pass = '13579@demo';
-
-$dsn = "mysql:host=$host;dbname=$db";
-
 try {
-    // Create PDO instance
-    $pdo = new PDO($dsn, $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  // Get parameters
+  $table = isset($_GET['table']) ? $_GET['table'] : null;
+  $column = isset($_GET['column']) ? $_GET['column'] : null;
 
-    // Fetch fee heads from the database
-    $sql = "SELECT * FROM FeeHeads";
-    $stmt = $pdo->query($sql);
-    $feeHeads = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  if (!$table || !$column) {
+    echo json_encode(['status' => 'error', 'message' => 'Missing parameters.']);
+    exit;
+  }
 
-    // Return fee heads as JSON
-    echo json_encode(['status' => 'success', 'data' => $feeHeads]);
+  // Security: allow only specific tables/columns
+  $allowedTables = [
+    'Classes' => 'class_name',
+    'FeeHeads' => 'fee_head_name'
+  ];
+
+  if (!array_key_exists($table, $allowedTables) || $allowedTables[$table] !== $column) {
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request.']);
+    exit;
+  }
+
+  // Fetch values
+  $sql = "SELECT DISTINCT $column FROM $table ORDER BY $column ASC";
+  $stmt = $pdo->query($sql);
+  $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+  echo json_encode(['status' => 'success', 'data' => $data]);
 
 } catch (PDOException $e) {
-    // Return error message as JSON if connection fails
-    echo json_encode(['status' => 'error', 'message' => 'Connection failed: ' . $e->getMessage()]);
-    exit;
+  error_log("Database Error: " . $e->getMessage());
+  echo json_encode(['status' => 'error', 'message' => 'Database error.']);
 }
 ?>
+
