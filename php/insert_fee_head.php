@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
   try {
     // Insert into Feeheads table
-    $stmt = $pdo->prepare("INSERT INTO Feeheads (fee_head_name) VALUES (:feeHeadName)");
+    $stmt = $pdo->prepare("INSERT INTO FeeHeads (fee_head_name) VALUES (:feeHeadName)");
     $stmt->execute([":feeHeadName" => $feeHeadName]);
 
     echo json_encode(["status" => "success", "message" => "Fee Head added successfully"]);
