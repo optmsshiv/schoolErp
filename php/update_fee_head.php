@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
   try {
     // Check duplicate (excluding current record)
-    $check = $pdo->prepare("SELECT COUNT(*) FROM Feeheads WHERE fee_head_name = :name AND fee_head_id != :id");
+    $check = $pdo->prepare("SELECT COUNT(*) FROM FeeHeads WHERE fee_head_name = :name AND fee_head_id != :id");
     $check->execute([":name" => $feeHeadName, ":id" => $id]);
     if ($check->fetchColumn() > 0) {
       echo json_encode(["status" => "danger", "message" => "Fee Head already exists"]);
@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Update
-    $stmt = $pdo->prepare("UPDATE Feeheads SET fee_head_name = :name WHERE fee_head_id = :id");
+    $stmt = $pdo->prepare("UPDATE FeeHeads SET fee_head_name = :name WHERE fee_head_id = :id");
     $stmt->execute([":name" => $feeHeadName, ":id" => $id]);
 
     echo json_encode(["status" => "success", "message" => "Fee Head updated successfully"]);
