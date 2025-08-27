@@ -127,6 +127,16 @@ input[type="checkbox"] {
   font-size: 16px;
   padding: 5px;
 }
+
+/* add fee head css */
+.highlight-row {
+  background-color: #d4edda !important; /* light green */
+  transition: background-color 2s ease; /* fade out */
+}
+.delete-row {
+  background-color: #f8d7da !important; /* light red */
+  transition: background-color 0.8s ease;
+}
 /*
 * demo.css
 * File include item demo only specific css only

@@ -1,39 +1,27 @@
 <?php
 // Include the database connection file
+global $pdo;
+header('Content-Type: application/json');
 include '../php/db_connection.php';
 
-// Set the response header to JSON
-header('Content-Type: application/json');
-
 // Check if the fee head name is set in the POST request
-if (isset($_POST['feeHeadName'])) {
-    $feeHeadName = trim($_POST['feeHeadName']);
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  $id = $_POST["fee_head_id"] ?? null;
 
-    // Check if the fee head name is not empty
-    if (empty($feeHeadName)) {
-        echo json_encode(['status' => 'error', 'message' => 'Fee head name is required']);
-        exit;
-    }
+  if (empty($id)) {
+    echo json_encode(["status" => "danger", "message" => "Invalid Fee Head ID"]);
+    exit;
+  }
 
-    // Prepare the DELETE query using PDO
-    $sql = "DELETE FROM FeeHeads WHERE fee_head_name = :fee_head_name";
-    $stmt = $pdo->prepare($sql);
+  try {
+    $stmt = $pdo->prepare("DELETE FROM Feeheads WHERE fee_head_id = :id");
+    $stmt->execute([":id" => $id]);
 
-    // Bind the fee head name to the placeholder
-    $stmt->bindParam(':fee_head_name', $feeHeadName, PDO::PARAM_STR);
-
-    try {
-        // Execute the query
-        if ($stmt->execute()) {
-            echo json_encode(['status' => 'success']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to delete fee head']);
-        }
-    } catch (PDOException $e) {
-        // Return the error message if the query fails
-        echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
-    }
+    echo json_encode(["status" => "success", "message" => "Fee Head deleted successfully"]);
+  } catch (PDOException $e) {
+    echo json_encode(["status" => "danger", "message" => "Error: " . $e->getMessage()]);
+  }
 } else {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
+  echo json_encode(["status" => "danger", "message" => "Invalid request"]);
 }
 ?>

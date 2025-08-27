@@ -281,15 +281,39 @@
                             <div id="resultMsg" class="mt-2"></div>
                             <hr />
                             <h5 class="mt-4">Existing Fee Heads</h5>
-                            <table class="table table-bordered table-striped" id="feeHeadTable">
-                              <thead>
+                            <table class="table table-bordered" id="feeHeadTable">
+                              <thead class="table-primary">
                               <tr>
-                                <th>#</th>
+                                <th style="width: 1%">#</th>
                                 <th>Fee Head Name</th>
+                                <th style="width: 3%">Action</th>
                               </tr>
                               </thead>
                               <tbody></tbody>
                             </table>
+                            <!-- Edit Modal -->
+                            <div class="modal fade" id="editFeeHeadModal" tabindex="-1">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <form id="editFeeHeadForm">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title">Edit Fee Head</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <input type="hidden" id="editFeeHeadId">
+                                      <div class="mb-3">
+                                        <label for="editFeeHeadName" class="form-label">Fee Head Name</label>
+                                        <input type="text" class="form-control" id="editFeeHeadName" required>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
                           </div>
 
                           <!-- Fee Plan Tab -->
