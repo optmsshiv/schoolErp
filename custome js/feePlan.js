@@ -187,14 +187,41 @@ document.querySelector("#createFeePlanForm").addEventListener("submit", function
     .then(res => res.json())
     .then(data => {
       if (data.status === "success") {
-        alert("Fee Plan Created Successfully!");
+        showToast("Fee Plan Created Successfully!", "success");
         document.getElementById("createFeePlanForm").reset();
-        // Reset month selection text
         document.getElementById("monthDropdown").childNodes[0].nodeValue = "Select Month(s)";
       } else {
-        alert("Error: " + data.message);
+        showToast("Error: " + data.message, "error");
       }
     })
-    .catch(err => console.error("Error:", err));
+    .catch(err => {
+      console.error("Error:", err);
+      showToast("Something went wrong!", "error");
+    });
+
+  function showToast(message, type = "success") {
+    const toastEl = document.getElementById("toastMessage");
+    const toastBody = document.getElementById("toastBody");
+
+    // Update message
+    toastBody.textContent = message;
+
+    // Change color based on type
+    toastEl.classList.remove("bg-success", "bg-danger", "bg-warning", "bg-info");
+    if (type === "success") toastEl.classList.add("bg-success");
+    else if (type === "error") toastEl.classList.add("bg-danger");
+    else if (type === "warning") toastEl.classList.add("bg-warning");
+    else toastEl.classList.add("bg-info");
+
+    // Show toast with auto-hide (3s)
+    const toast = new bootstrap.Toast(toastEl, {
+      delay: 3000, // 3 seconds
+      autohide: true
+    });
+    toast.show();
+  }
+
+
+
 });
 
