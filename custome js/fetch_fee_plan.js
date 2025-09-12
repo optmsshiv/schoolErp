@@ -16,18 +16,18 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(data => {
         // Fee Heads
         editFeeHeadSelect.innerHTML = '<option value="">Select Fee Head</option>';
-        data.feeheads.forEach(fh => {
+        data.FeeHeads.forEach(fh => {
           let opt = document.createElement("option");
-          opt.value = fh.id;
+          opt.value = fh.fee_head_id;
           opt.textContent = fh.fee_head_name;
           editFeeHeadSelect.appendChild(opt);
         });
 
         // Classes
         editClassSelect.innerHTML = '<option value="">Select Class</option>';
-        data.classes.forEach(c => {
+        data.Classes.forEach(c => {
           let opt = document.createElement("option");
-          opt.value = c.id;
+          opt.value = c.class_id;
           opt.textContent = c.class_name;
           editClassSelect.appendChild(opt);
         });
