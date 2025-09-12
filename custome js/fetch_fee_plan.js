@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.addEventListener("click", function () {
         loadDropdownOptions(); // reload options fresh
 
-        editFeePlanId.value = this.dataset.id;
+        editFeePlanId.value = this.dataset.fee_head_id;
         editFeeAmount.value = this.dataset.amount;
 
         // Delay a bit so dropdowns are populated before setting values
