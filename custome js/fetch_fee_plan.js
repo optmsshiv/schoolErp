@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
               <td>${plan.updated_at}</td>
               <td>
                 <button class="btn btn-sm btn-warning edit-btn"
-                        data-id="${plan.id}"
+                        data-id="${plan.fee_plan_id}"
                         data-class="${plan.class_name}"
                         data-feehead="${plan.fee_head_name}"
                         data-month="${plan.month_name}"
