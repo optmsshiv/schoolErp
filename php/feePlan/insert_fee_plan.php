@@ -20,7 +20,7 @@ $months = $data["months"]; // array of selected months
 try {
   $pdo->beginTransaction();
 
-  $stmt = $pdo->prepare("INSERT INTO feeplans (fee_head_name, class_name, month_name, amount) VALUES (?, ?, ?, ?)");
+  $stmt = $pdo->prepare("INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount) VALUES (?, ?, ?, ?)");
   foreach ($months as $month) {
     $stmt->execute([$fee_head_id, $class_id, $month, $fee_amount]);
   }
