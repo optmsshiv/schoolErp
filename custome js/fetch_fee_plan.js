@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         editFeeHeadSelect.innerHTML = '<option value="">Select Fee Head</option>';
         data.feeheads.forEach(fh => {
           let opt = document.createElement("option");
-          opt.value = fh.fee_plan_id;
+          opt.value = fh.id;
           opt.textContent = fh.fee_head_name;
           editFeeHeadSelect.appendChild(opt);
         });
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         editClassSelect.innerHTML = '<option value="">Select Class</option>';
         data.classes.forEach(c => {
           let opt = document.createElement("option");
-          opt.value = c.class_id;
+          opt.value = c.id;
           opt.textContent = c.class_name;
           editClassSelect.appendChild(opt);
         });
@@ -67,9 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
               <td>${plan.updated_at}</td>
               <td>
                 <button class="btn btn-sm btn-warning edit-btn"
-                        data-id="${plan.fee_plan_id}"
-                        data-class="${plan.class_name}"
-                        data-feehead="${plan.fee_head_name}"
+                        data-id="${plan.id}"
+                        data-class="${plan.class_id}"
+                        data-feehead="${plan.fee_head_id}"
                         data-month="${plan.month_name}"
                         data-amount="${plan.amount}">
                         Edit</button>
