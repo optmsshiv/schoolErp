@@ -110,13 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.addEventListener("click", function () {
         loadDropdownOptions(); // reload options fresh
 
-        editFeePlanId.value = this.dataset.fee_head_id;
+        editFeePlanId.value = this.dataset.fee_plan_id;
         editFeeAmount.value = this.dataset.amount;
 
         // Delay a bit so dropdowns are populated before setting values
         setTimeout(() => {
-          editClassSelect.value = this.dataset.class;
-          editFeeHeadSelect.value = this.dataset.feehead;
+          editClassSelect.value = this.dataset.class_name;
+          editFeeHeadSelect.value = this.dataset.fee_head_name;
 
           // set months
           let months = this.dataset.month.split(",");
