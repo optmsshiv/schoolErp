@@ -6,16 +6,46 @@ include '../db_connection.php';
 header('Content-Type: application/json');
 
 try {
-  $sql = "SELECT fp.fee_plan_id, c.class_name, fh.fee_head_name, fp.month_name, fp.amount, fp.created_at, fp.updated_at
-            FROM FeePlans fp
-            JOIN Classes c ON fp.class_name = c.class_id
-            JOIN FeeHeads fh ON fp.fee_head_name = fh.fee_head_id
-            ORDER BY fp.fee_plan_id DESC";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute();
-  $feePlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Check if the plan ID parameter is provided
+    $planId = isset($_GET['planId']) && !empty($_GET['planId']) ? $_GET['planId'] : null;
+    error_log('Received Plan ID: ' . $planId);
 
-  echo json_encode(["status" => "success", "data" => $feePlans]);
-} catch (Exception $e) {
-  echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    if ($planId) {
+        // Fetch fee plan by ID
+        $sql = "SELECT fee_plan_id, fee_head_name, class_name, month_name, amount, created_at, updated_at FROM FeePlans WHERE fee_plan_id = :planId";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':planId', $planId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $feePlan = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($feePlan) {
+            // Return success response with the specific fee plan
+            echo json_encode(['status' => 'success', 'data' => $feePlan]);
+        } else {
+            // Plan ID provided but no record found
+            echo json_encode(['status' => 'success', 'data' => [], 'message' => 'No fee plan found for the given Plan ID']);
+        }
+    } else {
+        // Fetch all fee plans if no Plan ID is provided
+        $sql = "SELECT fee_plan_id, fee_head_name, class_name, month_name, amount, created_at, updated_at FROM FeePlans ORDER BY class_name";
+        $stmt = $pdo->query($sql);
+
+        $feePlans = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($feePlans) {
+            // Return success response with all fee plans
+            echo json_encode(['status' => 'success', 'data' => $feePlans]);
+        } else {
+            // No fee plans found
+            echo json_encode(['status' => 'success', 'data' => [], 'message' => 'No fee plans found']);
+        }
+    }
+} catch (PDOException $e) {
+    // Log the error (for debugging purposes)
+    error_log('Database error: ' . $e->getMessage());
+
+    // Return error response
+    echo json_encode(['status' => 'error', 'message' => 'Database error. Please try again later.']);
 }
+?>
