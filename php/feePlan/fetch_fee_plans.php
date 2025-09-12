@@ -1,5 +1,6 @@
 <?php
 // Include the database connection file
+global $pdo;
 include '../db_connection.php';
 
 header('Content-Type: application/json');

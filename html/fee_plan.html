@@ -320,10 +320,10 @@
                           <div class="tab-pane fade" id="fee-plan" role="tabpanel">
                             <h4>Create Fee Plan for Each Month</h4>
                             <div class="mt-3">
-                              <form id="feePlanForm">
-                                <div class="row justify-content-cente align-items-center">
+                              <form id="createFeePlanForm">
+                                <div class="row justify-content-center align-items-center">
                                   <!-- Fee Head Dropdown -->
-                                  <div class="col-md-4 mb-3">
+                                  <div class="col-md-3 mb-3">
                                     <label for="feeHeadSelect" class="form-label">Fee Head</label>
                                     <select class="form-select" id="feeHeadSelect" required></select>
                                     <!-- Options will be filled dynamically -->
@@ -348,66 +348,13 @@
                                           <input type="checkbox" id="selectAllCheckbox" class="form-check-input" />
                                           <label class="form-check-label" for="selectAllCheckbox">Select All</label>
                                         </div>
-                                        <div class="form-check">
-                                          <input type="checkbox" value="January" id="january"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="january">January</label>
-                                        </div>
-                                        <div class="form-check">
-                                          <input type="checkbox" value="February" id="february"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="february">February</label>
-                                        </div>
-                                        <!-- Add similar blocks for all months -->
-                                        <div class="form-check">
-                                          <input type="checkbox" value="March" id="march"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="march">March</label>
-                                        </div>
-                                        <div class="form-check">
-                                          <input type="checkbox" value="April" id="april"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="april">April</label>
-                                        </div>
-                                        <div class="form-check">
-                                          <input type="checkbox" value="May" id="may"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="may">May</label>
-                                        </div>
-                                        <div class="form-check">
-                                          <input type="checkbox" value="June" id="june"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="june">June</label>
-                                        </div>
-                                        <div class="form-check">
-                                          <input type="checkbox" value="July" id="july"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="july">July</label>
-                                        </div>
-                                        <div class="form-check">
-                                          <input type="checkbox" value="August" id="august"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="august">August</label>
-                                        </div>
-                                        <div class="form-check">
-                                          <input type="checkbox" value="September" id="september"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="september">September</label>
-                                        </div>
-                                        <div class="form-check">
-                                          <input type="checkbox" value="October" id="october"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="october">October</label>
-                                        </div>
-                                        <div class="form-check">
-                                          <input type="checkbox" value="November" id="november"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="november">November</label>
-                                        </div>
-                                        <div class="form-check">
-                                          <input type="checkbox" value="December" id="december"
-                                                 class="form-check-input month-checkbox" />
-                                          <label class="form-check-label" for="december">December</label>
+                                        <div id="monthsContainer"></div> <!-- ✅ JS will fill this -->
+
+                                        <!-- ✅ Clear Selection Button -->
+                                        <div class="mt-2 text-end">
+                                          <button type="button" class="btn btn-sm btn-outline-secondary" id="clearSelectionBtn">
+                                            Clear Selection
+                                          </button>
                                         </div>
                                       </div>
                                     </div>
@@ -444,6 +391,46 @@
                                   <tbody id="feePlanBody"></tbody>
                                 </table>
                               </div>
+                              <!-- Edit Fee Plan Modal -->
+                              <div class="modal fade" id="editFeePlanModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                  <div class="modal-content">
+                                    <div class="modal-header bg-warning">
+                                      <h5 class="modal-title">Edit Fee Plan</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <form id="editFeePlanForm">
+                                        <input type="hidden" id="editFeePlanId">
+
+                                        <div class="mb-3">
+                                          <label for="editClassSelect" class="form-label">Class</label>
+                                          <select id="editClassSelect" class="form-select" required></select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                          <label for="editFeeHeadSelect" class="form-label">Fee Head</label>
+                                          <select id="editFeeHeadSelect" class="form-select" required></select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                          <label for="editFeeAmount" class="form-label">Fee Amount</label>
+                                          <input type="number" id="editFeeAmount" class="form-control" required>
+                                        </div>
+
+                                        <div class="mb-3">
+                                          <label class="form-label">Months</label>
+                                          <div id="editMonthsContainer" class="d-flex flex-wrap gap-2"></div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-warning">Update Fee Plan</button>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+
                             </div>
                           </div>
 
@@ -568,6 +555,7 @@
 <script src="../assets/vendor/js/bootstrap.js"></script>
 <script src="../custome%20js/fee_head.js"></script>
 <script src="../custome js/feePlan.js"></script>
+<script src="../custome js/fetch_fee_plan.js"></script>
 <script src="../assets/vendor/js/menu.js"></script>
 <script src="../custome js/bankDetails.js"></script>
 
