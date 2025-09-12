@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
           document.querySelectorAll(".edit-month").forEach(cb => {
             cb.checked = months.includes(cb.value);
           });
-        }, 300);
+        }, 100);
 
         editFeePlanModal.show();
       });
