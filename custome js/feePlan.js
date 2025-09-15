@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         feeHeadSelect.innerHTML = '<option value="">Select Fee Head</option>';
         data.feeheads.forEach(fh => {
           let option = document.createElement("option");
-          option.value = fh.fee_plan_id;      // ✅ correct ID field
+          option.value = fh.fee_head_id;      // ✅ correct ID field
           option.textContent = fh.fee_head_name;
           feeHeadSelect.appendChild(option);
         });
