@@ -14,18 +14,16 @@ if (!$data) {
 
 try {
   $stmt = $pdo->prepare("
-        INSERT INTO FeePlans (class_id, fee_head_id,fee_head_name, class_name, month_name, amount, created_at, updated_at)
-        VALUES (:class_id, :fee_head_id,:fee_head_name, :class_name, :month_name, :amount, NOW(), NOW())
-    ");
+    INSERT INTO FeePlans (class_id, fee_head_id, month_name, amount, created_at, updated_at)
+    VALUES (:class_id, :fee_head_id, :month_name, :amount, NOW(), NOW())
+  ");
 
   foreach ($data['months'] as $month) {
     $stmt->execute([
-      ':class_id'    => $data['class_id'],
-      ':fee_head_id' => $data['fee_head_id'],
-      ':fee_head_name' => $data['fee_head_name'],
-      ':class_name'  => $data['class_name'],
-      ':month_name'  => $month,
-      ':fee_amount'  => $data['fee_amount']
+      ':class_id'    => $data['class_id'],    // matches :class_id
+      ':fee_head_id' => $data['fee_head_id'], // matches :fee_head_id
+      ':month_name'  => $month,               // matches :month_name
+      ':amount'      => $data['fee_amount']   // matches :amount
     ]);
   }
 
