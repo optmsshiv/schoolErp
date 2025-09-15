@@ -14,14 +14,16 @@ if (!$data) {
 
 try {
   $stmt = $pdo->prepare("
-        INSERT INTO FeePlans (class_id, fee_head_id, month_name, amount, created_at, updated_at)
-        VALUES (:class_id, :fee_head_id, :month_name, :amount, NOW(), NOW())
+        INSERT INTO FeePlans (class_id, fee_head_id,fee_head_name, class_name, month_name, amount, created_at, updated_at)
+        VALUES (:class_id, :fee_head_id,:fee_head_name, :class_name, :month_name, :amount, NOW(), NOW())
     ");
 
   foreach ($data['months'] as $month) {
     $stmt->execute([
-      ':class_id'    => $data['class_id'],     // now ID
-      ':fee_head_id' => $data['fee_head_id'],  // now ID
+      ':class_id'    => $data['class_id'],
+      ':fee_head_id' => $data['fee_head_id'],
+      ':fee_head_name' => $data['fee_head_name'],
+      ':class_name'  => $data['class_name'],
       ':month_name'  => $month,
       ':fee_amount'  => $data['fee_amount']
     ]);
@@ -31,4 +33,3 @@ try {
 } catch (Exception $e) {
   echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }
-?>
