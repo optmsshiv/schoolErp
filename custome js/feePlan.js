@@ -75,8 +75,8 @@ document.addEventListener("DOMContentLoaded", function () {
             <td>
               <button class="btn btn-sm btn-warning edit-btn"
                       data-id="${plan.id}"
-                      data-class="${plan.class_id}"
-                      data-feehead="${plan.fee_head_id}"
+                      data-class="${plan.class_name}"
+                      data-feehead="${plan.fee_head_name}"
                       data-month="${plan.month_name}"
                       data-amount="${plan.amount}">
                       Edit</button>
@@ -87,35 +87,11 @@ document.addEventListener("DOMContentLoaded", function () {
           `;
           tableBody.innerHTML += row;
         });
-        attachTableEvents();
       })
       .catch(err => console.error("Error loading fee plans:", err));
   }
 
-  function attachTableEvents() {
-    document.querySelectorAll(".edit-btn").forEach(btn => {
-      btn.addEventListener("click", function () {
-        loadFeeData(); // reload options fresh
 
-        editFeePlanId.value = this.dataset.id;
-        editFeeAmount.value = this.dataset.amount;
-
-        // Delay a bit so dropdowns are populated before setting values
-        setTimeout(() => {
-          editClassSelect.value = this.dataset.class;
-          editFeeHeadSelect.value = this.dataset.feehead;
-
-          // set months
-          let months = this.dataset.month.split(",");
-          document.querySelectorAll(".edit-month").forEach(cb => {
-            cb.checked = months.includes(cb.value);
-          });
-        }, 300);
-
-        editFeePlanModal.show();
-      });
-    });
-  }
 
   // ---------------- Month Dropdown Logic ----------------
   monthDropdown.addEventListener("click", function (e) {
