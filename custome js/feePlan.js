@@ -79,6 +79,80 @@ document.addEventListener("DOMContentLoaded", function () {
           `;
           tableBody.innerHTML += row;
         });
+        // ✅ Attach edit button event listeners
+        // Delegated event for edit buttons
+        document.addEventListener("click", function(e) {
+          if (e.target.classList.contains("edit-btn")) {
+            const id = e.target.dataset.id;
+
+            fetch(`../php/feePlan/fetch_fee_plans.php?id=${id}`)
+              .then(res => res.json())
+              .then(plan => {
+                // Pre-fill modal
+                document.getElementById("editFeePlanId").value = plan.fee_plan_id;
+                document.getElementById("editFeeAmount").value = plan.fee_amount;
+
+                // Load dropdowns with IDs pre-selected
+                loadDropdownsForEdit(plan.class_id, plan.fee_head_id);
+
+                // Render months checkboxes
+                renderMonths(plan.months);
+
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById("editFeePlanModal"));
+                modal.show();
+              });
+          }
+        });
+
+        function renderMonths(selectedMonths) {
+          const months = [
+            "January","February","March","April","May","June",
+            "July","August","September","October","November","December"
+          ];
+          const container = document.getElementById("editMonthsContainer");
+          container.innerHTML = "";
+
+          months.forEach(m => {
+            let checked = selectedMonths.includes(m) ? "checked" : "";
+            container.innerHTML += `
+      <div class="form-check me-2">
+        <input type="checkbox" value="${m}" id="edit_${m}" class="form-check-input edit-month-checkbox" ${checked}/>
+        <label for="edit_${m}" class="form-check-label">${m}</label>
+      </div>
+    `;
+          });
+        }
+
+        function loadDropdownsForEdit(selectedClassId, selectedFeeHeadId) {
+          fetch("fetch_dropdowns.php")
+            .then(res => res.json())
+            .then(data => {
+              const classSelect = document.getElementById("editClassSelect");
+              const feeHeadSelect = document.getElementById("editFeeHeadSelect");
+
+              classSelect.innerHTML = "";
+              feeHeadSelect.innerHTML = "";
+
+              data.Classes.forEach(c => {
+                let opt = document.createElement("option");
+                opt.value = c.class_id;
+                opt.textContent = c.class_name;
+                if (c.class_id === selectedClassId) opt.selected = true;
+                classSelect.appendChild(opt);
+              });
+
+              data.FeeHeads.forEach(fh => {
+                let opt = document.createElement("option");
+                opt.value = fh.fee_head_id;
+                opt.textContent = fh.fee_head_name;
+                if (fh.fee_head_id === selectedFeeHeadId) opt.selected = true;
+                feeHeadSelect.appendChild(opt);
+              });
+            });
+        }
+
+
       })
       .catch(err => console.error("Error loading fee plans:", err));
   }
