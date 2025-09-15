@@ -5,27 +5,19 @@ include '../db_connection.php';
 
 header('Content-Type: application/json');
 
-try {
-  $stmt = $pdo->query("
-        SELECT
-            fee_plan_id,
-            fee_head_name,
-            class_name,
-            month_name,
-            amount,
-            created_at,
-            updated_at
-        FROM FeePlans
-        ORDER BY class_name, fee_head_name, month_name
-    ");
+$stmt = $pdo->query("
+  SELECT
+    fp.fee_plan_id,
+    c.class_name,
+    fh.fee_head_name,
+    fp.month_name,
+    fp.amount,
+    fp.created_at,
+    fp.updated_at
+  FROM FeePlans fp
+  JOIN Classes c ON fp.class_id = c.class_id
+  JOIN FeeHeads fh ON fp.fee_head_id = fh.fee_head_id
+  ORDER BY c.class_name, fh.fee_head_name
+");
 
-  $plans = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-  echo json_encode($plans);
-
-} catch (PDOException $e) {
-  echo json_encode([
-    "status" => "error",
-    "message" => $e->getMessage()
-  ]);
-}
+echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
