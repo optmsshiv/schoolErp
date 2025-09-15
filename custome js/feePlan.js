@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         data.FeeHeads.forEach(fh => {
           let option = document.createElement("option");
           option.value = fh.fee_head_id;   // ✅ use ID, not name
-          option.textContent = fh.fee_head_name;
+          option.textContent = fh.fee_head_name; // show name
           feeHeadSelect.appendChild(option);
         });
 
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         data.Classes.forEach(c => {
           let option = document.createElement("option");
           option.value = c.class_id;       // ✅ use ID, not name
-          option.textContent = c.class_name;
+          option.textContent = c.class_name; // show name
           classSelect.appendChild(option);
         });
 

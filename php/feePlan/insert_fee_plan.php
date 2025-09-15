@@ -8,26 +8,27 @@ header('Content-Type: application/json');
 $data = json_decode(file_get_contents("php://input"), true);
 
 if (!$data) {
-  echo json_encode(["status" => "error", "message" => "Invalid input"]);
+  echo json_encode(["status" => "error", "message" => "No data received"]);
   exit;
 }
 
-$fee_head_id = $data["fee_head_id"];
-$class_id = $data["class_id"];
-$fee_amount = $data["fee_amount"];
-$months = $data["months"]; // array of selected months
-
 try {
-  $pdo->beginTransaction();
+  $stmt = $pdo->prepare("
+        INSERT INTO FeePlans (class_id, fee_head_id, month_name, amount, created_at, updated_at)
+        VALUES (:class_id, :fee_head_id, :month_name, :amount, NOW(), NOW())
+    ");
 
-  $stmt = $pdo->prepare("INSERT INTO FeePlans (fee_head_name, class_name, month_name, amount) VALUES (?, ?, ?, ?)");
-  foreach ($months as $month) {
-    $stmt->execute([$fee_head_id, $class_id, $month, $fee_amount]);
+  foreach ($data['months'] as $month) {
+    $stmt->execute([
+      ':class_id'    => $data['class_id'],     // now ID
+      ':fee_head_id' => $data['fee_head_id'],  // now ID
+      ':month_name'  => $month,
+      ':fee_amount'  => $data['fee_amount']
+    ]);
   }
 
-  $pdo->commit();
   echo json_encode(["status" => "success"]);
 } catch (Exception $e) {
-  $pdo->rollBack();
   echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }
+?>
