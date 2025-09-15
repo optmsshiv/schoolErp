@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const selectAllCheckbox = document.getElementById("selectAllCheckbox");
   const clearSelectionBtn = document.getElementById("clearSelectionBtn");
   const tableBody = document.getElementById("feePlanBody"); // ✅ tbody of fee plan table
+  const editFeePlanModal = new bootstrap.Modal(document.getElementById("editFeePlanModal"));
 
   // ---------------- Load FeeHeads, Classes, Months ----------------
   function loadFeeData() {
