@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function loadDropdownsForEdit(selectedClassId, selectedFeeHeadId) {
-          fetch("fetch_dropdowns.php")
+          fetch("../php/create_fee_plan.php")
             .then(res => res.json())
             .then(data => {
               const classSelect = document.getElementById("editClassSelect");
