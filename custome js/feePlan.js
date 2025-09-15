@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(data => {
         // ---------------- Fee Heads ----------------
         feeHeadSelect.innerHTML = '<option value="">Select Fee Head</option>';
-        data.feeheads.forEach(fh => {
+        data.FeeHeads.forEach(fh => {
           let option = document.createElement("option");
           option.value = fh.fee_head_id;      // ✅ correct ID field
           option.textContent = fh.fee_head_name;
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // ---------------- Classes ----------------
         classSelect.innerHTML = '<option value="">Select Class</option>';
-        data.classes.forEach(c => {
+        data.Classes.forEach(c => {
           let option = document.createElement("option");
           option.value = c.class_id;          // ✅ correct ID field
           option.textContent = c.class_name;
