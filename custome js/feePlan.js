@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function attachTableEvents() {
     document.querySelectorAll(".edit-btn").forEach(btn => {
       btn.addEventListener("click", function () {
-        loadDropdownOptions(); // reload options fresh
+        loadFeeData(); // reload options fresh
 
         editFeePlanId.value = this.dataset.id;
         editFeeAmount.value = this.dataset.amount;
