@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const selectAllCheckbox = document.getElementById("selectAllCheckbox");
   const clearSelectionBtn = document.getElementById("clearSelectionBtn");
 
-
+  // ---------------- Load FeeHeads, Classes, Months ----------------
   function loadFeeData() {
     fetch("../php/create_fee_plan.php")
       .then(res => res.json())
@@ -156,6 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   loadFeeData(); // load when page starts
+
 });
 
 document.querySelector("#createFeePlanForm").addEventListener("submit", function (e) {
@@ -190,6 +191,8 @@ document.querySelector("#createFeePlanForm").addEventListener("submit", function
         showToast("Fee Plan Created Successfully!", "success");
         document.getElementById("createFeePlanForm").reset();
         document.getElementById("monthDropdown").childNodes[0].nodeValue = "Select Month(s)";
+
+        loadFeePlans(); // ✅ Refresh the table after insert
       } else {
         showToast("Error: " + data.message, "error");
       }
@@ -220,5 +223,32 @@ document.querySelector("#createFeePlanForm").addEventListener("submit", function
     });
     toast.show();
   }
+  // ---------------- Initial Loads ----------------
+
+  loadFeePlans(); // ✅ Load existing plans when page starts
+
+  // Function to load fee plan table
+  function loadFeePlans() {
+    fetch("../php/feePlan/fetch_fee_plans.php") // <-- Create this PHP file
+      .then(res => res.json())
+      .then(data => {
+        const tableBody = document.getElementById("feePlanBody"); // tbody id
+        tableBody.innerHTML = "";
+
+        data.forEach(plan => {
+          let row = `
+          <tr>
+            <td>${plan.fee_head_name}</td>
+            <td>${plan.class_name}</td>
+            <td>${plan.months}</td>
+            <td>${plan.fee_amount}</td>
+          </tr>
+        `;
+          tableBody.innerHTML += row;
+        });
+      })
+      .catch(err => console.error("Error loading fee plans:", err));
+  }
+
 });
 
