@@ -64,10 +64,17 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(plan => {
           let row = `
             <tr>
-              <td>${plan.fee_head_name}</td>
-              <td>${plan.class_name}</td>
-              <td>${plan.months}</td>
-              <td>${plan.fee_amount}</td>
+              <td>${plan.fee_plan_id}</td>
+            <td>${plan.class_name}</td>
+            <td>${plan.fee_head_name}</td>
+            <td>${plan.month_name}</td>
+            <td>${plan.amount}</td>
+            <td>${plan.created_at}</td>
+            <td>${plan.updated_at}</td>
+            <td>
+              <button class="btn btn-sm btn-primary edit-btn" data-id="${plan.fee_plan_id}">Edit</button>
+              <button class="btn btn-sm btn-danger delete-btn" data-id="${plan.fee_plan_id}">Delete</button>
+            </td>
             </tr>
           `;
           tableBody.innerHTML += row;
