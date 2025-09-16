@@ -19,14 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // ✅ Fetch dropdown data once and store globally
   let dropdownData = { Classes: [], FeeHeads: [] };
 
-  function loadDropdowns() {
-    return fetch("../php/feePlan/fetch_fee_plans.php")
-      .then(res => res.json())
-      .then(data => {
-        dropdownData = data; // store for later
-      });
-  }
-
   // ---------------- Load FeeHeads, Classes, Months ----------------
   function loadFeeData() {
     fetch("../php/create_fee_plan.php")
@@ -109,6 +101,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // ---------------- Edit Modal  ---------------
+
+  function loadDropdowns() {
+    return fetch("../php/feePlan/fetch_fee_plans.php")
+      .then(res => res.json())
+      .then(data => {
+        dropdownData = data; // store for later
+        return data; // return for chaining
+      });
+  }
 
   function populateEditDropdowns(selectedClassId, selectedFeeHeadId) {
     // Populate Classes
