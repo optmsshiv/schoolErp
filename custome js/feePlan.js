@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---------------- Edit Modal  ---------------
 
   function loadDropdowns() {
-    return fetch("../php/feePlan/fetch_fee_plans.php")
+    return fetch("../php/create_fee_plan.php")
       .then(res => res.json())
       .then(data => {
         dropdownData = data; // store for later
@@ -137,15 +137,16 @@ document.addEventListener("DOMContentLoaded", function () {
     if (e.target.classList.contains("edit-btn")) {
       const btn = e.target;
 
-      editFeePlanId.value = btn.dataset.id;
-      editClassSelect.value = btn.dataset.class;
-      editFeeHeadSelect.value = btn.dataset.feehead;
-      editMonth.value = btn.dataset.month;
-      editAmount.value = btn.dataset.amount;
+      // Ensure dropdown data is loaded first
+      loadDropdowns().then(() => {
+        editFeePlanId.value = btn.dataset.id;
+        editMonth.value = btn.dataset.month;
+        editAmount.value = btn.dataset.amount;
       // Populate dropdowns with correct selected values
       populateEditDropdowns(btn.dataset.class, btn.dataset.feehead);
 
       editModal.show();
+      });
     }
 
   });
