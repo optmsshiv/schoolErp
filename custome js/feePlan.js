@@ -324,4 +324,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---------------- Initial Loads ----------------
   loadFeeData();
   loadFeePlans(); // ✅ Load existing plans when page starts
+  // ✅ Load dropdown data when page loads
+  loadDropdowns();
 });
