@@ -392,9 +392,8 @@
                                 </table>
                               </div>
                               <!-- Edit Fee Plan Modal -->
-                              <!-- Edit Fee Plan Modal -->
-                              <div class="modal fade" id="editFeePlanModal" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal fade" id="editFeePlanModal" tabindex="-1">
+                                <div class="modal-dialog">
                                   <div class="modal-content">
                                     <form id="editFeePlanForm">
                                       <div class="modal-header">
@@ -402,41 +401,40 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                       </div>
                                       <div class="modal-body">
-
                                         <input type="hidden" id="editFeePlanId">
 
-                                        <!-- Class -->
                                         <div class="mb-3">
-                                          <label class="form-label">Class</label>
+                                          <label for="editClassSelect" class="form-label">Class</label>
                                           <select id="editClassSelect" class="form-select" required></select>
                                         </div>
 
-                                        <!-- Fee Head -->
                                         <div class="mb-3">
-                                          <label class="form-label">Fee Head</label>
+                                          <label for="editFeeHeadSelect" class="form-label">Fee Head</label>
                                           <select id="editFeeHeadSelect" class="form-select" required></select>
                                         </div>
 
-                                        <!-- Fee Amount -->
                                         <div class="mb-3">
-                                          <label class="form-label">Fee Amount</label>
-                                          <input type="number" id="editFeeAmount" class="form-control" required>
+                                          <label for="editMonth" class="form-label">Month</label>
+                                          <input type="text" id="editMonth" class="form-control" required>
                                         </div>
 
-                                        <!-- Months -->
                                         <div class="mb-3">
-                                          <label class="form-label">Months</label>
-                                          <div id="editMonthsContainer" class="d-flex flex-wrap gap-2"></div>
+                                          <label for="editAmount" class="form-label">Amount</label>
+                                          <input type="number" id="editAmount" class="form-control" required>
                                         </div>
-
                                       </div>
                                       <div class="modal-footer">
                                         <button type="submit" class="btn btn-primary">Update</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                       </div>
                                     </form>
                                   </div>
                                 </div>
                               </div>
+
+                              <!-- edit Fee plan modal-->
+
+
 
                             </div>
                           </div>
