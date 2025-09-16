@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(plan => {
           let row = `
             <tr>
-              <td>${plan.fee_plan_id}</td>
+            <td>${plan.fee_plan_id}</td>
             <td>${plan.class_name}</td>
             <td>${plan.fee_head_name}</td>
             <td>${plan.month_name}</td>
@@ -83,12 +83,12 @@ document.addEventListener("DOMContentLoaded", function () {
             <td>${plan.created_at}</td>
             <td>${plan.updated_at}</td>
             <td>
-                   <button class="btn btn-sm btn-outline-info edit-btn"
-          data-id="${plan.fee_plan_id}"
-          data-class="${plan.class_id}"
-          data-feehead="${plan.fee_head_id}"
-          data-month="${plan.month_name}"
-          data-amount="${plan.amount}">
+                <button class="btn btn-sm btn-outline-info edit-btn"
+                        data-id="${plan.fee_plan_id}"
+                        data-class="${plan.class_id}"
+                        data-feehead="${plan.fee_head_id}"
+                        data-month="${plan.month_name}"
+                        data-amount="${plan.amount}">
                         Edit</button>
             <button class="btn btn-sm btn-danger delete-btn" data-id="${plan.fee_plan_id}">Delete</button>
             </td>
@@ -114,10 +114,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Populate Classes
     editClassSelect.innerHTML = '<option value="">Select Class</option>';
     dropdownData.Classes.forEach(c => {
-      let option = document.createElement("option");
-      option.value = c.id;
+      const option = document.createElement("option");
+      option.value = c.class_id;
       option.textContent = c.class_name;
-      if (c.id === selectedClassId) option.selected = true;
+      if (parseInt(c.class_id) === parseInt(selectedClassId)) option.selected = true;
       editClassSelect.appendChild(option);
     });
 
@@ -127,26 +127,34 @@ document.addEventListener("DOMContentLoaded", function () {
       let option = document.createElement("option");
       option.value = fh.fee_head_id;
       option.textContent = fh.fee_head_name;
-      if (fh.fee_head_id === selectedFeeHeadId) option.selected = true;
+      if (fh.fee_head_id == selectedFeeHeadId) option.selected = true;
       editFeeHeadSelect.appendChild(option);
     });
   }
+
   // Attach click handler for Edit buttons
   tableBody.addEventListener("click", (e) => {
     if (e.target.classList.contains("edit-btn")) {
       const btn = e.target;
+
+      console.log("🔎 Edit button clicked →", {
+        id: btn.dataset.id,
+        classId: btn.dataset.class,
+        feeHeadId: btn.dataset.feehead,
+        month: btn.dataset.month,
+        amount: btn.dataset.amount
+      });
 
       // Fill form fields
       editFeePlanId.value = btn.dataset.id;
       editMonth.value = btn.dataset.month;
       editAmount.value = btn.dataset.amount;
 
-      // Populate dropdowns with correct selected values
+      // Populate dropdowns with pre-selected values
       populateEditDropdowns(btn.dataset.class, btn.dataset.feehead);
 
       editModal.show();
     }
-
   });
 
   // Handle update submit

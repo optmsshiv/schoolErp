@@ -9,8 +9,8 @@ try {
   $stmt = $pdo->query("
         SELECT
             fp.fee_plan_id,
-            fp.class_id,          -- include ID
-            fp.fee_head_id,       -- include ID
+            fp.class_id,        -- required for dataset
+            fp.fee_head_id,     -- required for dataset
             c.class_name,
             fh.fee_head_name,
             fp.month_name,
