@@ -86,9 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
           data-feehead="${plan.fee_head_id}"
           data-month="${plan.month_name}"
           data-amount="${plan.amount}">
-    Edit
-  </button>
-  <button class="btn btn-sm btn-danger delete-btn" data-id="${plan.fee_plan_id}">Delete</button>
+                        Edit</button>
+            <button class="btn btn-sm btn-danger delete-btn" data-id="${plan.fee_plan_id}">Delete</button>
             </td>
             </tr>
           `;
@@ -253,7 +252,7 @@ document.addEventListener("DOMContentLoaded", function () {
       editMonth.value = btn.dataset.month;
       editAmount.value = btn.dataset.amount;
 
-      editModal.show();
+      editFeePlanModal.show();
     }
   });
 
@@ -278,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(data => {
         if (data.status === "success") {
           alert("Updated successfully ✅");
-          editModal.hide();
+          editFeePlanModal.hide();
           loadFeePlans(); // reload table
         } else {
           alert("Error: " + data.message);
