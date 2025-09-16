@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---------------- Edit Modal  ---------------
 
   function loadDropdowns() {
-    return fetch("../php/feePlan/fetch_fee_plans.php")
+    return fetch("../php/create_fee_plan.php")
       .then(res => res.json())
       .then(data => {
         dropdownData = data; // store for later
