@@ -7,7 +7,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const selectAllCheckbox = document.getElementById("selectAllCheckbox");
   const clearSelectionBtn = document.getElementById("clearSelectionBtn");
   const tableBody = document.getElementById("feePlanBody"); // ✅ tbody of fee plan table
-  const editFeePlanModal = new bootstrap.Modal(document.getElementById("editFeePlanModal"));
+  const editModal = new bootstrap.Modal(document.getElementById("editFeePlanModal"));
+  const editForm = document.getElementById("editFeePlanForm");
+
+  const editFeePlanId = document.getElementById("editFeePlanId");
+  const editClassSelect = document.getElementById("editClassSelect");
+  const editFeeHeadSelect = document.getElementById("editFeeHeadSelect");
+  const editMonth = document.getElementById("editMonth");
+  const editAmount = document.getElementById("editAmount");
 
   // ---------------- Load FeeHeads, Classes, Months ----------------
   function loadFeeData() {
@@ -73,15 +80,15 @@ document.addEventListener("DOMContentLoaded", function () {
             <td>${plan.created_at}</td>
             <td>${plan.updated_at}</td>
             <td>
-              <button class="btn btn-sm btn-warning edit-btn"
-                      data-id="${plan.id}"
-                      data-class="${plan.class_name}"
-                      data-feehead="${plan.fee_head_name}"
-                      data-month="${plan.month_name}"
-                      data-amount="${plan.amount}">
-                      Edit</button>
-
-              <button class="btn btn-sm btn-danger delete-btn" data-id="${plan.fee_plan_id}">Delete</button>
+                   <button class="btn btn-sm btn-primary edit-btn"
+          data-id="${plan.fee_plan_id}"
+          data-class="${plan.class_id}"
+          data-feehead="${plan.fee_head_id}"
+          data-month="${plan.month_name}"
+          data-amount="${plan.amount}">
+    Edit
+  </button>
+  <button class="btn btn-sm btn-danger delete-btn" data-id="${plan.fee_plan_id}">Delete</button>
             </td>
             </tr>
           `;
@@ -195,8 +202,8 @@ document.addEventListener("DOMContentLoaded", function () {
       body: JSON.stringify({
         fee_head_id: feeHeadId,
         class_id: classId,
-        fee_amount: feeAmount,
-        months: selectedMonths
+        months: selectedMonths,
+        fee_amount: feeAmount
       })
     })
       .then(res => res.json())
@@ -232,6 +239,53 @@ document.addEventListener("DOMContentLoaded", function () {
     const toast = new bootstrap.Toast(toastEl, { delay: 3000, autohide: true });
     toast.show();
   }
+
+  // ---------------- Edit Modal  ---------------
+
+  // Attach click handler for Edit buttons
+  tableBody.addEventListener("click", (e) => {
+    if (e.target.classList.contains("edit-btn")) {
+      const btn = e.target;
+
+      editFeePlanId.value = btn.dataset.id;
+      editClassSelect.value = btn.dataset.class;
+      editFeeHeadSelect.value = btn.dataset.feehead;
+      editMonth.value = btn.dataset.month;
+      editAmount.value = btn.dataset.amount;
+
+      editModal.show();
+    }
+  });
+
+  // Handle update submit
+  editForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const payload = {
+      fee_plan_id: editFeePlanId.value,
+      class_id: editClassSelect.value,
+      fee_head_id: editFeeHeadSelect.value,
+      month_name: editMonth.value,
+      fee_amount: editAmount.value
+    };
+
+    fetch("../php/feePlan/update_fee_plan.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          alert("Updated successfully ✅");
+          editModal.hide();
+          loadFeePlans(); // reload table
+        } else {
+          alert("Error: " + data.message);
+        }
+      })
+      .catch(err => console.error("Update failed:", err));
+  });
 
   // ---------------- Initial Loads ----------------
   loadFeeData();
