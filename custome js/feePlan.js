@@ -16,6 +16,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const editMonth = document.getElementById("editMonth");
   const editAmount = document.getElementById("editAmount");
 
+  // ✅ Fetch dropdown data once and store globally
+  let dropdownData = { Classes: [], FeeHeads: [] };
+
+  function loadDropdowns() {
+    return fetch("../php/create_fee_plan.php")
+      .then(res => res.json())
+      .then(data => {
+        dropdownData = data; // store for later
+      });
+  }
+
   // ---------------- Load FeeHeads, Classes, Months ----------------
   function loadFeeData() {
     fetch("../php/create_fee_plan.php")
@@ -99,6 +110,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ---------------- Edit Modal  ---------------
 
+  function populateEditDropdowns(selectedClassId, selectedFeeHeadId) {
+    // Populate Classes
+    editClassSelect.innerHTML = '<option value="">Select Class</option>';
+    dropdownData.Classes.forEach(c => {
+      let option = document.createElement("option");
+      option.value = c.class_id;
+      option.textContent = c.class_name;
+      if (c.class_id === selectedClassId) option.selected = true;
+      editClassSelect.appendChild(option);
+    });
+
+    // Populate Fee Heads
+    editFeeHeadSelect.innerHTML = '<option value="">Select Fee Head</option>';
+    dropdownData.FeeHeads.forEach(fh => {
+      let option = document.createElement("option");
+      option.value = fh.fee_head_id;
+      option.textContent = fh.fee_head_name;
+      if (fh.fee_head_id === selectedFeeHeadId) option.selected = true;
+      editFeeHeadSelect.appendChild(option);
+    });
+  }
   // Attach click handler for Edit buttons
   tableBody.addEventListener("click", (e) => {
     if (e.target.classList.contains("edit-btn")) {
@@ -109,6 +141,8 @@ document.addEventListener("DOMContentLoaded", function () {
       editFeeHeadSelect.value = btn.dataset.feehead;
       editMonth.value = btn.dataset.month;
       editAmount.value = btn.dataset.amount;
+      // Populate dropdowns with correct selected values
+      populateEditDropdowns(btn.dataset.class, btn.dataset.feehead);
 
       editModal.show();
     }
