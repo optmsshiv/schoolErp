@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <td>${plan.created_at}</td>
             <td>${plan.updated_at}</td>
             <td>
-                   <button class="btn btn-sm btn-primary edit-btn"
+                   <button class="btn btn-sm btn-outline-info edit-btn"
           data-id="${plan.fee_plan_id}"
           data-class="${plan.class_id}"
           data-feehead="${plan.fee_head_id}"
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---------------- Edit Modal  ---------------
 
   function loadDropdowns() {
-    return fetch("../php/create_fee_plan.php")
+    return fetch("../php/feePlan/fetch_fee_plans.php")
       .then(res => res.json())
       .then(data => {
         dropdownData = data; // store for later
