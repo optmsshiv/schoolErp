@@ -146,6 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       editModal.show();
     }
+
   });
 
   // Handle update submit
@@ -177,9 +178,6 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch(err => console.error("Update failed:", err));
   });
-// ✅ Load dropdown data when page loads
-  loadDropdowns();
-
 
 
   // ---------------- Month Dropdown Logic ----------------
@@ -325,4 +323,5 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---------------- Initial Loads ----------------
   loadFeeData();
   loadFeePlans(); // ✅ Load existing plans when page starts
+  loadDropdowns(); // ✅ Load dropdown data when page loads
 });
