@@ -97,6 +97,54 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(err => console.error("Error loading fee plans:", err));
   }
 
+  // ---------------- Edit Modal  ---------------
+
+  // Attach click handler for Edit buttons
+  tableBody.addEventListener("click", (e) => {
+    if (e.target.classList.contains("edit-btn")) {
+      const btn = e.target;
+
+      editFeePlanId.value = btn.dataset.id;
+      editClassSelect.value = btn.dataset.class;
+      editFeeHeadSelect.value = btn.dataset.feehead;
+      editMonth.value = btn.dataset.month;
+      editAmount.value = btn.dataset.amount;
+
+      editModal.show();
+    }
+  });
+
+  // Handle update submit
+  editForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const payload = {
+      fee_plan_id: editFeePlanId.value,
+      class_id: editClassSelect.value,
+      fee_head_id: editFeeHeadSelect.value,
+      month_name: editMonth.value,
+      fee_amount: editAmount.value
+    };
+
+    fetch("../php/feePlan/update_fee_plan.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          alert("Updated successfully ✅");
+          editModal.hide();
+          loadFeePlans(); // reload table
+        } else {
+          alert("Error: " + data.message);
+        }
+      })
+      .catch(err => console.error("Update failed:", err));
+  });
+
+
 
 
   // ---------------- Month Dropdown Logic ----------------
@@ -238,53 +286,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const toast = new bootstrap.Toast(toastEl, { delay: 3000, autohide: true });
     toast.show();
   }
-
-  // ---------------- Edit Modal  ---------------
-
-  // Attach click handler for Edit buttons
-  tableBody.addEventListener("click", (e) => {
-    if (e.target.classList.contains("edit-btn")) {
-      const btn = e.target;
-
-      editFeePlanId.value = btn.dataset.id;
-      editClassSelect.value = btn.dataset.class;
-      editFeeHeadSelect.value = btn.dataset.feehead;
-      editMonth.value = btn.dataset.month;
-      editAmount.value = btn.dataset.amount;
-
-      editFeePlanModal.show();
-    }
-  });
-
-  // Handle update submit
-  editForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const payload = {
-      fee_plan_id: editFeePlanId.value,
-      class_id: editClassSelect.value,
-      fee_head_id: editFeeHeadSelect.value,
-      month_name: editMonth.value,
-      fee_amount: editAmount.value
-    };
-
-    fetch("../php/feePlan/update_fee_plan.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === "success") {
-          alert("Updated successfully ✅");
-          editFeePlanModal.hide();
-          loadFeePlans(); // reload table
-        } else {
-          alert("Error: " + data.message);
-        }
-      })
-      .catch(err => console.error("Update failed:", err));
-  });
 
   // ---------------- Initial Loads ----------------
   loadFeeData();
