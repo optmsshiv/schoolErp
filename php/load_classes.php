@@ -1,5 +1,6 @@
 <?php
 // Fetch classes from the database
+global $pdo;
 include '../php/db_connection.php';
 
 $sql = "SELECT class_id, class_name FROM Classes";
