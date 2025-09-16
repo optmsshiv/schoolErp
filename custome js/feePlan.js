@@ -107,7 +107,6 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(res => res.json())
       .then(data => {
         dropdownData = data; // store for later
-        return data; // return for chaining
       });
   }
 
@@ -137,16 +136,15 @@ document.addEventListener("DOMContentLoaded", function () {
     if (e.target.classList.contains("edit-btn")) {
       const btn = e.target;
 
-      // Ensure dropdown data is loaded first
-      loadDropdowns().then(() => {
-        editFeePlanId.value = btn.dataset.id;
-        editMonth.value = btn.dataset.month;
-        editAmount.value = btn.dataset.amount;
+      // Fill form fields
+      editFeePlanId.value = btn.dataset.id;
+      editMonth.value = btn.dataset.month;
+      editAmount.value = btn.dataset.amount;
+
       // Populate dropdowns with correct selected values
       populateEditDropdowns(btn.dataset.class, btn.dataset.feehead);
 
       editModal.show();
-      });
     }
 
   });
