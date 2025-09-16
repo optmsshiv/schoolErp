@@ -115,9 +115,9 @@ document.addEventListener("DOMContentLoaded", function () {
     editClassSelect.innerHTML = '<option value="">Select Class</option>';
     dropdownData.Classes.forEach(c => {
       let option = document.createElement("option");
-      option.value = c.class_id;
+      option.value = c.id;
       option.textContent = c.class_name;
-      if (c.class_id === selectedClassId) option.selected = true;
+      if (c.id === selectedClassId) option.selected = true;
       editClassSelect.appendChild(option);
     });
 
