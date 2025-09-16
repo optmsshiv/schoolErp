@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let dropdownData = { Classes: [], FeeHeads: [] };
 
   function loadDropdowns() {
-    return fetch("../php/create_fee_plan.php")
+    return fetch("../php/feePlan/fetch_fee_plans.php")
       .then(res => res.json())
       .then(data => {
         dropdownData = data; // store for later
