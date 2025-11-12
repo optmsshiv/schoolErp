@@ -1,6 +1,7 @@
 <?php
 global $pdo;
 header('Content-Type: application/json');
+
 include '../db_connection.php';
 
 // Only fetch soft-deleted plans
