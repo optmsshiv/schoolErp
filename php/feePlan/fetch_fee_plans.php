@@ -1,9 +1,9 @@
 <?php
 // Include the database connection file
 global $pdo;
+header('Content-Type: application/json');
 include '../db_connection.php';
 
-header('Content-Type: application/json');
 
 try {
   $stmt = $pdo->query("
@@ -20,6 +20,7 @@ try {
         FROM FeePlans fp
         JOIN Classes c ON fp.class_id = c.class_id
         JOIN FeeHeads fh ON fp.fee_head_id = fh.fee_head_id
+        WHERE fp.is_deleted = 0 AND fp.deleted_at IS NULL
         ORDER BY c.class_name, fh.fee_head_name, fp.month_name
     ");
 

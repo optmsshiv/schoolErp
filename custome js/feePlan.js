@@ -100,6 +100,51 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(err => console.error("Error loading fee plans:", err));
   }
 
+  // ---------------- Load Deleted Fee Plans ----------------
+  function loadDeletedFeePlans() {
+    fetch("../php/feePlan/fetch_deleted_fee_plans.php")
+      .then(res => res.json())
+      .then(data => {
+        const deletedBody = document.getElementById("deletedFeePlanBody");
+        deletedBody.innerHTML = "";
+
+        if (data.length === 0) {
+          deletedBody.innerHTML = `<tr><td colspan="6" class="text-center">No Deleted Fee Plans</td></tr>`;
+          return;
+        }
+
+        data.forEach(plan => {
+          let row = `
+          <tr>
+            <td>${plan.class_name}</td>
+            <td>${plan.fee_head_name}</td>
+            <td>${plan.month_name}</td>
+            <td>${plan.amount}</td>
+            <td>${formatDateTime(plan.deleted_at)}</td>
+            <td></td>
+            <td>
+              <button class="btn btn-sm btn-outline-success restore-btn"
+                      data-id="${plan.fee_plan_id}">
+                Restore
+              </button>
+            </td>
+          </tr>`;
+          deletedBody.innerHTML += row;
+        });
+      })
+      .catch(err => console.error("Error loading deleted plans:", err));
+  }
+
+    // ------------- function format date and time --------------
+  function formatDateTime(dt) {
+    if (!dt) return "-";
+    const d = new Date(dt);
+    return d.toLocaleString("en-IN", {
+      day: "2-digit", month: "short", year: "numeric",
+      hour: "2-digit", minute: "2-digit"
+    });
+  }
+
   // ---------------- Edit Modal  ---------------
 
   function loadDropdowns() {
@@ -215,6 +260,38 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
   });
+
+
+  // ----- Restore Logic ----------------
+  document.getElementById("deletedFeePlanBody").addEventListener("click", (e) => {
+    if (e.target.classList.contains("restore-btn")) {
+      const id = e.target.dataset.id;
+      if (!confirm("Restore this fee plan?")) return;
+
+      fetch("../php/feePlan/restore_fee_plan.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fee_plan_id: id })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "success") {
+            showToast("Fee Plan restored successfully!", "success");
+            loadFeePlans();        // refresh active table
+            loadDeletedFeePlans(); // refresh deleted table
+          } else {
+            showToast("Error: " + data.message, "error");
+          }
+        })
+        .catch(err => console.error("Restore failed:", err));
+    }
+  });
+
+  // ---- reload the deleted tab table when open ----
+  document.getElementById("deleted-tab").addEventListener("shown.bs.tab", () => {
+    loadDeletedFeePlans();
+  });
+
 
 
   // ---------------- Month Dropdown Logic ----------------
@@ -360,5 +437,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // ---------------- Initial Loads ----------------
   loadFeeData();
   loadFeePlans(); // ✅ Load existing plans when page starts
+  loadDeletedFeePlans(); // Load deleted fee plan when page starts
   loadDropdowns(); // ✅ Load dropdown data when page loads
 });

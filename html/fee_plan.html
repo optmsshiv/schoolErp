@@ -319,131 +319,199 @@
 
                           <!-- Fee Plan Tab -->
                           <div class="tab-pane fade" id="fee-plan" role="tabpanel">
-                            <h4>Create Fee Plan for Each Month</h4>
-                            <div class="mt-3">
-                              <form id="createFeePlanForm">
-                                <div class="row justify-content-center align-items-center">
-                                  <!-- Fee Head Dropdown -->
-                                  <div class="col-md-3 mb-3">
-                                    <label for="feeHeadSelect" class="form-label">Fee Head</label>
-                                    <select class="form-select" id="feeHeadSelect" required></select>
-                                    <!-- Options will be filled dynamically -->
-                                  </div>
+                            <div class="nav-align-top nav-tabs-shadow">
+                              <ul class="nav nav-tabs nav-fill mb-3" id="feePlanTabs" role="tablist">
+                                <li class="nav-item">
+                                  <button
+                                    type="button"
+                                    role="tab"
+                                    aria-selected="true"
+                                    class="btn-outline-primary nav-link active" id="active-tab" data-bs-toggle="tab"
+                                    href="#activePlans">
+                                  <span class="d-none d-sm-inline-flex align-items-center">
+                                  <i class="icon-base bx bx-category icon-sm me-1"></i>Active Plans</span>
+                                    <i class="icon-base bx bx-category icon-sm d-sm-none"></i>
+                                  </button>
+                                </li>
 
-                                  <!-- Class Dropdown -->
-                                  <div class="col-md-2 mb-3">
-                                    <label for="classNameSelect" class="form-label">Class</label>
-                                    <select id="classNameSelect" class="form-select" name="class" required></select>
-                                      <!-- Option values will be populated dynamically with AJAX -->
-                                  </div>
+                                <li class="nav-item">
+                                  <button
+                                    type="button"
+                                    aria-selected="false"
+                                    role="tab"
+                                    class="btn-outline-primary nav-link" id="deleted-tab" role="tab"
+                                    data-bs-toggle="tab" href="#deletedPlans">
 
-                                  <!-- Month Dropdown -->
-                                  <div class="col-md-3 mb-3">
-                                    <label for="monthDropdown" class="form-label">Month(s)</label>
-                                    <div class="form-select position-relative" id="monthDropdown"
-                                         style="cursor: pointer;">
-                                      Select Month(s)
-                                      <div class="dropdown-menu p-2 w-100 shadow" id="dropdownMenu"
-                                           style="display: none; position: absolute; top: 100%; left: 0; z-index: 1000;">
-                                        <div class="form-check">
-                                          <input type="checkbox" id="selectAllCheckbox" class="form-check-input" />
-                                          <label class="form-check-label" for="selectAllCheckbox">Select All</label>
+                                  <span class="d-none d-sm-inline-flex align-items-center "
+                                  ><i class="icon-base bx bx-trash icon-sm me-1"></i>Deleted Plans</span
+                                  >
+                                    <i class="icon-base bx bx-trash icon-sm d-sm-none"></i>
+
+                                  </button>
+                                </li>
+                              </ul>
+
+                              <div class="tab-content">
+                                <!-- ✅ Active Fee Plans -->
+                                <div class="tab-pane fade show active" id="activePlans" role="tabpanel">
+
+                                  <h4>Create Fee Plan for Each Month</h4>
+                                  <div class="mt-3">
+                                    <form id="createFeePlanForm">
+                                      <div class="row justify-content-center align-items-center">
+                                        <!-- Fee Head Dropdown -->
+                                        <div class="col-md-3 mb-3">
+                                          <label for="feeHeadSelect" class="form-label">Fee Head</label>
+                                          <select class="form-select" id="feeHeadSelect" required></select>
+                                          <!-- Options will be filled dynamically -->
                                         </div>
-                                        <div id="monthsContainer"></div> <!-- ✅ JS will fill this -->
 
-                                        <!-- ✅ Clear Selection Button -->
-                                        <div class="mt-2 text-end">
-                                          <button type="button" class="btn btn-sm btn-outline-secondary" id="clearSelectionBtn">
-                                            Clear Selection
-                                          </button>
+                                        <!-- Class Dropdown -->
+                                        <div class="col-md-2 mb-3">
+                                          <label for="classNameSelect" class="form-label">Class</label>
+                                          <select id="classNameSelect" class="form-select" name="class"
+                                                  required></select>
+                                          <!-- Option values will be populated dynamically with AJAX -->
+                                        </div>
+
+                                        <!-- Month Dropdown -->
+                                        <div class="col-md-3 mb-3">
+                                          <label for="monthDropdown" class="form-label">Month(s)</label>
+                                          <div class="form-select position-relative" id="monthDropdown"
+                                               style="cursor: pointer;">
+                                            Select Month(s)
+                                            <div class="dropdown-menu p-2 w-100 shadow" id="dropdownMenu"
+                                                 style="display: none; position: absolute; top: 100%; left: 0; z-index: 1000;">
+                                              <div class="form-check">
+                                                <input type="checkbox" id="selectAllCheckbox"
+                                                       class="form-check-input" />
+                                                <label class="form-check-label" for="selectAllCheckbox">Select
+                                                  All</label>
+                                              </div>
+                                              <div id="monthsContainer"></div> <!-- ✅ JS will fill this -->
+
+                                              <!-- ✅ Clear Selection Button -->
+                                              <div class="mt-2 text-end">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                        id="clearSelectionBtn">
+                                                  Clear Selection
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <!-- end Month Dropdown -->
+
+                                        <!-- Fee Amount -->
+                                        <div class="col-md-3 mb-3">
+                                          <label for="feeAmount" class="form-label">Fee Amount</label>
+                                          <input type="number" class="form-control" id="feeAmount" name="amount"
+                                                 placeholder="Enter fee amount" required />
+                                        </div>
+                                      </div>
+
+                                      <!-- Submit Button -->
+                                      <button type="submit" class="btn btn-primary mt-3">Create Fee Plan</button>
+                                    </form>
+                                    <hr />
+                                    <h5>Fee Plan List</h5>
+                                    <div class="table-responsive">
+                                      <table class="table table-bordered table-hover" id="feePlanTable">
+                                        <thead>
+                                        <tr class="table-secondary">
+                                          <th style="width: 1%">Class</th>
+                                          <th style="width: 8%">Fee Head</th>
+                                          <th style="width: 1%">Month</th>
+                                          <th style="width: 1%">Fee Amount</th>
+                                          <th style="width: 1%">Created AT</th>
+                                          <th style="width: 1%">Updated AT</th>
+                                          <th style="width: 8%">Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="feePlanBody"></tbody>
+                                      </table>
+                                    </div>
+
+                                    <!-- Edit Fee Plan Modal -->
+                                    <div class="modal fade" id="editFeePlanModal" tabindex="-1"
+                                         data-bs-backdrop="static"
+                                         aria-hidden="true">
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <form id="editFeePlanForm">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title">Edit Fee Plan</h5>
+                                              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                      aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <input type="hidden" id="editFeePlanId">
+
+                                              <div class="mb-3">
+                                                <label for="editClassSelect" class="form-label">Class</label>
+                                                <select id="editClassSelect" class="form-select" required></select>
+                                              </div>
+
+                                              <div class="mb-3">
+                                                <label for="editFeeHeadSelect" class="form-label">Fee Head</label>
+                                                <select id="editFeeHeadSelect" class="form-select" required></select>
+                                              </div>
+
+                                              <div class="mb-3">
+                                                <label for="editMonth" class="form-label">Month</label>
+                                                <input type="text" id="editMonth" class="form-control" readonly
+                                                       required>
+                                              </div>
+
+                                              <div class="mb-3">
+                                                <label for="editAmount" class="form-label">Amount</label>
+                                                <input type="number" id="editAmount" class="form-control" required>
+                                              </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="submit" class="btn btn-primary">Update</button>
+                                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Cancel
+                                              </button>
+                                            </div>
+                                          </form>
                                         </div>
                                       </div>
                                     </div>
-                                  </div>
-                                  <!-- end Month Dropdown -->
+                                    <!-- edit Fee plan modal-->
 
-                                  <!-- Fee Amount -->
-                                  <div class="col-md-3 mb-3">
-                                    <label for="feeAmount" class="form-label">Fee Amount</label>
-                                    <input type="number" class="form-control" id="feeAmount" name="amount"
-                                           placeholder="Enter fee amount" required />
                                   </div>
                                 </div>
 
-                                <!-- Submit Button -->
-                                <button type="submit" class="btn btn-primary mt-3">Create Fee Plan</button>
-                              </form>
-                              <hr />
-                              <h5>Fee Plan List</h5>
-                              <div class="table-responsive">
-                                <table class="table table-bordered" id="feePlanTable">
-                                  <thead>
-                                  <tr class="table-secondary">
-                                    <th style="width: 1%">Class</th>
-                                    <th style="width: 8%">Fee Head</th>
-                                    <th style="width: 1%">Month</th>
-                                    <th style="width: 1%">Fee Amount</th>
-                                    <th style="width: 1%">Created AT</th>
-                                    <th style="width: 1%">Updated AT</th>
-                                    <th style="width: 8%">Actions</th>
-                                  </tr>
-                                  </thead>
-                                  <tbody id="feePlanBody"></tbody>
-                                </table>
-                              </div>
-
-                              <!-- Edit Fee Plan Modal -->
-                              <div class="modal fade" id="editFeePlanModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
-                                <div class="modal-dialog">
-                                  <div class="modal-content">
-                                    <form id="editFeePlanForm">
-                                      <div class="modal-header">
-                                        <h5 class="modal-title">Edit Fee Plan</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                      </div>
-                                      <div class="modal-body">
-                                        <input type="hidden" id="editFeePlanId">
-
-                                        <div class="mb-3">
-                                          <label for="editClassSelect" class="form-label">Class</label>
-                                          <select id="editClassSelect" class="form-select" required></select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                          <label for="editFeeHeadSelect" class="form-label">Fee Head</label>
-                                          <select id="editFeeHeadSelect" class="form-select" required></select>
-                                        </div>
-
-                                        <div class="mb-3">
-                                          <label for="editMonth" class="form-label">Month</label>
-                                          <input type="text" id="editMonth" class="form-control" readonly required>
-                                        </div>
-
-                                        <div class="mb-3">
-                                          <label for="editAmount" class="form-label">Amount</label>
-                                          <input type="number" id="editAmount" class="form-control" required>
-                                        </div>
-                                      </div>
-                                      <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Update</button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                      </div>
-                                    </form>
-                                  </div>
+                                <!-- 🗑️ Deleted Fee Plans -->
+                                <div class="tab-pane fade" id="deletedPlans">
+                                  <table class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr class="table-danger">
+                                      <th>Class</th>
+                                      <th>Fee Head</th>
+                                      <th>Month</th>
+                                      <th>Amount</th>
+                                      <th>Deleted At</th>
+                                      <th>Deleted By</th>
+                                      <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="deletedFeePlanBody"></tbody>
+                                  </table>
                                 </div>
                               </div>
-
-                              <!-- edit Fee plan modal-->
-
                             </div>
                           </div>
 
                           <!-- Toast Container -->
                           <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
-                            <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div id="toastMessage" class="toast align-items-center text-white bg-success border-0"
+                                 role="alert" aria-live="assertive" aria-atomic="true">
                               <div class="d-flex">
                                 <div id="toastBody" class="toast-body">Hello, world!</div>
-                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                        data-bs-dismiss="toast"></button>
                               </div>
                             </div>
                           </div>
