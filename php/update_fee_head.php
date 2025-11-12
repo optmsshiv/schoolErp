@@ -1,6 +1,4 @@
 <?php
-// update_fee_head.php
-
 global $pdo;
 header('Content-Type: application/json');
 include '../php/db_connection.php'; // Make sure db_connection.php sets up a PDO connection as $pdo
