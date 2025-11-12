@@ -4,7 +4,6 @@ global $pdo;
 header('Content-Type: application/json');
 include '../db_connection.php';
 
-
 try {
   $stmt = $pdo->query("
         SELECT
