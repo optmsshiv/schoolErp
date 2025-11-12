@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         data.forEach(plan => {
           let row = `
             <tr>
-            <td>${plan.fee_plan_id}</td>
+
             <td>${plan.class_name}</td>
             <td>${plan.fee_head_name}</td>
             <td>${plan.month_name}</td>
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let option = document.createElement("option");
       option.value = fh.fee_head_id;
       option.textContent = fh.fee_head_name;
-      if (fh.fee_head_id == selectedFeeHeadId) option.selected = true;
+      if (parseInt(fh.fee_head_id) === parseInt(selectedFeeHeadId)) option.selected = true;
       editFeeHeadSelect.appendChild(option);
     });
   }
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
         classId: btn.dataset.class,
         feeHeadId: btn.dataset.feehead,
         month: btn.dataset.month,
-        amount: btn.dataset.amount
+        amount: btn.dataset.amount,
       });
 
       // Fill form fields
@@ -185,6 +185,35 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       })
       .catch(err => console.error("Update failed:", err));
+  });
+
+
+  // ----- Delete Logic ----------------
+  tableBody.addEventListener("click", (e) => {
+    if (e.target.classList.contains("delete-btn")) {
+      const feePlanId = e.target.dataset.id;
+
+      if (!confirm("Are you sure you want to delete this fee plan?")) return;
+
+      fetch("../php/feePlan/delete_fee_plan.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fee_plan_id: feePlanId })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "success") {
+            showToast("Fee Plan deleted successfully!", "success");
+            loadFeePlans(); // ✅ Refresh table after delete
+          } else {
+            showToast("Error: " + data.message, "error");
+          }
+        })
+        .catch(err => {
+          console.error("Delete failed:", err);
+          showToast("Something went wrong while deleting!", "error");
+        });
+    }
   });
 
 

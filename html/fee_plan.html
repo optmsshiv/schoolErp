@@ -291,6 +291,7 @@
                               </thead>
                               <tbody></tbody>
                             </table>
+
                             <!-- Edit Modal -->
                             <div class="modal fade" id="editFeeHeadModal" tabindex="-1">
                               <div class="modal-dialog">
@@ -378,7 +379,6 @@
                                 <table class="table table-bordered" id="feePlanTable">
                                   <thead>
                                   <tr class="table-secondary">
-                                    <th style="width: 1%">Id</th>
                                     <th style="width: 1%">Class</th>
                                     <th style="width: 8%">Fee Head</th>
                                     <th style="width: 1%">Month</th>
@@ -391,14 +391,15 @@
                                   <tbody id="feePlanBody"></tbody>
                                 </table>
                               </div>
+
                               <!-- Edit Fee Plan Modal -->
-                              <div class="modal fade" id="editFeePlanModal" tabindex="-1" aria-hidden="true">
+                              <div class="modal fade" id="editFeePlanModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true">
                                 <div class="modal-dialog">
                                   <div class="modal-content">
                                     <form id="editFeePlanForm">
                                       <div class="modal-header">
                                         <h5 class="modal-title">Edit Fee Plan</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                       </div>
                                       <div class="modal-body">
                                         <input type="hidden" id="editFeePlanId">
@@ -415,7 +416,7 @@
 
                                         <div class="mb-3">
                                           <label for="editMonth" class="form-label">Month</label>
-                                          <input type="text" id="editMonth" class="form-control" required>
+                                          <input type="text" id="editMonth" class="form-control" readonly required>
                                         </div>
 
                                         <div class="mb-3">
@@ -433,8 +434,6 @@
                               </div>
 
                               <!-- edit Fee plan modal-->
-
-
 
                             </div>
                           </div>
@@ -571,11 +570,11 @@
 <script src="../assets/vendor/js/bootstrap.js"></script>
 <script src="../custome%20js/fee_head.js"></script>
 <script src="../custome js/feePlan.js"></script>
-<script src="../custome js/fetch_fee_plan.js"></script>
 <script src="../assets/vendor/js/menu.js"></script>
 <script src="../custome js/bankDetails.js"></script>
 
-<!--Chart js-->
+<!--Chart js
+<script src="../custome%20js/update_fee_plan.js"></script> -->
 
 <!-- endbuild -->
 

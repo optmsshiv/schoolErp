@@ -1,20 +1,20 @@
 <?php
-// Include the database connection file
 global $pdo;
-include '../db_connection.php';
-
 header('Content-Type: application/json');
+include '../db_connection.php'; // adjust path as needed
 
-if (isset($_POST['id'])) {
-  $id = intval($_POST['id']);
+$data = json_decode(file_get_contents('php://input'), true);
 
-  try {
-    $stmt = $pdo->prepare("DELETE FROM FeePlans WHERE fee_plan_id = ?");
-    $stmt->execute([$id]);
-    echo json_encode(["status" => "success", "message" => "Fee Plan deleted successfully"]);
-  } catch (Exception $e) {
-    echo json_encode(["status" => "error", "message" => $e->getMessage()]);
-  }
+if (!isset($data['fee_plan_id'])) {
+  echo json_encode(['status' => 'error', 'message' => 'Missing fee plan ID']);
+  exit;
+}
+
+$fee_plan_id = intval($data['fee_plan_id']);
+
+$stmt = $pdo->prepare("DELETE FROM feePlans WHERE fee_plan_id = ?");
+if ($stmt->execute([$fee_plan_id])) {
+  echo json_encode(['status' => 'success']);
 } else {
-  echo json_encode(["status" => "error", "message" => "Invalid ID"]);
+  echo json_encode(['status' => 'error', 'message' => 'Failed to delete fee plan']);
 }
