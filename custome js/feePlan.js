@@ -195,9 +195,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!confirm("Are you sure you want to delete this fee plan?")) return;
 
-      console.log("Deleting fee plan ID:", feePlanId);
-
-
       fetch("../php/feePlan/delete_fee_plan.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
