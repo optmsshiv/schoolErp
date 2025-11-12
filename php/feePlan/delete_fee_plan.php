@@ -1,5 +1,9 @@
 <?php
 global $pdo;
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 header('Content-Type: application/json');
 include '../db_connection.php'; // adjust path as needed
 
