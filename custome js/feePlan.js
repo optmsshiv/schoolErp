@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
       fee_amount: editAmount.value
     };
 
-    fetch("../php/feePlan/update_fee_plan.php", {
+    fetch("../../php/feePlan/update_fee_plan.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
