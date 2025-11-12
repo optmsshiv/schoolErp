@@ -8,7 +8,7 @@ header('Content-Type: application/json');
 try {
   $stmt = $pdo->query("
         SELECT
-            fp.fee_plan_id,
+            fp.fee_plan_id,     -- for fetch fee plan id
             fp.class_id,        -- required for dataset
             fp.fee_head_id,     -- required for dataset
             c.class_name,
