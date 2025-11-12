@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Handle update submit
+  // ----- Handle update submit ----------
   editForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
