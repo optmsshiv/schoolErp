@@ -1,0 +1,72 @@
+<!-- Common Navbar -->
+<nav class="navbar">
+  <div class="nav-left">
+    <img src="../assets/img/illustrations/logo.png" alt="OPTMS Tech" class="logo">
+    <span class="app-title">School ERP</span>
+  </div>
+  <ul class="nav-links">
+    <!-- Common links -->
+    <li><a href="#" id="homeLink">🏠 Home</a></li>
+    <li><a href="#" id="profileLink">👤 Profile</a></li>
+
+    <!-- Role-based links will appear here dynamically -->
+  </ul>
+  <div class="nav-right">
+    <span id="navUsername"></span>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<style>
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #4a90e2, #007bff);
+    padding: 12px 24px;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+  }
+  .logo {
+    width: 40px;
+    margin-right: 10px;
+  }
+  .app-title {
+    font-weight: 600;
+    font-size: 18px;
+  }
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 18px;
+  }
+  .nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .nav-links li a:hover {
+    text-decoration: underline;
+  }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logout-btn {
+    background: #dc3545;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .logout-btn:hover {
+    background: #c82333;
+  }
+</style>

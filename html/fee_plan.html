@@ -431,55 +431,6 @@
                                         <tbody id="feePlanBody"></tbody>
                                       </table>
                                     </div>
-
-                                    <!-- Edit Fee Plan Modal -->
-                                    <div class="modal fade" id="editFeePlanModal" tabindex="-1"
-                                         data-bs-backdrop="static"
-                                         aria-hidden="true">
-                                      <div class="modal-dialog">
-                                        <div class="modal-content">
-                                          <form id="editFeePlanForm">
-                                            <div class="modal-header">
-                                              <h5 class="modal-title">Edit Fee Plan</h5>
-                                              <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                      aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                              <input type="hidden" id="editFeePlanId">
-
-                                              <div class="mb-3">
-                                                <label for="editClassSelect" class="form-label">Class</label>
-                                                <select id="editClassSelect" class="form-select" required></select>
-                                              </div>
-
-                                              <div class="mb-3">
-                                                <label for="editFeeHeadSelect" class="form-label">Fee Head</label>
-                                                <select id="editFeeHeadSelect" class="form-select" required></select>
-                                              </div>
-
-                                              <div class="mb-3">
-                                                <label for="editMonth" class="form-label">Month</label>
-                                                <input type="text" id="editMonth" class="form-control" readonly
-                                                       required>
-                                              </div>
-
-                                              <div class="mb-3">
-                                                <label for="editAmount" class="form-label">Amount</label>
-                                                <input type="number" id="editAmount" class="form-control" required>
-                                              </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                              <button type="submit" class="btn btn-primary">Update</button>
-                                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Cancel
-                                              </button>
-                                            </div>
-                                          </form>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <!-- edit Fee plan modal-->
-
                                   </div>
                                 </div>
 
@@ -502,6 +453,54 @@
                                 </div>
                               </div>
                             </div>
+
+                            <!-- Edit Fee Plan Modal -->
+                            <div class="modal fade" id="editFeePlanModal" tabindex="-1"
+                                 data-bs-backdrop="static"
+                                 aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <form id="editFeePlanForm">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title">Edit Fee Plan</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                              aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <input type="hidden" id="editFeePlanId">
+
+                                      <div class="mb-3">
+                                        <label for="editClassSelect" class="form-label">Class</label>
+                                        <select id="editClassSelect" class="form-select" required></select>
+                                      </div>
+
+                                      <div class="mb-3">
+                                        <label for="editFeeHeadSelect" class="form-label">Fee Head</label>
+                                        <select id="editFeeHeadSelect" class="form-select" required></select>
+                                      </div>
+
+                                      <div class="mb-3">
+                                        <label for="editMonth" class="form-label">Month</label>
+                                        <input type="text" id="editMonth" class="form-control" readonly
+                                               required>
+                                      </div>
+
+                                      <div class="mb-3">
+                                        <label for="editAmount" class="form-label">Amount</label>
+                                        <input type="number" id="editAmount" class="form-control" required>
+                                      </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="submit" class="btn btn-primary">Update</button>
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Cancel
+                                      </button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- edit Fee plan modal-->
                           </div>
 
                           <!-- Toast Container -->
