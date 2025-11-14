@@ -1,10 +1,19 @@
 <?php
 // Database connection configuration
+global $pdo;
+$pdo->exec("SET time_zone = '+05:30'");
+date_default_timezone_set('Asia/Kolkata');
+
 $host = 'localhost';
 $port = '3306'; // Specify port separately for better clarity
-$db = 'edrppymy_rrgis';
-$user = 'edrppymy_admin';
-$pass = '13579@demo';
+ $db = 'edrppymy_rrgis';
+ $user = 'edrppymy_admin';
+ $pass = '13579@demo';
+
+// database for local testing
+// $db = 'rrgis';
+// $user = 'root';
+// $pass = '';
 
 try {
     // Create a PDO instance with the DSN
