@@ -83,14 +83,15 @@ document.addEventListener("DOMContentLoaded", function () {
             <td>${plan.created_at}</td>
             <td>${plan.updated_at}</td>
             <td>
-                <button class="btn btn-sm btn-outline-info edit-btn"
+                <a href="javascript:;" class="tf-icons bx bx-edit bx-sm text-warning edit-btn"
                         data-id="${plan.fee_plan_id}"
                         data-class="${plan.class_id}"
                         data-feehead="${plan.fee_head_id}"
                         data-month="${plan.month_name}"
                         data-amount="${plan.amount}">
-                        Edit</button>
-            <button class="btn btn-sm btn-danger delete-btn" data-id="${plan.fee_plan_id}">Delete</button>
+                         </a>
+                  <a href="javascript:;" class="tf-icons bx bx-trash bx-sm ms-2 text-danger delete-btn"
+                        data-id="${plan.fee_plan_id}"></a>
             </td>
             </tr>
           `;
