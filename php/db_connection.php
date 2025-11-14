@@ -1,41 +1,40 @@
 <?php
-// Database connection configuration
-global $pdo;
-$pdo->exec("SET time_zone = '+05:30'");
+// Set PHP timezone (affects PHP functions)
 date_default_timezone_set('Asia/Kolkata');
 
 $host = 'localhost';
-$port = '3306'; // Specify port separately for better clarity
- $db = 'edrppymy_rrgis';
- $user = 'edrppymy_admin';
- $pass = '13579@demo';
+$port = '3306';
+$db   = 'edrppymy_rrgis';
+$user = 'edrppymy_admin';
+$pass = '13579@demo';
 
-// database for local testing
-// $db = 'rrgis';
+// Local testing
+// $db   = 'rrgis';
 // $user = 'root';
 // $pass = '';
 
 try {
-    // Create a PDO instance with the DSN
-    $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
-    $pdo = new PDO($dsn, $user, $pass);
+  // Create PDO connection
+  $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
+  $pdo = new PDO($dsn, $user, $pass);
 
-    // Set PDO attributes
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); // Fetch as associative arrays by default
+  // PDO attributes
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-    // Optionally, you can check the connection is working
-    $pdo->query("SELECT 1");  // A simple test query
+  // FIX: Set MySQL timezone AFTER PDO is created
+  $pdo->exec("SET time_zone = '+05:30'");
+
+  // Simple test
+  $pdo->query("SELECT 1");
 
 } catch (PDOException $e) {
-    // Log error to a file instead of exposing it publicly
-    error_log('Database connection failed: ' . $e->getMessage(), 0);
+  error_log('Database connection failed: ' . $e->getMessage(), 0);
 
-    // Respond with a generic message
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Unable to connect to the database. Please try again later.'
-    ]);
-    exit; // Stop further script execution in case of failure
+  echo json_encode([
+    'status' => 'error',
+    'message' => 'Unable to connect to the database. Please try again later.'
+  ]);
+  exit;
 }
 ?>
