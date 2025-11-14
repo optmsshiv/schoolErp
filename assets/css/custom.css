@@ -1,0 +1,63 @@
+/* Remove right-side space */
+#feeTab.nav-tabs {
+  border-bottom: none !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Make vertical nav take full width */
+#feeTab .nav-link {
+  width: 90% !important;
+  min-width: 90% !important;
+
+  /* Prevent height from growing */
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* Keep original height untouched */
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  line-height: 1.2;
+
+  display: block;
+}
+
+
+/* Optional: button styling similar to your outline buttons */
+
+/* Make tab buttons white by default */
+#feeTab .nav-link {
+  background-color: #fff !important;
+  color: #03c3ec !important;          /* info color */
+  border: 1px solid #03c3ec !important;
+  border-radius: 5px;
+}
+
+/* Active tab button */
+#feeTab .nav-link.active {
+  background-color: #03c3ec !important;
+  color: #fff !important;
+}
+
+/* Remove default grey hover background */
+#feeTab .nav-link:hover {
+  background-color: rgb(3, 195, 236) !important;
+  color: #fff !important;
+}
+
+/* Remove Bootstrap’s default padding completely */
+.custom-tab-content .tab-pane {
+  padding: 0 !important;
+}
+
+/* Add clean padding for neat layout */
+.custom-tab-content {
+  padding-left: 5px !important;  /* space between tabs and content */
+  padding-right: 0 !important;
+}
+
+/* Optional: slightly pad inner content */
+.custom-tab-content .tab-pane > * {
+  margin-top: 5px;
+}

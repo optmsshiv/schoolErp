@@ -49,6 +49,9 @@
 
   <!-- SweetAlert2 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css" rel="stylesheet" />
+
+  <!-- custom css --->
+  <link type="text/css" href="../assets/css/custom.css" rel="stylesheet" />
 </head>
 
 <body class="layout-navbar-fixed">
@@ -205,26 +208,33 @@
                         <!-- Button-style Tabs -->
                         <ul class="nav nav-tabs flex-column" id="feeTab" role="tablist">
 
-                          <button class="btn btn-outline-info active" id="month-tab" data-bs-toggle="tab"
+                          <li class="nav-item">
+                          <button class="nav-link btn-outline-info active" id="month-tab" data-bs-toggle="tab"
                                   href="#month-name" role="tab">
                             Month
                           </button>
+                          </li>
 
-                          <button class="btn btn-outline-info mt-3" id="fee-head-tab" data-bs-toggle="tab"
+                          <li class="nav-item mt-2">
+                          <button class="nav-link btn-outline-info mt-3" id="fee-head-tab" data-bs-toggle="tab"
                                   href="#fee-head" role="tab">
                             Fee Head
                           </button>
-
-                          <button class="btn btn-outline-info mt-3" id="fee-plan-tab" data-bs-toggle="tab"
+                            </li>
+                          <li class="nav-item mt-2">
+                          <button class="nav-link btn-outline-info mt-3" id="fee-plan-tab" data-bs-toggle="tab"
                                   href="#fee-plan" role="tab">
                             Fee Plan
                           </button>
+                          </li>
 
-                          <button class="btn btn-outline-info mt-3" id="bank-tab-btn" data-bs-toggle="tab"
+                          <li class="nav-item mt-2">
+                          <button class="nav-link btn-outline-info mt-3" id="bank-tab-btn" data-bs-toggle="tab"
                                   href="#bank-tab-content" role="tab" aria-controls="bank-tab-content"
                                   aria-selected="false">
                             Bank Setup
                           </button>
+                          </li>
 
                         </ul>
                       </div>
@@ -319,15 +329,18 @@
 
                           <!-- Fee Plan Tab -->
                           <div class="tab-pane fade" id="fee-plan" role="tabpanel">
-                            <div class="nav-align-top nav-tabs-shadow">
-                              <ul class="nav nav-tabs nav-fill mb-3" id="feePlanTabs" role="tablist">
+
+                            <div>
+
+                              <!-- Tabs -->
+                              <ul class="nav nav-tabs nav-fill mb-0" id="feePlanTabs" role="tablist">
                                 <li class="nav-item">
                                   <button
                                     type="button"
                                     role="tab"
                                     aria-selected="true"
                                     class="btn-outline-primary nav-link active" id="active-tab" data-bs-toggle="tab"
-                                    href="#activePlans">
+                                    data-bs-target="#activePlans">
                                   <span class="d-none d-sm-inline-flex align-items-center">
                                   <i class="icon-base bx bx-category icon-sm me-1"></i>Active Plans</span>
                                     <i class="icon-base bx bx-category icon-sm d-sm-none"></i>
@@ -340,18 +353,17 @@
                                     aria-selected="false"
                                     role="tab"
                                     class="btn-outline-primary nav-link" id="deleted-tab" role="tab"
-                                    data-bs-toggle="tab" href="#deletedPlans">
-
-                                  <span class="d-none d-sm-inline-flex align-items-center "
-                                  ><i class="icon-base bx bx-trash icon-sm me-1"></i>Deleted Plans</span
-                                  >
+                                    data-bs-toggle="tab" data-bs-target="#deletedPlans">
+                                  <span class="d-none d-sm-inline-flex align-items-center">
+                                    <i class="icon-base bx bx-trash icon-sm me-1"></i>Deleted Plans</span>
                                     <i class="icon-base bx bx-trash icon-sm d-sm-none"></i>
-
                                   </button>
                                 </li>
                               </ul>
 
-                              <div class="tab-content">
+                              <!-- Tab Content -->
+                              <div class="tab-content custom-tab-content" id="feePlanTabsContent">
+
                                 <!-- ✅ Active Fee Plans -->
                                 <div class="tab-pane fade show active" id="activePlans" role="tabpanel">
 
@@ -413,19 +425,19 @@
                                       <!-- Submit Button -->
                                       <button type="submit" class="btn btn-primary mt-3">Create Fee Plan</button>
                                     </form>
-                                    <hr />
+                                    <hr/>
                                     <h5>Fee Plan List</h5>
                                     <div class="table-responsive">
                                       <table class="table table-bordered table-hover" id="feePlanTable">
                                         <thead>
                                         <tr class="table-secondary">
-                                          <th style="width: 1%">Class</th>
-                                          <th style="width: 8%">Fee Head</th>
-                                          <th style="width: 1%">Month</th>
-                                          <th style="width: 1%">Fee Amount</th>
-                                          <th style="width: 1%">Created AT</th>
-                                          <th style="width: 1%">Updated AT</th>
-                                          <th style="width: 8%">Actions</th>
+                                          <th style="width: 2%">Class</th>
+                                          <th>Fee Head</th>
+                                          <th>Month</th>
+                                          <th>Amount</th>
+                                          <th>Created</th>
+                                          <th>Updated</th>
+                                          <th>Actions</th>
                                         </tr>
                                         </thead>
                                         <tbody id="feePlanBody"></tbody>
@@ -435,7 +447,7 @@
                                 </div>
 
                                 <!-- 🗑️ Deleted Fee Plans -->
-                                <div class="tab-pane fade" id="deletedPlans">
+                                <div class="tab-pane fade" id="deletedPlans" role="tabpanel">
                                   <table class="table table-bordered table-hover">
                                     <thead>
                                     <tr class="table-danger">
@@ -451,8 +463,10 @@
                                     <tbody id="deletedFeePlanBody"></tbody>
                                   </table>
                                 </div>
-                              </div>
-                            </div>
+                              </div>  <!-- END tab-content -->
+                              </div>  <!-- END nav-align-top -->
+
+
 
                             <!-- Edit Fee Plan Modal -->
                             <div class="modal fade" id="editFeePlanModal" tabindex="-1"
