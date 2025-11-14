@@ -80,8 +80,8 @@ document.addEventListener("DOMContentLoaded", function () {
             <td>${plan.fee_head_name}</td>
             <td>${plan.month_name}</td>
             <td>${plan.amount}</td>
-            <td>${plan.created_at}</td>
-            <td>${plan.updated_at}</td>
+            <td>${formatDateTime(plan.created_at)}</td>
+            <td>${formatDateTime(plan.updated_at)}</td>
             <td>
                 <a href="javascript:;" class="tf-icons bx bx-edit bx-sm text-warning edit-btn"
                         data-id="${plan.fee_plan_id}"
