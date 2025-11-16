@@ -8,17 +8,34 @@ let currentIndex = -1;
 
 /* -------------------------
    OPEN / CLOSE PALETTE
--------------------------- */
+--------------------------*/
 function openPalette() {
+  const overlay = document.getElementById("searchPalette");
+
+  overlay.classList.remove("closing");
   overlay.style.display = "flex";
-  setTimeout(() => input.focus(), 150);
+
+  setTimeout(() => {
+    overlay.classList.add("active");
+    input.focus();
+  }, 10);
 }
 openBtn.addEventListener("click", openPalette);
 
+
 function closePalette() {
-  overlay.style.display = "none";
+  const overlay = document.getElementById("searchPalette");
+
+  overlay.classList.add("closing");
+  overlay.classList.remove("active");
+
+  // remove from screen AFTER animation
+  setTimeout(() => {
+    overlay.style.display = "none";
+  }, 250); // match CSS transition
 }
 closeBtn.addEventListener("click", closePalette);
+
 
 // ESC to close
 document.addEventListener("keydown", (e) => {
@@ -58,7 +75,7 @@ function saveRecent(term) {
   recent = recent.filter(t => t !== term); // remove duplicate
   recent.unshift(term);
 
-  if (recent.length > 8) recent.pop();
+  if (recent.length > 4) recent.pop();
 
   localStorage.setItem("recentStudents", JSON.stringify(recent));
   loadRecent();
@@ -83,13 +100,18 @@ function hideSkeleton() {
    SEARCH + KEY NAVIGATION
 -------------------------- */
 input.addEventListener("keyup", function (e) {
+// Auto-hide recent when typing
+  if (input.value.trim().length > 0) {
+    recentList.style.display = "none";
+  } else {
+    recentList.style.display = "block"; // empty input → show recent again
+  }
 
   // KEYBOARD NAVIGATION HANDLER
   if (["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
     navigateResults(e.key);
     return;
   }
-
   // Normal typing → Perform fresh search
   startSearch();
 });
@@ -105,7 +127,7 @@ function startSearch() {
     searchStudents(input, document.getElementById("paletteResults"));
     saveRecent(term);
     hideSkeleton();
-  }, 250);
+  }, 300);
 }
 
 /* -------------------------
@@ -124,10 +146,20 @@ function navigateResults(key) {
   if (currentIndex >= items.length) currentIndex = 0;
   if (currentIndex < 0) currentIndex = items.length - 1;
 
+  // Apply highlight
   items[currentIndex].classList.add("active");
+
+  // Auto scroll into view
   items[currentIndex].scrollIntoView({ block: "nearest" });
 
   if (key === "Enter") {
     items[currentIndex].click();
   }
+}
+ // fade animation
+function highlightMatch(text, query) {
+  if (!query) return text;
+
+  const regex = new RegExp(`(${query})`, "gi");
+  return text.replace(regex, `<mark class="highlight">$1</mark>`);
 }

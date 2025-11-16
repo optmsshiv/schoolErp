@@ -362,6 +362,50 @@
 .result-item.active {
   background-color: #f0f6ff;
   border-left: 3px solid #0d6efd;
+  border-radius: 6px;
 }
 
 /* Skeleton css*/
+/* Search Platter animation*/
+/* Overlay container */
+#searchPalette {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.25s ease;
+  display: none;
+}
+
+/* When visible */
+#searchPalette.active {
+  display: flex !important;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Closing animation class */
+#searchPalette.closing {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+#searchPalette {
+  backdrop-filter: blur(3px);
+  background: rgba(0, 0, 0, 0.53);
+}
+/* highlight search*/
+.highlight {
+  background: #ffe58f;
+  padding: 0 2px;
+  border-radius: 3px;
+}
+ /* recent animation*/
+#recentList {
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+#recentList.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Search Platter animation*/

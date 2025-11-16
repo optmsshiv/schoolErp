@@ -108,10 +108,10 @@ async function searchStudents(searchInput, resultsContainer) {
     // Loop through students and create cards
     data.forEach(student => {
       const card = document.createElement('div');
-      card.classList.add('student-card');
+      card.classList.add('student-card', 'result-item');  // 👉 for arrow key highlight
       card.innerHTML = `
-          <h3>${student.first_name || ''} ${student.last_name || ''}</h3>
-          <p>Father's Name: ${student.father_name || 'N/A'}</p>
+          <h3>${highlightMatch(student.first_name + " " + student.last_name, query)}</h3>
+          <p>Father's Name: ${highlightMatch(student.father_name || 'N/A', query)}</p>
           <p>Class: ${student.class_name || 'N/A'}</p>
           <p>Roll No: ${student.roll_no || 'N/A'}</p>
           <p>User ID: ${student.user_id}</p>
@@ -122,13 +122,26 @@ async function searchStudents(searchInput, resultsContainer) {
         // console.log('Clicked student:', student); // Log the student to confirm
         populateStudentTable(student); // Populate student details
         fetchFeeDetails(student.user_id); // Fetch fee details on click
-        resultsContainer.style.display = 'none';
+
+        // ---- hide search UI ----
+        resultsContainer.style.display = "none";
+        closePalette();                     // 👉 CLOSE OVERLAY
+        currentIndex = -1;                  // 👉 reset navigation index
+
+        // ---- save search text ----
+        saveRecent(`${student.first_name} ${student.last_name}`);
+
+        // ---- clear input ----
+        searchInput.value = "";
+
+      //  resultsContainer.style.display = 'none';
       });
 
       resultsContainer.appendChild(card);
     });
 
     resultsContainer.style.display = 'block';
+
   } catch (error) {
     console.error('Error fetching students:', error);
     resultsContainer.innerHTML = '<p class="text-danger text-center">Error fetching data. Please try again later.</p>';
