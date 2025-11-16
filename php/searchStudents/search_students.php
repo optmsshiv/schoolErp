@@ -1,4 +1,5 @@
 <?php
+global $pdo;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -29,7 +30,7 @@ try {
             LEFT JOIN
                 FeePlans f
             ON
-                s.class_name = f.class_name
+                s.class_name = f.class_id
             LEFT JOIN
                 hostels h
             ON
