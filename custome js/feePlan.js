@@ -74,24 +74,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
         data.forEach(plan => {
           let row = `
-            <tr>
-
+            <tr id="row-${plan.fee_plan_id}">
             <td>${plan.class_name}</td>
             <td>${plan.fee_head_name}</td>
             <td>${plan.month_name}</td>
             <td>${plan.amount}</td>
-            <td>${formatDateTime(plan.created_at)}</td>
-            <td>${formatDateTime(plan.updated_at)}</td>
+
             <td>
                 <a href="javascript:;" class="tf-icons bx bx-edit bx-sm text-warning edit-btn"
                         data-id="${plan.fee_plan_id}"
                         data-class="${plan.class_id}"
                         data-feehead="${plan.fee_head_id}"
                         data-month="${plan.month_name}"
-                        data-amount="${plan.amount}">
+                        data-amount="${plan.amount}"
+                        data-bs-toggle="tooltip"
+                        title="Edit"
+                        data-created="${formatDateTime(plan.created_at)}"
+                        data-updated="${formatDateTime(plan.updated_at)}">
                          </a>
                   <a href="javascript:;" class="tf-icons bx bx-trash bx-sm ms-2 text-danger delete-btn"
-                        data-id="${plan.fee_plan_id}"></a>
+                        data-id="${plan.fee_plan_id}"
+                        data-bs-toggle="tooltip"
+                        title="Delete"
+                        ></a>
             </td>
             </tr>
           `;
@@ -183,13 +188,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if (e.target.classList.contains("edit-btn")) {
       const btn = e.target;
 
-      console.log("🔎 Edit button clicked →", {
-        id: btn.dataset.id,
-        classId: btn.dataset.class,
-        feeHeadId: btn.dataset.feehead,
-        month: btn.dataset.month,
-        amount: btn.dataset.amount,
-      });
+     // console.log("🔎 Edit button clicked →", {
+     //   id: btn.dataset.id,
+     //   classId: btn.dataset.class,
+     //   feeHeadId: btn.dataset.feehead,
+     //   month: btn.dataset.month,
+     //   amount: btn.dataset.amount,
+     // });
 
       // Fill form fields
       editFeePlanId.value = btn.dataset.id;
@@ -198,6 +203,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Populate dropdowns with pre-selected values
       populateEditDropdowns(btn.dataset.class, btn.dataset.feehead);
+
+      // Load timestamps into modal footer
+      document.getElementById("editCreatedAt").textContent =
+        "Created At: " + btn.dataset.created;
+
+      document.getElementById("editUpdatedAt").textContent =
+        "Updated At: " + btn.dataset.updated;
 
       editModal.show();
     }
@@ -223,14 +235,31 @@ document.addEventListener("DOMContentLoaded", function () {
       .then(res => res.json())
       .then(data => {
         if (data.status === "success") {
-          alert("Updated successfully ✅");
+
+          // Close modal first
           editModal.hide();
-          loadFeePlans(); // reload table
+
+          // Highlight updated row
+          const row = document.querySelector(`#row-${payload.fee_plan_id}`);
+          if (row) {
+            row.classList.add("row-update");
+          }
+
+          // Toast / Alert
+          showToast("Fee Plan Updated Successfully!", "success");
+
+          // Wait so animation plays
+          setTimeout(() => {
+            if (row) row.classList.remove("row-update");
+            loadFeePlans(); // Refresh table
+          }, 1400);
+         // loadFeePlans(); // reload table
         } else {
-          alert("Error: " + data.message);
+          showToast("Error: " + data.message, "error");
         }
       })
       .catch(err => console.error("Update failed:", err));
+    showToast("Something went wrong!", "error");
   });
 
 
@@ -238,6 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
   tableBody.addEventListener("click", (e) => {
     if (e.target.classList.contains("delete-btn")) {
       const feePlanId = e.target.dataset.id;
+      const row = document.querySelector(`#row-${feePlanId}`);
 
       if (!confirm("Are you sure you want to delete this fee plan?")) return;
 
@@ -249,8 +279,21 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(res => res.json())
         .then(data => {
           if (data.status === "success") {
+
+            // ⭐ Smooth fade-out animation
+            if (row) {
+              row.classList.add("row-delete");
+            }
+
+            // Toast message
             showToast("Fee Plan deleted successfully!", "success");
-            loadFeePlans(); // ✅ Refresh table after delete
+
+            // ⏳ wait for animation to finish (600ms)
+            setTimeout(() => {
+              loadFeePlans(); // refresh table
+            }, 650);
+          //  showToast("Fee Plan deleted successfully!", "success");
+         //   loadFeePlans(); // ✅ Refresh table after delete
           } else {
             showToast("Error: " + data.message, "error");
           }
@@ -278,7 +321,29 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
           if (data.status === "success") {
             showToast("Fee Plan restored successfully!", "success");
-            loadFeePlans();        // refresh active table
+
+            // Confetti added
+            celebrateRestore();  // 🎉 trigger confetti
+
+            // 🌟 Highlight the restored row
+            const row = document.querySelector(`#row-${id}`);
+            if (row) {
+              row.classList.add("row-restore");
+            }
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Restored!',
+              text: 'Fee plan successfully restored.',
+              timer: 1500,
+              showConfirmButton: false
+            });
+            // ⏳ Wait 600ms so animation is visible before reload
+            setTimeout(() => {
+              loadFeePlans();
+            }, 600);
+
+           // loadFeePlans();        // refresh active table
             loadDeletedFeePlans(); // refresh deleted table
           } else {
             showToast("Error: " + data.message, "error");
@@ -287,6 +352,26 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(err => console.error("Restore failed:", err));
     }
   });
+
+  // ---------- function for Confetti
+  function celebrateRestore() {
+    const duration = 1.2 * 1000; // 1.2 sec
+    const animationEnd = Date.now() + duration;
+
+    (function frame() {
+      confetti({
+        particleCount: 10,
+        spread: 70,
+        startVelocity: 35,
+        origin: { x: Math.random(), y: Math.random() - 0.2 }
+      });
+
+      if (Date.now() < animationEnd) {
+        requestAnimationFrame(frame);
+      }
+    })();
+  }
+
 
   // ---- reload the deleted tab table when open ----
   document.getElementById("deleted-tab").addEventListener("shown.bs.tab", () => {

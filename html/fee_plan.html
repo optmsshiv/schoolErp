@@ -209,31 +209,31 @@
                         <ul class="nav nav-tabs flex-column" id="feeTab" role="tablist">
 
                           <li class="nav-item">
-                          <button class="nav-link btn-outline-info active" id="month-tab" data-bs-toggle="tab"
-                                  href="#month-name" role="tab">
-                            Month
-                          </button>
+                            <button class="nav-link btn-outline-info active" id="month-tab" data-bs-toggle="tab"
+                                    href="#month-name" role="tab">
+                              Month
+                            </button>
                           </li>
 
                           <li class="nav-item mt-2">
-                          <button class="nav-link btn-outline-info mt-3" id="fee-head-tab" data-bs-toggle="tab"
-                                  href="#fee-head" role="tab">
-                            Fee Head
-                          </button>
-                            </li>
+                            <button class="nav-link btn-outline-info mt-3" id="fee-head-tab" data-bs-toggle="tab"
+                                    href="#fee-head" role="tab">
+                              Fee Head
+                            </button>
+                          </li>
                           <li class="nav-item mt-2">
-                          <button class="nav-link btn-outline-info mt-3" id="fee-plan-tab" data-bs-toggle="tab"
-                                  href="#fee-plan" role="tab">
-                            Fee Plan
-                          </button>
+                            <button class="nav-link btn-outline-info mt-3" id="fee-plan-tab" data-bs-toggle="tab"
+                                    href="#fee-plan" role="tab">
+                              Fee Plan
+                            </button>
                           </li>
 
                           <li class="nav-item mt-2">
-                          <button class="nav-link btn-outline-info mt-3" id="bank-tab-btn" data-bs-toggle="tab"
-                                  href="#bank-tab-content" role="tab" aria-controls="bank-tab-content"
-                                  aria-selected="false">
-                            Bank Setup
-                          </button>
+                            <button class="nav-link btn-outline-info mt-3" id="bank-tab-btn" data-bs-toggle="tab"
+                                    href="#bank-tab-content" role="tab" aria-controls="bank-tab-content"
+                                    aria-selected="false">
+                              Bank Setup
+                            </button>
                           </li>
 
                         </ul>
@@ -425,19 +425,17 @@
                                       <!-- Submit Button -->
                                       <button type="submit" class="btn btn-primary mt-3">Create Fee Plan</button>
                                     </form>
-                                    <hr/>
+                                    <hr />
                                     <h5>Fee Plan List</h5>
                                     <div class="table-responsive">
                                       <table class="table table-bordered table-hover" id="feePlanTable">
                                         <thead>
-                                        <tr class="table-secondary">
+                                        <tr class="table-secondary" id="row-123">
                                           <th style="width: 2%">Class</th>
                                           <th>Fee Head</th>
                                           <th>Month</th>
                                           <th>Amount</th>
-                                          <th>Created</th>
-                                          <th>Updated</th>
-                                          <th>Actions</th>
+                                          <th style="width: 3%">Actions</th>
                                         </tr>
                                         </thead>
                                         <tbody id="feePlanBody"></tbody>
@@ -464,8 +462,7 @@
                                   </table>
                                 </div>
                               </div>  <!-- END tab-content -->
-                              </div>  <!-- END nav-align-top -->
-
+                            </div>  <!-- END nav-align-top -->
 
 
                             <!-- Edit Fee Plan Modal -->
@@ -504,11 +501,26 @@
                                         <input type="number" id="editAmount" class="form-control" required>
                                       </div>
                                     </div>
-                                    <div class="modal-footer">
-                                      <button type="submit" class="btn btn-primary">Update</button>
-                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                        Cancel
-                                      </button>
+
+                                    <div class="modal-footer flex-column w-100">
+
+                                      <!-- Top row: Created Left, Updated Right -->
+                                      <div class="d-flex justify-content-between w-100 mb-2">
+                                        <small id="editCreatedAt" class=" badge text-warning"></small>
+                                        <small id="editUpdatedAt" class="badge text-info"></small>
+                                      </div>
+
+                                      <!-- Border -->
+                                      <div class="w-100 border-bottom mb-3"></div>
+
+                                      <!-- Buttons row -->
+                                      <div class="d-flex justify-content-end w-100 gap-2">
+
+                                        <button type="submit" class="btn btn-primary">Update</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                          Cancel
+                                        </button>
+                                      </div>
                                     </div>
                                   </form>
                                 </div>
@@ -661,6 +673,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
 <!-- end build-->
+
+<!-- Canvas-Confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<!-- Canvas-Confetti -->
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -61,3 +61,161 @@
 .custom-tab-content .tab-pane > * {
   margin-top: 5px;
 }
+
+/* Confetti css */
+.row-restore {
+  animation: restoreGlow 0.6s ease-in-out;
+}
+
+@keyframes restoreGlow {
+  0% { background-color: #d4f8e8; }
+  100% { background-color: transparent; }
+}
+
+.row-restore {
+  animation: restoreGlow 0.6s ease-out;
+}
+
+@keyframes restoreGlow {
+  0% {
+    background-color: #d4ffd4;
+    transform: scale(1);
+  }
+  50% {
+    background-color: #a8ffbf;
+    transform: scale(1.01);
+  }
+  100% {
+    background-color: white;
+    transform: scale(1);
+  }
+}
+/* row delete */
+.row-delete {
+  animation: fadeOutRow 0.6s forwards ease-out;
+}
+
+@keyframes fadeOutRow {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    background-color: #ffe5e5;
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.98);
+    background-color: #ffbfbf;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+    height: 0;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+/* Update Highlight Animation CSS */
+.row-update {
+  animation: updateGlow 1.7s ease-out;
+}
+
+@keyframes updateGlow {
+  0% {
+    background-color: #fff7c2;
+    transform: scale(1);
+  }
+  50% {
+    background-color: #ffe98a;
+    transform: scale(1.01);
+  }
+  100% {
+    background-color: white;
+    transform: scale(1);
+  }
+}
+
+
+/* Confetti css End */
+
+/* fee plan create animation css this css has not used*/
+/* 🌊 Smooth Color Wave */
+@keyframes colorWaveCreate {
+  0%   { background-color: #e9ffe9; }
+  50%  { background-color: #b4f7b4; }
+  100% { background-color: white; }
+}
+.row-created {
+  animation: colorWaveCreate 1.2s ease-out;
+}
+
+/* ✨ Green Ribbon */
+.row-created::before {
+  content: "✨ Fee Plan Created!";
+  position: absolute;
+  top: 0;
+  left: -180px;
+  background: #0abf63;
+  color: white;
+  padding: 3px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 0 0 6px 0;
+  animation: ribbonSlide 1.4s forwards;
+}
+@keyframes ribbonSlide {
+  0%   { left: -180px; opacity: 0; }
+  40%  { left: 0; opacity: 1; }
+  100% { left: 0; opacity: 0; }
+}
+
+/* 🟩 Green Border Glow */
+@keyframes borderGlow {
+  0% { box-shadow: 0 0 0px #38d39f; }
+  50% { box-shadow: 0 0 10px #38d39f; }
+  100% { box-shadow: 0 0 0px #38d39f; }
+}
+.row-border-glow {
+  animation: borderGlow 1.2s ease-out;
+  position: relative;
+  z-index: 1;
+}
+
+/*end here*/
+
+ /*update row animation ribbon*/
+/* ✨ Row Update Glow */
+@keyframes updateGlow {
+  0% { background-color: #e8fff3; }
+  50% { background-color: #c8ffe0; }
+  100% { background-color: white; }
+}
+.row-update {
+  animation: updateGlow 1.2s ease-out;
+  position: relative;
+  z-index: 2;
+}
+
+/* 🟩 Green Ribbon for Update */
+.row-update::before {
+  content: "✔ Fee Plan Updated!";
+  position: absolute;
+  top: 0;
+  left: -200px;
+  background: #00c269; /* professional green */
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 3px 14px;
+  border-radius: 0 0 8px 0;
+  animation: updateRibbonSlide 1.4s forwards;
+}
+
+@keyframes updateRibbonSlide {
+  0%   { left: -200px; opacity: 0; }
+  40%  { left: 0; opacity: 1; }
+  100% { left: 0; opacity: 0; }
+}
+
+
+/*end here*/
