@@ -252,7 +252,7 @@ document.addEventListener("DOMContentLoaded", function () {
           setTimeout(() => {
             if (row) row.classList.remove("row-update");
             loadFeePlans(); // Refresh table
-          }, 1400);
+          }, 1500);
          // loadFeePlans(); // reload table
         } else {
           showToast("Error: " + data.message, "error");
