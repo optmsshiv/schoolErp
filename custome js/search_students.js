@@ -159,7 +159,7 @@ async function fetchFeeDetails(userId) {
     }
 
 
-    // Calculate total pending amount from table data
+    // Calculate the total pending amount from table data
 /*
     const totalPendingAmount = data.details.reduce((sum, detail) => {
       if (detail.payment_status === 'paid') {
@@ -195,10 +195,7 @@ async function fetchFeeDetails(userId) {
    }, 100);
 
 
-
-
-
-    // Update fee cards and  the UI with the calculated total pending amount
+    // Update fee cards and the UI with the calculated total pending amount
 
    // document.getElementById('total_paid_amount').textContent = `₹ ${data.summary.total_paid_amount || '0'}`;
     document.getElementById('pending_amount').textContent = `₹ ${totalPendingAmount.toFixed(2)}`;
@@ -354,7 +351,8 @@ async function fetchFeeDetails(userId) {
       partialAmountInput.disabled = true;
       concessionInput.style.display = 'none'; // Hide initially
       amountError.style.display = 'none';
-      dueAmountElem.value = '0';
+      dueAmountElem.value = '';
+      advanceAmountInput.value = '';
 
       function updateUPIQr(amount) {
         console.log('Updating QR with amount:', amount); // Debugging
@@ -393,6 +391,7 @@ async function fetchFeeDetails(userId) {
             partialAmountInput.value = ''; // Clear input
             concessionInput.style.display = 'none';
             dueAmountElem.value = '0';
+            advanceAmountInput.value = '0';
             amountError.style.display = 'none';
             confirmPaymentBtn.setAttribute('data-amount', pendingAmount);
             updateUPIQr(pendingAmount);
@@ -441,6 +440,7 @@ async function fetchFeeDetails(userId) {
         let adjustedPartialAmount = pendingAmount - enteredConcession;
         partialAmountInput.value = adjustedPartialAmount > 0 ? adjustedPartialAmount.toFixed(2) : '0';
         updateDueAmount();
+        updateAdvanceAmount();
       });
 
       // Validate partial payment amount
@@ -489,15 +489,23 @@ async function fetchFeeDetails(userId) {
       const confirmPaymentBtn = document.getElementById('confirmPayment');
       const concessionInput = document.getElementById('concessionAmount');
       const dueAmountElem = document.getElementById('dueAmount');
+      const advanceAmountElem = document.getElementById('advanceAmount');
 
       let paymentAmount = parseFloat(document.getElementById('confirmPayment').getAttribute('data-amount')) || 0;
       let concessionAmount = parseFloat(concessionInput.value) || 0;
       let dueAmount = 0;
+      let advanceAmount = parseFloat(advanceAmountElem.textContent.replace('₹ ', '')) || 0;
+
 
       // If partial payment is selected, get the entered amount
       if (paymentType === 'partial') {
         const partialAmountInput = document.getElementById('partialAmount');
+        const advanceAmountInput = document.getElementById('advanceAmount'); // ✅ Get advance input
+
         paymentAmount = parseFloat(partialAmountInput.value) || 0;
+        concessionAmount = parseFloat(concessionAmountInput.value) || 0;
+        advanceAmount = parseFloat(advanceAmountInput.value) || 0; // ✅ Read advance amount
+
         if (paymentAmount <= 0) {
           alert('Invalid payment amount! Please enter a valid amount.');
           return;
@@ -521,7 +529,8 @@ async function fetchFeeDetails(userId) {
         type: paymentType,
         mode: paymentMode,
         concession: concessionAmount,
-        due: dueAmount
+        due: dueAmount,
+        advance:advanceAmount
       };
 
       console.log('Submitting Payment:', paymentData); // Debugging
@@ -609,7 +618,7 @@ async function fetchFeeDetails(userId) {
         .catch(error => console.error('Error:', error));
     }
 
-    // 📩 Function to send fee reminder message via WhatsApp
+    // 📩 Function to send a fee reminder message via WhatsApp
     function handleSendMessage(row) {
       const receiptNo = row.querySelector('td:first-child').innerText;
 
@@ -673,7 +682,7 @@ function debounce(func, delay) {
 // Function to dynamically load and show the modal
 function loadFeeReceiptModal() {
   // Fetch the modal HTML file and load it into the modalContainer
-  fetch('/html/model/fee_reciept_paid.html') // Replace with the correct path to your modal HTML file
+  fetch('/html/model/fee_reciept_paid.html') // Replace it with the correct path to your modal HTML file
     .then(response => response.text())
     .then(modalHTML => {
       // Insert the modal content into the modalContainer
@@ -688,3 +697,5 @@ function loadFeeReceiptModal() {
       alert('There was an error loading the modal.');
     });
 }
+
+
