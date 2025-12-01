@@ -43,7 +43,7 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
     fee_data: feeData,  // Add extracted fee data (array of months and fee types)
     hostel_fee: parseFloat(document.getElementById("hostelFee")?.value || 0.0), // Add if you handle hostel fees
     transport_fee: parseFloat(document.getElementById("transportFee")?.value || 0.0), // Add if you handle transport fees
-    additional_amount: parseFloat(document.getElementById("additionalAmount").value || 0.0),
+  //  additional_amount: parseFloat(document.getElementById("additionalAmount").value || 0.0),
     concession_amount: parseFloat(document.getElementById("concessionFee").value || 0.0),
     received_amount: parseFloat(document.getElementById("recievedFee").value || 0.0),
     due_amount: parseFloat(document.getElementById("dueAmount").value || 0.0),

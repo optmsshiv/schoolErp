@@ -29,10 +29,12 @@ try {
         FROM students s
         LEFT JOIN Classes c ON s.class_name = c.class_name
         LEFT JOIN (
-                SELECT class_id, MIN(amount) AS amount
-                FROM FeePlans
-                GROUP BY class_id
-                        ) f ON c.class_id = f.class_id
+                    SELECT fp.class_id, fp.amount
+                    FROM FeePlans fp
+                    JOIN FeeHeads fh ON fp.fee_head_id = fh.fee_head_id
+                    WHERE fh.fee_type = 'monthly'
+                ) f ON c.class_id = f.class_id
+
 
         LEFT JOIN (
             SELECT hostel_id, MIN(hostel_fee) AS hostel_fee

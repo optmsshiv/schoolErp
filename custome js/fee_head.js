@@ -2,11 +2,14 @@ document.getElementById("feeHeadForm").addEventListener("submit", function(e) {
   e.preventDefault();
 
   let feeHeadName = document.getElementById("feeHeadName").value;
+  let feeType = document.getElementById("feeType").value;
 
   fetch("../php/insert_fee_head.php", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: "feeHeadName=" + encodeURIComponent(feeHeadName)
+    body:
+      "feeHeadName=" + encodeURIComponent(feeHeadName) +
+      "&feeType=" + encodeURIComponent(feeType)
   })
     .then(res => res.json())
     .then(data => {
