@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
    // Initially, ensure the loading bar is hidden by default
-  toggleLoadingBar(false);  // This will hide the loading bar on page load
+  toggleLoadingBar(false);  // This will hide the loading bar on a page load
 
   const collectFeeButton = document.getElementById('collect_fee_btn');
   const tableBody = document.querySelector('#student_data tbody');
@@ -36,7 +36,7 @@ function showErrorWithLoadingBar(message) {
   const errorMessage = document.getElementById('error-message');
   if (errorMessage) {
     errorMessage.textContent = message;
-    errorMessage.classList.remove('invisible'); // Show error message
+    errorMessage.classList.remove('invisible'); // Show an error message
   }
 
   // Hide both loading bar and error message after a delay
@@ -45,7 +45,7 @@ function showErrorWithLoadingBar(message) {
     if (errorMessage) {
       errorMessage.classList.add('invisible'); // Hide error message
     }
-  }, 3000); // 3 seconds delay
+  }, 3000); // 3-second delay
 }
 
 /**
@@ -80,7 +80,8 @@ function collectFeeData() {
       full_name: getCellText(tableRows[i], 2),
       father_name: getCellText(tableRows[i], 4),
       monthly_fee: getCellText(tableRows[i], 6),
-      class_name: getCellText(tableRows[i + 1], 2),
+      class_id: tableRows[i + 1].dataset.classId || getCellText(tableRows[i + 1], 2),
+      class_name: getCellText(tableRows[i + 1], 2),   // store class name
       mother_name: getCellText(tableRows[i + 1], 4),
       day_hosteler: getCellText(tableRows[i + 1], 6),
       roll_no: getCellText(tableRows[i + 2], 2),

@@ -1,6 +1,6 @@
 // Ensure DOM is fully loaded before attaching event listeners
 document.addEventListener('DOMContentLoaded', () => {
-  const searchInput = document.getElementById('student_search');
+  const searchInput = document.getElementById('openSearchPalette');
   const resultsContainer = document.getElementById('results');
 
   // Attach event listeners to the search input
@@ -40,7 +40,7 @@ function populateStudentTable(student) {
           <td class="fw-bold">Monthly Fee:</td>
           <td>${student.monthly_fee || 'N/A'}</td>
       </tr>
-      <tr>
+      <tr data-class-id="${student.class_id}">
           <td class="fw-bold">Class:</td>
           <td>${student.class_name || 'N/A'}</td>
           <td class="fw-bold">Mother's Name:</td>
@@ -196,6 +196,7 @@ async function fetchFeeDetails(userId) {
 
 
     // Wait for the table to be updated
+    /*
   setTimeout(() => {
     const userIdElem = document.querySelector("#studentTable tr:last-child td:last-child");
 
@@ -206,7 +207,7 @@ async function fetchFeeDetails(userId) {
         console.error("User ID not found in the table!");
     }
    }, 100);
-
+*/
 
     // Update fee cards and the UI with the calculated total pending amount
 

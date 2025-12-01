@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default"
-  data-assets-path="../assets/" data-template="Dashboard">
+      data-assets-path="../assets/" data-template="Dashboard">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
   <title>Dashboard - School Management ERP | School ERP - Dashboard</title>
 
@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
   <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
 
   <!-- Page CSS -->
 
@@ -56,18 +56,18 @@
 </head>
 
 <body>
-  <!-- Layout wrapper -->
-  <div class="layout-wrapper layout-content-navbar">
-    <div class="layout-container">
-      <!-- Menu -->
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+  <div class="layout-container">
+    <!-- Menu -->
 
-      <aside id="layout-menu" class="layout-menu close menu-vertical menu bg-menu-theme">
-        <div class="app-brand">
-          <a href="index.html" class="app-brand-link">
+    <aside id="layout-menu" class="layout-menu close menu-vertical menu bg-menu-theme">
+      <div class="app-brand">
+        <a href="index.html" class="app-brand-link">
             <span class="app-brand-logo">
 
               <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink">
+                   xmlns:xlink="http://www.w3.org/1999/xlink">
                 <defs>
                   <path
                     d="M13.7918663,0.358365126 L3.39788168,7.44174259 C0.566865006,9.69408886 -0.379795268,12.4788597 0.557900856,15.7960551 C0.68998853,16.2305145 1.09562888,17.7872135 3.12357076,19.2293357 C3.8146334,19.7207684 5.32369333,20.3834223 7.65075054,21.2172976 L7.59773219,21.2525164 L2.63468769,24.5493413 C0.445452254,26.3002124 0.0884951797,28.5083815 1.56381646,31.1738486 C2.83770406,32.8170431 5.20850219,33.2640127 7.09180128,32.5391577 C8.347334,32.0559211 11.4559176,30.0011079 16.4175519,26.3747182 C18.0338572,24.4997857 18.6973423,22.4544883 18.4080071,20.2388261 C17.963753,17.5346866 16.1776345,15.5799961 13.0496516,14.3747546 L10.9194936,13.4715819 L18.6192054,7.984237 L13.7918663,0.358365126 Z"
@@ -101,7 +101,7 @@
                         </g>
                       </g>
                       <g id="Triangle"
-                        transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) ">
+                         transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) ">
                         <use fill="#696cff" xlink:href="#path-5"></use>
                         <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5"></use>
                       </g>
@@ -113,753 +113,839 @@
 
               </svg>
             </span>
-            <span class="app-brand-text menu-text fw-bold ms-2">School ERP</span>
+          <span class="app-brand-text menu-text fw-bold ms-2">School ERP</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+          <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+      </div>
+
+
+      <div class="menu-inner-shadow"></div>
+
+      <ul class="menu-inner py-1">
+        <!-- Dashboards -->
+        <li class="menu-item">
+          <a href="index.html" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <div data-i18n="Dashboards">Dashboards</div>
+            <!--  <div class="badge bg-danger rounded-pill ms-auto">5</div> -->
+          </a>
+        </li>
+
+        <li class="menu-item ">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-user-plus bx-sm"></i>
+            <div data-i18n="User Desk">Manage User</div>
+            <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
           </a>
 
-          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
-            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="user.html" class="menu-link">
+                <div data-i18n="User Register">Add Users</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Layouts -->
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle" id="front-desk-toggle">
+            <i class="menu-icon tf-icons bx bx-store"></i>
+            <div data-i18n="Front Desk">Front Desk</div>
+          </a>
+
+          <ul class="menu-sub" id="front-desk-submenu">
+            <li class="menu-item">
+              <a href="visitor.html" class="menu-link" id="visitor-link">
+                <div data-i18n="Visitor Register">Visitor Register</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="admissionEnquiry.html" class="menu-link" id="admission-link">
+                <div data-i18n="Admission Enquiry">Admission Enquiry</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="complaintRegister.html" class="menu-link" id="complaint-link">
+                <div data-i18n="Complaint Register">Complaint Register</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="studentInfo.html" class="menu-link" id="student-info-link">
+                <div data-i18n="Student Information">Student Information</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="instantSMS.html" class="menu-link" id="sms-link">
+                <div data-i18n="Instant SMS">Instant SMS</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle" id="manage-student-toggle">
+            <i class="menu-icon tf-icons fas fa-users"></i>
+            <div data-i18n="Front Pages">Manage Student</div>
+            <!--<div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>-->
+          </a>
+          <ul class="menu-sub" id="manage-student-submenu">
+            <li class="menu-item">
+              <a href="activeStudent.html" class="menu-link">
+                <div data-i18n="Active Students">Active Students</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="admissionRegister.html" class="menu-link">
+                <div data-i18n="Admission Register">Admission Register</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="studentInfo.html" class="menu-link">
+                <div data-i18n="Student Info">Student Info</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="studentInfo.html" class="menu-link">
+                <div data-i18n="Student Info">Student Transfer</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+
+        <!-- Front Pages -->
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons fas fa-file-alt"></i>
+            <div data-i18n="Asmission Management">Manage Asmission</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="admitStudent.html" class="menu-link">
+                <div data-i18n="Admit Student">Admit Student</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="admitBulk.html" class="menu-link">
+                <div data-i18n="Admit Bulk Student">Admit Bulk Student</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="pages-misc-under-maintenance.html" class="menu-link">
+                <div data-i18n="Admission Request">Admission Request</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <div data-i18n="Admission Inquiry">Admission Inquiry</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="pages-misc-error.html" class="menu-link">
+                    <div data-i18n="Manage Inquiry">Manage Inquiry</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="pages-misc-under-maintenance.html" class="menu-link">
+                    <div data-i18n="Send sms to Inquiry">Send sms to Inquiry</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons fas fa-id-card"></i>
+            <div data-i18n="ID Card Printing">ID Card Printing</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="pages-misc-error.html" class="menu-link">
+                <div data-i18n="Print Students Card">Print Students Card</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="pages-misc-under-maintenance.html" class="menu-link">
+                <div data-i18n="Print Staff Cards">Print Staff Cards</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="pages-misc-under-maintenance.html" class="menu-link">
+                <div data-i18n="ID Card Settings">ID Card Settings</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+
+        <!-- Apps -->
+
+
+        <li class="menu-item active open">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-money-withdraw"></i>
+            <div data-i18n="Accounting">Accounting</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Accountants">Accountants</div>
+              </a>
+            </li>
+            <!--
+            <li class="menu-item">
+              <a href="fee_plan.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-money"></i>
+                <div data-i18n="Fee Payments">Fee Plan</div>
+              </a>
+            </li>-->
+            <li class="menu-item active">
+              <a href="#" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-rupee"></i>
+                <div data-i18n="Expense Management">Collect Fee</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="collect_fee.html" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-money"></i>
+                <div data-i18n="Fee Payments">Fee Payments</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-bar-chart"></i>
+            <div data-i18n="Stock & Inventory">Stock & Inventory</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-rupee"></i>
+                <div data-i18n="Expense Management">Manage Expense</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <i class="menu-icon tf-icons fas fa-boxes"></i>
+                <div data-i18n="Expense Management">Stock Management</div>
+              </a>
+            </li>
+
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-caret-up-circle"></i>
+            <div data-i18n="Exam Management">Exam Management</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <div data-i18n="Error">Error</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <div data-i18n="Under Maintenance">Under Maintenance</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-book-open"></i>
+            <div data-i18n="Expense Management">Daily Homework</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-book"></i>
+                <div data-i18n="Manage Subjects">Manage Subjects</div>
+              </a>
+            </li>
+
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-card"></i>
+            <div data-i18n="Reporting">Reporting</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Parents Complaint">Parents Complaint</div>
+              </a>
+            </li>
+
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-chat"></i>
+            <div data-i18n="Expense Management">SMS Management</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <div data-i18n="Error">Error</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <div data-i18n="Under Maintenance">Under Maintenance</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="#" target="_blank" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-package"></i>
+            <div data-i18n="Leave Management">Leave Management</div>
+          </a>
+        </li>
+
+
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-chart"></i>
+            <div data-i18n="Manage Attandance">Manage Attandance</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="pages-misc-error.html" class="menu-link">
+                <div data-i18n="Students Attandance">Students Attandance</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="pages-misc-under-maintenance.html" class="menu-link">
+                <div data-i18n="Staff Attandance">Staff Attandance</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="pages-misc-under-maintenance.html" class="menu-link">
+                <div data-i18n="Attandance Accounts">Attandance Accounts</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="pages-misc-under-maintenance.html" class="menu-link">
+                <div data-i18n="Attandance Reports">Attandance Reports</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="#" target="_blank" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-video"></i>
+            <div data-i18n="Online Classes">Online Classes</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#" target="_blank" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-chat"></i>
+            <div data-i18n="Chat">Chat</div>
+            <!-- <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div> -->
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-grid"></i>
+            <div data-i18n="Time Table Mangement">Time Table</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <div data-i18n="Error">Error</div>
+              </a>
+            </li>
+
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-calendar"></i>
+            <div data-i18n="Calendar">Calendar</div>
+            <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="#" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-grid"></i>
+            <div data-i18n="Kanban">Kanban</div>
+            <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
+          </a>
+        </li>
+        <!-- Pages -->
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-user"></i>
+            <div data-i18n="Parent Accounts">Parent Accounts</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="pages-misc-error.html" class="menu-link">
+                <div data-i18n="Manage Accounts">Manage Accounts</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="pages-misc-under-maintenance.html" class="menu-link">
+                <div data-i18n="Account Request">Account Request</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="pages-misc-under-maintenance.html" class="menu-link">
+                <div data-i18n="Parent Info Reports">Parent Info Reports</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-dock-top"></i>
+            <div data-i18n="Account Settings">Account Settings</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="pages-account-settings-account.html" class="menu-link">
+                <div data-i18n="Account">Account</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="pages-account-settings-notifications.html" class="menu-link">
+                <div data-i18n="Notifications">Notifications</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="pages-account-settings-connections.html" class="menu-link">
+                <div data-i18n="Connections">Connections</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
+            <div data-i18n="Authentications">Authentications</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="auth-login-basic.html" class="menu-link">
+                <div data-i18n="Basic">Login</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="auth-register-basic.html" class="menu-link">
+                <div data-i18n="Basic">Register</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
+                <div data-i18n="Basic">Forgot Password</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="menu-item">
+          <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons bx bx-cube-alt"></i>
+            <div data-i18n="Misc">Misc</div>
+          </a>
+          <ul class="menu-sub">
+            <li class="menu-item">
+              <a href="pages-misc-error.html" class="menu-link">
+                <div data-i18n="Error">Error</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="pages-misc-under-maintenance.html" class="menu-link">
+                <div data-i18n="Under Maintenance">Under Maintenance</div>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+
+        <!-- Misc -->
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
+        <li class="menu-item">
+          <a href="#" target="_blank" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-support"></i>
+            <div data-i18n="Support">Support</div>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- / Menu -->
+
+    <!-- Layout container -->
+    <div class="layout-page">
+      <!-- Navbar -->
+
+      <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center "
+           id="layout-navbar">
+        <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+          <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+            <i class="bx bx-menu bx-sm"></i>
           </a>
         </div>
 
-
-
-        <div class="menu-inner-shadow"></div>
-
-        <ul class="menu-inner py-1">
-          <!-- Dashboards -->
-          <li class="menu-item">
-            <a href="index.html" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-home-circle"></i>
-              <div data-i18n="Dashboards">Dashboards</div>
-              <!--  <div class="badge bg-danger rounded-pill ms-auto">5</div> -->
-            </a>
-          </li>
-
-          <li class="menu-item ">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-user-plus bx-sm"></i>
-              <div data-i18n="User Desk">Manage User</div>
-              <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
-            </a>
-
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="user.html" class="menu-link">
-                  <div data-i18n="User Register">Add Users</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <!-- Layouts -->
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle" id="front-desk-toggle">
-              <i class="menu-icon tf-icons bx bx-store"></i>
-              <div data-i18n="Front Desk">Front Desk</div>
-            </a>
-
-            <ul class="menu-sub" id="front-desk-submenu">
-              <li class="menu-item">
-                <a href="visitor.html" class="menu-link" id="visitor-link">
-                  <div data-i18n="Visitor Register">Visitor Register</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="admissionEnquiry.html" class="menu-link" id="admission-link">
-                  <div data-i18n="Admission Enquiry">Admission Enquiry</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="complaintRegister.html" class="menu-link" id="complaint-link">
-                  <div data-i18n="Complaint Register">Complaint Register</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="studentInfo.html" class="menu-link" id="student-info-link">
-                  <div data-i18n="Student Information">Student Information</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="instantSMS.html" class="menu-link" id="sms-link">
-                  <div data-i18n="Instant SMS">Instant SMS</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle" id="manage-student-toggle">
-              <i class="menu-icon tf-icons fas fa-users"></i>
-              <div data-i18n="Front Pages">Manage Student</div>
-              <!--<div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>-->
-            </a>
-            <ul class="menu-sub" id="manage-student-submenu">
-              <li class="menu-item">
-                <a href="activeStudent.html" class="menu-link">
-                  <div data-i18n="Active Students">Active Students</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="admissionRegister.html" class="menu-link">
-                  <div data-i18n="Admission Register">Admission Register</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="studentInfo.html" class="menu-link">
-                  <div data-i18n="Student Info">Student Info</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="studentInfo.html" class="menu-link">
-                  <div data-i18n="Student Info">Student Transfer</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-
-          <!-- Front Pages -->
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons fas fa-file-alt"></i>
-              <div data-i18n="Asmission Management">Manage Asmission</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="admitStudent.html" class="menu-link">
-                  <div data-i18n="Admit Student">Admit Student</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="admitBulk.html" class="menu-link">
-                  <div data-i18n="Admit Bulk Student">Admit Bulk Student</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div data-i18n="Admission Request">Admission Request</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="javascript:void(0);" class="menu-link menu-toggle">
-                  <div data-i18n="Admission Inquiry">Admission Inquiry</div>
-                </a>
-                <ul class="menu-sub">
-                  <li class="menu-item">
-                    <a href="pages-misc-error.html" class="menu-link">
-                      <div data-i18n="Manage Inquiry">Manage Inquiry</div>
-                    </a>
-                  </li>
-                  <li class="menu-item">
-                    <a href="pages-misc-under-maintenance.html" class="menu-link">
-                      <div data-i18n="Send sms to Inquiry">Send sms to Inquiry</div>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-
-
-
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons fas fa-id-card"></i>
-              <div data-i18n="ID Card Printing">ID Card Printing</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="pages-misc-error.html" class="menu-link">
-                  <div data-i18n="Print Students Card">Print Students Card</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div data-i18n="Print Staff Cards">Print Staff Cards</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div data-i18n="ID Card Settings">ID Card Settings</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-
-          <!-- Apps -->
-
-
-          <li class="menu-item active open">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-money-withdraw"></i>
-              <div data-i18n="Accounting">Accounting</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-user"></i>
-                  <div data-i18n="Accountants">Accountants</div>
-                </a>
-              </li>
-              <!--
-              <li class="menu-item">
-                <a href="fee_plan.html" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-money"></i>
-                  <div data-i18n="Fee Payments">Fee Plan</div>
-                </a>
-              </li>-->
-              <li class="menu-item active">
-                <a href="#" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-rupee"></i>
-                  <div data-i18n="Expense Management">Collect Fee</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="collect_fee.html" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-money"></i>
-                  <div data-i18n="Fee Payments">Fee Payments</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-bar-chart"></i>
-              <div data-i18n="Stock & Inventory">Stock & Inventory</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-rupee"></i>
-                  <div data-i18n="Expense Management">Manage Expense</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <i class="menu-icon tf-icons fas fa-boxes"></i>
-                  <div data-i18n="Expense Management">Stock Management</div>
-                </a>
-              </li>
-
-            </ul>
-          </li>
-
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-caret-up-circle"></i>
-              <div data-i18n="Exam Management">Exam Management</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Error">Error</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Under Maintenance">Under Maintenance</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-book-open"></i>
-              <div data-i18n="Expense Management">Daily Homework</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-book"></i>
-                  <div data-i18n="Manage Subjects">Manage Subjects</div>
-                </a>
-              </li>
-
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-card"></i>
-              <div data-i18n="Reporting">Reporting</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-user"></i>
-                  <div data-i18n="Parents Complaint">Parents Complaint</div>
-                </a>
-              </li>
-
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-chat"></i>
-              <div data-i18n="Expense Management">SMS Management</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Error">Error</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Under Maintenance">Under Maintenance</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-package"></i>
-              <div data-i18n="Leave Management">Leave Management</div>
-            </a>
-          </li>
-
-
-
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-chart"></i>
-              <div data-i18n="Manage Attandance">Manage Attandance</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="pages-misc-error.html" class="menu-link">
-                  <div data-i18n="Students Attandance">Students Attandance</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div data-i18n="Staff Attandance">Staff Attandance</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div data-i18n="Attandance Accounts">Attandance Accounts</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div data-i18n="Attandance Reports">Attandance Reports</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-video"></i>
-              <div data-i18n="Online Classes">Online Classes</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-chat"></i>
-              <div data-i18n="Chat">Chat</div>
-              <!-- <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div> -->
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-grid"></i>
-              <div data-i18n="Time Table Mangement">Time Table</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="#" class="menu-link">
-                  <div data-i18n="Error">Error</div>
-                </a>
-              </li>
-
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-calendar"></i>
-              <div data-i18n="Calendar">Calendar</div>
-              <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-grid"></i>
-              <div data-i18n="Kanban">Kanban</div>
-              <div class="badge bg-label-primary fs-tiny rounded-pill ms-auto">Pro</div>
-            </a>
-          </li>
-          <!-- Pages -->
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-user"></i>
-              <div data-i18n="Parent Accounts">Parent Accounts</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="pages-misc-error.html" class="menu-link">
-                  <div data-i18n="Manage Accounts">Manage Accounts</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div data-i18n="Account Request">Account Request</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div data-i18n="Parent Info Reports">Parent Info Reports</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-dock-top"></i>
-              <div data-i18n="Account Settings">Account Settings</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="pages-account-settings-account.html" class="menu-link">
-                  <div data-i18n="Account">Account</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-account-settings-notifications.html" class="menu-link">
-                  <div data-i18n="Notifications">Notifications</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-account-settings-connections.html" class="menu-link">
-                  <div data-i18n="Connections">Connections</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
-              <div data-i18n="Authentications">Authentications</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="auth-login-basic.html" class="menu-link">
-                  <div data-i18n="Basic">Login</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="auth-register-basic.html" class="menu-link">
-                  <div data-i18n="Basic">Register</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="auth-forgot-password-basic.html" class="menu-link" target="_blank">
-                  <div data-i18n="Basic">Forgot Password</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-              <i class="menu-icon tf-icons bx bx-cube-alt"></i>
-              <div data-i18n="Misc">Misc</div>
-            </a>
-            <ul class="menu-sub">
-              <li class="menu-item">
-                <a href="pages-misc-error.html" class="menu-link">
-                  <div data-i18n="Error">Error</div>
-                </a>
-              </li>
-              <li class="menu-item">
-                <a href="pages-misc-under-maintenance.html" class="menu-link">
-                  <div data-i18n="Under Maintenance">Under Maintenance</div>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-
-
-
-          <!-- Misc -->
-          <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
-          <li class="menu-item">
-            <a href="#" target="_blank" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-support"></i>
-              <div data-i18n="Support">Support</div>
-            </a>
-          </li>
-        </ul>
-      </aside>
-
-      <!-- / Menu -->
-
-      <!-- Layout container -->
-      <div class="layout-page">
-        <!-- Navbar -->
-
-        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center "
-          id="layout-navbar">
-          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-              <i class="bx bx-menu bx-sm"></i>
-            </a>
-          </div>
-
-          <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-            <!-- Search
-            <div class="navbar-nav align-items-center">
-              <div class="nav-item d-flex align-items-center">
-                <i class="bx bx-search fs-4 lh-0"></i>
-                <input type="text" class="form-control border-0 shadow-none ps-1 ps-sm-2" id="student_search"
-                  placeholder="Search by name or father's name..." onfocus="showCardContainer()"
-                  onkeyup="searchStudents()" aria-label="Search..." />
-              </div>
-              <div class="card-container" id="results"></div>
+        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+          <!-- Search
+          <div class="navbar-nav align-items-center">
+            <div class="nav-item d-flex align-items-center">
+              <i class="bx bx-search fs-4 lh-0"></i>
+              <input type="text" class="form-control border-0 shadow-none ps-1 ps-sm-2" id="student_search"
+                placeholder="Search by name or father's name..." onfocus="showCardContainer()"
+                onkeyup="searchStudents()" aria-label="Search..." />
             </div>
-            <!- /Search -->
+            <div class="card-container" id="results"></div>
+          </div>
+          <!- /Search -->
 
-            <ul class="navbar-nav flex-row align-items-center ms-auto">
-              <!-- Place this tag where you want the button to render. -->
+          <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- Place this tag where you want the button to render. -->
 
-              <a class="mode">
+            <a class="mode">
                 <span class="position-relative moon-sun">
                   <i class="bx bx-moon bx-sm icon moon"></i>
                   <i class="bx bx-sun bx-sm icon sun"></i>
                   <a class="toggle-switch">
                     <span class="switch"></span></a>
                 </span>
-              </a>
+            </a>
 
-              <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
-                data-bs-auto-close="outside" aria-expanded="false">
+            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
+               data-bs-auto-close="outside" aria-expanded="false">
                 <span class="position-relative">
                   <i class="bx bx-table bx-sm"></i>
                   <span class="badge rounded-pill bg-danger badge-dot badge-notifications border"></span>
                 </span>
-              </a>
+            </a>
 
-              <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
-                data-bs-auto-close="outside" aria-expanded="false">
+            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
+               data-bs-auto-close="outside" aria-expanded="false">
                 <span class="position-relative">
                   <i class="bx bx-bell bx-sm"></i>
                   <span class="badge rounded-pill bg-danger badge-dot badge-notifications border"></span>
                 </span>
+            </a>
+
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Notification 1</a></li>
+              <li><a class="dropdown-item" href="#">Notification 2</a></li>
+              <li><a class="dropdown-item" href="#">Notification 3</a></li>
+              <li><a class="dropdown-item" href="#">See all notifications</a></li>
+            </ul>
+
+            <!-- User -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+              <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                <div class="avatar avatar-online">
+                  <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                </div>
               </a>
-
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#">Notification 1</a></li>
-                <li><a class="dropdown-item" href="#">Notification 2</a></li>
-                <li><a class="dropdown-item" href="#">Notification 3</a></li>
-                <li><a class="dropdown-item" href="#">See all notifications</a></li>
-              </ul>
-
-              <!-- User -->
-              <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                  <div class="avatar avatar-online">
-                    <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
-                  </div>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <div class="d-flex">
-                        <div class="flex-shrink-0 me-3">
-                          <div class="avatar avatar-online">
-                            <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
-                          </div>
-                        </div>
-                        <div class="flex-grow-1">
-                          <span class="fw-medium d-block">John Doe</span>
-                          <small class="text-muted">Admin</small>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <div class="d-flex">
+                      <div class="flex-shrink-0 me-3">
+                        <div class="avatar avatar-online">
+                          <img src="../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
                         </div>
                       </div>
-                    </a>
-                  </li>
-                  <li>
-                    <div class="dropdown-divider"></div>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="bx bx-user me-2"></i>
-                      <span class="align-middle">My Profile</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="bx bx-cog me-2"></i>
-                      <span class="align-middle">Settings</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
+                      <div class="flex-grow-1">
+                        <span class="fw-medium d-block">John Doe</span>
+                        <small class="text-muted">Admin</small>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <div class="dropdown-divider"></div>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="bx bx-user me-2"></i>
+                    <span class="align-middle">My Profile</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="bx bx-cog me-2"></i>
+                    <span class="align-middle">Settings</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
                       <span class="d-flex align-items-center align-middle">
                         <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
                         <span class="flex-grow-1 align-middle ms-1">Billing</span>
                         <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
                       </span>
-                    </a>
-                  </li>
-                  <li>
-                    <div class="dropdown-divider"></div>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="javascript:void(0);">
-                      <i class="bx bx-power-off me-2"></i>
-                      <span class="align-middle" onclick="location.href='../html/login.html'">Log Out</span>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <!--/ User -->
-            </ul>
-          </div>
-        </nav>
+                  </a>
+                </li>
+                <li>
+                  <div class="dropdown-divider"></div>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0);">
+                    <i class="bx bx-power-off me-2"></i>
+                    <span class="align-middle" onclick="location.href='../html/login.html'">Log Out</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!--/ User -->
+          </ul>
+        </div>
+      </nav>
 
-        <!-- / Navbar -->
+      <!-- / Navbar -->
 
-        <!-- Content wrapper -->
-        <div class="content-wrapper">
-          <div class="container-xxl mt-3">
-            <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb" class="mb-4">
-              <ol class="breadcrumb">
-                <li class="breadcrumb-item "><a href="#">Manage Student</a></li>
-                <li class="breadcrumb-item active fw-bold" aria-current="page">Student Details</li>
-              </ol>
-            </nav>
-            <!-- / Breadcrumb -->
+      <!-- Content wrapper -->
+      <div class="content-wrapper">
+        <div class="container-xxl mt-3">
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item "><a href="#">Manage Student</a></li>
+              <li class="breadcrumb-item active fw-bold" aria-current="page">Student Details</li>
+            </ol>
+          </nav>
+          <!-- / Breadcrumb -->
 
-            <div class="row gy-1">
-              <div class="xxl">
-                <div class="card">
-                  <div class="card-body">
-                    <h4 class="card-title fw-bold d-flex mb-0 badge bg-label-info">Student Details :- </h4>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <table id="student_fee_data" class="customs-table">
-                        <tbody>
-                          <thead>
-                            <tr>
-                              <th style="width: 12%;"></th>
-                              <th></th>
-                              <th style="width: 12%;"></th>
-                              <th style="width: 25%;"></th>
-                              <th style="width: 12%;"></th>
-                              <th></th>
-                            </tr>
-                          </thead>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="xxl">
-                <div class="card mt-2">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <table id="student_fee_table" class="table table-bordered">
-                        <thead>
-                          <tr class="text-center">
-                            <!-- Dynamically populated months -->
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <!-- Dynamically populated fee rows will go here -->
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!------------Table layout----------------->
-
-              <div class="col-xxl container-p-y">
-                <div class="card userCard p-3">
+          <div class="row gy-1">
+            <div class="xxl">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title fw-bold d-flex mb-0 badge bg-label-info">Student Details: - </h4>
                   <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold ms-3 mb-0">Fee Details</h5>
-                    <button class="btn btn-outline-primary" data-bs-toggle="offcanvas" data-bs-target="#addFeeCanvas"
-                      aria-controls="addFeeCanvas">
-                      <i class="bx bx-plus"></i> Add
-                    </button>
+                    <table id="student_fee_data" class="customs-table">
+                      <tbody>
+                      <thead>
+                      <tr>
+                        <th style="width: 12%;"></th>
+                        <th></th>
+                        <th style="width: 12%;"></th>
+                        <th style="width: 25%;"></th>
+                        <th style="width: 12%;"></th>
+                        <th></th>
+                      </tr>
+                      </thead>
+                      </tbody>
+                    </table>
                   </div>
+                </div>
+              </div>
+            </div>
 
-                  <!-- Include Canvas HTML -->
-                  <div id="canvas-container"></div>
+            <div class="xxl">
+              <div class="card mt-2">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <table id="student_fee_table" class="table table-bordered">
+                      <thead>
+                      <tr class="text-center">
+                        <!-- Dynamically populated months -->
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <!-- Dynamically populated fee rows will go here -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                  <div class="row mt-3">
-                    <div class="col-md-7">
-                      <div class=" border-end pe-3">
-                        <div class="row ms-1">
+            <!------------Table layout----------------->
 
-                          <!-- Additional Amount Column -->
-                          <div class="col-sm-4 col-md-4">
-                            <label for="additionalAmount">Additional Amount</label>
-                            <input type="number" id="additionalAmount" name="additionalAmount" class="form-control"
-                              placeholder="additional amount">
-                          </div>
+            <div class="col-xxl container-p-y">
+              <div class="card userCard p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="fw-bold ms-3 mb-0">Fee Details</h5>
+                  <button class="btn btn-outline-primary" data-bs-toggle="offcanvas" data-bs-target="#addFeeCanvas"
+                          aria-controls="addFeeCanvas">
+                    <i class="bx bx-plus"></i> Add
+                  </button>
+                </div>
 
-                          <!-- Concession Fee Column -->
-                          <div class="col-sm-4 col-md-4">
-                            <label for="concessionFee">Concession Fee</label>
-                            <input type="number" id="concessionFee" name="concessionFee" class="form-control"
-                              placeholder="concession fee">
-                          </div>
+                <!-- Include Canvas HTML -->
+                <div id="canvas-container"></div>
 
-                          <!--previous due amount -->
-                          <div class="col-sm-4 col-md-4 text-danger">
-                            <label for="previousDueAmount">Previous Due Amount</label>
-                            <input type="number" id="previousDueAmount" name="previousDueAmount" class="form-control"
-                                   placeholder="previous due amount" readonly>
-                          </div>
+                <div class="row mt-3">
+                  <!-- use border width-->
+                  <div class="col-md-6">
+                    <div class="border-end pe-4">
+                      <div class="row ms-1">
 
-                          <div class="col-xxl row border border-info mt-3 p-2 align-items-center">
-                            <!-- Label -->
-                            <label class="col-sm-6 col-md-5 card-title fw-bold badge pill bg-label-primary mb-0 ms-5" style="font-size: 1.1rem;"
-                              for="payableAmount">
-                              Total Payable Amount:
-                            </label>
-                            <!-- Input Field -->
-                            <div class="col-sm-4 col-md-4">
-                              <input type="number" id="payableAmount" name="payableAmount" class="form-control" readonly
-                                placeholder="0">
+                        <!-- Additional Amount Column
+                        <div class="col-sm-4 col-md-4">
+                          <label for="additionalAmount">Additional Amount</label>
+                          <input type="number" id="additionalAmount" name="additionalAmount" class="form-control"
+                            placeholder="additional amount">
+                        </div> -->
+
+                        <!-- Concession Fee Column -->
+                        <div class="col-sm-4 col-md-4">
+                          <label for="concessionFee">Concession Fee</label>
+                          <input type="number" id="concessionFee" name="concessionFee" class="form-control"
+                                 placeholder="concession fee">
+                        </div>
+
+                        <!--previous due amount -->
+                        <div class="col-sm-4 col-md-4 text-info">
+                          <label for="previousDueAmount">Previous Paid Amount</label>
+                          <!-- should change to previousPaidAmount -->
+                          <input type="number" id="previousDueAmount" name="previousPaidAmount" class="form-control"
+                                 placeholder="previous paid amount" readonly>
+                        </div>
+
+                        <!-- Month Dropdown -->
+                        <div class="col-sm-4 col-md-4">
+                          <label for="monthDropdown" class="form-label text-warning">Hostel Month(s)</label>
+                          <div class="form-select position-relative" id="monthDropdown"
+                               style="cursor: pointer;">
+                            Select Month
+                            <div class="dropdown-menu p-2 w-100 shadow" id="dropdownMenu"
+                                 style="display: none; position: absolute; top: 100%; left: 0; z-index: 1000;">
+                              <div class="form-check">
+                                <input type="checkbox" id="selectAllCheckbox" class="form-check-input" />
+                                <label class="form-check-label" for="selectAllCheckbox">Select All</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" value="January" id="january"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="january">January</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" value="February" id="february"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="february">February</label>
+                              </div>
+                              <!-- Add similar blocks for all months -->
+                              <div class="form-check">
+                                <input type="checkbox" value="March" id="march"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="march">March</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" value="April" id="april"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="april">April</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" value="May" id="may"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="may">May</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" value="June" id="june"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="june">June</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" value="July" id="july"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="july">July</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" value="August" id="august"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="august">August</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" value="September" id="september"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="september">September</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" value="October" id="october"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="october">October</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" value="November" id="november"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="november">November</label>
+                              </div>
+                              <div class="form-check">
+                                <input type="checkbox" value="December" id="december"
+                                       class="form-check-input month-checkbox" />
+                                <label class="form-check-label" for="december">December</label>
+                              </div>
                             </div>
                           </div>
+                        </div>
 
-                          <!-- Fee Details Row -->
-                          <div class="row g-3 ms-1">
-                            <!-- Recieved  Amount Column -->
-                            <div class="col-md-3">
-                              <label for="recievedFee">Recieved Fee</label>
-                              <input type="number" id="recievedFee" name="recievedFee" class="form-control"
-                                placeholder="0">
-                            </div>
-
-                            <!-- Due Fee Column -->
-                            <div class="col-md-3">
-                              <label for="dueAmount">Due Amount</label>
-                              <input type="number" id="dueAmount" name="dueAmount" class="form-control" readonly placeholder="0">
-                            </div>
-
-                            <!-- Advanced Fee Column -->
-                            <div class="col-md-3">
-                              <label for="advancedFee">Advanced Fee</label>
-                              <input type="number" id="advancedFee" name="advancedFee" class="form-control" readonly
-                                placeholder="0">
-                            </div>
-                            <!-- Payment Status -->
-                            <div class="col-md-3">
-                              <label for="paymentStatus">Payment Status</label>
-                              <select id="paymentStatus" name="paymentStatus" class="form-select" onchange="togglePaymentFields()">
-                                <option value="pending" selected>Pending</option>
-                                <option value="paid">Paid</option>
-                              </select>
-                            </div>
+                        <div class="col-11 row border border-info mt-3 p-2 align-items-center">
+                          <!-- Label -->
+                          <label class="col-sm-6 col-md-6 card-title fw-bold badge pill bg-label-primary mb-0 ms-5"
+                                 style="font-size: 1.1rem;"
+                                 for="payableAmount">
+                            Total Payable Amount:
+                          </label>
+                          <!-- Input Field -->
+                          <div class="col-sm-5 col-md-4 ms-2">
+                            <input type="number" id="payableAmount" name="payableAmount" class="form-control" readonly
+                                   placeholder="0">
                           </div>
+                        </div>
+
+                        <!-- Fee Details Row -->
+                        <div class="row g-3 ms-1">
+                          <!-- Received  Amount Column -->
+                          <div class="col-md-4">
+                            <label for="receivedFee">Received Fee</label>
+                            <input type="number" id="receivedFee" name="receivedFee" class="form-control"
+                                   placeholder="0">
+                          </div>
+
+                          <!-- Due Fee Column -->
+                          <div class="col-md-4">
+                            <label for="dueAmount">Due Amount</label>
+                            <input type="number" id="dueAmount" name="dueAmount" class="form-control" readonly
+                                   placeholder="0">
+                          </div>
+
+                          <!-- Advanced Fee Column -->
+                          <div class="col-md-4">
+                            <label for="advancedAmount">Advanced Fee</label>
+                            <input type="number" id="advancedAmount" name="advancedFee" class="form-control" readonly
+                                   placeholder="0">
+                          </div>
+                        </div>
+                        <!--
+                        <div class="col-md-3">
+                          <label for="advancedFee">Remaining Advanced</label>
+                          <input type="number" id="remainingAdvance" name="remainingAdvance" class="form-control"
+                                 placeholder="Remaining Advance" readonly>
+                        </div> -->
+
+                        <div class="row g-3 ms-1">
+                          <!-- Payment Status -->
+                          <div class="col-md-3">
+                            <label for="paymentStatus">Payment Status</label>
+                            <select id="paymentStatus" name="paymentStatus" class="form-select"
+                                    onchange="togglePaymentFields()">
+                              <option value="pending" selected>Pending</option>
+                              <option value="paid">Paid</option>
+                            </select>
+                          </div>
+
 
                           <!-- Payment Type Dropdown -->
                           <div id="paymentDetails" class="row mt-3 d-none">
@@ -867,13 +953,14 @@
                               <!-- Payment Type Dropdown -->
                               <label for="paymentType">Payment Type</label>
                               <select id="paymentType" name="paymentType" class="form-select"
-                                onchange="toggleBankDropdown()">
+                                      onchange="toggleBankDropdown()">
                                 <option value="" selected>Select Payment Type</option>
                                 <option value="Cash">Cash</option>
                                 <option value="UPI">UPI (GPay, PhonePe, Paytm)</option>
                                 <option value="Account">Account</option>
                               </select>
                             </div>
+
 
                             <!-- Bank Name Dropdown (Hidden by Default) -->
                             <div id="bankDropdown" class="col-md-4 d-none">
@@ -891,141 +978,158 @@
                               <input type="date" id="dateSelection" name="dateSelection" class="form-control">
                             </div>
                           </div>
+                        </div>
 
-                          <!-- Remark Section -->
-                          <div class="mt-3">
-                            <label for="remark">Remark</label>
-                            <textarea id="remark" name="remark" class="form-control" rows="3"
-                              placeholder="Enter your remark here..."></textarea>
+                        <!-- Remark Section -->
+                        <div class="col-11 mt-3">
+                          <label for="remark">Remark</label>
+                          <textarea id="remark" name="remark" class="form-control" rows="3"
+                                    placeholder="Enter your remark here..."></textarea>
+                        </div>
+
+                        <div class="row mt-5 mb-4">
+                          <!-- Submit Button -->
+                          <div class="col-md-4">
+                            <button type="button" class="btn btn-primary w-100" id="submitFeeDetails">Submit</button>
                           </div>
-
-                          <div class="row mt-5 mb-4">
-                            <!-- Submit Button -->
-                            <div class="col-md-4">
-                              <button type="button" class="btn btn-primary w-100" id="submitFeeDetails">Submit</button>
-                            </div>
-                            <!--Cancel Button-->
-                            <div class="col-md-4">
-                              <button type="reset" class="btn btn-secondary w-100">Cancel</button>
-                            </div>
+                          <!--Cancel Button-->
+                          <div class="col-md-4">
+                            <button type="reset" class="btn btn-secondary w-100">Cancel</button>
                           </div>
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <div class="col-md-5">
-                      <div class="card">
-                        <div class="card-header bg-secondary text-white">
-                          Fee Collection
-                        </div>
-                        <div class="card-body p-2">
-                          <!-- Table Section -->
+                  <div class="col-md-6">
+                    <div class="card">
+                      <div class="card-header bg-secondary text-white">
+                        Fee Collection
+                      </div>
+                      <div class="card-body p-2">
+                        <!-- Table Section -->
 
-                          <table id="FeeCollection" class="table table-sm table-bordered text-center mb-0"
-                            style="table-layout: auto; min-width: 100px">
-                            <thead>
-                              <tr class="table-secondary">
-                                <th class="fw-bold" style="width: 5%;">Month</th>
-                                <th class="fw-bold" style="width: 3%;">Fee Type</th>
-                                <th class="fw-bold" style="width: 2%;">Total</th>
-                                <th class="fw-bold" style="width: 2%;">Action</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <!-- Rows dynamically generated via JS -->
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
+                        <table id="FeeCollection" class="table table-sm table-bordered text-center mb-0 table-hover align-middle"
+                               style="table-layout: auto; min-width: 100px">
+                          <thead>
+                          <tr class="table-secondary">
+                            <th class="fw-bold" >Month</th>
+                            <th class="fw-bold" >Fee Head</th>
+                            <th class="fw-bold" >Amount</th>
+                            <th class="fw-bold" >Concession</th>
+                            <th class="fw-bold" >NetPay</th>
+                            <th class="fw-bold" >Status</th>
+                            <th class="fw-bold" >Due</th>
+                            <th id="actionHeader" class="fw-bold text-center"  style="width: 1%; white-space: nowrap;" >Action</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr>
+                            <!-- Rows dynamically generated via JS -->
+                          </tr>
+                          </tbody>
+                          <tfoot class="table-info">
+                          <tr id="grandTotalRow" class="fw-bold bg-light">
+                            <td colspan="2" class="text-end">Grand Total:</td>
+                            <td id="grandTotalAmount">0</td>
+                            <td id="grandTotalConcession">0</td>
+                            <td id="grandTotalNetPay">0</td>
+                            <td colspan="1"></td>
+                            <td id="grandTotalDue">0</td>
+                            <td id="grandTotalActionCell"></td>
+                          </tr>
+                          </tfoot>
+
+                        </table>
                       </div>
-                      <div class="card-footer text-center">
-                        <small>Manage your fees effectively.</small>
-                      </div>
+                    </div>
+                    <div class="card-footer text-center">
+                      <small>Manage your fees effectively.</small>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
-            <!---Container-->
           </div>
+
+          <!---Container-->
         </div>
-
-
-        <div class="mb-3">
-
-        </div>
-        <!-- content wrapper -->
-        <!-- Footer -->
-        <footer class="content-footer footer bg-footer-theme">
-          <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-            <div class="mb-2 mb-md-0">
-              ©
-              <script>
-                document.write(new Date().getFullYear());
-              </script>
-              , made with ❤️ by
-              <a href="https://optms.co.in" target="_blank" class="footer-link fw-medium">OPTMS Tech</a>
-            </div>
-            <div class="d-none d-lg-inline-block">
-              <a href="https://www.optms.co.in/" target="_blank" class="footer-link me-4">Connect</a>
-              <a href="https://www.optms.co.in/issues" target="_blank" class="footer-link">Support</a>
-            </div>
-          </div>
-        </footer>
-        <!-- / Footer -->
-
-        <div class="content-backdrop fade"></div>
-        <!-- / Layout page -->
       </div>
 
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
+
+      <div class="mb-3">
+
+      </div>
+      <!-- content wrapper -->
+      <!-- Footer -->
+      <footer class="content-footer footer bg-footer-theme">
+        <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+          <div class="mb-2 mb-md-0">
+            ©
+            <script>
+              document.write(new Date().getFullYear())
+            </script>
+            , made with ❤️ by
+            <a href="https://optms.co.in" target="_blank" class="footer-link fw-medium">OPTMS Tech</a>
+          </div>
+          <div class="d-none d-lg-inline-block">
+            <a href="https://www.optms.co.in/" target="_blank" class="footer-link me-4">Connect</a>
+            <a href="https://www.optms.co.in/issues" target="_blank" class="footer-link">Support</a>
+          </div>
+        </div>
+      </footer>
+      <!-- / Footer -->
+
+      <div class="content-backdrop fade"></div>
+      <!-- / Layout page -->
     </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
   </div>
-    <!-- / Layout wrapper -->
+</div>
+<!-- / Layout wrapper -->
 
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
 
-    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../assets/vendor/js/bootstrap.js"></script>
-    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="../assets/vendor/js/menu.js"></script>
-    <script src="../custome js/collect_fee.js"></script>
-    <script src="../custome js/collection_page.js"></script>
-    <script src="../custome js/submitFee/submit_fee.js"></script>
+<script src="../assets/vendor/libs/jquery/jquery.js"></script>
+<script src="../assets/vendor/libs/popper/popper.js"></script>
+<script src="../assets/vendor/js/bootstrap.js"></script>
+<script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="../assets/vendor/js/menu.js"></script>
+<script src="../custome js/collect_fee.js"></script>
+<script src="../custome js/collection_page.js"></script>
+<script src="../custome js/submitFee/submit_fee.js"></script>
 
-    <!--- Collection Page Fee Head--->
-    <script src="../custome js/collection_page_fee_head.js"></script>
-    <!-- Add Fee Canvas -->
-    <script src="../custome js/add_fee_canva.js"></script>
+<!--- Collection Page Fee Head--->
+<script src="../custome js/collection_page_fee_head.js"></script>
+<!-- Add Fee Canvas -->
+<script src="../custome js/add_fee_canva.js"></script>
 
-    <!-- endbuild -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-    <!-- endbuild-->
+<!-- endbuild -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+<!-- endbuild-->
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- DataTables JS -->
-    <script type="text/javascript" charset="utf8"
-      src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<!-- DataTables JS -->
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 
-    <script type="text/javascript" charset="utf8"
-      src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
 
-    <!-- Vendors JS -->
-    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Vendors JS -->
+<script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Main JS -->
-    <script src="../assets/js/main.js"></script>
+<!-- Main JS -->
+<script src="../assets/js/main.js"></script>
 
-    <!-- Page JS -->
-    <script src="../assets/js/dashboards-analytics.js"></script>
+<!-- Page JS -->
+<script src="../assets/js/dashboards-analytics.js"></script>
 
 
 </body>

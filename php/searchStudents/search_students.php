@@ -11,40 +11,48 @@ try {
     $search = $_GET['query'] ?? '';
 
     // Prepare the SQL statement with JOINs
-    $sql = "SELECT
-                s.first_name,
-                s.last_name,
-                s.father_name,
-                s.class_name,
-                s.roll_no,
-                s.mother_name,
-                s.phone,
-                s.gender,
-                s.user_id,
-                s.day_hosteler AS type,
-                f.amount AS monthly_fee,
-                COALESCE(h.hostel_fee, 'Not Available') AS hostel_fee,
-                COALESCE(t.transport_fee, 'Not Available') AS transport_fee
-            FROM
-                students s
-            LEFT JOIN
-                FeePlans f
-            ON
-                s.class_name = f.class_id
-            LEFT JOIN
-                hostels h
-            ON
-                s.hostel_id = h.hostel_id
-            LEFT JOIN
-                transport t
-            ON
-                s.transport_id = t.transport_id
-            WHERE
-                s.first_name LIKE :search OR
-                s.father_name LIKE :search
-            LIMIT 15";
+  $sql = "SELECT
+            s.first_name,
+            s.last_name,
+            s.father_name,
+            s.class_name,
+            s.class_id,
+            s.roll_no,
+            s.mother_name,
+            s.phone,
+            s.gender,
+            s.user_id,
+            s.day_hosteler AS type,
+            f.amount AS monthly_fee,
+            COALESCE(h.hostel_fee, 'Not Available') AS hostel_fee,
+            COALESCE(t.transport_fee, 'Not Available') AS transport_fee
+        FROM students s
+        LEFT JOIN classes c ON s.class_name = c.class_name
+        LEFT JOIN (
+                SELECT class_id, MIN(amount) AS amount
+                FROM FeePlans
+                GROUP BY class_id
+                        ) f ON c.class_id = f.class_id
 
-    // Prepare the statement using the $pdo connection
+        LEFT JOIN (
+            SELECT hostel_id, MIN(hostel_fee) AS hostel_fee
+            FROM hostels
+            GROUP BY hostel_id
+        ) h ON s.hostel_id = h.hostel_id
+
+        LEFT JOIN (
+            SELECT transport_id, MIN(transport_fee) AS transport_fee
+            FROM transport
+            GROUP BY transport_id
+        ) t ON s.transport_id = t.transport_id
+
+        WHERE s.first_name LIKE :search
+           OR s.last_name LIKE :search
+           OR s.father_name LIKE :search
+        LIMIT 15";
+
+
+  // Prepare the statement using the $pdo connection
     $stmt = $pdo->prepare($sql);
 
     // Bind the parameter for the search term

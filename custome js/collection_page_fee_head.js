@@ -3,11 +3,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const studentData = JSON.parse(sessionStorage.getItem('studentData')); // Retrieve data from session storage
 
     if (studentData && Array.isArray(studentData) && studentData.length > 0) {
-      const className = studentData[0].class_name; // Get class name
+      const classId = studentData[0].class_id; // Get class name
       const userId = studentData[0].user_id; // Get user ID
 
-      if (className && userId) {
-        fetchFeePlansData(className, userId);
+      if (classId && userId) {
+        fetchFeePlansData(classId, userId);
       } else {
         console.error('Class name or User ID is missing.');
         showAlert('Student data is incomplete.', 'error');
@@ -28,47 +28,86 @@ document.addEventListener('DOMContentLoaded', function () {
       const cell = button.closest('td'); // Get the cell containing the button
       const row = cell.closest('tr'); // Get the parent row
       const monthIndex = Array.from(row.children).indexOf(cell); // Find the month index
-      const feeHead = row.children[0].textContent; // Get the Fee Head from the first column
-      const amount = cell.querySelector('.amount').textContent; // Get the amount from the clicked cell
+     // let feeHead = row.children[0].textContent.trim(); // Get the Fee Head from the first column
+     // const amount = cell.querySelector('.amount').textContent.trim()|| 0; // Get the amount from the clicked cell
+      const month = document.querySelector(`#student_fee_table thead tr th:nth-child(${monthIndex + 1})`).textContent.trim(); // Get the month name from the header
 
-      // Get the month name from the header
-      const month = document.querySelector(`#student_fee_table thead tr th:nth-child(${monthIndex + 1})`).textContent;
 
-      // If the clicked row is the "Total" row, use the first Fee Head ("Monthly Fee")
-      if (feeHead === 'Total') {
-        const monthlyFeeType = 'Monthly Fee'; // The fee type from the first fee head
-        addToFeeCollection(month, monthlyFeeType, amount); // Add to Fee Collection table
+      if (row.children[0].textContent.trim() === 'Total') {
+        // Get all rows except the header & Total row
+        const feeRows = document.querySelectorAll('#student_fee_table tbody tr');
+        feeRows.forEach(r => {
+          if (r.children[0].textContent.trim() !== 'Total') {
+            const feeHead = r.children[0].textContent.trim(); // Get the Fee Head from the first column
+            const amountText = r.children[monthIndex].textContent.trim();
+            const amount = parseFloat(amountText).toFixed(2) || 0;
 
-        // Hide the plus button
-        button.style.display = 'none';
+            if (amount > 0 && amountText !== 'N/A') {
+              addToFeeCollection(month, feeHead, amount);
+            }
+          }
+        });
+      } else {
+        const feeHead = row.children[0].textContent.trim();
+        const amount = parseFloat(cell.textContent.trim()) || 0;
+        if (amount > 0) {
+          addToFeeCollection(month, feeHead, amount);
+        }
       }
+
+      button.style.display = 'none';
     }
   });
 
-  function addToFeeCollection(month, feeType, amount) {
+  function addToFeeCollection(month, feeHead, amount, concession = '', netPay = '', status = 'Pending', due = '') {
     const tableBody = document.querySelector('#FeeCollection tbody');
     const newRow = document.createElement('tr');
 
-    newRow.innerHTML = `
-                   <td>${month}</td>
-                   <td>${feeType}</td>
-                   <td>${amount}</td>
-                   <td class="text-center">
-                     <button class="btn text-muted h-px-30 deleteFeeButton" type="button" id="deleteFeeButton">
-                       <i class="btn-outline-danger bx bx-trash bx-sm"></i>
-                     </button>
-                   </td>
-                   `;
+    const isPaid = status === 'Paid';
+    const checkedAttr = isPaid ? 'checked' : '';
+    const inputDisabled = isPaid ? 'disabled' : '';
+    const labelClass = isPaid ? 'text-success' : 'text-danger';
 
+    const initialConcession = concession || 0;
+    const calculatedNetPay = netPay || (amount - initialConcession);
+   // const calculatedDue = due || (amount - initialConcession - calculatedNetPay);
+    const calculatedDue = isPaid ? 0 : (amount - initialConcession);
+
+    newRow.innerHTML = `
+    <td>${month}</td>
+    <td>${feeHead}</td>
+    <td><span class="originalAmount">${amount}</span></td>
+    <td>
+      <input type="number" class="form-control form-control-sm payableAmountInput concessionInput" value="${initialConcession}" min="0" ${inputDisabled}>
+    </td>
+    <td><span class="netPayValue">${calculatedNetPay.toFixed(2)}</span></td>
+    <td>
+      <div class="form-check form-switch">
+        <input class="form-check-input statusToggle" type="checkbox" role="switch" ${checkedAttr}>
+        <label class="form-check-label ${labelClass}">${isPaid ? 'Paid' : 'Pending'}</label>
+      </div>
+    </td>
+    <td><span class="dueValue">${calculatedDue.toFixed(2)}</span></td>
+    <td>
+      <a href="javascript:;"  class="tf-icons text-muted deleteFeeButton" type="button">
+        <i class="text-danger bx bx-trash bx-sm"></i>
+      </a>
+    </td>
+  `;
     tableBody.appendChild(newRow);
 
     // Update total amount
+    let totalAmount =0;
     totalAmount += parseFloat(amount); // Add the new amount to the total
+
     updateTotalAmount(); // Call to update the total and the payableAmount input field
+    updateGrandTotals();  // Update a grand total function start form here
   }
+
 
   // Event listener for delete buttons in the Fee Collection table
   document.querySelector('#FeeCollection tbody').addEventListener('click', function (event) {
+
     // Check if the clicked element is a delete button
     const deleteButton = event.target.closest('.deleteFeeButton'); // Ensure the target is the button or a child of it
 
@@ -96,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
           // Remove the row from the table
           row.remove();
+          updateGrandTotals(); // <== Also update on deletion
 
           // Optionally: handle the plus button logic for a related table (e.g., #student_fee_table)
           const month = row.children[0].textContent; // Get the month from the row
@@ -124,10 +164,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // function fetchFeePlansData(studentData)
-async function fetchFeePlansData(className, userId) {
+async function fetchFeePlansData(classId, userId) {
   try {
     // Fetch fee plans for the class
-    const feePlansResponse = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_name=${className}`);
+    const feePlansResponse = await fetch(`/php/collectFeeStudentDetails/fetch_fee_month.php?class_id=${classId}`);
     const feePlans = await feePlansResponse.json();
 
     // Fetch paid months, previous due amount, and advanced amount
@@ -150,13 +190,14 @@ async function fetchFeePlansData(className, userId) {
     // Fetch and update Advanced Amount
     const advancedFee = paidMonthsData.advancedFee || 0;
     advancedAmountField.value = advancedFee;
-   // document.getElementById("advancedAmount").value = advancedAmount.toFixed(2);
+    document.getElementById("advancedAmount").value = parseFloat(advancedFee).toFixed(2);
 
+    // Calculate and set Payable Amount
     let totalAmount = getTotalFromTable();
-
-    let payableAmount = totalAmount + parseFloat(previousDueAmount)- parseFloat(advancedFee); // Update payable amount by adding due amount
+    let payableAmount = totalAmount + parseFloat(previousDueAmount) - parseFloat(advancedFee); // Update payable amount by adding due amount
 
     payableAmountField.value = payableAmount.toFixed(2);
+
     //  document.getElementById("payableAmount").value = payableAmount.toFixed(2);
   } catch (error) {
     console.error('Error fetching fee plans:', error);
@@ -265,10 +306,136 @@ function updateFeeTable(feePlans, paidMonths) {
   tableBody.appendChild(totalRow);
 }
 
+
+document.querySelector('#FeeCollection').addEventListener('input', function (event) {
+  if (event.target.classList.contains('concessionInput')) {
+    const row = event.target.closest('tr');
+    const amount = parseFloat(row.querySelector('.originalAmount').textContent) || 0;
+    const concession = parseFloat(event.target.value) || 0;
+
+    // Calculate Net Pay and Due
+    const netPay = amount - concession;
+    const due = amount - concession - netPay; // Typically 0 if paid fully
+
+    // Update DOM
+    row.querySelector('.netPayValue').textContent = netPay.toFixed(2);
+    row.querySelector('.dueValue').textContent = due.toFixed(2);
+
+    updateGrandTotals(); // <== Update grand total here
+  }
+});
+
+
+// paid toggle on off
+document.querySelector('#FeeCollection').addEventListener('change', function (event) {
+  if (event.target.classList.contains('statusToggle')) {
+    const isChecked = event.target.checked;
+    const row = event.target.closest('tr');
+    const formSwitch = event.target.closest('.form-switch');
+    const label = formSwitch.querySelector('.form-check-label');
+    const input = event.target.closest('tr').querySelector('.payableAmountInput');
+
+    const concessionInput = row.querySelector('.concessionInput');
+    const actionColumn = row.querySelector('.deleteFeeButton')?.closest('td');
+
+    // Update label text & color
+    label.textContent = isChecked ? 'Paid' : 'Pending';
+    label.classList.toggle('text-success', isChecked);
+    label.classList.toggle('text-danger', !isChecked);
+
+    // Disable/enable input based on toggle
+    input.disabled = isChecked;
+
+    // Hide or show delete button column
+    if (actionColumn) {
+      actionColumn.style.display = isChecked ? 'none' : '';
+    }
+
+    // Update due value
+    const amount = parseFloat(row.querySelector('.originalAmount').textContent) || 0;
+    const concession = parseFloat(concessionInput.value) || 0;
+    const calculatedDue = amount - concession;
+
+    // Optional: Set due to 0 if paid
+    if (isChecked) {
+      row.querySelector('.dueValue').textContent = '0.00';
+    } else {
+      row.querySelector('.dueValue').textContent = calculatedDue.toFixed(2);
+    }
+
+    // Row background color
+    row.classList.toggle('table-success', isChecked); // Add greenish background for Paid
+    row.classList.toggle('table-danger', !isChecked); // table-secondary = light gray
+
+    updateGrandTotals(); // Recalculate totals
+    updateActionHeaderVisibility(); // <- Check and toggle header visibility
+  }
+});
+
+// Action Button usage
+function updateActionHeaderVisibility() {
+  const anyPending = Array.from(document.querySelectorAll('#FeeCollection tbody .statusToggle'))
+    .some(toggle => !toggle.checked);
+
+  const actionHeader = document.getElementById('actionHeader');
+  const actionCells = document.querySelectorAll('#FeeCollection tbody td:last-child');
+  const grandTotalAction = document.getElementById('grandTotalActionCell');
+
+  if (anyPending) {
+    // Show action column everywhere
+    if (actionHeader) actionHeader.style.display = '';
+    if (grandTotalAction) {
+      grandTotalAction.style.display = '';
+      grandTotalAction.style.border = '';
+    }
+    actionCells.forEach(cell => {
+      cell.style.display = '';
+      cell.style.border = '';
+    });
+  } else {
+    // Hide action column everywhere
+    if (actionHeader) actionHeader.style.display = 'none';
+    if (grandTotalAction) {
+      grandTotalAction.style.display = 'none';
+      grandTotalAction.style.border = 'none';
+    }
+    actionCells.forEach(cell => {
+      cell.style.display = 'none';
+      cell.style.border = 'none';
+    });
+  }
+}
+
+
+function updateGrandTotals() {
+  let totalAmount = 0;
+  let totalConcession = 0;
+  let totalNetPay = 0;
+  let totalDue = 0;
+
+  document.querySelectorAll('#FeeCollection tbody tr').forEach(row => {
+    const amount = parseFloat(row.querySelector('.originalAmount')?.textContent || 0);
+    const concession = parseFloat(row.querySelector('.concessionInput')?.value || 0);
+    const netPay = parseFloat(row.querySelector('.netPayValue')?.textContent || 0);
+    const due = parseFloat(row.querySelector('.dueValue')?.textContent || 0);
+
+    totalAmount += amount;
+    totalConcession += concession;
+    totalNetPay += netPay;
+    totalDue += due;
+  });
+
+  // Update the grand total row
+  document.getElementById('grandTotalAmount').textContent = totalAmount.toFixed(2);
+  document.getElementById('grandTotalConcession').textContent = totalConcession.toFixed(2);
+  document.getElementById('grandTotalNetPay').textContent = totalNetPay.toFixed(2);
+  document.getElementById('grandTotalDue').textContent = totalDue.toFixed(2);
+}
+
 // Function to update the total amount
 function updateTotalAmount() {
   const rows = document.querySelectorAll('#FeeCollection tbody tr');
-  totalAmount = 0; // Reset the totalAmount to recalculate
+  let totalAmount = 0; // Reset the totalAmount to recalculate
 
   // Iterate through all rows in the table to calculate the total
   rows.forEach(row => {
@@ -316,7 +483,7 @@ attachEditListeners(); // Attach listeners to existing cells
 updateTotalAmount(); // Calculate the initial total amount
 
 // Start observing the table body for added rows
-observer.observe(document.querySelector('#FeeCollection tbody'), { childList: true, subtree: true });
+// observer.observe(document.querySelector('#FeeCollection tbody'), { childList: true, subtree: true });
 
 // Helper function to display alerts
 function showAlert(message, type) {
@@ -372,7 +539,7 @@ function getTotalFromTable() {
 const payableAmountField = document.getElementById('payableAmount');
 const concessionFeeField = document.getElementById('concessionFee');
 const previousDueAmountField = document.getElementById('previousDueAmount'); // Get due amount field
-const advancedAmountField = document.getElementById('advancedFee');
+const advancedAmountField = document.getElementById('advancedAmount');
 
 // Initialize the total amount from the table (dynamic calculation)
 let totalAmountFromTable = getTotalFromTable();
@@ -386,19 +553,31 @@ function updatePayableAmount() {
 
   totalAmountFromTable = getTotalFromTable(); // Recalculate the total amount from the table dynamically
 
+  // Calculate the initial payable amount (before considering advance)
+  let updatedPayableAmount = totalAmountFromTable + dueAmount - concessionFee;
+
+  // If advanced amount is more than or equal to payable amount, set payable to 0
+  if (advancedAmount >= updatedPayableAmount) {
+    updatedPayableAmount = 0;
+  } else {
+    updatedPayableAmount -= advancedAmount; // Deduct advance normally
+  }
+
   // Calculate the updated payable amount (subtract advanced amount)
-  const updatedPayableAmount = totalAmountFromTable + dueAmount - concessionFee - advancedAmount; // Calculate the updated payable amount
+  // const updatedPayableAmount = totalAmountFromTable + dueAmount - concessionFee - advancedAmount; // Calculate the updated payable amount
 
   // Debugging logs
-  /*
-  console.log("===== Debugging updatePayableAmount() =====");
-  console.log("Total from Table:", totalAmountFromTable);
-  console.log("Previous Due Amount:", dueAmount);
-  console.log("Concession Fee:", concessionFee);
-  console.log("Updated Payable Amount:", updatedPayableAmount);
-  console.log("=========================================");*/
+/*
+  console.log('===== Debugging updatePayableAmount() =====');
+  console.log('Total from Table:', totalAmountFromTable);
+  console.log('Previous Due Amount:', dueAmount);
+  console.log('Advanced Amount:', advancedAmount);
+  console.log('Concession Fee:', concessionFee);
+  console.log('Updated Payable Amount:', updatedPayableAmount);
+  console.log('=========================================');*/
 
-  payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Update the payableAmount field and ensure it doesn't go below zero
+  payableAmountField.value = updatedPayableAmount.toFixed(2);
+  // payableAmountField.value = Math.max(updatedPayableAmount, 0).toFixed(2); // Update the payableAmount field and ensure it doesn't go below zero
 }
 
 // Update payableAmount when concession fee changes
@@ -416,17 +595,41 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Update due and advanced amounts based on received fee
-document.getElementById('recievedFee').addEventListener('input', calculateDueAndAdvanced);
+document.getElementById('receivedFee').addEventListener('input', calculateDueAndAdvanced);
 
 function calculateDueAndAdvanced() {
   const payableAmount = parseFloat(document.getElementById('payableAmount').value) || 0;
-  const receivedFee = parseFloat(document.getElementById('recievedFee').value) || 0;
+  const receivedFee = parseFloat(document.getElementById('receivedFee').value) || 0;
 
   if (receivedFee < payableAmount) {
     document.getElementById('dueAmount').value = (payableAmount - receivedFee).toFixed(2);
-    document.getElementById('advancedFee').value = 0;
+    document.getElementById('advancedAmount').value = 0;
   } else {
     document.getElementById('dueAmount').value = 0;
-    document.getElementById('advancedFee').value = (receivedFee - payableAmount).toFixed(2);
+    document.getElementById('advancedAmount').value = (receivedFee - payableAmount).toFixed(2);
   }
 }
+
+document.getElementById('monthDropdown').addEventListener('click', function() {
+
+  const monthDropdown = document.getElementById('monthDropdown');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+
+// Toggle menu when clicking the dropdown label
+  monthDropdown.addEventListener('click', function(e) {
+    // If click is inside menu, do nothing (don't toggle)
+    if (dropdownMenu.contains(e.target)) return;
+
+    // Toggle menu visibility
+    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+  });
+});
+// Close the menu if clicking outside dropdown area
+document.addEventListener('click', function (e) {
+  if (!monthDropdown.contains(e.target)) {
+    dropdownMenu.style.display = 'none';
+  }
+});
+
+
+
