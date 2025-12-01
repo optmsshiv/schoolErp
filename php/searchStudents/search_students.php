@@ -27,7 +27,7 @@ try {
             COALESCE(h.hostel_fee, 'Not Available') AS hostel_fee,
             COALESCE(t.transport_fee, 'Not Available') AS transport_fee
         FROM students s
-        LEFT JOIN classes c ON s.class_name = c.class_name
+        LEFT JOIN Classes c ON s.class_name = c.class_name
         LEFT JOIN (
                 SELECT class_id, MIN(amount) AS amount
                 FROM FeePlans
