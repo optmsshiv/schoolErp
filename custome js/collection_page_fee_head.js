@@ -183,9 +183,9 @@ async function fetchFeePlansData(classId, userId) {
 
     updateFeeTable(feePlans, paidMonthsData.paidMonths); // Update the fee table
 
-    // Fetch and update Previous Due Amount
-    const previousDueAmount = paidMonthsData.previousDueAmount || 0; // Update the previous due amount field
-    previousDueAmountField.value = previousDueAmount;
+    // Fetch and update Previous Received Amount
+    const received_amount = paidMonthsData.received_amount || 0; // Update the previous received amount field
+    received_amountField.value = received_amount;
 
     // Fetch and update Advanced Amount
     const advancedFee = paidMonthsData.advancedFee || 0;
@@ -193,10 +193,10 @@ async function fetchFeePlansData(classId, userId) {
     document.getElementById("advancedAmount").value = parseFloat(advancedFee).toFixed(2);
 
     // Calculate and set Payable Amount
-    let totalAmount = getTotalFromTable();
-    let payableAmount = totalAmount + parseFloat(previousDueAmount) - parseFloat(advancedFee); // Update payable amount by adding due amount
+   // let totalAmount = getTotalFromTable();
+  //  let payableAmount = totalAmount + parseFloat(previousDueAmount) - parseFloat(advancedFee); // Update payable amount by adding due amount
 
-    payableAmountField.value = payableAmount.toFixed(2);
+  //  payableAmountField.value = payableAmount.toFixed(2);
 
     //  document.getElementById("payableAmount").value = payableAmount.toFixed(2);
   } catch (error) {
@@ -237,7 +237,7 @@ function updateFeeTable(feePlans, paidMonths) {
   const feeDataMap = {};
   feePlans.forEach(({ month_name, amount, fee_head_name }) => {
     if (!feeDataMap[fee_head_name]) {
-      feeDataMap[fee_head_name] = new Array(months.length).fill('N/A');
+      feeDataMap[fee_head_name] = new Array(months.length).fill('-');
     }
     const monthIndex = months.indexOf(month_name);
     if (monthIndex !== -1) {
@@ -527,7 +527,7 @@ function getTotalFromTable() {
 
   // Loop through each row to calculate the sum of the 3rd column (amount)
   rows.forEach(row => {
-    const amountCell = row.querySelector('td:nth-child(3)'); // Assuming 3rd column contains the amounts
+    const amountCell = row.querySelector('td:nth-child(3)'); // Assuming the 3rd column contains the amounts
     if (amountCell) {
       const amount = parseFloat(amountCell.textContent) || 0;
       total += amount;
@@ -538,7 +538,7 @@ function getTotalFromTable() {
 
 const payableAmountField = document.getElementById('payableAmount');
 const concessionFeeField = document.getElementById('concessionFee');
-const previousDueAmountField = document.getElementById('previousDueAmount'); // Get due amount field
+const received_amountField = document.getElementById('received_amount'); // Get last received amount field
 const advancedAmountField = document.getElementById('advancedAmount');
 
 // Initialize the total amount from the table (dynamic calculation)
@@ -547,14 +547,14 @@ let totalAmountFromTable = getTotalFromTable();
 // Function to update payable amount
 function updatePayableAmount() {
   // Always fetch the latest due amount
-  const dueAmount = parseFloat(previousDueAmountField.value) || 0; // Get the due amount from the field
+  const received_amount = parseFloat(received_amountField.value) || 0; // Get the recieved amount from the field
   const advancedAmount = parseFloat(advancedAmountField.value) || 0;
   const concessionFee = parseFloat(concessionFeeField.value) || 0; // Get the current concession fee entered by the user
 
   totalAmountFromTable = getTotalFromTable(); // Recalculate the total amount from the table dynamically
 
   // Calculate the initial payable amount (before considering advance)
-  let updatedPayableAmount = totalAmountFromTable + dueAmount - concessionFee;
+ // let updatedPayableAmount = totalAmountFromTable + dueAmount - concessionFee;
 
   // If advanced amount is more than or equal to payable amount, set payable to 0
   if (advancedAmount >= updatedPayableAmount) {
@@ -590,9 +590,9 @@ document.querySelector('#FeeCollection tbody').addEventListener('DOMSubtreeModif
 });
 
 // Call updatePayableAmount when due amount is fetched from the server
-document.addEventListener('DOMContentLoaded', function () {
-  updatePayableAmount();
-});
+//document.addEventListener('DOMContentLoaded', function () {
+//  updatePayableAmount();
+//});
 
 // Update due and advanced amounts based on received fee
 document.getElementById('receivedFee').addEventListener('input', calculateDueAndAdvanced);
@@ -617,7 +617,7 @@ document.getElementById('monthDropdown').addEventListener('click', function() {
 
 // Toggle menu when clicking the dropdown label
   monthDropdown.addEventListener('click', function(e) {
-    // If click is inside menu, do nothing (don't toggle)
+    // If click is inside the menu, do nothing (don't toggle)
     if (dropdownMenu.contains(e.target)) return;
 
     // Toggle menu visibility

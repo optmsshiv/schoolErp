@@ -29,12 +29,12 @@ try {
     // Prepare SQL statement to insert data into feeDetails table
     $sql = "INSERT INTO feeDetails (
                 user_id, student_name, receipt_no, month, fee_type, amount, hostel_fee, transport_fee,
-                additional_amount, concession_amount, received_amount, due_amount, pending_amount, advanced_amount,
+                concession_amount, received_amount, due_amount, pending_amount, advanced_amount,
                 total_amount, payment_status, payment_type, bank_name, payment_date, remark
             )
             VALUES (
                 :user_id, :student_name, :receipt_no, :month, :fee_type, :amount, :hostel_fee, :transport_fee,
-                :additional_amount, :concession_amount, :received_amount, :due_amount, :pending_amount, :advanced_amount,
+                :concession_amount, :received_amount, :due_amount, :pending_amount, :advanced_amount,
                 :total_amount, :payment_status, :payment_type, :bank_name, :payment_date, :remark
             )";
 
@@ -66,7 +66,7 @@ try {
         $stmt->bindParam(':amount', $commaSeparatedAmounts, PDO::PARAM_STR); // Store amounts as comma-separated
         $stmt->bindParam(':hostel_fee', $data['hostel_fee'], PDO::PARAM_STR); // Make sure the hostel_fee is passed as a string
         $stmt->bindParam(':transport_fee', $data['transport_fee'], PDO::PARAM_STR); // Make sure the transport_fee is passed as a string
-        $stmt->bindParam(':additional_amount', $data['additional_amount'], PDO::PARAM_STR);
+
         $stmt->bindParam(':concession_amount', $data['concession_amount'], PDO::PARAM_STR); // Make sure the concession_amount is passed as a string
         $stmt->bindParam(':received_amount', $data['received_amount'], PDO::PARAM_STR);
         $stmt->bindParam(':due_amount', $data['due_amount'], PDO::PARAM_STR);

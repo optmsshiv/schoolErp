@@ -22,13 +22,16 @@ try {
     }
 
   // Fetch latest due amount and advanced amount
-  $amountStmt = $pdo->prepare("SELECT due_amount, advanced_amount FROM feeDetails WHERE user_id = ? ORDER BY id DESC LIMIT 1");
+  $amountStmt = $pdo->prepare("SELECT received_amount, advanced_amount
+    FROM feeDetails WHERE user_id = ? AND payment_status = 'paid'
+                    ORDER BY id DESC
+                    LIMIT 1");
   $amountStmt->execute([$user_id]);
   $amountData = $amountStmt->fetch(PDO::FETCH_ASSOC);
 
   echo json_encode([
     'paidMonths' => array_values(array_unique($allPaidMonths)), // Remove duplicates & re-index
-    'previousDueAmount' => $amountData['due_amount'] ?? 0, // Return 0 if null
+    'received_amount' => $amountData['received_amount'] ?? 0, // Return 0 if null
     'advancedFee' => $amountData['remaining_advance'] ?? 0 // Return 0 if null
   ]);
 } catch (PDOException $e) {

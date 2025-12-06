@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', function () {
    // Initially, ensure the loading bar is hidden by default
   toggleLoadingBar(false);  // This will hide the loading bar on a page load
 
+  // Load banks when page loads
+  loadBankNames();
+
   const collectFeeButton = document.getElementById('collect_fee_btn');
   const tableBody = document.querySelector('#student_data tbody');
 
@@ -109,3 +112,26 @@ function getCellText(row, cellIndex) {
   const cell = row.querySelector(`td:nth-child(${cellIndex})`);
   return cell ? cell.textContent.trim() : 'N/A';
 }
+
+function loadBankNames() {
+  fetch("../php/submitFee/get_banks.php")
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const bankDropdown = document.getElementById("bankName");
+
+        bankDropdown.innerHTML = `<option value="">Select Bank</option>`;
+
+        data.banks.forEach(bank => {
+          const option = document.createElement("option");
+          option.value = bank.BankName;
+          option.textContent = bank.BankName;
+          bankDropdown.appendChild(option);
+        });
+      } else {
+        console.error("Failed to load banks:", data.error);
+      }
+    })
+    .catch(error => console.error("Fetch failed:", error));
+}
+

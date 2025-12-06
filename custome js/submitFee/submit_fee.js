@@ -45,9 +45,9 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
     transport_fee: parseFloat(document.getElementById("transportFee")?.value || 0.0), // Add if you handle transport fees
   //  additional_amount: parseFloat(document.getElementById("additionalAmount").value || 0.0),
     concession_amount: parseFloat(document.getElementById("concessionFee").value || 0.0),
-    received_amount: parseFloat(document.getElementById("recievedFee").value || 0.0),
+    received_amount: parseFloat(document.getElementById("receivedFee").value || 0.0),
     due_amount: parseFloat(document.getElementById("dueAmount").value || 0.0),
-    advanced_amount: parseFloat(document.getElementById("advancedFee").value || 0.0),
+    advanced_amount: parseFloat(document.getElementById("advancedAmount").value || 0.0),
     total_amount: parseFloat(document.getElementById("payableAmount").value || 0.0),
     payment_status: document.getElementById("paymentStatus").value,
     payment_type: document.getElementById("paymentType")?.value || "",
@@ -85,7 +85,7 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
             confirmButtonText: 'OK'
           }).then((result) => {
             if (result.isConfirmed) {
-              // Redirect to collect_fee.html when user clicks OK
+              // Redirect to collect_fee.html when a user clicks OK
               window.location.href = '/html/collect_fee.html';
             }
           });
@@ -98,7 +98,7 @@ document.getElementById("submitFeeDetails").addEventListener("click", function (
             confirmButtonText: 'OK'
           }).then((result) => {
             if (result.isConfirmed) {
-              // Redirect to collect_fee.html when user clicks OK
+              // Redirect to collect_fee.html when a user clicks OK
               window.location.href = '/html/collect_fee.html';
             }
           });

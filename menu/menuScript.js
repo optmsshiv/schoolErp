@@ -70,4 +70,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
+  const currentPage = window.location.pathname.split("/").pop();
+
+  if (currentPage === "collection-page.html") {
+    // Highlight Collect Fee
+    document.getElementById("collectFeeMenu").classList.add("active");
+
+    // Expand parent menu (Accounting)
+    const parent = document.getElementById("accountingParent");
+    parent.classList.add("open");
+    parent.querySelector(".menu-sub").classList.add("open");
+  }
+
 });
+
+
+
+
