@@ -61,7 +61,7 @@ function initializeFormValidation() {
   });
 }
 
-// Initialize on page load
+// Initialize on a page load
 document.addEventListener('DOMContentLoaded', () => {
   initializeDarkMode();
   setupDarkModeToggle();
