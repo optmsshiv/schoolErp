@@ -240,8 +240,8 @@ function initializeEnquiryScript(){
 
           // 🚨 CRITICAL PART: Do NOT replace created_by_name
           document.getElementById('modalCreatedBy').value =
-            enq.created_by_name && enq.created_by_name !== ""
-              ? enq.created_by_name
+            r.created_by_name && r.created_by_name !== ""
+              ? r.created_by_name
               : SESSION_USERNAME; // fallback only if empty
 
           bsModal.show();
